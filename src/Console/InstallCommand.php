@@ -92,6 +92,23 @@ class InstallCommand extends Command {
 
         copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');
+
+        File::makeDirectory(app_path() . '/Models', 0777, true);
+        $this->info('Folder app/Models is created');
+
+        copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
+        $this->info('Replace app.php - OK');
+
+        copy( $this->installPath . '/files/BaseModel.php', app_path() . '/Models/BaseModel.php');
+        $this->info('Created app/Models/BaseModel.php - OK');
+
+        copy( $this->installPath . '/files/Tree.php', app_path() . '/Models/Tree.php');
+        $this->info('Created app/Models/Tree.php - OK');
+
+        copy( $this->installPath . '/files/Articles.php', app_path() . '/Models/Articles.php');
+        $this->info('Created app/Models/Articles.php - OK');
+
+        exec("composer dump-autoload");
     }
 
     /*
