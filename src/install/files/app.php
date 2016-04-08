@@ -157,7 +157,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
-        Vis\Builder\BuilderServiceProvider::claass,
+        Vis\Builder\BuilderServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Devfactory\Minify\MinifyServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
