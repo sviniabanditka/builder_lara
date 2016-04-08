@@ -8,6 +8,7 @@
         }
     ],
     "require": {
+        "cartalyst/sentinel" : "2.0.*",
         "laravelcollective/html": "^5.2",
         "devfactory/minify": "1.0.*",
         "barryvdh/laravel-debugbar" : "^2.0",

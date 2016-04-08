@@ -89,6 +89,9 @@ class InstallCommand extends Command {
     {
         copy( $this->installPath . '/files/.htaccess', public_path() . '/.htaccess');
         $this->info('Replace htaccess - OK');
+
+        copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
+        $this->info('Replace app.php - OK');
     }
 
     /*
