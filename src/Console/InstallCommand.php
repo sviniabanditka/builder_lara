@@ -108,6 +108,12 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/Articles.php', app_path() . '/Models/Articles.php');
         $this->info('Created app/Models/Articles.php - OK');
 
+        copy( $this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
+        $this->info('Created app/Http/routes.php - OK');
+
+        copy( $this->installPath . '/files/composer.json', base_path() . '/composer.json');
+        $this->info('Replace composer.json - OK');
+
         exec("composer dump-autoload");
     }
 
