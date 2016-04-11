@@ -49,6 +49,7 @@ class InstallCommand extends Command {
             $this->loadFiles();
             $this->publishConfigs();
             $this->loadFilesAfterPublishConfigs();
+            $this->deleteFiles();
 
             $this->finishInstall();
         }
@@ -131,7 +132,22 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/composer.json', base_path() . '/composer.json');
         $this->info('Replace composer.json - OK');
 
-        @unlink(app_path()."/User.php");
+        if (!is_dir(base_path() . '/resources/views/layouts')) {
+            File::makeDirectory (base_path () . '/resources/views/layouts', 0777, true);
+            $this->info ('Folder resources/views/layouts is created');
+        }
+        if (!is_dir(base_path() . '/resources/views/page')) {
+            File::makeDirectory (base_path () . '/resources/views/page', 0777, true);
+            $this->info ('Folder resources/views/page is created');
+        }
+        if (!is_dir(base_path() . '/resources/views/partials')) {
+            File::makeDirectory (base_path () . '/resources/views/partials', 0777, true);
+            $this->info ('Folder resources/views/partials is created');
+        }
+        if (!is_dir(base_path() . '/resources/views/popup')) {
+            File::makeDirectory (base_path () . '/resources/views/popup', 0777, true);
+            $this->info ('Folder resources/views/popup is created');
+        }
 
         exec("composer dump-autoload");
     }
@@ -154,6 +170,15 @@ class InstallCommand extends Command {
 
         copy( $this->installPath . '/files/debugbar.php', config_path() . '/debugbar.php');
         $this->info('Replace debugbar.php - OK');
+    }
+
+    private function deleteFiles()
+    {
+        @unlink(app_path()."/User.php");
+        @rmdir(base_path()."/resources/lang");
+        @rmdir(base_path()."/resources/views/errors");
+        @rmdir(base_path()."/resources/views/vendor");
+        unlink(base_path()."/resources/views/welcome.blade.php");
     }
 
     /*

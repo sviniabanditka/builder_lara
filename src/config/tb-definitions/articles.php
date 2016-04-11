@@ -2,7 +2,7 @@
 
 return array(
     'db' => array(
-        'table' => 'articles',
+        'table' => 'article',
         'order' => array(
             'priority' => 'asc',
         ),
@@ -11,30 +11,38 @@ return array(
             'uri' => '/admin/articles',
         ),
     ),
+    'cache' => array(
+        'tags' => array('article'),
+    ),
     'options' => array(
         'caption' => 'Статьи',
-        'ident' => 'articles',
-        'form_ident' => 'articles-form',
+        'ident' => 'article',
+        'form_ident' => 'article-form',
         'form_width' => '920px',
-        'table_ident' => 'articles-table',
+        'table_ident' => 'news-table',
         'action_url' => '/admin/handle/articles',
         'not_found' => 'пусто',
         'is_sortable' => true,
-        'model' => 'Articles',
+        'model' => 'Article',
     ),
     'position' => array(
         'tabs' => array(
-            'Общая'     => array(
+            'Общая' => array(
                 'id',
                 'title',
-
                 'picture',
+                'short_description',
+                'description',
                 'created_at',
                 'updated_at',
                 'is_active',
             ),
 
-
+            'SEO' => array(
+                'seo_title',
+                'seo_description',
+                'seo_keywords',
+            ),
         )
     ),
     'fields' => array(
@@ -44,105 +52,9 @@ return array(
             'class' => 'col-id',
             'width' => '1%',
             'hide' => true,
-            'is_sorting' => true
-        ),
-        'group_sider' => array(
-            'caption' => 'файлы',
-            'field' => 'text',
-            'type' => 'group',
-            'filds' => array(
-                'title333' => array(
-                    'caption' => 'Название группы',
-                    'type' => 'text',
-                    'hide' => true,
-                    'hide_list' => true,
-                ),
-                'file222' => array(
-                    'caption' => 'Файл',
-                    'comment' => "каок",
-                    'type' => 'file',
-                    'field' => 'string',
-                    'is_multiple' => true, //если нужно много файлов
-                    'accept' => "image/*"
-                )
-            ),
-            "hide_add" => true
+            'is_sorting' => false
         ),
 
-
-        'file' => array(
-            'caption' => 'Файл',
-            'type' => 'file',
-            'field' => 'string',
-            //'is_multiple' => true,
-        ),
-
-        'type_template' => array(
-            'caption' => 'Тип шаблона',
-            'hide_list' => true,
-            'field' => 'string',
-            'type' => 'select',
-            'options' => array(
-                'type1' => 'Тип1',
-                'type2'  => 'Тип2',
-            ),
-            'action' => true,
-            "readonly_for_edit" => true,
-        ),
-
-        'title' => array(
-            'caption' => 'Название',
-            'type' => 'text',
-            'filter' => 'text',
-            'is_sorting' => true,
-            'field' => 'string',
-            "readonly_for_edit" => true,
-        ),
-
-        'description' => array(
-            'caption' => 'Описание',
-            'type'    => 'wysiwyg',
-            'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
-            'inlineStyles' => array(
-                "test1" => "font-size: 20px; color: red;",
-                "text2" => "font-size:30px;"
-            ),
-            'hide_list' => true,
-            'field' => 'text',
-            'class_name' => "type1"
-            /*'tabs' => array(
-
-                array(
-                    'caption' => 'ru',
-                    'postfix' => '',
-                    'placeholder' => 'Текст на русском'
-                ),
-                array(
-                    'caption' => 'ua',
-                    'postfix' => '_ua',
-                    'placeholder' => 'Текст на украинском'
-                ),
-                array(
-                    'caption' => 'en',
-                    'postfix' => '_en',
-                    'placeholder' => 'Текст на английском'
-                ),
-            )*/
-        ),
-        'short_description' => array(
-            'caption' => 'Короткий текст',
-            'type'    => 'textarea',
-            'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
-            'hide_list' => true,
-            'field' => 'text',
-            'class_name' => "type2"
-        ),
         'picture' => array(
             'caption' => 'Изображение',
             'type' => 'image',
@@ -151,22 +63,32 @@ return array(
             'is_upload' => true,
             'is_null' => true,
             'is_remote' => false,
-
-            'field' => 'string',
-            'class_name' => "type2"
-        ),
-        'additional_pictures' => array(
-            'caption' => 'Дополнительные изображение',
-            'type' => 'image',
-            'storage_type' => 'image', // image|tag|gallery
-            'img_height' => '150px',
-            'is_upload' => true,
-            'is_null' => true,
-            'is_remote' => false,
             'hide_list' => true,
+            'field' => 'string',
             'is_multiple' => true,
+        ),
+        'title' => array(
+            'caption' => 'Название',
+            'type' => 'text',
+            'filter' => 'text',
+            'is_sorting' => true,
+            'field' => 'string',
+        ),
+
+        'short_description' => array(
+            'caption' => 'Краткое описание',
+            'type'    => 'wysiwyg',
+
+            'hide_list' => true,
             'field' => 'text',
         ),
+        'description' => array(
+            'caption' => 'Полное описание',
+            'type'    => 'wysiwyg',
+            'hide_list' => true,
+            'field' => 'text',
+        ),
+
         'created_at' => array(
             'caption' => 'Дата создания',
             'type' => 'datetime',
@@ -198,6 +120,7 @@ return array(
             'filter' => 'text',
             'hide_list' => true,
             'field' => 'string',
+
         ),
         'seo_description' => array(
             'caption' => 'Seo: description',
@@ -205,6 +128,7 @@ return array(
             'filter' => 'text',
             'hide_list' => true,
             'field' => 'text',
+
         ),
         'seo_keywords' => array(
             'caption' => 'Seo: keywords',
@@ -215,11 +139,6 @@ return array(
         ),
     ),
     'filters' => array(
-        /* 'id' => array(
-             'sign'  => '=',
-             'value' => '1'
-         ),
-        */
     ),
     'actions' => array(
         /* 'search' => array(
@@ -243,14 +162,14 @@ return array(
                 return true;
             }
         ),
-        'revisions' => array(
-            'caption' => 'Версии',
+        'update' => array(
+            'caption' => 'Редактировать',
             'check' => function() {
                 return true;
             }
         ),
-        'update' => array(
-            'caption' => 'Редактировать',
+        'revisions' => array(
+            'caption' => 'Версии',
             'check' => function() {
                 return true;
             }
@@ -261,6 +180,5 @@ return array(
                 return true;
             }
         ),
-
     ),
 );
