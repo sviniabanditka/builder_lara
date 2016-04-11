@@ -2,8 +2,8 @@
     <a onclick="Settings.getEdit({{$el->id}})">{{{$el->title}}}</a>
 </td>
 <td><span class="select_text">Setting::get("{{$el->slug}}")</span></td>
-<td>{{__cms(Config::get('builder::settings.type')[$el->type])}}</td>
-<td>{{__cms(isset(Config::get('builder::settings.groups')[$el->group_type])? Config::get('builder::settings.groups')[$el->group_type] : "")}}</td>
+<td>{{__cms(Config::get('builder.settings.type')[$el->type])}}</td>
+<td>{{__cms(isset(Config::get('builder.settings.groups')[$el->group_type])? Config::get('builder.settings.groups')[$el->group_type] : "")}}</td>
 <td>
   @if($el->type==1 || $el->type==6)
         <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Тексовое поле')}}</a>

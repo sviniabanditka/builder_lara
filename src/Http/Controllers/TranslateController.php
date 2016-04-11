@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Yandex\Translate\Translator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Cookie;
 
 class TranslateController extends Controller
 {
@@ -38,7 +39,7 @@ class TranslateController extends Controller
         }
 
         $langs = Config::get('builder.translate_cms.langs');
-
+      
         return View::make($view)
             ->with('title', Config::get('builder.translate_cms.title_page'))
             ->with('breadcrumb', $breadcrumb)

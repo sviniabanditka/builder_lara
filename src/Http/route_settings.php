@@ -1,9 +1,8 @@
 <?php
-Route::group(
-    array(
-        'prefix' => Config::get('builder.admin.uri'),
-        'before' => array('auth_admin', 'check_permissions')
-    ), function () {
+
+Route::group (['middleware' => ['web']], function () {
+    Route::group(
+        ['prefix' => 'admin', 'middleware' => 'auth.admin'], function() {
 
     Route::any(
         '/settings/settings_all', array(
@@ -46,6 +45,6 @@ Route::group(
 
     }
 
-}
-);
+});
+});
 

@@ -20,7 +20,7 @@
                     <label class="label" for="title">{{__cms('Название')}}</label>
                     <div style="position: relative;">
                       <label class="input">
-                      <input type="text" id="title" value="{{{ $info->title or "" }}}" name="title"
+                      <input type="text" id="title" value="{{ $info->title or "" }}" name="title"
                         class="dblclick-edit-input form-control input-sm unselectable">
                       </input>
                       </label>
@@ -73,17 +73,17 @@
              <div class="row">
                 <section class="col" style="float: none">
                    <label class="label" >{{__cms('Значение')}}</label>
-                   <div class='type_0 types' {{!isset($info->type) || $info->type==0?'style="display: block"':""}} >
+                   <div class='type_0 types' {!! !isset($info->type) || $info->type==0 ? 'style="display: block"' : "" !!} >
                         <label class="input">
-                            <input type="text" value="{{{ $info->value or "" }}}" name="value0" class="dblclick-edit-input form-control input-sm unselectable">
+                            <input type="text" value="{{ $info->value or "" }}" name="value0" class="dblclick-edit-input form-control input-sm unselectable">
                         </label>
                    </div>
-                    <div class='type_1 types' {{isset($info->type) && $info->type==1?'style="display: block"':""}}>
+                    <div class='type_1 types' {!!  isset($info->type) && $info->type==1 ? 'style="display: block"' : "" !!}>
                        <label class="textarea">
-                           <textarea name="value1" style="height: 250px" class="custom-scroll">{{{ $info->value or "" }}}</textarea>
+                           <textarea name="value1" style="height: 250px" class="custom-scroll">{{ $info->value or "" }}</textarea>
                        </label>
                     </div>
-                    <div class='type_2 types' {{isset($info->type) && $info->type==2?'style="display: block"':""}}>
+                    <div class='type_2 types' {!! isset($info->type) && $info->type==2 ? 'style="display: block"' : "" !!}>
                      <table style="width: 100%" class="sort_table">
                           <tbody>
 
@@ -93,7 +93,7 @@
                                       <td class="td_mov"></td>
                                       <td>
                                           <label class="input">
-                                              <input type="text" value="{{{$el['value']}}}" name="select[{{$el['id']}}]" class="dblclick-edit-input form-control input-sm unselectable">
+                                              <input type="text" value="{{$el['value']}}" name="select[{{$el['id']}}]" class="dblclick-edit-input form-control input-sm unselectable">
                                           </label>
 
                                       </td>
@@ -123,7 +123,7 @@
                        <p><a class="add_option" onclick="Settings.addOption(2)">{{__cms('Добавить еще')}}</a></p>
                     </div>
 
-                    <div class='type_3 types' {{isset($info->type) && $info->type==3?'style="display: block"':""}}>
+                    <div class='type_3 types' {!! isset($info->type) && $info->type==3 ? 'style="display: block"' : "" !!} >
                      <table style="width: 100%" class="sort_table">
                           <tbody>
 
@@ -171,7 +171,7 @@
                     </div>
 
 
-                    <div class='type_4 types' {{isset($info->type) && $info->type==4?'style="display: block"':""}}>
+                    <div class='type_4 types' {!! isset($info->type) && $info->type==4?'style="display: block"':"" !!}>
                         <div class="input input-file">
                             <span class="button"><input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">{{__cms('Выбрать')}}</span>
                             <input type="text" placeholder="{{__cms('Выбрать файл для загрузки')}}" readonly="">
@@ -182,7 +182,7 @@
 
                     </div>
 
-                        <div class='type_5 types' {{isset($info->type) && $info->type==5?'style="display: block"':""}}>
+                        <div class='type_5 types' {!! isset($info->type) && $info->type==5?'style="display: block"':"" !!}>
                          <table style="width: 100%" class="sort_table">
                               <tbody>
 
@@ -236,7 +236,7 @@
                            <p><a class="add_option3" onclick="Settings.addOption(5)">{{__cms('Добавить еще')}}</a></p>
                         </div>
 
-                        <div class='type_6 types' {{isset($info->type) && $info->type==6?'style="display: block"':""}}>
+                        <div class='type_6 types' {!! isset($info->type) && $info->type==6?'style="display: block"':"" !!}>
                            <textarea name="value6" class="text_block custom-scroll">{{ $info->value or "" }}</textarea>
                         </div>
                         <div class='type_7 types' {{isset($info->type) && $info->type==7?'style="display: block"':""}}>
