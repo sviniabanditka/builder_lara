@@ -102,6 +102,10 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');
 
+        copy( $this->installPath . '/files/database.php', config_path() . '/database.php');
+        $this->info('Replace database.php - OK');
+
+
         copy( $this->installPath . '/files/BaseModel.php', app_path() . '/Models/BaseModel.php');
         $this->info('Created app/Models/BaseModel.php - OK');
 
@@ -110,6 +114,16 @@ class InstallCommand extends Command {
 
         copy( $this->installPath . '/files/Article.php', app_path() . '/Models/Article.php');
         $this->info('Created app/Models/Article.php - OK');
+
+        copy( $this->installPath . '/files/News.php', app_path() . '/Models/News.php');
+        $this->info('Created app/Models/News.php - OK');
+
+        copy( $this->installPath . '/files/User.php', app_path() . '/Models/User.php');
+        $this->info('Created app/Models/User.php - OK');
+
+        copy( $this->installPath . '/files/Group.php', app_path() . '/Models/Group.php');
+        $this->info('Created app/Models/Group.php - OK');
+
 
         copy( $this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
         $this->info('Created app/Http/routes.php - OK');
