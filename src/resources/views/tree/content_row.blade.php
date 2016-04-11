@@ -36,28 +36,39 @@
               <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
 
                 <ul class="dropdown-menu">
-                     <li>
-                        <a onclick="Tree.showEditForm('{{ $item->id }}');">
-                            <i class="fa fa-pencil"></i>
-                            {{__cms("Редактировать")}}
-                        </a>
-                    </li>
-                   @if (isset($treeName) && Config::get('builder.'.$treeName.'.preview') != "hide")
-                    <li><a href="{{ url($item->getUrl()) }}?show=1" target="_blank"><i class="fa fa-eye"></i> {{__cms('Предпросмотр')}} </a></li>
+                   {{--update--}}
+                   @if(Config::get('builder.'.$treeName.'.actions.update.check'))
+                     <li><a onclick="Tree.showEditForm('{{ $item->id }}');"><i class="fa fa-pencil"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.update.caption'))}}</a></li>
                    @endif
-                   <li><a onclick="Tree.getCloneForm({{ $item->id }}, {{Input::get("node", 1)}});" ><i class="fa fa-copy"></i> {{__cms('Клонировать')}} </a></li>
 
-                   <li><a onclick="TableBuilder.getRevisions({{ $item->id }}, this);" ><i class="fa fa-history"></i> {{__cms('Версии')}} </a></li>
+                   {{--preview--}}
+                   @if(Config::get('builder.'.$treeName.'.actions.preview.check'))
+                    <li><a href="{{ url($item->getUrl()) }}?show=1" target="_blank"><i class="fa fa-eye"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.preview.caption'))}} </a></li>
+                   @endif
 
-                    @if (Config::get('builder::'.$treeName.'.is_show_statistic'))
-                        <li><a onclick="TableBuilder.getViewsStatistic({{ $item->id }}, this);" ><i class="fa fa-bar-chart"></i> {{__cms('Статистика просмотров')}} </a></li>
+                    {{--clone--}}
+                    @if(Config::get('builder.'.$treeName.'.actions.clone.check'))
+                        <li><a onclick="Tree.getCloneForm({{ $item->id }}, {{Input::get("node", 1)}});" ><i class="fa fa-copy"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.clone.caption'))}} </a></li>
                     @endif
-                   <li>
-                        <a onclick="Tree.doDelete('{{ $item->id }}', this);" class="node-del-{{$item->id}}" style="color: red">
-                            <i class="fa fa-times"></i>
-                            {{__cms('Удалить')}}
-                        </a>
-                   </li>
+
+                    {{--revisions--}}
+                    @if(Config::get('builder.'.$treeName.'.actions.revisions.check'))
+                        <li><a onclick="TableBuilder.getRevisions({{ $item->id }}, this);" ><i class="fa fa-history"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.revisions.caption'))}} </a></li>
+                    @endif
+
+                    {{--statistic--}}
+                    @if(Config::get('builder.'.$treeName.'.actions.statistic.check'))
+                        <li><a onclick="TableBuilder.getViewsStatistic({{ $item->id }}, this);" ><i class="fa fa-bar-chart"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.statistic.caption'))}} </a></li>
+                    @endif
+
+                    @if(Config::get('builder.'.$treeName.'.actions.delete.check'))
+                       <li>
+                            <a onclick="Tree.doDelete('{{ $item->id }}', this);" class="node-del-{{$item->id}}" style="color: red">
+                                <i class="fa fa-times"></i>
+                                {{__cms(Config::get('builder.'.$treeName.'.actions.delete.caption'))}}
+                            </a>
+                       </li>
+                    @endif
                 </ul>
          </div>
     </div>

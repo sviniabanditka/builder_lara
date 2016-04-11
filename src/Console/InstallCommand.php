@@ -131,6 +131,7 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/composer.json', base_path() . '/composer.json');
         $this->info('Replace composer.json - OK');
 
+        @unlink(app_path()."/User.php");
 
         exec("composer dump-autoload");
     }

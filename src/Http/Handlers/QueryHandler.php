@@ -413,8 +413,7 @@ class QueryHandler
                 }
             }
 
-            print_arr($insertDataRes);
-            exit();
+          
             $id = $this->db->insertGetId($insertDataRes);
         }
         

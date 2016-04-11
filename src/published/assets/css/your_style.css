@@ -143,6 +143,7 @@ div.tb-uploaded-image-container ul li{
     border: 1px solid #eee;
     float: left;
     background: #fff;
+    line-height: 120px;
 }
 div.tb-uploaded-image-container ul li img{
     height: auto;

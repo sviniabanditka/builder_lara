@@ -785,7 +785,13 @@ var TableBuilder = {
             data.append("image", context.files[index]);
             data.append('ident', ident);
             data.append('query_type', 'upload_photo');
-            data.append('__node', TableBuilder.getUrlParameter('id_tree'));
+            if (TableBuilder.getUrlParameter('id_tree') != undefined) {
+                data.append('page_id', TableBuilder.getUrlParameter('id_tree'));
+            }
+
+            if (TableBuilder.getUrlParameter('id') != undefined) {
+                data.append('page_id', TableBuilder.getUrlParameter('id'));
+            }
 
             var $progress = jQuery(context).parent().parent().parent().parent().parent().find('.progress-bar');
 

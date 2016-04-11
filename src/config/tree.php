@@ -52,6 +52,39 @@ return array(
         'node_definition' => 'node',
     ),
 
+    'actions' => array(
 
+        'update' => array(
+            'caption' => 'Редактировать',
+            'check' => function() {
+                return true;
+            }
+        ),
+        'preview' => array(
+            'caption' => 'Предпросмотр',
+            'check' => function() {
+                return true;
+            }
+        ),
+        'clone' => array(
+            'caption' => 'Клонировать',
+            'check' => function() {
+                return true;
+            }
+        ),
+
+        'revisions' => array(
+            'caption' => 'Версии',
+            'check' => function() {
+                return true;
+            }
+        ),
+        'delete' => array(
+            'caption' => 'Удалить',
+            'check' => function() {
+                return true;
+            }
+        ),
+    ),
 
 );

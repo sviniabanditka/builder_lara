@@ -10,9 +10,11 @@ Route::group(['middleware' => ['web']], function () {
                 'as' => 'news_article',
                 'uses' => 'App\Controllers\NewsController@showPages'
             ]);
+
+            Route::get('/articles/{slug}-{id}', [
+                'as' => 'articles_article',
+                'uses' => 'App\Controllers\ArticlesController@showPages'
+            ]);
         });
 });
-
-
-
 
