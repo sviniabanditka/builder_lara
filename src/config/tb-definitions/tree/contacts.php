@@ -28,8 +28,6 @@ return array(
                 'title',
                 'slug',
                 'description',
-                /*  'picture',
-                  'picture2',*/
                 'map',
                 'show_in_menu',
                 'created_at',
@@ -52,16 +50,12 @@ return array(
             'is_sorting' => true
         ),
         'title' => array(
-            'caption' => 'Название',
+            'caption' => 'Заголовок',
             'type' => 'text',
         ),
         'description' => array(
             'caption' => 'Текст',
             'type'    => 'wysiwyg',
-            'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
         ),
         'show_in_menu' => array(
             'caption' => 'Показывать в меню',
@@ -103,28 +97,6 @@ return array(
             'caption' => 'Url',
             'type' => 'text'
         ),
-        /*  'picture' => array(
-              'caption' => 'Иконка',
-              'type' => 'image',
-              'storage_type' => 'image', // image|tag|gallery
-              'img_height' => '50px',
-              'is_upload' => true,
-              'is_null' => true,
-              'is_remote' => false,
-              'hide_list' => true,
-              'field' => 'string',
-          ),
-          'picture2' => array(
-              'caption' => 'Иконка222',
-              'type' => 'image',
-              'storage_type' => 'image', // image|tag|gallery
-              'img_height' => '50px',
-              'is_upload' => true,
-              'is_null' => true,
-              'is_remote' => false,
-              'hide_list' => true,
-              'field' => 'string',
-          ),*/
     ),
 
     'filters' => array(

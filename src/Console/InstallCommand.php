@@ -93,8 +93,10 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');
 
-        File::makeDirectory(app_path() . '/Models', 0777, true);
-        $this->info('Folder app/Models is created');
+        if (!is_dir(app_path() . '/Models')) {
+            File::makeDirectory (app_path () . '/Models', 0777, true);
+            $this->info ('Folder app/Models is created');
+        }
 
         copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');

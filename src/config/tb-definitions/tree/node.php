@@ -51,27 +51,9 @@ return array(
             'is_sorting' => true
         ),
         'title' => array(
-            'caption' => 'Title',
+            'caption' => 'Заголовок',
             'type' => 'text',
             'field' => 'string',
-            'tabs' => array(
-
-                array(
-                    'caption' => 'ru',
-                    'postfix' => '',
-                    'placeholder' => 'Текст на русском'
-                ),
-                array(
-                    'caption' => 'ua',
-                    'postfix' => '_ua',
-                    'placeholder' => 'Текст на украинском'
-                ),
-                array(
-                    'caption' => 'en',
-                    'postfix' => '_en',
-                    'placeholder' => 'Текст на английском'
-                ),
-            )
         ),
 
         'picture' => array(
@@ -89,29 +71,7 @@ return array(
         'description' => array(
             'caption' => 'Текст',
             'type'    => 'wysiwyg',
-            'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
             'field' => 'text',
-            'tabs' => array(
-
-                array(
-                    'caption' => 'ru',
-                    'postfix' => '',
-                    'placeholder' => 'Текст на русском'
-                ),
-                array(
-                    'caption' => 'ua',
-                    'postfix' => '_ua',
-                    'placeholder' => 'Текст на украинском'
-                ),
-                array(
-                    'caption' => 'en',
-                    'postfix' => '_en',
-                    'placeholder' => 'Текст на английском'
-                ),
-            )
         ),
         'created_at' => array(
             'caption' => 'Дата создания',

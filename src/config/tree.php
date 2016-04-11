@@ -14,6 +14,28 @@ return array(
                 return true;
             },
         ),
+        'Новости' => array(
+            'action' => 'NewsController@showPages',
+            'node_definition' => 'node',
+            'check' => function() {
+                return true;
+            },
+        ),
+        'Статьи' => array(
+            'action' => 'ArticlesController@showPages',
+            'node_definition' => 'node',
+            'check' => function() {
+                return true;
+            },
+        ),
+
+        'О нас' => array(
+            'action' => 'AboutController@showPage',
+            'node_definition' => 'node',
+            'check' => function() {
+                return true;
+            },
+        ),
 
         'Главная' => array(
             'action' => 'HomeController@showPage',
