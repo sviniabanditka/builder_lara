@@ -78,19 +78,12 @@ return array(
             'caption' => 'Краткое описание',
             'type'    => 'wysiwyg',
             'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
             'hide_list' => true,
             'field' => 'text',
         ),
         'description' => array(
             'caption' => 'Полное описание',
             'type'    => 'wysiwyg',
-            'wysiwyg' => 'redactor',
-            'editor-options' => array(
-                'lang' => 'ru-RU',
-            ),
             'hide_list' => true,
             'field' => 'text',
         ),
