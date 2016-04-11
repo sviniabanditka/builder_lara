@@ -48,6 +48,7 @@ class InstallCommand extends Command {
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
             $this->publishConfigs();
+            $this->loadFilesAfterPublishConfigs();
 
             $this->finishInstall();
         }
@@ -107,14 +108,15 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/Tree.php', app_path() . '/Models/Tree.php');
         $this->info('Created app/Models/Tree.php - OK');
 
-        copy( $this->installPath . '/files/Articles.php', app_path() . '/Models/Articles.php');
-        $this->info('Created app/Models/Articles.php - OK');
+        copy( $this->installPath . '/files/Article.php', app_path() . '/Models/Article.php');
+        $this->info('Created app/Models/Article.php - OK');
 
         copy( $this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
         $this->info('Created app/Http/routes.php - OK');
 
         copy( $this->installPath . '/files/composer.json', base_path() . '/composer.json');
         $this->info('Replace composer.json - OK');
+
 
         exec("composer dump-autoload");
     }
@@ -125,6 +127,18 @@ class InstallCommand extends Command {
     private function publishConfigs()
     {
         $this->call('vendor:publish');
+    }
+
+    public function loadFilesAfterPublishConfigs()
+    {
+        copy( $this->installPath . '/files/laravellocalization.php', config_path() . '/laravellocalization.php');
+        $this->info('Replace laravellocalization.php - OK');
+
+        copy( $this->installPath . '/files/cartalyst.sentinel.php', config_path() . '/cartalyst.sentinel.php');
+        $this->info('Replace cartalyst.sentinel.php - OK');
+
+        copy( $this->installPath . '/files/debugbar.php', config_path() . '/debugbar.php');
+        $this->info('Replace debugbar.php - OK');
     }
 
     /*
