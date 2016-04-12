@@ -92,6 +92,9 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/.htaccess', public_path() . '/.htaccess');
         $this->info('Replace htaccess - OK');
 
+        copy( $this->installPath . '/files/robots.txt', public_path() . '/robots.txt');
+        $this->info('Replace robots.txt - OK');
+
         copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');
 
@@ -131,6 +134,9 @@ class InstallCommand extends Command {
 
         copy( $this->installPath . '/files/composer.json', base_path() . '/composer.json');
         $this->info('Replace composer.json - OK');
+
+        copy( $this->installPath . '/files/HomeController.php', app_path() . '/Http/Controllers/HomeController.php');
+        $this->info('Created app/Http/Controllers/HomeController.php- OK');
 
         if (!is_dir(base_path() . '/resources/views/layouts')) {
             File::makeDirectory (base_path () . '/resources/views/layouts', 0777, true);
@@ -182,7 +188,9 @@ class InstallCommand extends Command {
         File::deleteDirectory(base_path()."/resources/lang");
         File::deleteDirectory(base_path()."/resources/views/errors");
         File::deleteDirectory(base_path()."/resources/views/vendor");
+        File::deleteDirectory(app_path()."/Http/Controllers/Auth");
         @unlink(base_path()."/resources/views/welcome.blade.php");
+        @unlink(app_path()."/Http/Controllers/Controller.php");
     }
 
     /*

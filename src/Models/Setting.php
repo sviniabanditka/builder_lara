@@ -18,28 +18,28 @@ class Setting extends Eloquent {
     public $timestamps = false;
 
     /*
-     * Возвращает значения настройки
+     * return value setting
      */
     public static function get($slug)
     {
         if ($slug) {
-            $setting_cache = Cache::section('settings')->get($slug);
+            $setting_cache = Cache::tags('settings')->get($slug);
             if ($setting_cache) {
                 return $setting_cache;
             } else {
-                $res_setting = Setting::where("slug",'like',$slug)->first();;
+                $res_setting = Setting::where("slug", 'like', $slug)->first();;
 
-                if(!isset($res_setting->type)) {
+                if (!isset($res_setting->type)) {
                     return;
                 }
 
                 if ($res_setting->type==2 || $res_setting->type==3 || $res_setting->type==5) {
                     $select = $res_setting->selectValues();
-                    Cache::section('settings')->forever($slug, $select);
+                    Cache::tags('settings')->forever($slug, $select);
 
                     return $select;
                 } elseif(isset($res_setting->value)) {
-                    Cache::section('settings')->forever($slug, $res_setting->value);
+                    Cache::tags('settings')->forever($slug, $res_setting->value);
 
                     return $res_setting->value;
                 }
@@ -47,8 +47,8 @@ class Setting extends Eloquent {
         }
     }  // end get
 
-
-    public static function getItem($ids){
+    public static function getItem($ids)
+    {
 
         if(!$ids){
             return [];
@@ -56,7 +56,6 @@ class Setting extends Eloquent {
 
         return SettingSelect::find($ids);
     } //end getItem
-
 
     public static function doSaveSetting($data, $file)
     {
@@ -80,7 +79,7 @@ class Setting extends Eloquent {
             $settings -> value =  $data['status'];
         }
 
-        //если тип файл
+        //if type file
         if ($data['type'] == 4 && $file) {
             $destinationPath = "storage/settings";
             $ext = $file -> getClientOriginalExtension();
@@ -125,7 +124,7 @@ class Setting extends Eloquent {
             }
         }
 
-        //если тип двойной список
+        //if type double list
         if ($data['type'] == 3) {
             $i = 0;
             foreach ($data['select21'] as $k => $el) {
@@ -161,7 +160,7 @@ class Setting extends Eloquent {
             }
         }
 
-        //если тройной список
+        //if the triple list
         if ($data['type'] == 5) {
             $i = 0;
             foreach ($data['select31'] as $k=>$el) {
@@ -201,25 +200,25 @@ class Setting extends Eloquent {
 
         Setting::reCacheSettings();
 
-        if ($data['id'] == 0) {
+      /*  if ($data['id'] == 0) {
             Event::fire("setting.created", array($settings));
         } else {
             Event::fire("setting.changed", array($settings));
-        }
+        }*/
 
         return $settings;
     }
 
     /*
-    * перезапись кеша c настройками
+    * recache settings
     */
     public static function reCacheSettings()
     {
-        Cache::section('settings')->flush();
+        Cache::tags('settings')->flush();
     } // end reCacheSettings
 
     /*
-     * Удаление настройки
+     * delete setting
      */
     public static function doDelete($id)
     {
@@ -231,15 +230,13 @@ class Setting extends Eloquent {
 
             $page->delete();
 
-
-
             Setting::reCacheSettings();
         }
     } // end doDelete
 
 
     /*
-     * Валидация
+     * validation
      */
     public static function isValid($data, $id)
     {
@@ -260,7 +257,7 @@ class Setting extends Eloquent {
 
 
     /*
-     * Связзь с SettingSelect
+     * join settingSelect
      */
     public function selectValues()
     {
