@@ -5,7 +5,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class InstallCommand extends Command {
 
@@ -48,15 +47,11 @@ class InstallCommand extends Command {
             $this->sqlDumpLoad();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
-            sleep(1);
             $this->publishConfigs();
-            sleep(1);
             $this->loadFilesAfterPublishConfigs();
             $this->deleteFiles();
-            sleep(1);
             $this->finishInstall();
-            sleep(1);
-            $this->replacePassword();
+           //$this->replacePassword();
         }
     }
 
@@ -215,8 +210,8 @@ class InstallCommand extends Command {
         }
         $newPass = implode("", $arrLett);
 
-        $userAdmin = Sentinel::findById(1);
-        Sentinel::update($userAdmin, array('password' => $newPass));
+        $userAdmin = \Sentinel::findById(1);
+        \Sentinel::update($userAdmin, array('password' => $newPass));
 
         $this->info('Access in cms: ');
         $this->info('Login: admin@vis-design.com');
