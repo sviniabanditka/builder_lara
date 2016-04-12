@@ -138,6 +138,13 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/HomeController.php', app_path() . '/Http/Controllers/HomeController.php');
         $this->info('Created app/Http/Controllers/HomeController.php- OK');
 
+        copy( $this->installPath . '/files/Breadcrumbs.php', app_path() . '/Models/Breadcrumbs.php');
+        $this->info('Created app/Models/Breadcrumbs.php- OK');
+
+        copy( $this->installPath . '/files/view_composers.php', app_path() . '/Http/view_composers.php');
+        $this->info('Created app/Http/view_composers.php- OK');
+
+
         if (!is_dir(base_path() . '/resources/views/layouts')) {
             File::makeDirectory (base_path () . '/resources/views/layouts', 0777, true);
             $this->info ('Folder resources/views/layouts is created');
