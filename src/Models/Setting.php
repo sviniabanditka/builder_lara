@@ -1,8 +1,12 @@
 <?php namespace Vis\Builder;
 
-use Eloquent, Str , Config, Cache, Input, Validator, Response;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Event;
-
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 class Setting extends Eloquent {
     use \Venturecraft\Revisionable\RevisionableTrait;
