@@ -6,7 +6,12 @@ use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 
 class Tree extends \Baum\Node
 {
-    use \Venturecraft\Revisionable\RevisionableTrait;
+    use \Vis\Builder\Helpers\Traits\TranslateTrait,
+        \Vis\Builder\Helpers\Traits\SeoTrait,
+        \Vis\Builder\Helpers\Traits\ImagesTrait,
+        \Vis\Builder\Helpers\Traits\ViewPageTrait,
+        \Venturecraft\Revisionable\RevisionableTrait;
+
 
     protected $fillable = [];
     protected $revisionFormattedFieldNames = array(
