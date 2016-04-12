@@ -136,17 +136,17 @@ class InstallCommand extends Command {
             File::makeDirectory (base_path () . '/resources/views/layouts', 0777, true);
             $this->info ('Folder resources/views/layouts is created');
         }
-        if (!is_dir(base_path() . '/resources/views/page')) {
-            File::makeDirectory (base_path () . '/resources/views/page', 0777, true);
-            $this->info ('Folder resources/views/page is created');
+        if (!is_dir(base_path() . '/resources/views/pages')) {
+            File::makeDirectory (base_path () . '/resources/views/pages', 0777, true);
+            $this->info ('Folder resources/views/pages is created');
         }
         if (!is_dir(base_path() . '/resources/views/partials')) {
             File::makeDirectory (base_path () . '/resources/views/partials', 0777, true);
             $this->info ('Folder resources/views/partials is created');
         }
-        if (!is_dir(base_path() . '/resources/views/popup')) {
-            File::makeDirectory (base_path () . '/resources/views/popup', 0777, true);
-            $this->info ('Folder resources/views/popup is created');
+        if (!is_dir(base_path() . '/resources/views/popups')) {
+            File::makeDirectory (base_path () . '/resources/views/popups', 0777, true);
+            $this->info ('Folder resources/views/popups is created');
         }
 
         exec("composer dump-autoload");
@@ -170,6 +170,10 @@ class InstallCommand extends Command {
 
         copy( $this->installPath . '/files/debugbar.php', config_path() . '/debugbar.php');
         $this->info('Replace debugbar.php - OK');
+
+        copy( $this->installPath . '/files/minify.config.php', config_path() . '/minify.config.php');
+        $this->info('Replace minify.config.php - OK');
+
     }
 
     private function deleteFiles()
@@ -178,7 +182,7 @@ class InstallCommand extends Command {
         @rmdir(base_path()."/resources/lang");
         @rmdir(base_path()."/resources/views/errors");
         @rmdir(base_path()."/resources/views/vendor");
-        unlink(base_path()."/resources/views/welcome.blade.php");
+        @unlink(base_path()."/resources/views/welcome.blade.php");
     }
 
     /*
