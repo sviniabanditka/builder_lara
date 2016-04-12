@@ -48,10 +48,14 @@ class InstallCommand extends Command {
             $this->sqlDumpLoad();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
+            sleep(1);
             $this->publishConfigs();
+            sleep(1);
             $this->loadFilesAfterPublishConfigs();
             $this->deleteFiles();
+            sleep(1);
             $this->finishInstall();
+            sleep(1);
             $this->replacePassword();
         }
     }
@@ -180,15 +184,28 @@ class InstallCommand extends Command {
     private function deleteFiles()
     {
         @unlink(app_path()."/User.php");
-        @rmdir(base_path()."/resources/lang");
-        @rmdir(base_path()."/resources/views/errors");
-        @rmdir(base_path()."/resources/views/vendor");
+        File::deleteDirectory(base_path()."/resources/lang");
+        File::deleteDirectory(base_path()."/resources/views/errors");
+        File::deleteDirectory(base_path()."/resources/views/vendor");
         @unlink(base_path()."/resources/views/welcome.blade.php");
     }
 
     /*
-     * replace password for admin
+     * call cache:clear and other commands
      */
+    private function finishInstall()
+    {
+        exec("composer dump-autoload");
+        $this->info('composer dump-autoload completed');
+
+        $this->call('cache:clear');
+        $this->call('clear-compiled');
+        $this->call('optimize');
+    }
+
+    /*
+ * replace password for admin
+ */
     public function replacePassword()
     {
         $leters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0');
@@ -204,19 +221,6 @@ class InstallCommand extends Command {
         $this->info('Access in cms: ');
         $this->info('Login: admin@vis-design.com');
         $this->info('Password: '.$newPass);
-    }
-
-    /*
-     * call cache:clear and other commands
-     */
-    private function finishInstall()
-    {
-        exec("composer dump-autoload");
-        $this->info('composer dump-autoload completed');
-
-        $this->call('cache:clear');
-        $this->call('clear-compiled');
-        $this->call('optimize');
     }
 
 }
