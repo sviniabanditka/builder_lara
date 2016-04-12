@@ -100,8 +100,8 @@ class InstallCommand extends Command {
             $this->info ('Folder app/Models is created');
         }
 
-        copy( $this->installPath . '/files/app.php', config_path() . '/app.php');
-        $this->info('Replace app.php - OK');
+        copy( $this->installPath . '/files/cache.php', config_path() . '/cache.php');
+        $this->info('Replace cache.php - OK');
 
         copy( $this->installPath . '/files/database.php', config_path() . '/database.php');
         $this->info('Replace database.php - OK');
