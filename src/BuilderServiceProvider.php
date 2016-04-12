@@ -68,17 +68,23 @@ class BuilderServiceProvider extends ServiceProvider
     private function registerCommands()
     {
         $this->app->singleton('command.admin.install', function($app) {
-
             return new InstallCommand();
         });
 
+        $this->app->singleton('command.admin.generatePassword', function($app) {
+            return new GeneratePassword();
+        });
+
+
         $this->commands('command.admin.install');
+        $this->commands('command.admin.generatePassword');
     }
 
     public function provides()
     {
         return [
-            'command.admin.install'
+            'command.admin.install',
+            'command.admin.generatePassword'
         ];
     }
 }

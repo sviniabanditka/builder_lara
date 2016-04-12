@@ -20,3 +20,7 @@ composer update
 ```json
    php artisan admin:install
 ```
+Генерируем пароль для админа
+```json
+   php artisan admin:generatePassword
+```

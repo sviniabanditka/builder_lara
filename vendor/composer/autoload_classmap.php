@@ -34,6 +34,7 @@ return array(
     'Vis\\Builder\\Fields\\TextareaField' => $baseDir . '/src/Http/Fields/TextareaField.php',
     'Vis\\Builder\\Fields\\TimestampField' => $baseDir . '/src/Http/Fields/TimestampField.php',
     'Vis\\Builder\\Fields\\WysiwygField' => $baseDir . '/src/Http/Fields/WysiwygField.php',
+    'Vis\\Builder\\GeneratePassword' => $baseDir . '/src/Console/GeneratePassword.php',
     'Vis\\Builder\\Group' => $baseDir . '/src/Models/Group.php',
     'Vis\\Builder\\Handlers\\ActionsHandler' => $baseDir . '/src/Http/Handlers/ActionsHandler.php',
     'Vis\\Builder\\Handlers\\CustomClosureHandler' => $baseDir . '/src/Http/Handlers/CustomClosureHandler.php',
