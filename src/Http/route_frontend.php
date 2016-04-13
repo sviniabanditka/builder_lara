@@ -34,7 +34,7 @@ if ($arrSegments[0] != "admin") {
                                             $templates[$node->template]['action']);
 
                                         $app = app ();
-                                        $controller = $app->make ($controller);
+                                        $controller = $app->make ("App\\Http\\Controllers\\". $controller);
 
                                         return $controller->callAction ('init', array ($node, $method));
                                     });

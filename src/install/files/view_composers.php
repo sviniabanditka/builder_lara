@@ -2,38 +2,24 @@
 
 View::composer(array('partials.header'), function($view) {
 
-    $menu = Cache::tags(array('products', 'tree'))->rememberForever('menuProduct', function() {
+    $menu = Cache::tags(array('tree'))->rememberForever('menuProduct', function() {
         $menu = Tree::isMenu()->get();
 
         return $menu;
     });
 
-    $menuTop = Cache::tags(array('products', 'tree'))->rememberForever('menuTop', function() {
-        $menuTop = Tree::isMenuTop()->get();
-
-        return $menuTop;
-    });
-
-    $view->with('menu', $menu)
-         ->with('menuTop', $menuTop);
+    $view->with('menu', $menu);
 });
 
 View::composer(array('partials.footer'), function($view) {
 
-    $menu = Cache::tags(array('products', 'tree'))->rememberForever('menuProduct', function() {
+    $menu = Cache::tags(array('tree'))->rememberForever('menuProduct', function() {
         $menu = Tree::isMenu()->get();
 
         return $menu;
     });
-
-    $menuFooter = Cache::tags(array('products', 'tree'))->rememberForever('menuFooter', function() {
-        $mmenuFooter = Tree::isMenuFooter()->get();
-
-        return $mmenuFooter;
-    });
-
-    $view->with('menu', $menu)
-        ->with('mmenuFooter', $menuFooter);
+    
+    $view->with('menu', $menu);
 });
 
 

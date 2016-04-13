@@ -1,6 +1,6 @@
 <?php namespace Vis\Builder\Helpers\Traits;
 
-use App\Modules\Settings\Models\Setting;
+use Vis\Builder\Setting;
 use Illuminate\Support\Facades\Config;
 
 trait ImagesTrait
@@ -23,7 +23,7 @@ trait ImagesTrait
         if ($this->picture) {
             $picture = $this->picture;
         } else {
-            $picture = Setting::get("net-foto");
+            $picture = Setting::get("no-foto");
         }
 
         $size = [];

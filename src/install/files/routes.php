@@ -1,20 +1,26 @@
 <?php
 
+Route::pattern('id', '[0-9]+');
+Route::pattern('slug', '[a-z0-9-]+');
+
+include 'view_composers.php';
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::group (['prefix' => LaravelLocalization::setLocale ()],
 
         function () {
 
-            Route::get('/news/{slug}-{id}', [
-                'as' => 'news_article',
-                'uses' => 'App\Controllers\NewsController@showPages'
-            ]);
-
             Route::get('/articles/{slug}-{id}', [
                 'as' => 'articles_article',
-                'uses' => 'App\Controllers\ArticlesController@showPages'
+                'uses' => 'ArticlesController@showPage'
             ]);
+
+            Route::get('/product/{slug}-{id}', [
+                'as' => 'product',
+                'uses' => 'ProductController@showPage'
+            ]);
+
         });
 });
 

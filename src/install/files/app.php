@@ -222,7 +222,7 @@ return [
         'Jarboe'   => Vis\Builder\Facades\Jarboe::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
-        'Setting' => App\Modules\Settings\Models\Setting::class,
+        'Setting' => Vis\Builder\Setting::class,
     ],
 
 ];
