@@ -371,10 +371,14 @@ class QueryHandler
     public function fastSave($input) {
         $this->clearCache();
 
+        $nameField = $input['name'];
+        $valueField = $input['value'];
+
         $def = $this->controller->getDefinition();
         $model = $def['options']['model'];
         $modelObj = $model::find($input['id']);
-        $modelObj->$input['name'] = $input['value'];
+        $modelObj->$nameField = $valueField;
+
         $modelObj->save();
     }
 

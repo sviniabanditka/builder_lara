@@ -6,11 +6,11 @@
     @endif
 @else
     type="text"
-    value="{{{ $value }}}"
+    value="{{ $value }}"
 @endif
     id="{{$name}}"
     name="{{ $name }}"
-placeholder="{{{ $placeholder }}}"
+placeholder="{{ $placeholder }}"
 @if ($mask)
     data-mask="{{$mask}}"
 @endif

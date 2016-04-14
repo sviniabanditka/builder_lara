@@ -144,6 +144,9 @@ class InstallCommand extends Command {
         copy( $this->installPath . '/files/view_composers.php', app_path() . '/Http/view_composers.php');
         $this->info('Created app/Http/view_composers.php- OK');
 
+        copy( $this->installPath . '/files/Handler.php', app_path() . '/Exceptions/Handler.php');
+        $this->info('Created app/Exceptions/Handler.php - OK');
+
 
         if (!is_dir(base_path() . '/resources/views/layouts')) {
             File::makeDirectory (base_path () . '/resources/views/layouts', 0777, true);
