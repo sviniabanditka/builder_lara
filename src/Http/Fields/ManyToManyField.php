@@ -46,7 +46,7 @@ class ManyToManyField extends AbstractField
         } else {
             $values = array_filter($values);
             // HACK: in checkbox we have id as key of element, in select - as value
-            $isInValueElement = ($this->getAttribute('show_type', 'checkbox') == 'select2');
+            $isInValueElement = ($this->getAttribute('show_type', 'checkbox') == 'select2' || $this->getAttribute('show_type', 'checkbox') == 'select3');
             foreach ($values as $key => $val) {
                 $externalID = $isInValueElement ? $val : $key;
                 $data[] = array(
@@ -55,7 +55,7 @@ class ManyToManyField extends AbstractField
                 );
             }
         }
-        
+
         if ($data) {
             DB::table($this->getAttribute('mtm_table'))->insert($data);
         }
@@ -218,7 +218,7 @@ class ManyToManyField extends AbstractField
             }
         }
 
-        $res = $options->get();
+        $res = $options->orderBy($this->getAttribute('mtm_table').".id", "asc")->get();
         $options = array();
         foreach ($res as $opt) {
             $id = $opt[$this->getAttribute('mtm_external_key_field')];

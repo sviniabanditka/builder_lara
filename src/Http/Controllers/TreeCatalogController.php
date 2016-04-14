@@ -326,7 +326,7 @@ class TreeCatalogController
             )
         );
         $controller = new JarboeController($options);
-
+       
         $result = $controller->query->updateRow(Input::all());
 
 

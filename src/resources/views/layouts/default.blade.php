@@ -41,6 +41,7 @@
                 '/packages/vis/builder/js/xchart/css/style.css',
                 '/packages/vis/builder/js/xchart/css/xcharts.min.css',
                 '/packages/vis/builder/js/xchart/css/daterangepicker.css',
+                '/packages/vis/builder/js/multiselect_master/css/ui.multiselect.css',
                 '/packages/vis/builder/css/your_style.css'
                 ));
          !!}
@@ -48,6 +49,7 @@
         <!-- GOOGLE FONT -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
         <script src="/packages/vis/builder/js/libs/jquery-2.0.2.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
         <script>
             $.ajaxSetup({
                 headers: {
@@ -77,6 +79,8 @@
             <script src="/packages/vis/builder/js/plugin/resizableColumns/store.js"></script>
 
             <script src="/packages/vis/builder/tb-tree.js"></script>
+
+            <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
 
             <script>
                 $(document).on('click', 'a.node_link', function (e) {
@@ -116,6 +120,7 @@
                     <div id="content">
                             <div class="row" id="content_admin">
                                 @yield('main')
+                                
                             </div>
                     </div>
                 </div>

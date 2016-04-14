@@ -286,15 +286,13 @@ class QueryHandler
         foreach ($this->controller->getPatterns() as $pattern) {
             $pattern->update($values, $values['id']);
         }
-        
-        // FIXME:
+
         $fields = $this->controller->getFields();
         foreach ($fields as $field) {
             if (preg_match('~^many2many~', $field->getFieldName())) {
                 $this->onManyToManyValues($field->getFieldName(), $values, $values['id']);
             }
         }
-
         $res = array(
             'id'     => $values['id'],
             'values' => $updateData
@@ -449,7 +447,6 @@ class QueryHandler
     {
         $field = $this->controller->getField($ident);
         $vals = isset($values[$ident]) ? $values[$ident] : array();
-        
         $field->onPrepareRowValues($vals, $id);
     } // end onManyToManyValues
 

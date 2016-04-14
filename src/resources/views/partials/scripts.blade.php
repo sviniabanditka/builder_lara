@@ -1,4 +1,6 @@
+{{--
 <script src="/packages/vis/builder/js/libs/jquery-ui-1.10.3.min.js"></script>
+--}}
 
 {!! Minify::javascript(
             array('/packages/vis/builder/js/app.config.js',
@@ -20,6 +22,8 @@
                   '/packages/vis/builder/js/plugin/datetimepicker/jquery-ui-timepicker-addon-i18n.min.js',
                   '/packages/vis/builder/js/plugin/datetimepicker/jquery-ui-sliderAccess.js',
                    '/packages/vis/builder/js/preview_img.js',
+                   '/packages/vis/builder/js/multiselect_master/js/plugins/scrollTo/jquery.scrollTo-min.js',
+                   '/packages/vis/builder/js/multiselect_master/js/ui.multiselect.js'
                   ));
 !!}
 
@@ -52,7 +56,6 @@
                   '/packages/vis/builder/js/plugin/editor_floala/js/langs/'.$thisLang.'.js',
                   ))
 !!}
-
 
 <script type="text/javascript">
 
