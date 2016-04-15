@@ -32,6 +32,11 @@ class BuilderServiceProvider extends ServiceProvider
             . '/published/assets' => public_path('packages/vis/builder'),
             __DIR__ . '/config' => config_path('builder/')
         ], 'builder');
+
+        $this->publishes([
+            __DIR__
+            . '/published/assets' => public_path('packages/vis/builder')
+        ], 'public');
     }
 
     /**
