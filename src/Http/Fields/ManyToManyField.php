@@ -217,8 +217,12 @@ class ManyToManyField extends AbstractField
                 }
             }
         }
+        if ($this->getAttribute('show_type') == "select3") {
+            $res = $options->orderBy($this->getAttribute('mtm_table').".id", "asc")->get();
+        } else {
+            $res = $options->get();
+        }
 
-        $res = $options->orderBy($this->getAttribute('mtm_table').".id", "asc")->get();
         $options = array();
         foreach ($res as $opt) {
             $id = $opt[$this->getAttribute('mtm_external_key_field')];
