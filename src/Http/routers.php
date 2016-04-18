@@ -153,19 +153,5 @@ if ($menuLinks) {
         ]);
     });
     //login show
-
-
-    if (Request::ajax () && Request::is ('admin/*')) {
-        /* App::error(function (\Exception $exception, $code) {
-             return Vis\Builder\TBController::returnError($exception, $code);
-         });*/
-        /*  $this->app->error(function(Exception $e) {
-              dd('foo');
-          });*/
-    } else {
-
-        Route::any ('{catchall}', function () {
-            return Response::view ('admin::errors.404', array (), 404);
-        })->where ('catchall', '.*');
-    }
+    
 }

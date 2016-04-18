@@ -45,6 +45,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof NotFoundHttpException) {
+            return response()->view('admin::errors.404', [], 404);
+        }
+
         if ($request->isXmlHttpRequest()) {
             $data = array(
                 "status" => "error",
@@ -54,6 +58,7 @@ class Handler extends ExceptionHandler
 
             return response()->json($data, 500);
         }
+
         if ($this->isHttpException($e)) {
             return $this->renderHttpException($e);
         }
