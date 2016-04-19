@@ -5,22 +5,20 @@ Route::pattern('slug', '[a-z0-9-]+');
 
 include 'view_composers.php';
 
-Route::group(['middleware' => ['web']], function () {
+Route::group (['prefix' => LaravelLocalization::setLocale ()],
 
-    Route::group (['prefix' => LaravelLocalization::setLocale ()],
+    function () {
 
-        function () {
+        Route::get('/articles/{slug}-{id}', [
+            'as' => 'articles_article',
+            'uses' => 'ArticlesController@showPage'
+        ]);
 
-            Route::get('/articles/{slug}-{id}', [
-                'as' => 'articles_article',
-                'uses' => 'ArticlesController@showPage'
-            ]);
+        Route::get('/product/{slug}-{id}', [
+            'as' => 'product',
+            'uses' => 'ProductController@showPage'
+        ]);
 
-            Route::get('/product/{slug}-{id}', [
-                'as' => 'product',
-                'uses' => 'ProductController@showPage'
-            ]);
+ });
 
-        });
-});
 

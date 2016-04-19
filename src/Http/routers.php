@@ -128,6 +128,11 @@ if ($menuLinks) {
                 'uses' => 'Vis\Builder\LoginController@showLogin'
             )
         );
+        Route::get ('login', array (
+                'as' => 'login_show',
+                'uses' => 'Vis\Builder\LoginController@showLogin'
+            )
+        );
         Route::post ('login', array (
                 'as' => 'login',
                 'uses' => 'Vis\Builder\LoginController@postLogin'
