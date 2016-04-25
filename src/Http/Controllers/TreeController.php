@@ -1,6 +1,6 @@
 <?php namespace Vis\Builder;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 
 class TreeController extends Controller

@@ -50,13 +50,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
         <script src="/packages/vis/builder/js/libs/jquery-2.0.2.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-        <script>
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-        </script>
+      
         {!! Minify::javascript(
             array(
                   '/packages/vis/builder/js/core.js',

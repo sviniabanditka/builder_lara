@@ -2,7 +2,12 @@
 $menuLinks = config('builder.admin.menu');
 
 if ($menuLinks) {
-    $all_links = array_column ($menuLinks, "link");
+    
+    foreach (Config::get('builder.admin.menu') as $menu) {
+        if (!isset($menu['not_use_definition']) && isset($menu['link'])) {
+            $all_links[] = $menu['link'];
+        }
+    }
 
     foreach (config ('builder.admin.menu') as $menu) {
         if (is_array ($menu)) {

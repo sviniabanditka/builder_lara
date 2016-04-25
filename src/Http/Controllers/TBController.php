@@ -1,6 +1,6 @@
 <?php namespace Vis\Builder;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
