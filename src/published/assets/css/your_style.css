@@ -329,11 +329,30 @@ p.table_album_action_a a{
 }
 .icon-arrow-left:before{content:"\f0d9"; font-family: FontAwesome; font-style: normal;}
 .icon-arrow-right:before{content:"\f0da";  font-family: FontAwesome; font-style: normal;}
-div.tb-uploaded-image-container button.tb-btn-image-delete{
+
+
+div.tb-uploaded-image-container .dop_foto button.tb-btn-image-delete{
     position: absolute;
-    right:0px;
+    top:0;
+    right: 0;
+    height: 10px;
+    width: 1px;
 }
-div.tb-uploaded-image-container button.tb-btn-image-delete i{
-    right: 4px;
-    top:3px;
+.btn2{
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-radius: 2px;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.05) inset;
+    border-color: #ccc;
 }

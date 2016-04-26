@@ -26,7 +26,7 @@
                          src="{{glide($image, ['w'=>'120','h'=>'120']) }}" data_src_original = "{{$image}}" />
 
                     <div class="tb-btn-delete-wrap">
-                        <button class="btn btn-default btn-sm tb-btn-image-delete"
+                        <button class="btn2 btn-default btn-sm tb-btn-image-delete"
                                 type="button"
                                 onclick="TableBuilder.deleteImage(this);">
                             <i class="fa fa-times"></i>

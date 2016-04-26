@@ -1437,5 +1437,15 @@ var TableBuilder = {
 $(window).load(function() {
     TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();
+    $(document).on('click', 'a.node_link', function (e) {
+        var href = $(this).attr('href');
+        doAjaxLoadContent(href);
+        e.preventDefault();
+    });
+});
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
