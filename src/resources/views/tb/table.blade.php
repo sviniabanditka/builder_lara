@@ -22,8 +22,9 @@
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>{{ __cms($def['options']['caption']) }}</h2>
-
-                    {!! $controller->buttons->fetch() !!}
+                    @if (isset($def['buttons']))
+                     {!! $controller->buttons->fetch() !!}
+                    @endif
                     {!! $controller->import->fetch() !!}
                     {!!  $controller->export->fetch() !!}
                 </header>

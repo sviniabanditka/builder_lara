@@ -51,7 +51,9 @@ class JarboeController
 
         $this->export  = new ExportHandler($this->definition['export'], $this);
         $this->import  = new ImportHandler($this->definition['import'], $this);
-        $this->buttons  = new ButtonsHandler($this->definition['buttons'], $this);
+        if (isset($this->definition['buttons'])) {
+            $this->buttons  = new ButtonsHandler($this->definition['buttons'], $this);
+        }
         $this->query   = new QueryHandler($this);
 
         $this->allowedIds = $this->query->getTableAllowedIds();
