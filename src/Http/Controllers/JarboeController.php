@@ -7,6 +7,7 @@ use Vis\Builder\Handlers\QueryHandler;
 use Vis\Builder\Handlers\ActionsHandler;
 use Vis\Builder\Handlers\ExportHandler;
 use Vis\Builder\Handlers\ImportHandler;
+use Vis\Builder\Handlers\ButtonsHandler;
 use Vis\Builder\Handlers\CustomClosureHandler;
 
 class JarboeController
@@ -50,6 +51,7 @@ class JarboeController
 
         $this->export  = new ExportHandler($this->definition['export'], $this);
         $this->import  = new ImportHandler($this->definition['import'], $this);
+        $this->buttons  = new ButtonsHandler($this->definition['buttons'], $this);
         $this->query   = new QueryHandler($this);
 
         $this->allowedIds = $this->query->getTableAllowedIds();

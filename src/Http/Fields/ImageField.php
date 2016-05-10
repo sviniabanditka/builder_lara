@@ -119,8 +119,7 @@ class ImageField extends AbstractField
             $infoPage = $model::find(Input::get("page_id"));
             $slug_page =  Jarboe::urlify(strip_tags($infoPage->title));
             $fileName = $slug_page . '.' . $extension;
-            if (File::exists($destinationPath.$fileName))
-            {
+            if (File::exists($destinationPath.$fileName)) {
                 $fileName = $slug_page . '_' . time() .'.' . $extension;
             }
         }
