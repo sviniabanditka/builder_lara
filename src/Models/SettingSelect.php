@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Modules\Settings\Models;
+<?php namespace Vis\Builder;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
@@ -11,9 +9,9 @@ class SettingSelect extends Eloquent
 
     //Некоторые правила валидиции
     public static $rules = array(
-            'value' => 'required',
-            'id_setting' => 'required|numeric'
-        );
+        'value' => 'required',
+        'id_setting' => 'required|numeric'
+    );
 
     public $timestamps = false;
 
@@ -24,5 +22,5 @@ class SettingSelect extends Eloquent
             Setting::reCacheSettings();
         }
     } //end doDelete
-    
+
 }
