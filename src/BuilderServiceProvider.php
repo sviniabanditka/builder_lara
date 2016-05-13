@@ -17,6 +17,7 @@ class BuilderServiceProvider extends ServiceProvider
     {
         $router = $this->app['router'];
         $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
+        $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
 
         require __DIR__ . '/../vendor/autoload.php';
         require __DIR__ . '/Http/helpers.php';
