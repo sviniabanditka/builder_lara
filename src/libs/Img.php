@@ -31,8 +31,7 @@ class Img {
         } else {
             $this->nameFile = $filename . "." . $extension;
         }
-
-
+        
         $this->pathFolder =  $dirname. "/" .$this->size;
         $this->picturePath =  $this->pathFolder . "/" .$this->nameFile;
 

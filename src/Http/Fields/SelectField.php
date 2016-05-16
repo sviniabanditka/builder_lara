@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Vis\Builder\Fields;
 
@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 
-class SelectField extends AbstractField 
+class SelectField extends AbstractField
 {
 
     public function isEditable()
@@ -43,20 +43,26 @@ class SelectField extends AbstractField
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
             if ($res) {
-                return $res; 
+                return $res;
             }
         }
 
         $table = View::make('admin::tb.input_select');
         $table->selected = $this->getValue($row);
         $table->name  = $this->getFieldName();
-        $table->options = $this->getAttribute('options');
+        $options = $this->getAttribute('options');
+        if (is_callable($options)) {
+            $table->options = $options();
+        } else {
+            $table->options = $this->getAttribute('options');
+        }
+
         $table->action = $this->getAttribute('action');
         $table->readonly_for_edit = $this->getAttribute('readonly_for_edit');
 
         return $table->render();
     } // end getEditInput
-    
+
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -65,11 +71,24 @@ class SelectField extends AbstractField
                 return $res;
             }
         }
-        
+
         $val = $this->getValue($row);
-        $options = $this->getAttribute('options');
-        
-        return $options[$val];
+        $optionsRes = $this->getAttribute('options');
+
+        if (is_callable($optionsRes)) {
+            $options = $optionsRes();
+        } else {
+            $options = $optionsRes;
+        }
+
+
+        if (isset($options[$val])) {
+            return $options[$val];
+        } else {
+            return $val;
+        }
+
+
     } // end getListValue
 
     public function getRowColor($row)
