@@ -11,7 +11,7 @@
 
     @if ($recursive)
          @foreach ($options as $value => $caption)
-              {{$caption}}
+              {!! $caption !!}
          @endforeach
     @else
          @foreach ($options as $value => $caption)
