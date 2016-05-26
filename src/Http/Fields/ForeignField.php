@@ -7,20 +7,19 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 
 
-class ForeignField extends AbstractField 
+class ForeignField extends AbstractField
 {
     private $treeMy;
     private $treeOptions;
     private $recursiveOnlyLastLevel = false;
     private $selectOption;
 
-
     public function isEditable()
     {
         return true;
     } // end isEditable
 
-        
+
     public function getExportValue($type, $row, $postfix = '')
     {
         $value = $this->getValue($row, $postfix);
@@ -28,13 +27,13 @@ class ForeignField extends AbstractField
         if ($value == '<i class="fa fa-minus"></i>') {
             $value = '';
         }
-        
+
         // cuz double quotes is escaping by more double quotes in csv
         $escapedValue = preg_replace('~"~', '""', $value);
-        
+
         return $escapedValue;
     } // end getExportValue
-    
+
     public function getFilterInput()
     {
         if (!$this->getAttribute('filter')) {
@@ -50,9 +49,22 @@ class ForeignField extends AbstractField
         $input = View::make('admin::tb.filter_'. $type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
-        // FIXME:
+        $input->recursive = $this->getAttribute('recursive');
+
         $input->value = $filter;
-        $input->options = $this->getForeignKeyOptions();
+        if ($input->recursive) {
+            $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
+            $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
+            $this->selectOption = $input->selected;
+            $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
+
+            $input->options = $this->treeOptions;
+        } else {
+            $input->options  = $this->getForeignKeyOptions();
+        }
+
+
+        // $input->options = $this->getForeignKeyOptions();
 
         return $input->render();
     } // end getFilterInput
@@ -64,7 +76,7 @@ class ForeignField extends AbstractField
             $foreignTable = $this->getAttribute('alias');
         }
         $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
-        
+
         // FIXME:
         if ($this->getAttribute('filter') == 'foreign') {
             $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
@@ -179,11 +191,11 @@ class ForeignField extends AbstractField
         return $input->render();
     } // end getEditInput
 
-   private function getCategory($id) {
-       $node = \Tree::find($id);
-       $children = $node->descendants()->get(array("id", "title", "parent_id"))->toArray();
+    private function getCategory($id) {
+        $node = \Tree::find($id);
+        $children = $node->descendants()->get(array("id", "title", "parent_id"))->toArray();
         $result = array();
-       foreach ($children as $row) {
+        foreach ($children as $row) {
             $result[$row["parent_id"]][] = $row;
         }
         return $result;
@@ -194,7 +206,7 @@ class ForeignField extends AbstractField
         if (isset($this->treeMy[$parent_id])) { //Если категория с таким parent_id существует
             foreach ($this->treeMy[$parent_id] as $value) { //Обходим
                 if (isset($this->treeMy[$value["id"]]) && $this->recursiveOnlyLastLevel) {
-                   $disable = "disabled";
+                    $disable = "disabled";
                 } else {
                     $disable = "";
                 }
@@ -216,10 +228,10 @@ class ForeignField extends AbstractField
     protected function getForeignKeyOptions()
     {
         $db = DB::table($this->getAttribute('foreign_table'))
-                     ->select($this->getAttribute('foreign_value_field'))
-                     ->addSelect($this->getAttribute('foreign_key_field'));
-                     
-                     
+            ->select($this->getAttribute('foreign_value_field'))
+            ->addSelect($this->getAttribute('foreign_key_field'));
+
+
         $additionalWheres = $this->getAttribute('additional_where');
         if ($additionalWheres) {
             foreach ($additionalWheres as $key => $opt) {

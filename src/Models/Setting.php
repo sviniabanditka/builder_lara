@@ -204,11 +204,11 @@ class Setting extends Eloquent {
 
         Setting::reCacheSettings();
 
-      /*  if ($data['id'] == 0) {
-            Event::fire("setting.created", array($settings));
-        } else {
-            Event::fire("setting.changed", array($settings));
-        }*/
+        /*  if ($data['id'] == 0) {
+              Event::fire("setting.created", array($settings));
+          } else {
+              Event::fire("setting.changed", array($settings));
+          }*/
 
         return $settings;
     }
@@ -265,7 +265,7 @@ class Setting extends Eloquent {
      */
     public function selectValues()
     {
-        return $this->hasMany('App\Modules\Settings\Models\SettingSelect', 'id_setting')->orderBy("priority")->get()->toArray();
+        return $this->hasMany('Vis\Builder\SettingSelect', 'id_setting')->orderBy("priority")->get()->toArray();
     } // end select_get
 
 
