@@ -25,7 +25,7 @@
                     </td>
                 </tr>
             @endif
-            @foreach($current['children'] as $item)
+            @foreach($children as $item)
                 @include('admin::tree.content_row')
             @endforeach
         </tbody>
@@ -34,6 +34,27 @@
         </tfoot>
 
     </table>
+        <div class="row tb-pagination">
+            <div class="col-sm-4 col-xs-12 hidden-xs">
+                <div id="dt_basic_info" class="dataTables_info" role="status" aria-live="polite">
+                    {{__cms('Показано')}}
+                    <span class="txt-color-darken listing_from">{{$children->count()}}</span>
+                    -
+                    <span class="txt-color-darken listing_to">{{$children->currentPage()}}</span>
+                    {{__cms('из')}}
+                    <span class="text-primary listing_total">{{$children->total()}}</span>
+                    {{__cms('записей')}}
+                </div>
+            </div>
+
+            <div class="col-sm-8 text-right">
+                <div class="dataTables_paginate paging_bootstrap_full">
+                    {{$children->appends(Input::all())->links()}}
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>

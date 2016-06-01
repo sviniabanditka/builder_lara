@@ -75,6 +75,10 @@
             TableBuilder.hidePreloader();
         });
    }
+   
+   window.addEventListener('popstate', function (e) {
+       doAjaxLoadContent(window.location.pathname);;
+   });
 
         $(document).on('click', 'nav a', function (e) {
 

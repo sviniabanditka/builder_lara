@@ -252,6 +252,7 @@ class TreeCatalogController
         foreach ($current->getAncestors() as $anc) {
             $parentIDs[] = $anc->id;
         }
+        $children = $current->children()->paginate(20);
 
         $templates = Config::get('builder::' . $this->nameTree . '.templates');
         $template = Config::get('builder::' . $this->nameTree . '.default');
@@ -261,7 +262,8 @@ class TreeCatalogController
 
         $treeName = $this->nameTree;
 
-        $content = View::make('admin::tree.content', compact('current', 'template', 'treeName'));
+
+        $content = View::make('admin::tree.content', compact('current', 'template', 'treeName', "children"));
 
         if (Request::ajax()) {
             return View::make('admin::tree_ajax', compact('content', 'current', 'parentIDs', 'treeName'));
