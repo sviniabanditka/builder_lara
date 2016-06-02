@@ -8,9 +8,18 @@
             <tr>
                 <th style="width: 10px"></th>
                 <th>{{__cms('Название')}}</th>
-                <th>{{__cms('Шаблон')}}</th>
-                <th>Url</th>
-                <th style="width: 60px">{{__cms('Активный')}}</th>
+                @if(Config::get('builder.'.$treeName.'.list_fields'))
+                    @foreach(Config::get('builder.'.$treeName.'.list_fields') as $nameBDField => $field)
+                        <th>
+                           {{$field['name'] or ""}}
+                        </th>
+                    @endforeach
+                @else
+                    <th>{{__cms('Шаблон')}}</th>
+                    <th>Url</th>
+                    <th style="width: 60px">{{__cms('Активный')}}</th>
+                @endif
+
                 <th style="width: 80px">
                     <a href="javascript:void(0);" onclick="Tree.showCreateForm('{{$current->id}}');" style="min-width: 70px;" class="btn btn-success btn-sm">{{__cms('Добавить')}}</a>
                 </th>

@@ -366,4 +366,16 @@ div.dataTables_info{
 .smart-style-4 #content > .row:first-child{
     padding-bottom: 0;
     border-bottom: none;
+    background-color: #fff;
+}
+#tb-tree-table thead th.text-left{
+    background: #4c4f53 none repeat scroll 0 0;
+    border-color: #45474b !important;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: "Open Sans",Arial,Helvetica,sans-serif !important;
+}
+#tb-tree-table thead th.text-left a{
+    color: #fff;
 }
