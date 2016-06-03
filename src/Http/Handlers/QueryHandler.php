@@ -257,11 +257,11 @@ class QueryHandler
 
         //$this->doPrependFilterValues($updateData);
 
-        $modelObj = $model::where("id", $values['id']);
+        $modelObj = $model::find($values['id']);
 
-       /* if (method_exists($modelObj, "setFillable")) {
+        if (method_exists($modelObj, "setFillable")) {
             $modelObj->setFillable(array_keys($updateData));
-        }*/
+        }
 
         foreach($updateData as $fild => $data) {
             if (is_array($data)) {
