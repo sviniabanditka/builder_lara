@@ -53,7 +53,7 @@ var TableBuilder = {
                 imageUploadURL: '/admin/upload_image?_token=' + $("meta[name=csrf-token]").attr("content"),
                 heightMin: 100,
                 heightMax: 500,
-                fileUploadURL: "/admin/upload_file?_token=" + $("meta[name=csrf-token]").attr("content")
+                fileUploadURL: "/admin/upload_file?_token=" + $("meta[name=csrf-token]").attr("content"),
                 imageManagerLoadURL: "/admin/load_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 imageDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 language: langEditor,
