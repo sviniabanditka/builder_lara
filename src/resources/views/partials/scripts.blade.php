@@ -26,18 +26,20 @@
                    '/packages/vis/builder/js/multiselect_master/js/ui.multiselect.js'
                   ));
 !!}
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
 {!! Minify::javascript(
             array('/packages/vis/builder/js/plugin/editor_floala/js/froala_editor.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/align.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/code_beautifier.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/code_view.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/colors.min.js',
+                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/file.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/emoticons.min.js',
+                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/draggable.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/font_size.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/font_family.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/image.min.js',
-                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/file.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/image_manager.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/line_breaker.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/link.min.js',
@@ -50,10 +52,9 @@
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/entities.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/char_counter.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/inline_style.min.js',
-                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/save.min.js',
-                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/fullscreen.min.js',
                   '/packages/vis/builder/js/plugin/editor_floala/js/plugins/quote.min.js',
-                  '/packages/vis/builder/js/plugin/editor_floala/js/langs/'.$thisLang.'.js',
+                  '/packages/vis/builder/js/plugin/editor_floala/js/plugins/save.min.js',
+                  '/packages/vis/builder/js/plugin/editor_floala/js/languages/'.$thisLang.'.js',
                   ))
 !!}
 
@@ -75,7 +76,7 @@
             TableBuilder.hidePreloader();
         });
    }
-   
+
    window.addEventListener('popstate', function (e) {
        doAjaxLoadContent(window.location.pathname);;
    });

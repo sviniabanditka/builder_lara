@@ -1,6 +1,9 @@
 <?php namespace Vis\Builder;
 
-use Controller, Input, Validator, Response;
+use  Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response; 
 
 class EditorController extends Controller
 {

@@ -39,9 +39,10 @@
                 '/packages/vis/builder/js/xchart/css/xcharts.min.css',
                 '/packages/vis/builder/js/xchart/css/daterangepicker.css',
                 '/packages/vis/builder/js/multiselect_master/css/ui.multiselect.css',
-                '/packages/vis/builder/css/your_style.css'
+                '/packages/vis/builder/css/your_style.css',
                 ));
          !!}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css">
 
         <!-- GOOGLE FONT -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">

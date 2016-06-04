@@ -25,6 +25,7 @@ var TableBuilder = {
 
     init: function(options)
     {
+
         TableBuilder.options = TableBuilder.getOptions(options);
         TableBuilder.initSearchOnEnterPressed();
         TableBuilder.initSelect2Hider();
@@ -49,12 +50,12 @@ var TableBuilder = {
 
             var option =  {
                 inlineMode: false,
-                imageUploadURL: '/admin/upload_image',
+                imageUploadURL: '/admin/upload_image?_token=' + $("meta[name=csrf-token]").attr("content"),
                 heightMin: 100,
                 heightMax: 500,
-                fileUploadURL: "/admin/upload_file",
-                imageManagerLoadURL: "/admin/load_image",
-                imageDeleteURL: "/admin/delete_image",
+                fileUploadURL: "/admin/upload_file?_token=" + $("meta[name=csrf-token]").attr("content")
+                imageManagerLoadURL: "/admin/load_image?_token=" + $("meta[name=csrf-token]").attr("content"),
+                imageDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 language: langEditor,
             };
 
@@ -261,10 +262,10 @@ var TableBuilder = {
             .done(function( data ) {
                 doAjaxLoadContent(location.href);
             }).fail(function(xhr, ajaxOptions, thrownError) {
-                var errorResult = jQuery.parseJSON(xhr.responseText);
-                TableBuilder.showErrorNotification(errorResult.message);
-                TableBuilder.hidePreloader();
-            });
+            var errorResult = jQuery.parseJSON(xhr.responseText);
+            TableBuilder.showErrorNotification(errorResult.message);
+            TableBuilder.hidePreloader();
+        });
     },
 
     handleStartLoad: function()
@@ -803,7 +804,7 @@ var TableBuilder = {
                         if (evt.lengthComputable) {
                             var percentComplete = evt.loaded / evt.total;
                             percentComplete = percentComplete * 100;
-                          
+
                             percentComplete = percentComplete + '%';
                             $progress.width(percentComplete);
                         }

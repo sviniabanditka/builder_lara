@@ -65,11 +65,7 @@ if ($menuLinks) {
                 );
 
                 //routes for froala editor
-                Route::post ('upload_image', array (
-                        'as' => 'upload_image',
-                        'uses' => 'Vis\Builder\EditorController@uploadFoto'
-                    )
-                );
+
                 Route::post ('upload_file', array (
                         'as' => 'upload_file',
                         'uses' => 'Vis\Builder\EditorController@uploadFile'
@@ -122,8 +118,23 @@ if ($menuLinks) {
                     )
                 );
 
+                Route::post ('upload_image', array (
+                        'as' => 'upload_image',
+                        'uses' => 'Vis\Builder\EditorController@uploadFoto'
+                    )
+                );
+
+
             });
     });
+
+
+    Route::group (
+        ['prefix' => 'admin', 'middleware' => 'auth.admin'],
+        function () {
+
+
+        });
 
     // login post
 
