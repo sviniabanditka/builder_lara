@@ -259,10 +259,10 @@ var Tree =
             .done(function( data ) {
                 doAjaxLoadContent(location.href);
             }).fail(function(xhr, ajaxOptions, thrownError) {
-                var errorResult = jQuery.parseJSON(xhr.responseText);
-                TableBuilder.showErrorNotification(errorResult.message);
-                TableBuilder.hidePreloader();
-            });
+            var errorResult = jQuery.parseJSON(xhr.responseText);
+            TableBuilder.showErrorNotification(errorResult.message);
+            TableBuilder.hidePreloader();
+        });
     },
 
     showEditForm: function(id)
@@ -361,7 +361,7 @@ var Tree =
                 if (response.id) {
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
                     jQuery(TableBuilder.form_edit).modal('hide');
-                    jQuery('.tb-tree-content-inner').find('tr[data-id="'+ id +'"]').replaceWith(response.html);
+                    doAjaxLoadContent(location.href);
                     $(document).height($(window).height());
                 } else {
                     var errors = '';
@@ -429,7 +429,7 @@ jQuery(document).ready(function(){
     Tree.init();
 
     $(document).on('click', '.modal-header button, .modal-footer button', function (e) {
-       var url = Core.delPrm("id_tree");
+        var url = Core.delPrm("id_tree");
 
         $(document).height($(window).height());
         window.history.pushState(url, '', url);
