@@ -164,6 +164,12 @@ class InstallCommand extends Command {
             $this->info ('Folder resources/views/popups is created');
         }
 
+        copy( $this->installPath . '/files/default.blade.php', base_path() . '/resources/views/layouts/default.blade.php');
+        $this->info('Created default.blade.php- OK');
+
+        copy( $this->installPath . '/files/index.blade.php', base_path() . '/resources/views/pages/index.blade.php');
+        $this->info('Created index.blade.php- OK');
+
         exec("composer dump-autoload");
     }
 

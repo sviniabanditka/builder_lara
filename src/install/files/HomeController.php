@@ -1,14 +1,21 @@
-<?php 
+<?php namespace App\Http\Controllers;
 
-class HomeController extends Vis\Builder\TreeController
-{
-   /*
-    * show index page site
-    */
+use Vis\Builder\TreeController;
+use \Product;
+use Illuminate\Support\Facades\Request;
+
+class HomeController extends TreeController  {
+
+    /*
+     * show index page site
+     */
     public function showPage()
     {
-        $page = $this->node;
 
-        return view('pages.index', compact("page"));
-    } 
+        $page = $this->node;
+        $productsOnMainPage = Product::showOnMain();
+
+        return view('pages.index', compact("page", "productsOnMainPage"));
+    }
+
 }
