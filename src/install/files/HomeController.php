@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use Vis\Builder\TreeController;
-use \Product;
 use Illuminate\Support\Facades\Request;
 
 class HomeController extends TreeController  {
@@ -13,9 +12,8 @@ class HomeController extends TreeController  {
     {
 
         $page = $this->node;
-        $productsOnMainPage = Product::showOnMain();
 
-        return view('pages.index', compact("page", "productsOnMainPage"));
+        return view('pages.index', compact("page"));
     }
 
 }
