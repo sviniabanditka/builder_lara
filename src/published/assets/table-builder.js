@@ -1121,7 +1121,7 @@ var TableBuilder = {
         });
     }, // end showBigErrorNotification
 
-    doImport: function(context, type)
+    doImport: function(context, type, url)
     {
         TableBuilder.showPreloader();
 
@@ -1129,6 +1129,10 @@ var TableBuilder = {
         data.append("file", context.files[0]);
         data.append('type', type);
         data.append('query_type', 'import');
+
+        if (url == undefined) {
+            url = TableBuilder.getActionUrl();
+        }
 
         jQuery.SmartMessageBox({
             title : "Произвести импорт?",
@@ -1140,7 +1144,7 @@ var TableBuilder = {
                 jQuery.ajax({
                     data: data,
                     type: "POST",
-                    url: TableBuilder.getActionUrl(),
+                    url: url,
                     cache: false,
                     contentType: false,
                     processData: false,
