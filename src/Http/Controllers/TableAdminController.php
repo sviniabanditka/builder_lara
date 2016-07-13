@@ -17,7 +17,7 @@ class TableAdminController extends Controller
 
     public function showTreeOther($nameTree)
     {
-        $model = Config::get('builder::' . $nameTree . '_tree.model');
+        $model = Config::get('builder.' . $nameTree . '_tree.model');
         $option = [];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree."_tree");
@@ -34,7 +34,7 @@ class TableAdminController extends Controller
 
     public function handleTreeOther($nameTree)
     {
-        $model = Config::get('builder::' . $nameTree . '_tree.model');
+        $model = Config::get('builder.' . $nameTree . '_tree.model');
         $option = [];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree."_tree");
