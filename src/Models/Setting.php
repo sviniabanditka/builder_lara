@@ -24,28 +24,31 @@ class Setting extends Eloquent {
     /*
      * return value setting
      */
-    public static function get($slug)
+    public static function get($slug, $default = '')
     {
         if ($slug) {
-            $setting_cache = Cache::tags('settings')->get($slug);
-            if ($setting_cache) {
-                return $setting_cache;
-            } else {
-                $res_setting = Setting::where("slug", 'like', $slug)->first();;
+            $settingCache = Cache::tags('settings')->get($slug);
 
-                if (!isset($res_setting->type)) {
+            if ($settingCache) {
+                return $settingCache;
+            } else {
+                $resultSetting = Setting::where("slug", 'like', $slug)->first();;
+
+                if (!isset($resultSetting->type)) {
                     return;
                 }
 
-                if ($res_setting->type==2 || $res_setting->type==3 || $res_setting->type==5) {
-                    $select = $res_setting->selectValues();
+                if ($resultSetting->type == 2 || $resultSetting->type == 3 || $resultSetting->type == 5) {
+                    $select = $resultSetting->selectValues();
                     Cache::tags('settings')->forever($slug, $select);
 
                     return $select;
-                } elseif(isset($res_setting->value)) {
-                    Cache::tags('settings')->forever($slug, $res_setting->value);
+                } elseif(isset($resultSetting->value)) {
+                    Cache::tags('settings')->forever($slug, $resultSetting->value);
 
-                    return $res_setting->value;
+                    return $resultSetting->value;
+                } elseif ($default) {
+                    Cache::tags('settings')->forever($slug, $default);
                 }
             }
         }
@@ -53,7 +56,6 @@ class Setting extends Eloquent {
 
     public static function getItem($ids)
     {
-
         if(!$ids){
             return [];
         }

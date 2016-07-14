@@ -70,8 +70,31 @@ class BaseModel extends Eloquent
 
     public function getDate()
     {
-        return Util::getDateOnly($this->created_at);
+        $date = strtotime($this->created_at);
+
+        return date("d", $date)." ".$this->getMonth($this->created_at)." ".date("Y", $date);
     } // end getCreatedDate
+
+    public function getMonth($date) {
+
+        $month = [
+            '1' => 'Января',
+            '2' => 'Февраля',
+            '3' => 'Марта',
+            '4' => 'Апреля',
+            '5' => 'Мая',
+            '6' => 'Июня',
+            '7' => 'Июля',
+            '8' => 'Августа',
+            '9' => 'Сентября',
+            '10' => 'Октября',
+            '11' => 'Ноября',
+            '12' => 'Декабря'
+        ];
+
+        return	__($month[date("n", strtotime($date))]);
+    }
+
 
     /*
      * filter active page
