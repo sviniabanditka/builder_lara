@@ -35,7 +35,14 @@ class Setting extends Eloquent {
                 $resultSetting = Setting::where("slug", 'like', $slug)->first();;
 
                 if (!isset($resultSetting->type)) {
-                    return;
+                    if ($default) {
+                        Cache::tags('settings')->forever($slug, $default);
+
+                        return $default;
+                    } else {
+                        return;
+                    }
+
                 }
 
                 if ($resultSetting->type == 2 || $resultSetting->type == 3 || $resultSetting->type == 5) {
@@ -49,6 +56,8 @@ class Setting extends Eloquent {
                     return $resultSetting->value;
                 } elseif ($default) {
                     Cache::tags('settings')->forever($slug, $default);
+
+                    return $default;
                 }
             }
         }
