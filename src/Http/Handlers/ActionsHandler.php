@@ -163,19 +163,7 @@ class ActionsHandler
         $action->definition = $this->controller->getDefinition();
         $model = $action->definition['options']['model'];
         $action->model = $model;
-        if (isset($action->definition['cache']['tags'])) {
-
-            $url = Cache::tags($action->definition['cache']['tags'])->rememberForever('menuFooter', function() use ($model, $row) {
-                $url = $model::find($row['id'])->getUrl();
-
-                return $url;
-            });
-
-            $action->url = $url;
-
-        } else {
-            $action->url = $model::find($row['id'])->getUrl();
-        }
+        $action->url = $model::find($row['id'])->getUrl();
 
         return $action;
     }
