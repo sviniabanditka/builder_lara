@@ -73,6 +73,13 @@ var TableBuilder = {
                 option.inlineStyles = JSON.parse($(this).attr("inlinestyles"))
             }
 
+            if ($(this).attr("options")) {
+                var optionsConfig = JSON.parse($(this).attr("options"));
+                for (var key in optionsConfig) {
+                    option[key] = optionsConfig[key];
+                }
+            }
+
             $(this).froalaEditor(option);
         });
 
