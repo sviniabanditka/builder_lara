@@ -61,7 +61,7 @@ class WysiwygField extends AbstractField
             }
         }
         
-        $wysiwyg = $this->getAttribute('wysiwyg', 'summernote');
+        //$wysiwyg = $this->getAttribute('wysiwyg', 'summernote');
         
         $input = \View::make('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
@@ -69,6 +69,8 @@ class WysiwygField extends AbstractField
         $input->toolbar = $this->getAttribute('toolbar');
         $input->tabs = $this->getPreparedTabs($row);
         $input->caption = $this->getAttribute('caption');
+        $input->inlineStyles = $this->getAttribute('inlineStyles');
+        $input->options = $this->getAttribute('options');
         
         $action = $this->definition['options']['action_url'];
         if (isset($this->definition['options']['action_url_tree'])) {
