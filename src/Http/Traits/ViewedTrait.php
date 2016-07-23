@@ -33,7 +33,7 @@ trait ViewedTrait
 
         $cookies = unserialize(Request::cookie($nameCookie));
 
-        if (count($cookies)) {
+        if (is_array($cookies) && count($cookies)) {
             $implodeViewedProductsIds = implode(",", $cookies);
 
             $viewed_products = $nameClass::whereIn("id", $cookies)
