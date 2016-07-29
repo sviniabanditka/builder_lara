@@ -11,6 +11,10 @@ class TBController extends Controller
 
     public function showDashboard()
     {
+        if (config ('builder.admin.uri') && config ('builder.admin.uri') != "/admin") {
+            return Redirect::to(config ('builder.admin.uri'));
+        }
+
        return Redirect::to("/admin/tree");
     } // end showDashboard
 
@@ -43,7 +47,6 @@ class TBController extends Controller
 
     public static function returnError($exception, $code)
     {
-
         $message = $exception->getMessage();
 
         if (!$message) {
