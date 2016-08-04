@@ -51,7 +51,7 @@ class ManyToManyField extends AbstractField
         } else {
             $values = array_filter($values);
             // HACK: in checkbox we have id as key of element, in select - as value
-            $isInValueElement = ($this->getAttribute('show_type', 'checkbox') == 'select2' || $this->getAttribute('show_type', 'checkbox') == 'select3');
+            $isInValueElement = ($this->getAttribute('show_type', 'checkbox') == 'select2' || $this->getAttribute('show_type', 'checkbox') == 'select3' || $this->getAttribute('show_type', 'checkbox') == 'select_tree');
             foreach ($values as $key => $val) {
                 $externalID = $isInValueElement ? $val : $key;
                 $data[$key] = array(
@@ -129,10 +129,15 @@ class ManyToManyField extends AbstractField
         $input->link    = $this->getAttribute('with_link');
         $input->name    = $this->getFieldName();
         $input->divide  = $this->getAttribute('divide_columns', 2);
-        $input->options = $this->doDivideOnParts(
-            $this->getAllExternalFieldOptions(),
-            $this->getAttribute('divide_columns', 2)
-        );
+
+        if ($showType == "select_tree") {
+            $input->options = $this->getFieldOptionForTree();
+        } else {
+            $input->options = $this->doDivideOnParts(
+                $this->getAllExternalFieldOptions(),
+                $this->getAttribute('divide_columns', 2)
+            );
+        }
 
         return $input->render();
     } // end getEditInput
@@ -290,6 +295,23 @@ class ManyToManyField extends AbstractField
 
         return $options;
     } // end getAllExternalFieldOptions
+
+    public function getFieldOptionForTree()
+    {
+        $params = $this->getAttribute('type_tree_params');
+        $model = $params['model'];
+        $options = $model::where("parent_id", $params['start_id_folder']);
+
+        $additionalWheres = $this->getAttribute('additional_where');
+        if ($additionalWheres) {
+            foreach ($additionalWheres as $key => $opt) {
+                $options->where($key, $opt['sign'], $opt['value']);
+            }
+        }
+        $res = $options->orderBy("parent_id")->get();
+    
+        return $res;
+    }
 
     public function getAjaxSearchResult($query, $limit, $page)
     {
