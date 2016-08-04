@@ -235,8 +235,10 @@ class ForeignField extends AbstractField
         $additionalWheres = $this->getAttribute('additional_where');
         if ($additionalWheres) {
             foreach ($additionalWheres as $key => $opt) {
-                if ($opt['sign'] == "in") {
+                if (trim($opt['sign']) == "in") {
                     $db->whereIn($key, $opt['value']);
+                } else if (trim($opt['sign']) == "not in") {
+                    $db->whereNotIn($key, $opt['value']);
                 } else {
                     $db->where($key, $opt['sign'], $opt['value']);
                 }
