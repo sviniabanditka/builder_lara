@@ -93,8 +93,15 @@ class TableAdminController extends Controller
     } // end handleСases
 
 
-    public function showPageUrlTree($slug)
+    public function showPageUrlTree()
     {
+        $arrSegments = explode("/", Request::path());
+        $slug = end ($arrSegments);
+
+        if (!$slug || $slug == LaravelLocalization::setLocale ()) {
+            $slug = "/";
+        }
+
         $_model = Config::get('builder.tree.model');
         $node = $_model::where ("slug", 'like', $slug)->first ();
         $templates = Config::get('builder.tree.templates');
@@ -103,11 +110,22 @@ class TableAdminController extends Controller
             App::abort (404);
         }
 
-        list($controller, $method)
-            = explode ('@',
-            $templates[$node->template]['action']);
+        list($controller, $method) = explode ('@', $templates[$node->template]['action']);
 
-        app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
+
+        if (LaravelLocalization::setLocale () == "") {
+            $pathUrl = "/" . Request::path ();
+        } else {
+            $pathUrl = Request::path ();
+        }
+
+        if ($pathUrl == LaravelLocalization::setLocale () . Request::path()) {
+            Session::put ('currentNode', $node);
+        } else {
+            Session::put ('currentNode', $node);
+        }
+
+       return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
     }
 
 }

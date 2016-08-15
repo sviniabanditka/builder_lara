@@ -23,24 +23,12 @@ if ($arrSegments[0] != "admin") {
                         Route::group (['prefix' => LaravelLocalization::setLocale ()],
                             function () use ($node, $_nodeUrl) {
 
-                                Route::get('{slug}', [
+                                Route::get($_nodeUrl, [
                                     'as' => 'route_admin',
                                     'uses' => 'Vis\Builder\TableAdminController@showPageUrlTree'
                                 ]);
                             });
                     });
-
-                if (LaravelLocalization::setLocale () == "") {
-                    $pathUrl = "/" . Request::path ();
-                } else {
-                    $pathUrl = Request::path ();
-                }
-
-                if ($pathUrl == LaravelLocalization::setLocale () . $_nodeUrl) {
-                    Session::put ('currentNode', $node);
-                } else {
-                    Session::put ('currentNode', $node);
-                }
             }
         }
 
