@@ -95,11 +95,8 @@ class TableAdminController extends Controller
     } // end handleСases
 
 
-    public function showPageUrlTree()
+    public function showPageUrlTree($slug = '')
     {
-        $arrSegments = explode("/", Request::path());
-        $slug = end ($arrSegments);
-
         if (!$slug || $slug == LaravelLocalization::setLocale ()) {
             $slug = "/";
         }

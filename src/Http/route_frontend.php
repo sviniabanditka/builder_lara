@@ -22,8 +22,8 @@ if ($arrSegments[0] != "admin") {
                     function () use ($node, $_nodeUrl) {
                         Route::group (['prefix' => LaravelLocalization::setLocale ()],
                             function () use ($node, $_nodeUrl) {
-
-                                Route::get($_nodeUrl, [
+                               
+                                Route::get('{slug?}', [
                                     'as' => 'route_admin',
                                     'uses' => 'Vis\Builder\TableAdminController@showPageUrlTree'
                                 ]);
