@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Routing\Controller;
 
-class PhotosController extends \Controller
+class PhotosController extends Controller
 {
     public function fetchShowAll()
     {
