@@ -8,11 +8,7 @@ Route::group (['middleware' => ['web']], function () {
                 'as' => 'phrases_all',
                 'uses' => 'Vis\TranslationsCMS\TranslateController@fetchIndex')
         );
-        Route::get('translations_cms/generate', array(
-                'as' => 'phrases_all',
-                'uses' => 'Vis\TranslationsCMS\GenerateController@getIndex')
-        );
-
+       
         if (Request::ajax()) {
 
             Route::post('translations_cms/create_pop', array(

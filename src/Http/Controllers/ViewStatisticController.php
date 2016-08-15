@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Routing\Controller;
 
-class ViewStatisticController extends \BaseController
+class ViewStatisticController extends Controller
 {
     public function getStatistic()
     {
