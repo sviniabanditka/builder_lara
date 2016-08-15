@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class TableAdminController extends Controller
 {
