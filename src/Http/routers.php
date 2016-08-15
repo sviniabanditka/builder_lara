@@ -54,7 +54,7 @@ if ($menuLinks) {
                 Route::post ('/handle/{page_admin}',
                     'Vis\Builder\TableAdminController@handlePage');
 
-                // docs page
+                // view showDashboard
                 Route::get ('/', 'Vis\Builder\TBController@showDashboard');
 
                 // logout
@@ -124,18 +124,15 @@ if ($menuLinks) {
                     )
                 );
 
+                Route::post ('save_croped_img', array (
+                        'as' => 'save_croped_img',
+                        'uses' => 'Vis\Builder\TBController@doSaveCropImg'
+                    )
+                );
 
             });
     });
-
-
-    Route::group (
-        ['prefix' => 'admin', 'middleware' => 'auth.admin'],
-        function () {
-
-
-        });
-
+    
     // login post
 
     Route::group (['middleware' => ['web']], function () {
@@ -158,7 +155,7 @@ if ($menuLinks) {
         /*
      * routes for correct works debugbar
      */
-        Route::get ('/_debugbar/assets/stylesheets', [
+      /*  Route::get ('/_debugbar/assets/stylesheets', [
             'as' => 'debugbar-css',
             'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@css'
         ]);
@@ -171,7 +168,7 @@ if ($menuLinks) {
         Route::get ('/_debugbar/open', [
             'as' => 'debugbar-open',
             'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
-        ]);
+        ]);*/
     });
     //login show
     
