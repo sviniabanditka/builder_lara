@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\App;
 
 class TableAdminController extends Controller
 {
@@ -91,5 +92,22 @@ class TableAdminController extends Controller
         return JarboeFacade::table($options);
     } // end handleСases
 
+
+    public function showPageUrlTree($slug)
+    {
+        $_model = Config::get('builder.tree.model');
+        $node = $_model::where ("slug", 'like', $slug)->first ();
+        $templates = Config::get('builder.tree.templates');
+
+        if (!isset($templates[$node->template])) {
+            App::abort (404);
+        }
+
+        list($controller, $method)
+            = explode ('@',
+            $templates[$node->template]['action']);
+
+        app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
+    }
 
 }
