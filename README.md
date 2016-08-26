@@ -24,3 +24,8 @@ composer update
 ```json
    php artisan admin:generatePassword
 ```
+
+Если нужно обновить css и js, то
+```json
+   php artisan vendor:publish --tag=public --force
+```
