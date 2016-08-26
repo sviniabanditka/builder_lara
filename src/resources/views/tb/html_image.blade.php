@@ -1,14 +1,19 @@
-<li>
-       <img src="{{$link}}" class="images-attr-editable"
-             data-tbalt=""
-             data-tbtitle=""
-             data_src_original="{{$path}}"
-              />
-            <div class="tb-btn-delete-wrap">
-                  <button class="btn2 btn-default btn-sm tb-btn-image-delete"
-                          type="button"
-                          onclick="TableBuilder.deleteImage(this);">
-                          <i class="fa fa-times"></i>
-                          </button>
-            </div>
+<li data-target="#modal_crop_img"
+    data-toggle="modal">
+    <img class="image-attr-editable"
+         data-tbnum="{{$key or ""}}"
+         src="{{glide($value, ['w'=>'120','h'=>'120']) }}"
+         data_src_original= "{{$value}}"
+         src_original = "{{$value}}"
+         data-width = '120'
+         data-height = '120'
+    />
+
+    <div class="tb-btn-delete-wrap">
+        <button class="btn2 btn-default btn-sm tb-btn-image-delete"
+                type="button"
+                onclick="TableBuilder.deleteImage(this);">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
 </li>

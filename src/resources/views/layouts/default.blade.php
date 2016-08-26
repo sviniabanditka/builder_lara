@@ -39,6 +39,7 @@
                 '/packages/vis/builder/js/xchart/css/xcharts.min.css',
                 '/packages/vis/builder/js/xchart/css/daterangepicker.css',
                 '/packages/vis/builder/js/multiselect_master/css/ui.multiselect.css',
+                '/packages/vis/builder/css/cropper.min.css',
                 '/packages/vis/builder/css/your_style.css',
                 ));
          !!}
@@ -69,6 +70,7 @@
                   '/packages/vis/builder/js/plugin/resizableColumns/jquery.resizableColumns.js',
                   '/packages/vis/builder/js/plugin/resizableColumns/store.js',
                   '/packages/vis/builder/tb-tree.js',
+                  '/packages/vis/builder/js/cropper.js'
                   ));
         !!}
          <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
@@ -104,7 +106,13 @@
         @include('admin::partials.scripts')
         @yield('scripts')
         @include('admin::partials.translate_phrases')
+
         <div class="load_page" style="position: absolute; display: none; z-index: 1111111; height: 50px; top: 10px; left: 50%"><i class="fa fa-spinner fa-spin" style="font-size: 30px"></i></div>
+        @include('admin::partials.popup_cropp')
+        <!-- Modal -->
+
+        <script src="/packages/vis/builder/js/cropper_model.js"></script>
+
     </body>
 
 </html>

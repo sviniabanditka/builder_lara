@@ -165,8 +165,10 @@ class ImageField extends AbstractField
             "html" => view($returnView,
                             ['link' => $link,
                              'data' => $data,
-                             'path' => $destinationPath . $fileName,
-                             'ident' => Input::get("ident")
+                             'value' => $destinationPath . $fileName,
+                             'name' => Input::get("ident"),
+                             'width' => $width,
+                             'height' => $height
                             ])->render()
         );
         return $response;
