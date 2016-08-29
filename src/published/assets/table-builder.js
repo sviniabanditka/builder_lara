@@ -22,6 +22,7 @@ var TableBuilder = {
     onDoEdit: null,
     onDoCreate: null,
     onDoDelete: null,
+    tableEditorImg : null,
 
     init: function(options)
     {
@@ -46,6 +47,42 @@ var TableBuilder = {
             langEditor = langCms;
         }
 
+
+        $.FroalaEditor.DefineIcon('crop', {NAME: 'crop'});
+        $.FroalaEditor.RegisterCommand('crop', {
+            title: 'Image Crop',
+            focus: false,
+            undo: false,
+            refreshAfterCallback: false,
+            callback: function () {
+                var imgThis = this.image.get();
+                $('#modal_crop_img').modal("show");
+
+                var srcImg = imgThis.attr('src');
+                TableBuilder.tableEditorImg = imgThis;
+
+                $("#modal_crop_img #image").attr("src", "");
+                $("#modal_crop_img #image").attr("src", srcImg);
+                $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
+
+                var $image = $('#image');
+                $image.cropper('destroy');
+                var result = $image.cropper({
+
+                    crop: function (data) {
+                        $(".width_crop").text(Math.round(data.width));
+                        $(".height_crop").text(Math.round(data.height));
+
+                    },
+                    built: function () {
+
+                    },
+                    // responsive : false
+                });
+                setTimeout('$("#modal_crop_img #image").attr("src", "' + srcImg + '")', 1000);
+            }
+        });
+
         $( ".text_block" ).each(function( index ) {
 
             var option =  {
@@ -57,6 +94,7 @@ var TableBuilder = {
                 imageManagerLoadURL: "/admin/load_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 imageDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 language: langEditor,
+                imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageDisplay', 'imageStyle', 'imageAlt', 'imageSize', 'crop']
             };
 
             if ($(this).attr("toolbar")) {
@@ -76,6 +114,7 @@ var TableBuilder = {
             if ($(this).attr("options")) {
                 var optionsConfig = JSON.parse($(this).attr("options"));
                 for (var key in optionsConfig) {
+
                     option[key] = optionsConfig[key];
                 }
             }
@@ -1128,7 +1167,7 @@ var TableBuilder = {
         });
     }, // end showBigErrorNotification
 
-    doImport: function(context, type, url)
+    doImport: function(context, type)
     {
         TableBuilder.showPreloader();
 
@@ -1136,10 +1175,6 @@ var TableBuilder = {
         data.append("file", context.files[0]);
         data.append('type', type);
         data.append('query_type', 'import');
-
-        if (url == undefined) {
-            url = TableBuilder.getActionUrl();
-        }
 
         jQuery.SmartMessageBox({
             title : "Произвести импорт?",
@@ -1151,7 +1186,7 @@ var TableBuilder = {
                 jQuery.ajax({
                     data: data,
                     type: "POST",
-                    url: url,
+                    url: TableBuilder.getActionUrl(),
                     cache: false,
                     contentType: false,
                     processData: false,
