@@ -476,7 +476,7 @@ class QueryHandler
                         $field->doValidate($values[$fieldName]);
                     }
                 } else {
-                    if (isset($values[$ident])) {
+                    if (array_key_exists($ident, $values)) {
                         $field->doValidate($values[$ident]);
                     }
                 }
