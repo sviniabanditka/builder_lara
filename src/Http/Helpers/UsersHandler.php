@@ -70,8 +70,7 @@ class UsersHandler extends CustomHandler
             if ($value['password'] && $value['password'] != "password") {
                 Sentinel::update($user, array('password' => $value['password']));
             }
-
-
+            
             unset($value['activated']);
             unset($value['password']);
         }

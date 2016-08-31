@@ -16,17 +16,16 @@ if ($arrSegments[0] != "admin") {
             if (isset($node->id)) {
                 $slugTree = $slug;
                 $_nodeUrl = trim ($node->getUrlNoLocation (), "/");
-
-
+                
                 Route::group (['middleware' => ['web']],
                     function () use ($node, $_nodeUrl) {
                         Route::group (['prefix' => LaravelLocalization::setLocale ()],
                             function () use ($node, $_nodeUrl) {
-                               
-                                Route::get('{slug?}', [
+
+                               Route::get('{slug?}', [
                                     'as' => 'route_admin',
                                     'uses' => 'Vis\Builder\TableAdminController@showPageUrlTree'
-                                ]);
+                                ])->where('slug', '.+');
                             });
                     });
             }
