@@ -97,6 +97,10 @@ class TableAdminController extends Controller
 
     public function showPageUrlTree($slug = '')
     {
+
+        $arrSegments = explode("/", $slug);
+        $slug = end ($arrSegments);
+
         if (!$slug || $slug == LaravelLocalization::setLocale ()) {
             $slug = "/";
         }
@@ -104,7 +108,7 @@ class TableAdminController extends Controller
         $_model = Config::get('builder.tree.model');
         $node = $_model::where ("slug", 'like', $slug)->first ();
         $templates = Config::get('builder.tree.templates');
-
+        
         if (!isset($templates[$node->template])) {
             App::abort (404);
         }
