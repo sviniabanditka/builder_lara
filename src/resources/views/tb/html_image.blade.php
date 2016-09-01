@@ -1,5 +1,4 @@
-<li data-target="#modal_crop_img"
-    data-toggle="modal">
+<li >
     <img class="image-attr-editable"
          data-tbnum="{{$key or ""}}"
          src="{{glide($value, ['w'=>'120','h'=>'120']) }}"
@@ -7,6 +6,8 @@
          src_original = "{{$value}}"
          data-width = '120'
          data-height = '120'
+         data-target="#modal_crop_img"
+         data-toggle="modal"
     />
 
     <div class="tb-btn-delete-wrap">

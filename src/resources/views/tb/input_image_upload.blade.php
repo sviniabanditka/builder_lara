@@ -42,8 +42,7 @@
         <div style="clear: both"></div>
     </div>
     <label>
-
-        @else
+@else
     </label>
     <div class="picture_block">
         <div class="progress progress-micro" style="margin-bottom: 0;">

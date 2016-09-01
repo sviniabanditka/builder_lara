@@ -10,7 +10,7 @@ var Cropper = {
         var canvasData;
         $('#modal_crop_img').on('shown.bs.modal', function (event) {
 
-            Cropper.imgThis = $(event.relatedTarget).find(".image-attr-editable");
+            Cropper.imgThis = $(event.relatedTarget);
             var srcImg = Cropper.imgThis.attr("src_original");
             $("#modal_crop_img #image").attr("src", "");
             $("#modal_crop_img #image").attr("src", "/" + srcImg);
@@ -23,10 +23,8 @@ var Cropper = {
                     $(".height_crop").text(Math.round(data.height));
                 },
                 built: function () {
-                    /*  $image.cropper('setCanvasData', canvasData);
-                     $image.cropper('setCropBoxData', cropBoxData);*/
+
                 },
-                // responsive : false
             });
         }).on('hidden.bs.modal', function () {
             cropBoxData = Cropper.image.cropper('getCropBoxData');
