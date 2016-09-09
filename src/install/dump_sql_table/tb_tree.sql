@@ -64,6 +64,7 @@ INSERT INTO `tb_tree` (`id`, `parent_id`, `lft`, `rgt`, `depth`, `title`, `descr
 -- Индексы сохранённых таблиц
 --
 
+
 --
 -- Индексы таблицы `tb_tree`
 --
