@@ -42,6 +42,15 @@ return array(
             'title' => "Статья"
         ),
 
+        'main' => array(
+            'action' => 'HomeController@showPage',
+            'node_definition' => 'node',
+            'check' => function() {
+                return true;
+            },
+            'title' => "Главная"
+        ),
+
     ),
 
     'default' => array(
