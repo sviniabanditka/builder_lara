@@ -71,7 +71,16 @@ if ($arrSegments[0] != "admin") {
 
                         $_nodeUrl = $node->getUrlNoLocation();
                         $templates = $definition['templates'];
-                        Route::group (['middleware' => ['web']],
+
+                        $middleware = ['web'];
+                        if (isset($templates[$node->template]['middleware']) && !empty($templates[$node->template]['middleware'])) {
+
+                            foreach ((array)$templates[$node->template]['middleware'] as $midWare) {
+                                $middleware[] = $midWare;
+                            }
+                        }
+
+                        Route::group (['middleware' => $middleware],
                             function () use ($node, $_nodeUrl, $templates) {
                                 Route::group(array('prefix' => LaravelLocalization::setLocale()),
                                     function () use ($node, $_nodeUrl, $templates) {
