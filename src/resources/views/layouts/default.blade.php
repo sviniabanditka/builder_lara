@@ -48,7 +48,7 @@
         <!-- GOOGLE FONT -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
         <script src="/packages/vis/builder/js/libs/jquery-2.0.2.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
         {!! Minify::javascript(
             array(
@@ -73,7 +73,7 @@
                   '/packages/vis/builder/js/cropper.js'
                   ));
         !!}
-         <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
+         <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
          @if (isset($customJs) && count($customJs))
             @foreach($customJs as $jsFile)
                 <script src="{{$jsFile}}"></script>
