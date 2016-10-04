@@ -419,7 +419,7 @@ class QueryHandler
 
             $objectModel = new $model;
             foreach ($insertDataRes as $key => $value) {
-                $objectModel->$key = "$value";
+                $objectModel->$key = (null !== $value) ? "$value" : null;;
             }
             $objectModel->save();
             $id = $objectModel->id;
