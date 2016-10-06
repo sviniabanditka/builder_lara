@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         @foreach($orderProducts as $product)
-            <? $tovar = $product->getTovar(); ?>
+            <?php $tovar = $product->getTovar(); ?>
             <tr>
                 <td>{{$loop->index1}}</td>
                 <td>
