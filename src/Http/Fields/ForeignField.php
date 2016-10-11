@@ -244,6 +244,16 @@ class ForeignField extends AbstractField
                 }
             }
         }
+
+        $orderBy = $this->getAttribute('orderBy');
+        if ($orderBy && is_array($orderBy)) {
+            foreach ($orderBy as $order) {
+                if (isset($order['field']) && isset($order['type'])) {
+                    $db->orderBy($order['field'], $order['type']);
+                }
+            }
+        }
+
         $res = $db->get();
 
         $options = array();
