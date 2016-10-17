@@ -170,7 +170,7 @@ abstract class AbstractField
         }
         
         $type = $this->getAttribute('type');
-        
+
         $input = View::make('admin::tb.tab_input_'. $type);
         $input->value = $this->getValue($row);
         $input->name  = $this->getFieldName();
