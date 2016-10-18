@@ -113,6 +113,11 @@ class TableAdminController extends Controller
             App::abort (404);
         }
 
+        $def = $templates[$node->template]['node_definition'];
+
+        $_model = Config::get("builder.tb-definitions.tree.$def.options.model");
+        $node = (new $_model)->setRawAttributes($node->getAttributes());
+
         list($controller, $method) = explode ('@', $templates[$node->template]['action']);
 
 
