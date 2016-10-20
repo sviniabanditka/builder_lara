@@ -84,9 +84,16 @@ class ManyToManyField extends AbstractField
             }
         }
 
-        $fieldName = $this->getAttribute('foreign_value_field');
-        $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
-
+        $assocTable = $this->getAttribute('mtm_table');
+        $extTable = $this->getAttribute('mtm_external_table');
+        $assocKeyField = $this->getAttribute('mtm_key_field');
+        $assocExtKeyField = $this->getAttribute('mtm_external_key_field');
+        $extKeyField = $this->getAttribute('mtm_external_foreign_key_field');
+        $extValueField = $this->getAttribute('mtm_external_value_field');
+        $value = DB::table($assocTable)
+            ->join($extTable, $assocTable . '.' . $assocExtKeyField, '=', $extTable . '.' . $extKeyField)
+        ->where($assocTable . '.' . $assocKeyField, $row['id'])->value($extValueField);
+        
         return $value;
     } // end getValue
 
