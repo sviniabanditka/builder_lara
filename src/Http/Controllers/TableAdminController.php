@@ -99,18 +99,18 @@ class TableAdminController extends Controller
     {
 
         $arrSegments = explode("/", $slug);
-        $slug = end ($arrSegments);
+        $slug = end($arrSegments);
 
-        if (!$slug || $slug == LaravelLocalization::setLocale ()) {
+        if (!$slug || $slug == LaravelLocalization::setLocale()) {
             $slug = "/";
         }
 
         $_model = Config::get('builder.tree.model');
-        $node = $_model::where ("slug", 'like', $slug)->first ();
+        $node = $_model::where("slug", 'like', $slug)->first();
         $templates = Config::get('builder.tree.templates');
         
         if (!isset($templates[$node->template])) {
-            App::abort (404);
+            App::abort(404);
         }
 
         $def = $templates[$node->template]['node_definition'];
@@ -118,22 +118,21 @@ class TableAdminController extends Controller
         $_model = Config::get("builder.tb-definitions.tree.$def.options.model");
         $node = (new $_model)->setRawAttributes($node->getAttributes());
 
-        list($controller, $method) = explode ('@', $templates[$node->template]['action']);
+        list($controller, $method) = explode('@', $templates[$node->template]['action']);
 
 
-        if (LaravelLocalization::setLocale () == "") {
-            $pathUrl = "/" . Request::path ();
+        if (LaravelLocalization::setLocale() == "") {
+            $pathUrl = "/" . Request::path();
         } else {
-            $pathUrl = Request::path ();
+            $pathUrl = Request::path();
         }
 
-        if ($pathUrl == LaravelLocalization::setLocale () . Request::path()) {
-            Session::put ('currentNode', $node);
+        if ($pathUrl == LaravelLocalization::setLocale() . Request::path()) {
+            Session::put('currentNode', $node);
         } else {
-            Session::put ('currentNode', $node);
+            Session::put('currentNode', $node);
         }
 
-       return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
+        return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
     }
-
 }

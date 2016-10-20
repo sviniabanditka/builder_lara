@@ -5,7 +5,6 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 
-
 class ManyToManyField extends AbstractField
 {
 
@@ -28,7 +27,7 @@ class ManyToManyField extends AbstractField
             ->where($this->getAttribute('mtm_key_field'), $id);
 
         if ($this->getAttribute('mtm_external_model')) {
-            $delete = $delete->where($this->getAttribute('mtm_external_model'),  $this->definition['options']['model']);
+            $delete = $delete->where($this->getAttribute('mtm_external_model'), $this->definition['options']['model']);
         }
 
         $delete->delete();
@@ -355,5 +354,4 @@ class ManyToManyField extends AbstractField
             'more'    => $res && !empty($res),
         );
     } // end getAjaxSearchResult
-
 }

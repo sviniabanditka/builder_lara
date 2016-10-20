@@ -10,7 +10,7 @@ class ViewStatisticController extends Controller
     {
 
         $result = ViewPage::select(DB::raw("COUNT(id) AS count_view, DATE_FORMAT(`created_at`, '%Y-%m-%d') as this_day"))
-            ->where("model", 'like' , Input::get("model"))
+            ->where("model", 'like', Input::get("model"))
             ->where("id_record", Input::get("idPage"))
             ->where("created_at", ">=", Input::get("start"))
             ->where("created_at", "<=", Input::get("end")." 23:59:59")

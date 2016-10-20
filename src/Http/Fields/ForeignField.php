@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 
-
 class ForeignField extends AbstractField
 {
     private $treeMy;
@@ -80,7 +79,7 @@ class ForeignField extends AbstractField
         // FIXME:
         if ($this->getAttribute('filter') == 'foreign') {
             $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
-            $db->where($foreignValueField , $value);
+            $db->where($foreignValueField, $value);
             return;
         }
 
@@ -191,7 +190,8 @@ class ForeignField extends AbstractField
         return $input->render();
     } // end getEditInput
 
-    private function getCategory($id) {
+    private function getCategory($id)
+    {
         $node = \Tree::find($id);
         $children = $node->descendants()->get(array("id", "title", "parent_id"))->toArray();
         $result = array();
@@ -201,7 +201,8 @@ class ForeignField extends AbstractField
         return $result;
     }
 
-    private function printCategories($parent_id, $level) {
+    private function printCategories($parent_id, $level)
+    {
         //Делаем переменную $category_arr видимой в функции
         if (isset($this->treeMy[$parent_id])) { //Если категория с таким parent_id существует
             foreach ($this->treeMy[$parent_id] as $value) { //Обходим
@@ -213,7 +214,7 @@ class ForeignField extends AbstractField
 
                 $selectOption = $this->selectOption == $value["id"] ? "selected" : "";
                 $paddingLeft = "";
-                for($i=0; $i<$level; $i++) {
+                for ($i=0; $i<$level; $i++) {
                     $paddingLeft .= "--";
                 }
 
@@ -237,7 +238,7 @@ class ForeignField extends AbstractField
             foreach ($additionalWheres as $key => $opt) {
                 if (trim($opt['sign']) == "in") {
                     $db->whereIn($key, $opt['value']);
-                } else if (trim($opt['sign']) == "not in") {
+                } elseif (trim($opt['sign']) == "not in") {
                     $db->whereNotIn($key, $opt['value']);
                 } else {
                     $db->where($key, $opt['sign'], $opt['value']);

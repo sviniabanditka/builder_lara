@@ -35,7 +35,8 @@ class ImageField extends AbstractField
 
     private function getListSingle($row)
     {
-        $pathPhoto = $this->getValue($row);;
+        $pathPhoto = $this->getValue($row);
+        ;
         if (!$pathPhoto) {
             return '';
         }
@@ -120,7 +121,7 @@ class ImageField extends AbstractField
             $slug_page =  Jarboe::urlify(strip_tags($infoPage->title));
             $fileName = $slug_page . '.' . $extension;
             if (File::exists($destinationPath.$fileName)) {
-                $fileName = $slug_page . '_' . time() . rand(1,1000) . '.' . $extension;
+                $fileName = $slug_page . '_' . time() . rand(1, 1000) . '.' . $extension;
             }
         }
 
@@ -162,14 +163,16 @@ class ImageField extends AbstractField
             'link'       => $link,
             'short_link' => $destinationPath . $fileName,
             'delimiter' => ',',
-            "html" => view($returnView,
-                            ['link' => $link,
+            "html" => view(
+                $returnView,
+                ['link' => $link,
                              'data' => $data,
                              'value' => $destinationPath . $fileName,
                              'name' => Input::get("ident"),
                              'width' => $width,
                              'height' => $height
-                            ])->render()
+                ]
+            )->render()
         );
         return $response;
     } // end doUpload
@@ -203,5 +206,4 @@ class ImageField extends AbstractField
 
         return $value;
     } // end prepareQueryValue
-
 }

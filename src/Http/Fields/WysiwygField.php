@@ -1,9 +1,8 @@
-<?php 
+<?php
 
 namespace Vis\Builder\Fields;
 
-
-class WysiwygField extends AbstractField 
+class WysiwygField extends AbstractField
 {
 
     public function isEditable()
@@ -90,7 +89,7 @@ class WysiwygField extends AbstractField
         $tabs = $this->getAttribute('tabs');
         if ($tabs) {
             $field = $table .'.'. $this->getFieldName();
-            $db->where(function($query) use($field, $value, $tabs) {
+            $db->where(function ($query) use ($field, $value, $tabs) {
                 foreach ($tabs as $tab) {
                     $query->orWhere($field . $tab['postfix'], 'LIKE', '%'.$value.'%');
                 }
@@ -99,5 +98,4 @@ class WysiwygField extends AbstractField
             $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'.$value.'%');
         }
     } // end onSearchFilter
-
 }

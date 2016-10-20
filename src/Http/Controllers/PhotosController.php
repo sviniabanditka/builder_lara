@@ -43,6 +43,5 @@ class PhotosController extends Controller
                 'status' => 'success',
             )
         );
-
     }
 }

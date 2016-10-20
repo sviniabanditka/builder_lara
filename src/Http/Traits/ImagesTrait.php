@@ -18,7 +18,8 @@ trait ImagesTrait
         return  '<img src = "'.$img_res.'" title = "'.$this->title.'" alt = "'.$this->title.'">';
     } // end getImg
 
-    public function getImgPath($width = '', $height = '', $options = array()) {
+    public function getImgPath($width = '', $height = '', $options = array())
+    {
 
         if ($this->picture) {
             $picture = $this->picture;
@@ -61,7 +62,6 @@ trait ImagesTrait
             } else {
                 $imagesRes[] = "/" . $imgOne;
             }
-
         }
 
         return $imagesRes;
@@ -88,7 +88,6 @@ trait ImagesTrait
             } else {
                 $imagesRes[] = "/" . $imgOne;
             }
-
         }
 
         return $imagesRes;

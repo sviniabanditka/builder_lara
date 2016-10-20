@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
-class Setting extends Eloquent {
+class Setting extends Eloquent
+{
     use \Venturecraft\Revisionable\RevisionableTrait;
 
     protected $fillable = array('type', 'title', 'slug', 'value', 'group_type');
     protected $table = 'settings';
 
-    public static  $rules = array(
+    public static $rules = array(
         'title' => 'required',
         'slug' => 'required|max:256|unique:settings,slug,'
     );
@@ -32,7 +33,8 @@ class Setting extends Eloquent {
             if ($settingCache) {
                 return $settingCache;
             } else {
-                $resultSetting = Setting::where("slug", 'like', $slug)->first();;
+                $resultSetting = Setting::where("slug", 'like', $slug)->first();
+                ;
 
                 if (!isset($resultSetting->type)) {
                     if ($default) {
@@ -42,7 +44,6 @@ class Setting extends Eloquent {
                     } else {
                         return;
                     }
-
                 }
 
                 if ($resultSetting->type == 2 || $resultSetting->type == 3 || $resultSetting->type == 5) {
@@ -50,7 +51,7 @@ class Setting extends Eloquent {
                     Cache::tags('settings')->forever($slug, $select);
 
                     return $select;
-                } elseif(isset($resultSetting->value)) {
+                } elseif (isset($resultSetting->value)) {
                     Cache::tags('settings')->forever($slug, $resultSetting->value);
 
                     return $resultSetting->value;
@@ -65,7 +66,7 @@ class Setting extends Eloquent {
 
     public static function getItem($ids)
     {
-        if(!$ids){
+        if (!$ids) {
             return [];
         }
 
@@ -134,7 +135,6 @@ class Setting extends Eloquent {
                             }
                         }
                     }
-
                 }
             }
         }
@@ -155,7 +155,7 @@ class Setting extends Eloquent {
                             $SettingSelect->priority = $i;
                             $SettingSelect->save();
                         }
-                    }else{
+                    } else {
                         foreach ($data['select21']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
@@ -167,10 +167,8 @@ class Setting extends Eloquent {
                                 $SettingSelect->save();
                                 $i++;
                             }
-
                         }
                     }
-
                 }
             }
         }
@@ -178,7 +176,7 @@ class Setting extends Eloquent {
         //if the triple list
         if ($data['type'] == 5) {
             $i = 0;
-            foreach ($data['select31'] as $k=>$el) {
+            foreach ($data['select31'] as $k => $el) {
                 $i++;
                 if ($el) {
                     if (is_numeric($k)) {
@@ -192,7 +190,7 @@ class Setting extends Eloquent {
                             $SettingSelect->priority = $i;
                             $SettingSelect->save();
                         }
-                    }else{
+                    } else {
                         foreach ($data['select31']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
@@ -205,10 +203,8 @@ class Setting extends Eloquent {
                                 $SettingSelect->save();
                                 $i++;
                             }
-
                         }
                     }
-
                 }
             }
         }
@@ -278,6 +274,4 @@ class Setting extends Eloquent {
     {
         return $this->hasMany('Vis\Builder\SettingSelect', 'id_setting')->orderBy("priority")->get()->toArray();
     } // end select_get
-
-
 }

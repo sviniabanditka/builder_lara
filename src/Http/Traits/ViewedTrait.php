@@ -47,5 +47,4 @@ trait ViewedTrait
             return $viewed_products;
         }
     }
-
 }

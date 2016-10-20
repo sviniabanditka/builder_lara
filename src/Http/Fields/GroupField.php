@@ -1,7 +1,9 @@
 <?php
 namespace Vis\Builder\Fields;
+
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+
 class GroupField extends AbstractField
 {
     public function isEditable()
@@ -41,7 +43,6 @@ class GroupField extends AbstractField
                         $sectionResult[$k][$nameParam] = $filds[$nameParam];
 
                         if (isset($filds[$nameParam]['tabs'])) {
-
                             $sectionResult[$k][$nameParam]['html'] = $resultObjectFild->getTabbedEditInput($param);
                         } else {
                             $sectionResult[$k][$nameParam]['html'] = $resultObjectFild->getEditInput(array($nameParam => $valParam));
@@ -72,7 +73,8 @@ class GroupField extends AbstractField
         return $input->render();
     } // end getEditInput
 
-    private  function isJson($string) {
+    private function isJson($string)
+    {
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }

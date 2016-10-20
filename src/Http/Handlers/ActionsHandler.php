@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 
-class ActionsHandler 
+class ActionsHandler
 {
     
     protected $def;
@@ -59,7 +59,7 @@ class ActionsHandler
         $action->definition = $this->controller->getDefinition();
         
         return $action;
-    } // end onCustomButton    
+    } // end onCustomButton
     
     private function onInsertButton()
     {
@@ -211,5 +211,4 @@ class ActionsHandler
         
         return false;
     } // end isAllowed
-    
 }

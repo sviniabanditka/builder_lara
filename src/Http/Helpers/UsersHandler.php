@@ -56,7 +56,6 @@ class UsersHandler extends CustomHandler
     public function onUpdateRowData(array &$value, $row)
     {
         if (isset($row['id'])) {
-
             if ($value['activated'] == 0) {
                 $user = Sentinel::findById($row['id']);
                 Activation::remove($user);
@@ -89,5 +88,4 @@ class UsersHandler extends CustomHandler
 
         return $user->id;
     }
-
 }

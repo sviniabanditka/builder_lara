@@ -13,8 +13,9 @@ class DashboardController extends Controller
         $countColoums = count($columns);
         $nameClassGrid = 12/$countColoums;
 
-        return view('admin::dashboard.index',
-            compact("columns", "nameClassGrid"));
+        return view(
+            'admin::dashboard.index',
+            compact("columns", "nameClassGrid")
+        );
     }
-
 }
