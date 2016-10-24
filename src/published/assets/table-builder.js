@@ -668,7 +668,7 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form);
 
                 if (response.id) {
-                    TableBuilder.showSuccessNotification(phrase['Новоя запись добавлена']);
+                    TableBuilder.showSuccessNotification('Новая запись добавлена');
 
                     if (TableBuilder.options.is_page_form) {
                         //window.location.href = TableBuilder.options.list_url;
