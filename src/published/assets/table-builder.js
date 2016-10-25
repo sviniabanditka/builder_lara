@@ -1401,7 +1401,18 @@ var TableBuilder = {
     checkActionSelect : function (value) {
         $("section.section_field").hide();
         $("section.section_field." + value).show();
-    }
+    },
+
+    doActiveMenu : function () {
+
+        var thisUrl = window.location.pathname;
+
+        $('nav a[href="' + thisUrl +'"]').parent().addClass('active');
+        if (!$('nav a[href="' + thisUrl +'"]').parents('.level1').hasClass('active')) {
+            $('nav a[href="' + thisUrl +'"]').parents('.level1').addClass('open');
+        }
+        $('nav a[href="' + thisUrl +'"]').parents('.level1').find('ul').show();
+    },
 
 };
 
