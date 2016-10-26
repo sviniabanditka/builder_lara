@@ -26,9 +26,7 @@ var TableBuilder = {
 
     init: function(options)
     {
-
         TableBuilder.options = TableBuilder.getOptions(options);
-        TableBuilder.initSearchOnEnterPressed();
         TableBuilder.initSelect2Hider();
     }, // end init
 
@@ -133,7 +131,7 @@ var TableBuilder = {
 
     initSearchOnEnterPressed: function()
     {
-        jQuery('.filters-row input').keypress(function(event) {
+        $(document).on('keypress', '.filters-row input', function(event) {
             var keyCode   = event.keyCode ? event.keyCode : event.which;
             var enterCode = '13';
 
@@ -142,6 +140,7 @@ var TableBuilder = {
                 event.preventDefault();
             }
         });
+
     }, // end initSearchOnEnterPressed
 
     getOptions: function(options) {
@@ -210,8 +209,7 @@ var TableBuilder = {
         var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
 
         $posting.done(function(response) {
-            doAjaxLoadContent(location.href);
-            // window.location.replace(window.location.origin + window.location.pathname + window.location.search);
+            doAjaxLoadContent(location.pathname);
         });
 
     }, // end search
@@ -1496,6 +1494,7 @@ var TableBuilder = {
 $(window).load(function() {
     TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();
+    TableBuilder.initSearchOnEnterPressed();
     $(document).on('click', 'a.node_link', function (e) {
         var href = $(this).attr('href');
         doAjaxLoadContent(href);
