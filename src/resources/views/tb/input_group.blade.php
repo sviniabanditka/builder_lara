@@ -1,3 +1,4 @@
+</label>
 <div class="group" name="{{$name}}">
     <div class="other_section">
         @foreach($rows as $k => $filds)
@@ -13,9 +14,9 @@
                             <label class="label">{{$fild['caption']}}</label>
                         @endif
                         <div style="position: relative;">
-                            <label class="input tabs_section">
+                            <div class="tabs_section">
                                 {!! $fild['html'] !!}
-                            </label>
+                            </div>
                         </div>
                     </section>
                 @endforeach
@@ -55,3 +56,4 @@
     }
     groupTabsRefresh('{{$name}}');
 </script>
+<label>
