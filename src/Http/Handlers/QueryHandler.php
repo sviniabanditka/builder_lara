@@ -546,13 +546,20 @@ class QueryHandler
         return $values;
     } // end _unsetFutileFields
 
-    private function _checkFields($values)
+    private function _checkFields(&$values)
     {
         $definition = $this->controller->getDefinition();
         $fields = $definition['fields'];
 
         foreach ($fields as $ident => $options) {
             $field = $this->controller->getField($ident);
+
+            if (method_exists($field, 'getNewValueId') && isset($values[$ident . '_new_foreign'])) {
+                if ($new_id = $field->getNewValueId($values[$ident . '_new_foreign'])) {
+                    $values[$ident] = $new_id;
+                }
+                unset($values[$ident . '_new_foreign']);
+            }
 
             if ($field->isPattern()) {
                 continue;
