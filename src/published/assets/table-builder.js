@@ -1126,7 +1126,7 @@ var TableBuilder = {
         });
     }, // end setPerPageAmount
 
-    doExport: function(type)
+    doExport: function(type, urlBasic)
     {
         TableBuilder.showPreloader();
 
@@ -1141,10 +1141,14 @@ var TableBuilder = {
             out.push(val['name'] +'='+ val['value']);
         });
 
+        if (urlBasic == undefined) {
+            urlBasic = document.location.pathname;
+        }
+
         if (document.location.search) {
-            var url = document.location.pathname + document.location.search + '&' + out.join('&');
+            var url = urlBasic + document.location.search + '&' + out.join('&');
         } else {
-            var url = document.location.pathname +'?'+ out.join('&');
+            var url = urlBasic +'?'+ out.join('&');
         }
 
         $iframe.attr('src', url);
