@@ -20,16 +20,21 @@ class GroupsHandler extends CustomHandler
 
     public function onGetEditInput($formField, array &$row)
     {
-        if ($row) {
-            if ($formField->getFieldName() == 'permissions') {
 
-                $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
+        if ($formField->getFieldName() == 'permissions') {
+
+            $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
+
+            if (isset($row['id'])) {
                 $group = Group::find($row['id']);
                 $groupPermissionsThis = $group->permissions;
-
-                return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
+            } else {
+                $groupPermissionsThis = [];
             }
+
+            return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
         }
+
     } // end onGetEditInput
 
     public function onAddSelectField($field, $db)
@@ -53,6 +58,27 @@ class GroupsHandler extends CustomHandler
             $role->save();
 
             unset($value['permissions']);
+        }
+    }
+
+    public function onInsertRowData(array &$value)
+    {
+        if (isset($value['permissions'])) {
+            foreach ($value['permissions'] as $key => $permissions) {
+                $permissionResult[$key] = $permissions ? true : false;
+            }
+
+            $value['permissions'] = $permissionResult;
+
+            $group = new Group();
+
+            foreach ($value as $alias => $result) {
+                $group->$alias = $result;
+            }
+
+            $group->save();
+
+            return $group->id;
         }
     }
 
