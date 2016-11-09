@@ -52,7 +52,6 @@ class TextField extends AbstractField
         }
 
         $type = $this->getAttribute('type');
-
         $input = View::make('admin::tb.input_'. $type);
         $input->value = $this->getValue($row);
         $input->name  = $this->getFieldName();

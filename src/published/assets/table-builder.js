@@ -284,6 +284,11 @@ var TableBuilder = {
                 TableBuilder.initFroalaEditor();
                 TableBuilder.hidePreloader();
                 TableBuilder.handleActionSelect();
+
+                jQuery(TableBuilder.form).find('input[data-mask]').each(function() {
+                    var $input = jQuery(this);
+                    $input.mask($input.attr('data-mask'));
+                });
             });
         /* } else {
          jQuery(TableBuilder.form).modal('show');
@@ -358,6 +363,7 @@ var TableBuilder = {
                     TableBuilder.initFroalaEditor();
 
                     jQuery(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
+
                     jQuery(TableBuilder.form_edit).find('input[data-mask]').each(function() {
                         var $input = jQuery(this);
                         $input.mask($input.attr('data-mask'));
@@ -1170,13 +1176,8 @@ var TableBuilder = {
         });
     }, // end showBigErrorNotification
 
-    doImport: function(context, type, url )
+    doImport: function(context, type)
     {
-
-        if (url == undefined) {
-            url = TableBuilder.getActionUrl();
-        }
-
         TableBuilder.showPreloader();
 
         var data = new FormData();
@@ -1194,7 +1195,7 @@ var TableBuilder = {
                 jQuery.ajax({
                     data: data,
                     type: "POST",
-                    url: url,
+                    url: TableBuilder.getActionUrl(),
                     cache: false,
                     contentType: false,
                     processData: false,
