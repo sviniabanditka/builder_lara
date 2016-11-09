@@ -421,15 +421,29 @@ class QueryHandler
 
         if (!$id) {
             //$this->doPrependFilterValues($insertData);
-
+            $def = $this->controller->getDefinition();
+            
             foreach ($insertData as $fild => $data) {
                 if (is_array($data)) {
+
+                    if (isset($def['fields'][$fild]['multi']) &&  $def['fields'][$fild]['multi']) {
+                        foreach ($data as $k => $dataElement) {
+                            if (!$dataElement) {
+                                unset($data[$k]);
+                            }
+                        }
+
+                        if (count($data) == 0) {
+                            $data = [''];
+                        }
+                    }
+
                     $insertDataRes[$fild] = json_encode($data);
                 } else {
                     $insertDataRes[$fild] = $data;
                 }
             }
-            $def = $this->controller->getDefinition();
+
             $model = $def['options']['model'];
 
             $objectModel = new $model;

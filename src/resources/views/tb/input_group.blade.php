@@ -4,7 +4,7 @@
         @foreach($rows as $k => $filds)
             <div class="section_group">
                 <p style="text-align: right"><a class="delete_group"  onclick="TableBuilder.deleteGroup(this)"><i class="fa red fa-times"></i> Удалить</a></p>
-                @foreach($filds as $fild)
+                @foreach($filds as $titleField => $fild)
                     <section @if(isset($fild['tabs'])) style='margin-top:20px' @endif  >
 
                         @if (!isset($fild['tabs']))
@@ -13,6 +13,9 @@
                         <div style="position: relative;">
                             <div class="tabs_section">
                                 {!! $fild['html'] !!}
+                                @if (isset($fild['multi']) && $fild['multi'])
+                                <input type="hidden" name="{{$titleField}}" value=''>
+                                @endif
                             </div>
                         </div>
                     </section>
@@ -32,6 +35,11 @@
         if ($(this).attr("name") != undefined) {
             $(this).attr("id", "{{$name}}_" + $(this).attr("name"));
             $(this).attr("name", "{{$name}}[" + $(this).attr("name")+ "][]");
+
+            if ($(this).attr("data-multi") == 'multi') {
+                $(this).removeAttr('name');
+            }
+
         }
     });
 

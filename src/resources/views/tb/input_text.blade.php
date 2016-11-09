@@ -6,6 +6,7 @@
             @foreach($value as $valueOne)
                 <label class="input" @if ($multi) style="margin-bottom: 5px"  @endif>
                     <input
+                        data-multi = 'multi'
                         type="{{$custom_type ? $custom_type : 'text'}}"
                         value="{{ $valueOne }}"
                         name="{{ $name }}"
@@ -34,6 +35,7 @@
 
             <label class="input" @if ($multi) style="margin-bottom: 5px"  @endif>
                 <input
+                @if ($multi) data-multi = 'multi'  @endif
                 @if ($is_password)
                     type="password"
                     @if ((isset($value) && $value))

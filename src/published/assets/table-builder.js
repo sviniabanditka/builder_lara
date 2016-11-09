@@ -122,6 +122,26 @@ var TableBuilder = {
         });
 
         $("a[href='https://froala.com/wysiwyg-editor']").parent().remove();
+
+        $('.group').on('keyup, blur', '[data-multi=multi]', function(){
+            TableBuilder.multiInputAction($(this));
+        });
+
+        $( ".group [data-multi=multi]" ).each(function(  ) {
+            TableBuilder.multiInputAction($(this));
+        });
+    },
+
+    multiInputAction : function (context) {
+        var inputThisBlock = context.parents(".input_content").find("input"),
+            arrayData = [],
+            hideInput = context.parents('.tabs_section').find("input[type=hidden]");
+
+        $( inputThisBlock ).each(function( index ) {
+            arrayData.push($(this).val())
+        });
+
+        hideInput.val(JSON.stringify(arrayData));
     },
 
     getActionUrl: function()
@@ -285,17 +305,17 @@ var TableBuilder = {
                 TableBuilder.hidePreloader();
                 TableBuilder.handleActionSelect();
 
-                jQuery(TableBuilder.form).find('input[data-mask]').each(function() {
-                    var $input = jQuery(this);
-                    $input.mask($input.attr('data-mask'));
-                });
+                TableBuilder.refreshMask();
             });
-        /* } else {
-         jQuery(TableBuilder.form).modal('show');
-         TableBuilder.hidePreloader();
-         }*/
 
     }, // end getCreateForm
+
+    refreshMask : function () {
+        jQuery("#modal_form_edit form, #modal_form form").find('input[data-mask]').each(function() {
+            var $input = jQuery(this);
+            $input.mask($input.attr('data-mask'));
+        });
+    },
 
     initSelect2Hider: function()
     {
@@ -364,10 +384,7 @@ var TableBuilder = {
 
                     jQuery(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
 
-                    jQuery(TableBuilder.form_edit).find('input[data-mask]').each(function() {
-                        var $input = jQuery(this);
-                        $input.mask($input.attr('data-mask'));
-                    });
+                    TableBuilder.refreshMask();
                     TableBuilder.handleActionSelect();
                 } else {
                     TableBuilder.showErrorNotification("Что-то пошло не так, попробуйте позже");
@@ -1448,11 +1465,18 @@ var TableBuilder = {
     addGroup : function(context)
     {
         var sectionGroup = $(context).parent().find(".section_group").first().clone();
+        if ($(sectionGroup).find('input[data-multi=multi]').size() > 1) {
+            $(sectionGroup).find('input[data-multi=multi]').not(":first").remove();
+
+            //   sectionGroup = $(sectionGroup).find('input[data-multi=multi]').first();
+        }
         $(sectionGroup).find("input, textarea").val("");
         $(sectionGroup).find(".tb-uploaded-image-container").html("<ul class='dop_foto'></ul>");
         $(sectionGroup).find(".uploaded-files").html("<ul class='ui-sortable'></ul>");
 
         $(context).parent().find(".other_section").append(sectionGroup);
+
+        TableBuilder.refreshMask();
     },
 
     addMoreInput : function (context) {
@@ -1461,10 +1485,7 @@ var TableBuilder = {
         labelInput.find("input").val("");
         contentInput.append(labelInput);
 
-        jQuery("#modal_form form").find('input[data-mask]').each(function() {
-            var $input = jQuery(this);
-            $input.mask($input.attr('data-mask'));
-        });
+        TableBuilder.refreshMask();
     },
 
     deleteGroup : function(context)
@@ -1522,6 +1543,7 @@ $(window).load(function() {
         doAjaxLoadContent(href);
         e.preventDefault();
     });
+
 });
 $.ajaxSetup({
     headers: {
