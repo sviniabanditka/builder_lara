@@ -266,6 +266,19 @@ class QueryHandler
 
         foreach ($updateData as $fild => $data) {
             if (is_array($data)) {
+
+                if (isset($def['fields'][$fild]['multi']) &&  $def['fields'][$fild]['multi']) {
+                    foreach ($data as $k => $dataElement) {
+                        if (!$dataElement) {
+                            unset($data[$k]);
+                        }
+                    }
+
+                    if (count($data) == 0) {
+                        $data = [''];
+                    }
+                }
+
                 $updateDataRes[$fild] = json_encode($data);
             } else {
                 $updateDataRes[$fild] = $data;

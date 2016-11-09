@@ -1,4 +1,4 @@
-</label>
+
 <div class="group" name="{{$name}}">
     <div class="other_section">
         @foreach($rows as $k => $filds)
@@ -6,9 +6,6 @@
                 <p style="text-align: right"><a class="delete_group"  onclick="TableBuilder.deleteGroup(this)"><i class="fa red fa-times"></i> Удалить</a></p>
                 @foreach($filds as $fild)
                     <section @if(isset($fild['tabs'])) style='margin-top:20px' @endif  >
-
-
-
 
                         @if (!isset($fild['tabs']))
                             <label class="label">{{$fild['caption']}}</label>
@@ -56,4 +53,3 @@
     }
     groupTabsRefresh('{{$name}}');
 </script>
-<label>

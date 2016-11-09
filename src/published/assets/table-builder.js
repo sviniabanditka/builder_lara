@@ -1455,6 +1455,13 @@ var TableBuilder = {
         $(context).parent().find(".other_section").append(sectionGroup);
     },
 
+    addMoreInput : function (context) {
+        var labelInput = $(context).parents('.div_input').find("label.input").first().clone();
+        var contentInput = $(context).parents('.div_input').find('.input_content');
+        labelInput.find("input").val("");
+        contentInput.append(labelInput);
+    },
+
     deleteGroup : function(context)
     {
         var sizeGroup = $(context).parent().parent().parent().find(".section_group").size();
