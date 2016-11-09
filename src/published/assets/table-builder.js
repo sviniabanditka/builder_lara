@@ -1460,6 +1460,11 @@ var TableBuilder = {
         var contentInput = $(context).parents('.div_input').find('.input_content');
         labelInput.find("input").val("");
         contentInput.append(labelInput);
+
+        jQuery("#modal_form form").find('input[data-mask]').each(function() {
+            var $input = jQuery(this);
+            $input.mask($input.attr('data-mask'));
+        });
     },
 
     deleteGroup : function(context)
