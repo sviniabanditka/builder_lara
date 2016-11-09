@@ -23,7 +23,7 @@
                 @endif
                     <div style="position: relative;">
                         <label class="input">
-                        <input type="text" 
+                        <input type="{{$is_email ? 'email' : 'text'}}"
                                value="{{{ $tab['value'] }}}" 
                                name="{{ $name . $tab['postfix']}}" 
                                placeholder="{{{$tab['placeholder']}}}"

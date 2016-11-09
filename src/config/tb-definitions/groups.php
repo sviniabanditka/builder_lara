@@ -65,7 +65,11 @@ return array(
             'hide_list' => true,
             'permissions' => array(
                 'admin.access' => 'Доступ в админку',
-                'admin.access_news' =>'Доступ в новости'
+                'новости' => array(
+                    'admin.access_views' => 'Просмотр',
+                    'admin.access_edit' => 'Редактирование',
+                    'admin.access_delete' => 'Удаление',
+                )
             )
         ),
 

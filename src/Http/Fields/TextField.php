@@ -57,6 +57,7 @@ class TextField extends AbstractField
         $input->name  = $this->getFieldName();
         $input->rows  = $this->getAttribute('rows');
         $input->mask  = $this->getAttribute('mask');
+        $input->is_email  = $this->getAttribute('is_email');
         $input->placeholder = $this->getAttribute('placeholder');
         $input->is_password = $this->getAttribute('is_password');
         $input->comment = $this->getAttribute('comment');

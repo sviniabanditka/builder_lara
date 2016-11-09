@@ -6,7 +6,7 @@
             value="password"
         @endif
     @else
-        type="text"
+        type="{{$is_email ? 'email' : 'text'}}"
         value="{{ $value }}"
     @endif
         id="{{$name}}"
