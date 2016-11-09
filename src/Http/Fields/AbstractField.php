@@ -173,7 +173,7 @@ abstract class AbstractField
         $input->name  = $this->getFieldName();
         $input->rows  = $this->getAttribute('rows');
         $input->mask  = $this->getAttribute('mask');
-        $input->is_email  = $this->getAttribute('is_email');
+        $input->custom_type  = $this->getAttribute('custom_type');
         $input->placeholder = $this->getAttribute('placeholder');
         $input->caption = $this->getAttribute('caption');
         $input->tabs = $this->getPreparedTabs($row);
