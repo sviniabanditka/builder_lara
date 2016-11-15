@@ -1193,8 +1193,12 @@ var TableBuilder = {
         });
     }, // end showBigErrorNotification
 
-    doImport: function(context, type)
+    doImport: function(context, type, url)
     {
+        if (url == undefined) {
+            url = TableBuilder.getActionUrl();
+        }
+
         TableBuilder.showPreloader();
 
         var data = new FormData();
@@ -1212,7 +1216,7 @@ var TableBuilder = {
                 jQuery.ajax({
                     data: data,
                     type: "POST",
-                    url: TableBuilder.getActionUrl(),
+                    url: url,
                     cache: false,
                     contentType: false,
                     processData: false,
