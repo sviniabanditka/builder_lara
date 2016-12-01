@@ -1,5 +1,5 @@
 <li>
-    <a href="{{ url(sprintf($def['link'], $row[$def['params'][0]])) }}"><i class="fa fa-{{$def['icon']}}"></i>
+    <a onclick="TableBuilder.doCustomAction('{{ url(sprintf($def['link'], $row[$def['params'][0]])) }}')" href="javascript:;"><i class="fa fa-{{$def['icon']}}"></i>
     {{ __cms($def['caption'])  }}
     </a>
 </li>
