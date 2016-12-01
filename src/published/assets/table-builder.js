@@ -357,6 +357,49 @@ var TableBuilder = {
 
     }, // end handleStartLoad
 
+    doCustomAction: function(url) {
+
+        TableBuilder.showPreloader();
+
+        jQuery.ajax({
+            type: "POST",
+            url: url,
+            data: {},
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.status === true) {
+                    jQuery.smallBox({
+                        title : response.message,
+                        content : "",
+                        color : "#659265",
+                        iconSmall : "fa fa-check fa-2x fadeInRight animated",
+                        timeout : 4000
+                    });
+                } else {
+                    jQuery.smallBox({
+                        title : "Something went wrong, try again later",
+                        content : "",
+                        color : "#C46A69",
+                        iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                        timeout : 4000
+                    });
+                }
+
+                TableBuilder.hidePreloader();
+            },
+            error: function() {
+                jQuery.smallBox({
+                    title : "Something went wrong, try again later",
+                    content : "",
+                    color : "#C46A69",
+                    iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                    timeout : 4000
+                });            
+            }
+        });
+    },
+
     getEditForm: function(id, context)
     {
         var urlPage = "?id=" + id;
