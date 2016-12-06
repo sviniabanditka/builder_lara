@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Vis\Builder\Facades\Jarboe as JarboeBuilder;
+use Request;
 
 class Tree extends \Baum\Node
 {
@@ -98,6 +99,17 @@ class Tree extends \Baum\Node
             return $this->_nodeUrl;
         }
 
+        if (Config::get('builder.' . $this->fileDefinition . '.basic_domain')) {
+
+            if (Request::secure()) {
+                $protocol = "https://";
+            } else {
+                $protocol = "http://";
+            }
+
+            return $protocol.Config::get('builder.' . $this->fileDefinition . '.basic_domain'). "/"  . $this->_nodeUrl;
+        }
+
         return "/"  . $this->_nodeUrl;
     } // end getUrl
 
@@ -138,10 +150,19 @@ class Tree extends \Baum\Node
             $slugs[] = $node->slug;
         }
 
-        if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')) {
-            $thisUrl = url("/");
+        if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
+            && Config::get('builder.' . $this->fileDefinition . '.basic_domain')
+        ) {
+            $subDomain = Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain');
+            $basicDomain = Config::get('builder.' . $this->fileDefinition . '.basic_domain');
 
-            return str_replace("://", "://" . Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain'). ".", $thisUrl). implode('/', $slugs);
+            if (Request::secure()) {
+                $protocol = "https://";
+            } else {
+                $protocol = "http://";
+            }
+
+            return $protocol . $subDomain . '.' . $basicDomain . implode('/', $slugs);
         }
 
         return implode('/', $slugs);
