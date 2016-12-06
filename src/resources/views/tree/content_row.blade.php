@@ -64,7 +64,7 @@
 
                    {{--preview--}}
                    @if(Config::get('builder.'.$treeName.'.actions.preview.check'))
-                    <li><a href="{{ url($item->getUrl()) }}?show=1" target="_blank"><i class="fa fa-eye"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.preview.caption'))}} </a></li>
+                    <li><a href="{{ $item->getUrl() }}?show=1" target="_blank"><i class="fa fa-eye"></i> {{__cms(Config::get('builder.'.$treeName.'.actions.preview.caption'))}} </a></li>
                    @endif
 
                     {{--clone--}}

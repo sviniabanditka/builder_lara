@@ -93,7 +93,12 @@ class Tree extends \Baum\Node
         if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
-        return "/".$this->_nodeUrl;
+
+        if (strpos($this->_nodeUrl, "http") !== false) {
+            return $this->_nodeUrl;
+        }
+
+        return "/"  . $this->_nodeUrl;
     } // end getUrl
 
     //return url without location
@@ -103,7 +108,8 @@ class Tree extends \Baum\Node
         if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
-        return "/".$this->_nodeUrl;
+
+        return "/". $this->_nodeUrl;
     }
 
     public function getGeneratedUrl()
@@ -130,6 +136,12 @@ class Tree extends \Baum\Node
                 continue;
             }
             $slugs[] = $node->slug;
+        }
+
+        if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')) {
+            $thisUrl = url("/");
+
+            return str_replace("://", "://" . Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain'). ".", $thisUrl). implode('/', $slugs);
         }
 
         return implode('/', $slugs);
