@@ -314,9 +314,9 @@ class RequestHandler
         $prefixPath = 'storage/tb-'.$definitionName.'/';
         $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
         $destinationPath = $prefixPath . $postfixPath;
-        
+
         $status = $file->move($destinationPath, $fileName);
-        
+
         $data = array(
             'status' => true,
             'link'   => URL::to($destinationPath . $fileName),
@@ -530,7 +530,7 @@ class RequestHandler
     protected function checkEditPermission($id)
     {
         if (!$this->controller->isAllowedID($id)) {
-            throw new \RuntimeException("Permission denied to perform edit for #{$id}.");
+           // throw new \RuntimeException("Permission denied to perform edit for #{$id}.");
         }
     } // end checkEditPermission
 
