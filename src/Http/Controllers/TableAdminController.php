@@ -108,7 +108,13 @@ class TableAdminController extends Controller
         $_model = Config::get('builder.tree.model');
         $node = $_model::where("slug", 'like', $slug)->first();
         $templates = Config::get('builder.tree.templates');
-        
+
+        //check correctly url
+        if ($node->getUrl() != Request::url()) {
+            App::abort(404);
+        }
+
+        //check isset template
         if (!isset($templates[$node->template])) {
             App::abort(404);
         }
