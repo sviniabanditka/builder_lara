@@ -22,11 +22,24 @@ class ImportHandler
     public function fetch()
     {
         $def = $this->def;
-        if (!$def || !$def['check']()) {
-            return '';
+
+        if (isset($def['caption'])) {
+
+            return View::make('admin::tb.import_buttons', compact('def'));
+
+            // 2 or more buttons 
+        } else {
+
+            $defArray = $def;
+            $html = "";
+
+            foreach ($defArray as $def) {
+                $html .= View::make('admin::tb.import_buttons', compact('def'))->render();
+            }
+
+            return $html;
         }
 
-        return View::make('admin::tb.import_buttons', compact('def'));
     } // end fetch
     
     public function doImportCsv($file)
