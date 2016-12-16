@@ -167,7 +167,7 @@ class TBTreeController extends \Controller
             }
         }
         
-        Tree::rebuild();
+        //Tree::rebuild();
         
         $this->doFlushTreeStructureCache();
 
@@ -217,7 +217,7 @@ class TBTreeController extends \Controller
         
         $node->makeChildOf($root);
         
-        Tree::rebuild();
+      //  Tree::rebuild();
         
         $this->doFlushTreeStructureCache();
         

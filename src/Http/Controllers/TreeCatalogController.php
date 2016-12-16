@@ -99,7 +99,7 @@ class TreeCatalogController
 
         $node->makeChildOf($root);
 
-        $model::rebuild();
+        //$model::rebuild(true);
         $root->clearCache();
 
         return Response::json(array(
@@ -142,9 +142,9 @@ class TreeCatalogController
 
         $tableName = with(new $model)->getTable();
         $lastId = DB::table($tableName)->insertGetId($page);
-        $cloneRecord = $model::where("id", $lastId)->first();
+       // $cloneRecord = $model::where("id", $lastId)->first();
 
-        $cloneRecord::rebuild(true);
+        //$cloneRecord::rebuild(true);
 
         $folderCheck =  $model::where("parent_id", $idClonePage)->select("*")->orderBy('lft', 'desc')->get()->toArray();
         if (count($folderCheck)) {
@@ -196,7 +196,7 @@ class TreeCatalogController
             }
         }
 
-        $model::rebuild();
+        //$model::rebuild();
         $root->clearCache();
 
         $item = $model::find($item->id);
