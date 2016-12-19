@@ -147,9 +147,13 @@ class ImageField extends AbstractField
         $width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
         $height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
 
-        OptmizationImg::run("/".$destinationPath . $fileName);
+      //  OptmizationImg::run("/".$destinationPath . $fileName);
 
-        $link = glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
+        if ($extension == 'svg') {
+            $link = $destinationPath . $fileName;
+        } else {
+            $link = glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
+        }
 
         if (Input::get("type") == "single_photo") {
             $returnView = "admin::tb.html_image_single";
@@ -166,11 +170,11 @@ class ImageField extends AbstractField
             "html" => view(
                 $returnView,
                 ['link' => $link,
-                             'data' => $data,
-                             'value' => $destinationPath . $fileName,
-                             'name' => Input::get("ident"),
-                             'width' => $width,
-                             'height' => $height
+                 'data' => $data,
+                 'value' => $destinationPath . $fileName,
+                 'name' => Input::get("ident"),
+                 'width' => $width,
+                 'height' => $height
                 ]
             )->render()
         );

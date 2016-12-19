@@ -3,7 +3,12 @@
          data-tbident="{{$name}}"
          data-width="{{$width}}"
          data-height="{{$height}}"
-         src="{{ glide($value, ['w' => $width, 'h' => $height]) }}" src_original="{{$value}}"
+         @if (strpos($value, ".svg"))
+            width="{{$width}}"
+            src="/{{ $value}}" src_original="{{$value}}"
+         @else
+           src="{{ glide($value, ['w' => $width, 'h' => $height]) }}" src_original="{{$value}}"
+         @endif
          data-target="#modal_crop_img"
          data-toggle="modal"
      />

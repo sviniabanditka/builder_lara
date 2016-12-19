@@ -1,7 +1,13 @@
 <li >
     <img class="image-attr-editable"
          data-tbnum="{{$key or ""}}"
-         src="{{glide($value, ['w'=>'120','h'=>'120']) }}"
+         @if (strpos($value, '.svg'))
+            width = '120'
+            height='120'
+            src="/{{$value}}"
+         @else
+            src="{{glide($value, ['w'=>'120','h'=>'120']) }}"
+         @endif
          data_src_original= "{{$value}}"
          src_original = "{{$value}}"
          data-width = '120'
