@@ -87,8 +87,15 @@ abstract class AbstractField
             $fieldName = $fieldName . $tabs[0]['postfix'];
         }
 
-        $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
-        
+        $value = '';
+        if (isset($row[$fieldName])) {
+            $value = $row[$fieldName];
+        } else {
+            if ($this->getAttribute('default')) {
+                $value = $this->getAttribute('default');
+            }
+        }
+
         return $value;
     } // end getValue
     
