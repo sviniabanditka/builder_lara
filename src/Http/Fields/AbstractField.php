@@ -196,7 +196,7 @@ abstract class AbstractField
         $tabs = $this->getAttribute('tabs');
         $required = array(
             'placeholder',
-            'postfix'
+            'postfix',
         );
         foreach ($tabs as &$tab) {
             foreach ($required as $option) {
@@ -204,8 +204,13 @@ abstract class AbstractField
                     $tab[$option] = '';
                 }
             }
-            
+
             $tab['value'] = $this->getValue($row, $tab['postfix']);
+
+            if (!$tab['value'] && isset($tab['default'])) {
+                $tab['value'] = $tab['default'];
+            }
+
         }
         
         return $tabs;
