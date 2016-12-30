@@ -21,8 +21,8 @@ class ColorField extends AbstractField
                 return $res;
             }
         }
-        
-        return '<div style="height: 20px; background-color: '. $this->getValue($row) .';"></div>';
+
+        return '<span style="height: 20px; width:20px; display:inline-block; background-color: '. $this->getValue($row) .';"></spans>';
     } // end getListValue
 
     public function getEditInput($row = array())
