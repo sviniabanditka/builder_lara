@@ -1,4 +1,4 @@
-
+<label class="input">
 <input type="text" 
        id="{{ $prefix . $name }}"
        value="{{$value}}" 
@@ -8,7 +8,12 @@
 <span class="input-group-addon form-input-icon">
     <i class="fa fa-calendar"></i>
 </span>
-
+</label>
+@if (isset($comment) && $comment)
+    <div class="note">
+        {{$comment}}
+    </div>
+@endif
 <script>
 jQuery(document).ready(function() {
     jQuery("#{{ $prefix . $name }}").datepicker({

@@ -1,13 +1,14 @@
+<label class="input">
+    <input type="text"
+           id="{{ $prefix . $name }}"
+           value="{{$value}}"
+           name="{{$name}}"
+           class="form-control datepicker" >
 
-<input type="text" 
-       id="{{ $prefix . $name }}"
-       value="{{$value}}" 
-       name="{{$name}}" 
-       class="form-control datepicker" >
-       
-<span class="input-group-addon form-input-icon">
-    <i class="fa fa-calendar"></i>
-</span>
+    <span class="input-group-addon form-input-icon">
+        <i class="fa fa-calendar"></i>
+    </span>
+</label>
 
 @if (isset($comment) && $comment)
   <div class="note">
