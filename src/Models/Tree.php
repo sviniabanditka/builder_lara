@@ -59,7 +59,7 @@ class Tree extends \Baum\Node
     {
         $slug = JarboeBuilder::urlify($value);
 
-        $slugCheck = $this->where('slug', 'like', $slug)->where("id", "!=", $this->id)->count();
+        /*$slugCheck = $this->where('slug', 'like', $slug)->where("id", "!=", $this->id)->count();
 
         if ($slugCheck) {
             $slug = $slug . "_" . $this->id;
@@ -68,10 +68,34 @@ class Tree extends \Baum\Node
         $slugCheckId = $this->where('slug', 'like', $slug)->where("id", "!=", $this->id)->count();
         if ($slugCheckId) {
             $slug = $slug . "_" . time();
-        }
+        }*/
 
         $this->attributes['slug'] = $slug;
     } // end setSlugAttribute
+
+
+    public function checkUnicUrl()
+    {
+        $slug = $this->slug;
+        $slugCheck = $this->where('slug', 'like', $this->slug)
+                    ->where('parent_id', $this->parent_id)
+                    ->where("id", "!=", $this->id)->count();
+
+        if ($slugCheck) {
+            $slug = $this->slug . "_" . $this->id;
+        }
+
+        $slugCheckId = $this->where('slug', 'like', $slug)
+            ->where('parent_id', $this->parent_id)
+            ->where("id", "!=", $this->id)->count();
+
+        if ($slugCheckId) {
+            $slug = $slug . "_" . time();
+        }
+
+        $this->slug = $slug;
+        $this->save();
+    }
 
     public function hasTableDefinition()
     {
@@ -149,6 +173,10 @@ class Tree extends \Baum\Node
             }
             $slugs[] = $node->slug;
         }
+
+      /*  if (Config::get('builder.' . $this->fileDefinition . '.remove_first_part_in_url')) {
+            unset($slugs[0]);
+        }*/
 
         if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
             && Config::get('builder.' . $this->fileDefinition . '.basic_domain')

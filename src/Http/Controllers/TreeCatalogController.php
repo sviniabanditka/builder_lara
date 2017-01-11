@@ -97,6 +97,8 @@ class TreeCatalogController
         $node->slug = Input::get('slug') ? : Input::get('title');
         $node->save();
 
+        $node->checkUnicUrl();
+
         $node->makeChildOf($root);
 
         //$model::rebuild(true);
@@ -200,6 +202,7 @@ class TreeCatalogController
         $root->clearCache();
 
         $item = $model::find($item->id);
+        $item->checkUnicUrl();
 
         $data = array(
             'status' => true,
@@ -337,9 +340,9 @@ class TreeCatalogController
        
         $result = $controller->query->updateRow(Input::all());
 
-
         $item = $model::find($idNode);
         $item->clearCache();
+        $item->checkUnicUrl();
         $treeName = $this->nameTree;
         $result['html'] = View::make('admin::tree.content_row', compact('item', 'treeName'))->render();
 

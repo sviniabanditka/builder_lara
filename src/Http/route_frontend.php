@@ -11,19 +11,24 @@ if ($arrSegments[0] != "admin") {
                 $slug = "/";
             }
 
-            $node = $_model::where("slug", 'like', $slug)->first();
+            $nodes = $_model::where("slug", 'like', $slug)->get();
+            foreach ($nodes as $node) {
+
+                if ($node->getUrl() == Request::url()) {
+                    break;
+                }
+            }
 
             if (isset($node->id)) {
                 $slugTree = $slug;
                 $_nodeUrl = trim($node->getUrlNoLocation(), "/");
-                
+
                 Route::group(
                     ['middleware' => ['web']],
                     function () use ($node, $_nodeUrl) {
                         Route::group(
                             ['prefix' => LaravelLocalization::setLocale()],
                             function () use ($node, $_nodeUrl) {
-
                                 Route::get('{slug?}', [
                                     'as' => 'route_admin',
                                     'uses' => 'Vis\Builder\TableAdminController@showPageUrlTree'
@@ -65,8 +70,16 @@ if ($arrSegments[0] != "admin") {
                 $slug = end($arrSegments);
 
                 if (!isset($slugTree)) {
-                    $node = $model::where("slug", 'like', $slug)->first();
-                    
+                    $nodes = $model::where("slug", 'like', $slug)->get();
+
+                    foreach ($nodes as $node) {
+
+                        if ($node->getUrl() == Request::url()) {
+                            break;
+                        }
+                    }
+
+
                     if (isset($node->id)) {
                         $_nodeUrl = $node->getUrlNoLocation();
                         $templates = $definition['templates'];
@@ -87,6 +100,7 @@ if ($arrSegments[0] != "admin") {
                                         Route::get(
                                             $_nodeUrl,
                                             function () use ($node, $templates) {
+                                    
                                                 if (!isset($templates[$node->template])) {
                                                     App::abort(404);
                                                 }

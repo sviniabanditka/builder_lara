@@ -106,10 +106,18 @@ class TableAdminController extends Controller
         }
 
         $_model = Config::get('builder.tree.model');
-        $node = $_model::where("slug", 'like', $slug)->first();
+        $nodes = $_model::where("slug", 'like', $slug)->get();
         $templates = Config::get('builder.tree.templates');
     
         //check correctly url
+        foreach ($nodes as $node) {
+
+            if ($node->getUrl() == Request::url()) {
+                break;
+            }
+        }
+
+
         if ($slug != '/' && $node->getUrl() != Request::url()) {
             App::abort(404);
         }
