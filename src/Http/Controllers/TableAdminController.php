@@ -8,6 +8,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
 
 class TableAdminController extends Controller
 {
@@ -148,5 +150,50 @@ class TableAdminController extends Controller
         }
 
         return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
+    }
+
+    public function doChangeRelationField()
+    {
+        $data = json_decode(htmlspecialchars_decode(Input::get('dataFieldJson')));
+        $selected = Input::get('selected');
+
+        $db = DB::table($data->foreign_table)
+            ->select($data->foreign_value_field)
+            ->addSelect($data->foreign_key_field);
+
+        if (isset($data->additional_where)) {
+            foreach ($data->additional_where as $key => $opt) {
+                if (trim($opt['sign']) == "in") {
+                    $db->whereIn($key, $opt['value']);
+                } elseif (trim($opt['sign']) == "not in") {
+                    $db->whereNotIn($key, $opt['value']);
+                } else {
+                    $db->where($key, $opt['sign'], $opt['value']);
+                }
+            }
+        }
+        
+        if (isset($data->relation->foreign_field_filter) && Input::get('id')) {
+            $db->where($data->relation->foreign_field_filter, Input::get('id'));
+        }
+
+        if (isset($data->orderBy) && is_array($data->orderBy)) {
+            foreach ($data->orderBy as $order) {
+                if (isset($order['field']) && isset($order['type'])) {
+                    $db->orderBy($order['field'], $order['type']);
+                }
+            }
+        }
+
+        $res = $db->get();
+
+        $options = array();
+        $foreignKey = $data->foreign_key_field;
+        $foreignValue = $data->foreign_value_field;
+        foreach ($res as $val) {
+            $options[$val[$foreignKey]] = $val[$foreignValue];
+        }
+
+        return View::make('admin::tb.foreign_options', compact("options", "selected"))->render();
     }
 }

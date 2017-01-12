@@ -47,3 +47,24 @@
     <input type="text" name="{{ $name }}_new_foreign" placeholder="Добавить новое значение" />
 </div>
 @endif
+
+@if ($relation)
+    <script>
+
+        function change_relation_field{{$name}}() {
+            $.post("/admin/change-relation-field", {id : $('[name={{$relation['field']}}]').val(), dataFieldJson : '{{json_encode($field)}}', selected : '{{$selected}}' },
+                    function(data){
+                        $('[name={{$name}}]').html(data);
+                    });
+        }
+
+        change_relation_field{{$name}}();
+
+        $('[name={{$relation['field']}}]').change(function () {
+            change_relation_field{{$name}}();
+        });
+
+
+
+    </script>
+@endif

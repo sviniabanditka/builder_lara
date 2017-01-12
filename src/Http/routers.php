@@ -131,6 +131,11 @@ if ($menuLinks) {
                         'as' => 'save_croped_img',
                         'uses' => 'Vis\Builder\TBController@doSaveCropImg'
                     ));
+                Route::post('change-relation-field', array (
+                    'as' => 'change-relation-field',
+                    'uses' => 'Vis\Builder\TableAdminController@doChangeRelationField'
+                ));
+
             }
         );
     });

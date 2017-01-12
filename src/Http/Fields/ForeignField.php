@@ -62,9 +62,6 @@ class ForeignField extends AbstractField
             $input->options  = $this->getForeignKeyOptions();
         }
 
-
-        // $input->options = $this->getForeignKeyOptions();
-
         return $input->render();
     } // end getFilterInput
 
@@ -202,6 +199,8 @@ class ForeignField extends AbstractField
             $input->options  = $this->getForeignKeyOptions();
         }
         $input->readonly_for_edit = $this->getAttribute('readonly_for_edit');
+        $input->relation = $this->getAttribute('relation');
+        $input->field = $this->attributes;
 
         return $input->render();
     } // end getEditInput
@@ -282,4 +281,5 @@ class ForeignField extends AbstractField
 
         return $options;
     } // end getForeignKeyOptions
+
 }
