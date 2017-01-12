@@ -49,12 +49,10 @@ class BuilderServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
-        if (!$this->app->routesAreCached()) {
-            require __DIR__ . '/Http/route_frontend.php';
-            require __DIR__ . '/Http/route_translation.php';
-            require __DIR__ . '/Http/route_settings.php';
-            require __DIR__ . '/Http/routers.php';
-        }
+        require __DIR__ . '/Http/route_frontend.php';
+        require __DIR__ . '/Http/route_translation.php';
+        require __DIR__ . '/Http/route_settings.php';
+        require __DIR__ . '/Http/routers.php';
     }
 
     /**
