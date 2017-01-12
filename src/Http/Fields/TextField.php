@@ -70,6 +70,7 @@ class TextField extends AbstractField
         $input->comment = $this->getAttribute('comment');
         $input->only_numeric = $this->getAttribute('only_numeric');
         $input->readonly_for_edit = $this->getAttribute('readonly_for_edit');
+        $input->transliteration = $this->getAttribute('transliteration');
 
         return $input->render();
     } // end getEditInput

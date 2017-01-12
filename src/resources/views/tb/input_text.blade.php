@@ -1,8 +1,6 @@
 <div class="div_input">
     <div class="input_content">
-
         @if (is_array($value))
-
             @foreach($value as $valueOne)
                 <label class="input" @if ($multi) style="margin-bottom: 5px"  @endif>
                     <input
@@ -28,7 +26,6 @@
                         </div>
                     @endif
                 </label>
-
             @endforeach
 
         @else
@@ -68,3 +65,19 @@
         <p><a class="add_more_input" onclick="TableBuilder.addMoreInput(this)">Добавить еще</a></p>
     @endif
 </div>
+
+<script>
+    @if ($transliteration && isset($transliteration['field']))
+
+        var runTrans = true;
+        @if (isset($transliteration['only_empty']) && $transliteration['only_empty'] == true)
+             runTrans = $('[name={{$transliteration['field']}}]').val() == '' ? true : false;
+        @endif
+
+        if (runTrans) {
+           $('[name={{$transliteration['field']}}]').keyup(function(){
+               $('[name={{ $name }}]').val(TableBuilder.urlRusLat($(this).val()));
+           });
+        }
+    @endif
+</script>
