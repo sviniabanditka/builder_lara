@@ -114,7 +114,6 @@ class TreeCatalogController
         $model = $this->model;
         $root = $model::find(Input::get('node', 1));
 
-
         $id = Input::get('id');
 
         $this->cloneRecursively($id);
@@ -137,16 +136,33 @@ class TreeCatalogController
         unset($page['id']);
         if ($parentId) {
             $page['parent_id'] = $parentId;
-            $page['slug'] = $page['slug'] . "_" . $page['parent_id'];
+          //  $page['slug'] = $page['slug'] . "_" . $page['parent_id'];
         } else {
-            $page['slug'] = $page['slug'] . "_" . time();
+          //  $page['slug'] = $page['slug'] . "_" . time();
         }
 
-        $tableName = with(new $model)->getTable();
-        $lastId = DB::table($tableName)->insertGetId($page);
-       // $cloneRecord = $model::where("id", $lastId)->first();
+        if ($page['parent_id']) {
+            $root = $model::find($page['parent_id']);
 
-        //$cloneRecord::rebuild(true);
+            $rec = new $model;
+
+            if ($model::where("parent_id", $page['parent_id'])->where('slug', $page['slug'])->count()) {
+                if ($parentId) {
+                    $page['slug'] = $page['slug'] . "_" . $page['parent_id'];
+                } else {
+                    $page['slug'] = $page['slug'] . "_" . time();
+                }
+            }
+
+            foreach ($page as $k => $val) {
+                $rec->$k = $val;
+            }
+
+            $rec->save();
+            $lastId = $rec->id;
+
+            $rec->makeChildOf($root);
+        }
 
         $folderCheck =  $model::where("parent_id", $idClonePage)->select("*")->orderBy('lft', 'desc')->get()->toArray();
         if (count($folderCheck)) {
