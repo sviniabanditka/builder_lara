@@ -4,7 +4,7 @@
             <a>
                 <img src="/packages/vis/builder/img/no_photo_user.jpg" class="online">
                 <span>
-
+                    {{$user->getFullName()}}
                 </span>
             </a>
         </span>
@@ -39,7 +39,7 @@
                            <ul>
                               @foreach($el['submenu'] as $k_sub_menu=>$sub_menu)
                                 @if(!isset($sub_menu['check']) || $sub_menu['check']())
-                                    <li >
+                                    <li>
                                         <a
                                           {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
                                         >{{__cms($sub_menu['title'])}}
