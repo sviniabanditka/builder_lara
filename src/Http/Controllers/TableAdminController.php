@@ -155,6 +155,7 @@ class TableAdminController extends Controller
     public function doChangeRelationField()
     {
         $data = json_decode(htmlspecialchars_decode(Input::get('dataFieldJson')));
+
         $selected = Input::get('selected');
 
         $db = DB::table($data->foreign_table)
@@ -163,24 +164,24 @@ class TableAdminController extends Controller
 
         if (isset($data->additional_where)) {
             foreach ($data->additional_where as $key => $opt) {
-                if (trim($opt['sign']) == "in") {
-                    $db->whereIn($key, $opt['value']);
-                } elseif (trim($opt['sign']) == "not in") {
-                    $db->whereNotIn($key, $opt['value']);
+                if (trim($opt->sign) == "in") {
+                    $db->whereIn($key, $opt->value);
+                } elseif (trim($opt->sign) == "not in") {
+                    $db->whereNotIn($key, $opt->value);
                 } else {
-                    $db->where($key, $opt['sign'], $opt['value']);
+                    $db->where($key, $opt->sign, $opt->value);
                 }
             }
         }
-        
+
         if (isset($data->relation->foreign_field_filter) && Input::get('id')) {
             $db->where($data->relation->foreign_field_filter, Input::get('id'));
         }
 
-        if (isset($data->orderBy) && is_array($data->orderBy)) {
+        if (isset($data->orderBy)) {
             foreach ($data->orderBy as $order) {
-                if (isset($order['field']) && isset($order['type'])) {
-                    $db->orderBy($order['field'], $order['type']);
+                if (isset($order->field) && isset($order->type)) {
+                    $db->orderBy($order->field, $order->type);
                 }
             }
         }
