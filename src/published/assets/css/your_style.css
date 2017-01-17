@@ -388,3 +388,7 @@ div.dataTables_info{
 .fr-view li{
     margin-left: 10px;
 }
+
+.fr-popup.fr-desktop{
+    z-index: 10000 !important;
+}
