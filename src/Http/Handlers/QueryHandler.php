@@ -205,7 +205,7 @@ class QueryHandler
         }
         $this->db = DB::table($this->getOptionDB('table'));
         $this->prepareFilterValues();
-        $ids = $this->db->lists('id');
+        $ids = $this->db->pluck('id');
 
         Session::push($this->getOptionDB('table') . "_exist", 'created');
 
@@ -284,11 +284,11 @@ class QueryHandler
                 $updateDataRes[$fild] = $data;
             }
         }
-
-        if (isset($updateDataRes['slug']) && $updateDataRes['slug'] == "/") {
+        //TODO: wtf?
+       /* if (isset($updateDataRes['slug']) && $updateDataRes['slug'] == "/") {
             unset($updateDataRes['slug']);
-        }
-        //exit(print_arr($updateDataRes));
+        }*/
+
         $modelObj->update($updateDataRes);
 
       /*  $modelObj2 = $model::find($values['id']);

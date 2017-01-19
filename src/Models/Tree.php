@@ -57,19 +57,12 @@ class Tree extends \Baum\Node
 
     public function setSlugAttribute($value)
     {
-        $slug = JarboeBuilder::urlify($value);
-
-        /*$slugCheck = $this->where('slug', 'like', $slug)->where("id", "!=", $this->id)->count();
-
-        if ($slugCheck) {
-            $slug = $slug . "_" . $this->id;
+        if ($this->id == 1) {
+            $slug = $value;
+        } else {
+            $slug = JarboeBuilder::urlify($value);
         }
-
-        $slugCheckId = $this->where('slug', 'like', $slug)->where("id", "!=", $this->id)->count();
-        if ($slugCheckId) {
-            $slug = $slug . "_" . time();
-        }*/
-
+        
         $this->attributes['slug'] = $slug;
     } // end setSlugAttribute
 
