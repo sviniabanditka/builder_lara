@@ -101,6 +101,9 @@ var Core =
     setClickClosePop: function()
     {
         $(document).on('click', '#modal_form_edit .close, .modal-footer button,  .modal-header button', function (e) {
+
+            $('.text_block').froalaEditor('destroy');
+            
             var url = Core.delPrm("revision_page");
             if (url != undefined) {
                 window.history.pushState(url, '', url);

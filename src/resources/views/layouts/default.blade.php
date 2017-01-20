@@ -107,7 +107,7 @@
         @yield('scripts')
         @include('admin::partials.translate_phrases')
 
-        <div class="load_page" style="position: fixed; display: none; background: #fff; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
+        <div class="load_page" style="position: fixed; display: none; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
         @include('admin::partials.popup_cropp')
         <!-- Modal -->
 
