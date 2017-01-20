@@ -1,4 +1,4 @@
-<textarea id="{{$name}}-wysiwyg"
+<div id="{{$name}}-wysiwyg"
  toolbar = "{{$toolbar ? : "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, fontSize,  color,
   emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, formatUL, outdent, indent, quote, insertHR,
   insertLink, insertImage, insertVideo, insertFile, insertTable, undo, redo, clearFormatting, selectAll, html"}}"
@@ -7,7 +7,9 @@
 
    options = '{{ $options ? json_encode($options) : ""}}'
 
-   class="text_block" name="{{ $name }}">{{ $value }}</textarea>
+   class="text_block no_active_froala" name="{{ $name }}">{!!  $value  !!}</div>
+  <textarea style="display: none" name="{{ $name }}">{{ $value  }}</textarea>
+
 @if (isset($comment) && $comment)
     <div class="note">
         {{$comment}}

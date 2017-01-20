@@ -84,6 +84,7 @@ var TableBuilder = {
         $( ".text_block" ).each(function( index ) {
 
             var option =  {
+                initOnClick: true,
                 inlineMode: false,
                 imageUploadURL: '/admin/upload_image?_token=' + $("meta[name=csrf-token]").attr("content"),
                 imageManagerDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
@@ -93,7 +94,7 @@ var TableBuilder = {
                 imageManagerLoadURL: "/admin/load_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 imageDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
                 language: langEditor,
-                imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageDisplay', 'imageStyle', 'imageAlt', 'imageSize', 'crop']
+                imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageDisplay', 'imageStyle', 'imageAlt', 'imageSize', 'crop'],
             };
 
             if ($(this).attr("toolbar")) {
@@ -113,7 +114,6 @@ var TableBuilder = {
             if ($(this).attr("options")) {
                 var optionsConfig = JSON.parse($(this).attr("options"));
                 for (var key in optionsConfig) {
-
                     option[key] = optionsConfig[key];
                 }
             }
@@ -121,7 +121,13 @@ var TableBuilder = {
             $(this).froalaEditor(option);
         });
 
-        $("a[href='https://froala.com/wysiwyg-editor']").parent().remove();
+        $('.text_block').on('froalaEditor.initialized', function (e, editor) {
+            $(this).removeClass('no_active_froala');
+        });
+
+        $('.text_block').on('froalaEditor.contentChanged', function (e, editor) {
+            $('textarea[name=' + $(this).attr('name') + ']').val($(this).froalaEditor('html.get'));
+        });
 
         $('.group').on('keyup, blur', '[data-multi=multi]', function(){
             TableBuilder.multiInputAction($(this));
@@ -130,6 +136,7 @@ var TableBuilder = {
         $( ".group [data-multi=multi]" ).each(function(  ) {
             TableBuilder.multiInputAction($(this));
         });
+
     },
 
     multiInputAction : function (context) {
@@ -397,7 +404,7 @@ var TableBuilder = {
                     color : "#C46A69",
                     iconSmall : "fa fa-times fa-2x fadeInRight animated",
                     timeout : 4000
-                });            
+                });
             }
         });
     },
@@ -406,7 +413,8 @@ var TableBuilder = {
     {
         jQuery(TableBuilder.form_edit).remove()
         jQuery(TableBuilder.form).remove();
-        
+
+
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
@@ -648,6 +656,8 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form_edit);
 
                 if (response.id) {
+
+                    $('.text_block').froalaEditor('destroy');
 
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
                     $(document).height($(window).height());
