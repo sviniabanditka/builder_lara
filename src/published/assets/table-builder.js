@@ -293,6 +293,8 @@ var TableBuilder = {
 
     getCreateForm: function()
     {
+        jQuery(TableBuilder.form_edit).remove()
+        jQuery(TableBuilder.form).remove();
 
         TableBuilder.showPreloader();
 
@@ -402,6 +404,9 @@ var TableBuilder = {
 
     getEditForm: function(id, context)
     {
+        jQuery(TableBuilder.form_edit).remove()
+        jQuery(TableBuilder.form).remove();
+        
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
