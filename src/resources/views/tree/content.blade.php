@@ -68,6 +68,11 @@
 
     <script>
         $(document).ready(function(){
+
+            TableBuilder.optionsInit({
+                action_url: "/admin/handle/{{$treeName}}"
+            });
+
             TableBuilder.action_url = "/admin/handle/{{$treeName}}";
             $('.tpl-editable').editable2({
                 url: window.location.href,
