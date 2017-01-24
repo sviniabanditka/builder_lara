@@ -168,6 +168,7 @@ class ManyToManyField extends AbstractField
         $input->link    = $this->getAttribute('with_link');
         $input->name    = $this->getFieldName();
         $input->search  = $this->getAttribute('select2_search');
+        $input->row = $row;
 
         return $input->render();
     } // end getEditInputSelectWithAjaxSearch

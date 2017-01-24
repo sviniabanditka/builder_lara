@@ -17,6 +17,9 @@
                         q: term, //search term
                         limit: {{ $search['per_page'] or '20' }}, // page size
                         page: page, // page number
+                        @if (isset($row['id']))
+                            page_id : {{$row['id']}},
+                        @endif
                         ident: '{!! $name !!}',
                         query_type: 'many_to_many_ajax_search',
                     };
@@ -38,5 +41,6 @@
         @if ($selected != '[]')
             $select2{{$name}}{{$postfix}}.select2("data", {!! $selected !!});
         @endif
+
     });
 </script>
