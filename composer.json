@@ -10,6 +10,7 @@
     "require": {
         "cartalyst/sentinel" : "2.0.*",
         "devfactory/minify": "1.0.*",
+        "laravelcollective/html": "^5.2",
         "barryvdh/laravel-debugbar" : "^2.0",
         "baum/baum": "~1.1",
         "venturecraft/revisionable": "1.*",
