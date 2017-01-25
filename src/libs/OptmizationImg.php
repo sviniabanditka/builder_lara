@@ -19,6 +19,7 @@ class OptmizationImg
                     exec($commandPng, $res);
                 } elseif ($infoImg->getExtension() == "jpg" || $infoImg->getExtension() == "jpeg") {
                     $commandJpg = str_replace("[file]", $fullPathPicture, $commandJpg);
+                  
                     exec($commandJpg, $res);
                 }
             } catch (\Exception $e) {

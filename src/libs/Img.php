@@ -36,6 +36,10 @@ class Img
         $this->pathFolder =  $dirname. "/" .$this->size;
         $this->picturePath =  $this->pathFolder . "/" .$this->nameFile;
 
+        if ($extension == 'svg') {
+            return $source;
+        }
+
         if (self::checkExistPicture()) {
             return $this->picturePath;
         }
