@@ -108,6 +108,11 @@ class ImageField extends AbstractField
         $this->checkSizeFile($file);
 
         $extension = $file->guessExtension();
+
+        if ($extension == 'html') {
+            $extension = 'svg';
+        }
+
         $rawFileName = md5_file($file->getRealPath()) .'_'. time();
         $fileName = $rawFileName .'.'. $extension;
 
@@ -147,8 +152,6 @@ class ImageField extends AbstractField
         $width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
         $height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
 
-      //  OptmizationImg::run("/".$destinationPath . $fileName);
-
         if ($extension == 'svg') {
             $link = $destinationPath . $fileName;
         } else {
@@ -178,6 +181,7 @@ class ImageField extends AbstractField
                 ]
             )->render()
         );
+
         return $response;
     } // end doUpload
 
