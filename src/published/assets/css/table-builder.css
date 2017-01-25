@@ -238,9 +238,6 @@ div.dropdown.subactions .dropdown-menu {
 }
 .input-group-addon.form-input-icon .fa {
     padding: 2px;
-    position: absolute;
-    top: 0px;
-    left: 3px;
 }
 
 .input-group-addon.form-input-icon.form-input-filter-icon {
