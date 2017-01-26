@@ -180,7 +180,13 @@ class ForeignField extends AbstractField
             return $this->getValue($row);
         }
 
-        $input = View::make('admin::tb.input_foreign');
+        if ($this->getAttribute('select2_search')) {
+            $input = View::make('admin::tb.input_foreign_search');
+            $input->search = $this->getAttribute('select2_search');
+        } else {
+            $input = View::make('admin::tb.input_foreign');
+        }
+
         $input->selected = $this->getValueId($row);
         $input->name     = $this->getFieldName();
         $input->is_null  = $this->getAttribute('is_null');
@@ -281,5 +287,55 @@ class ForeignField extends AbstractField
 
         return $options;
     } // end getForeignKeyOptions
+
+    public function getAjaxSearchResult($query, $limit, $page)
+    {
+        $db = DB::table($this->getAttribute('foreign_table'))
+            ->select($this->getAttribute('foreign_value_field'))
+            ->addSelect($this->getAttribute('foreign_key_field'))
+            ->where($this->getAttribute('foreign_value_field'), 'like', '%' . $query . '%')
+            ->take($limit)
+            ->skip(($limit * $page) - $limit);
+
+
+        $additionalWheres = $this->getAttribute('additional_where');
+        if ($additionalWheres) {
+            foreach ($additionalWheres as $key => $opt) {
+                if (trim($opt['sign']) == "in") {
+                    $db->whereIn($key, $opt['value']);
+                } elseif (trim($opt['sign']) == "not in") {
+                    $db->whereNotIn($key, $opt['value']);
+                } else {
+                    $db->where($key, $opt['sign'], $opt['value']);
+                }
+            }
+        }
+
+        $orderBy = $this->getAttribute('orderBy');
+        if ($orderBy && is_array($orderBy)) {
+            foreach ($orderBy as $order) {
+                if (isset($order['field']) && isset($order['type'])) {
+                    $db->orderBy($order['field'], $order['type']);
+                }
+            }
+        }
+
+        $results = $db->get();
+
+        $results = $results ? : array();
+
+        $res = array();
+        foreach ($results as $result) {
+            $res[] = array(
+                'id'   => $result['id'],
+                'name' => $result[$this->getAttribute('foreign_value_field')],
+            );
+        }
+
+        return array(
+            'results' => $res,
+            'more'    => $res && !empty($res),
+        );
+    }
 
 }

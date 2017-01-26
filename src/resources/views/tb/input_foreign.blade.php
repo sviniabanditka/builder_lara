@@ -1,4 +1,3 @@
-
 @if ($allow_foreign_add)
 <script>
     $(document).ready(function () {
@@ -17,9 +16,28 @@
 </script>
 @endif
 
+@if (isset($field['select2_search']))
+    <label class="input">
+        <input type="text" name="{{ $name }}" value="" placeholder="{{$field['select2_search']['placeholder'] or ''}}">
+    </label>
+
+    <script>
+        $( function() {
+
+            $( "[name={{ $name }}]" ).autocomplete({
+                source: "search.php",
+                minLength: 2,
+                select: function( event, ui ) {
+                    alert(ui.item.value + '-' + ui.item.id);
+                }
+            });
+        } );
+    </script>
+
+@endif
+
 <label class="select">
     <select
-
      @if (Input::has("id") && $readonly_for_edit)
          disabled
      @endif
@@ -50,7 +68,6 @@
 
 @if ($relation)
     <script>
-
         function change_relation_field{{$name}}() {
             $.post("/admin/change-relation-field", {id : $('[name={{$relation['field']}}]').val(), dataFieldJson : '{{json_encode($field)}}', selected : '{{$selected}}' },
                     function(data){
@@ -63,8 +80,6 @@
         $('[name={{$relation['field']}}]').change(function () {
             change_relation_field{{$name}}();
         });
-
-
 
     </script>
 @endif

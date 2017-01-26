@@ -182,7 +182,7 @@
 
                     </div>
 
-                        <div class='type_5 types' {!! isset($info->type) && $info->type==5?'style="display: block"':"" !!}>
+                        <div class='type_5 types' {!! isset($info->type) && $info->type == 5?'style="display: block"' : "" !!}>
                          <table style="width: 100%" class="sort_table">
                               <tbody>
 
@@ -236,10 +236,10 @@
                            <p><a class="add_option3" onclick="Settings.addOption(5)">{{__cms('Добавить еще')}}</a></p>
                         </div>
 
-                        <div class='type_6 types' {!! isset($info->type) && $info->type==6?'style="display: block"':"" !!}>
+                        <div class='type_6 types' {!! isset($info->type) && $info->type == 6 ?'style="display: block"' : "" !!}>
                            <textarea name="value6" class="text_block custom-scroll">{{ $info->value or "" }}</textarea>
                         </div>
-                        <div class='type_7 types' {{isset($info->type) && $info->type==7?'style="display: block"':""}}>
+                        <div class='type_7 types' {!! isset($info->type) && $info->type == 7?'style="display: block"' : "" !!}>
                               <label class="toggle" style="padding-right: 51px">
                                   <input type="hidden" value="0" name="status">
                                   <input type="checkbox" {{isset($info->value) && $info->value == 1 ? "checked" : ""}} value="1" name="status">
