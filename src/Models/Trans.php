@@ -33,10 +33,10 @@ class Trans extends Model
     //заполниения масива кеша с переводами
     public static function fillCacheTrans()
     {
-        if (Cache::get('translations_cms')) {
-            $array_translate = Cache::get('translations_cms');
+        if (Cache::tags('translations')->has('translations_cms')) {
+            $arrayTranslate = Cache::tags('translations')->get('translations_cms');
         } else {
-            $translations_get = DB::table("translations_phrases_cms")->leftJoin(
+            $translationsGet = DB::table("translations_phrases_cms")->leftJoin(
                 'translations_cms',
                 'translations_cms.id_translations_phrase',
                 '=',
@@ -44,21 +44,20 @@ class Trans extends Model
             )
                 ->get(array("translate", "lang", "phrase"));
 
-            $array_translate = array();
-            foreach ($translations_get as $el) {
-                $array_translate[$el['phrase']][$el['lang']] = $el['translate'];
+            $arrayTranslate = array();
+            foreach ($translationsGet as $el) {
+                $arrayTranslate[$el['phrase']][$el['lang']] = $el['translate'];
             }
-
-            Cache::forever('translations_cms', $array_translate);
+            Cache::tags('translations')->forever('translations_cms', $arrayTranslate);
         }
 
-        return $array_translate;
+        return $arrayTranslate;
     }
 
     //перезапись кеша переводов
     public static function reCacheTrans()
     {
-        Cache::forget("translations_cms");
+        Cache::tags('translations')->flush();
         self::fillCacheTrans();
     }
 }
