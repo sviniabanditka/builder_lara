@@ -58,10 +58,12 @@ if ($menuLinks) {
                     '/{page_admin}',
                     'Vis\Builder\TableAdminController@showPage'
                 );
-                Route::post(
-                    '/{page_admin}',
-                    'Vis\Builder\TableAdminController@showPagePost'
-                );
+                if (Request::ajax()) {
+                    Route::get (
+                        '/{page_admin}',
+                        'Vis\Builder\TableAdminController@showPagePost'
+                    );
+                }
 
                 Route::post(
                     '/handle/{page_admin}',

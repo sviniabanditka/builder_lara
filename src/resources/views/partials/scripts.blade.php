@@ -65,7 +65,7 @@
    function doAjaxLoadContent(url) {
       $(".load_page").show();
 
-      $.post( url, { })
+      $.get( url, { })
         .done(function( data ) {
            $("#content_admin").html(data);
             window.history.pushState(url, '', url);
