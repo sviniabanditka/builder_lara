@@ -2,21 +2,13 @@
 $menuLinks = config('builder.admin.menu');
 
 if ($menuLinks) {
-    foreach (Config::get('builder.admin.menu') as $menu) {
-        if (!isset($menu['not_use_definition']) && isset($menu['link'])) {
-            $all_links[] = $menu['link'];
-        }
-    }
 
-    foreach (config('builder.admin.menu') as $menu) {
-        if (is_array($menu)) {
-            foreach ($menu as $menuLink) {
-                if (is_array($menuLink)) {
-                    $all_links[] = array_column($menuLink, "link");
-                }
-            }
+    $all_links = array();
+    array_walk_recursive($menuLinks, function($item, $key) use (&$all_links) {
+        if($key == 'link'){
+            $all_links[] = $item;
         }
-    }
+    });
 
     $all_links = array_flatten($all_links);
     $all_links_str = implode("|", $all_links);
@@ -158,23 +150,7 @@ if ($menuLinks) {
                 'uses' => 'Vis\Builder\LoginController@postLogin'
             ));
 
-        /*
-     * routes for correct works debugbar
-     */
-      /*  Route::get ('/_debugbar/assets/stylesheets', [
-            'as' => 'debugbar-css',
-            'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@css'
-        ]);
 
-        Route::get ('/_debugbar/assets/javascript', [
-            'as' => 'debugbar-js',
-            'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
-        ]);
-
-        Route::get ('/_debugbar/open', [
-            'as' => 'debugbar-open',
-            'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
-        ]);*/
     });
     //login show
 }
