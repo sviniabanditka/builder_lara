@@ -62,7 +62,7 @@ class BuilderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['jarboe'] = $this->app->share(function ($app) {
+        $this->app->singleton('jarboe', function () {
             return new Jarboe();
         });
 
