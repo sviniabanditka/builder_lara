@@ -215,7 +215,12 @@ class ForeignField extends AbstractField
 
         if ($additionalWhere) {
             foreach ($additionalWhere as $field => $where) {
-                $children = $children->where($field, $where['sign'], $where['value']);
+                if ($where['sign'] == 'in') {
+                    $children = $children->whereIn($field, $where['value']);
+                } else {
+                    $children = $children->where($field, $where['sign'], $where['value']);
+                }
+
             }
         }
 
