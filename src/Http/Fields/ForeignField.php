@@ -208,7 +208,19 @@ class ForeignField extends AbstractField
     private function getCategory($id)
     {
         $node = \Tree::find($id);
-        $children = $node->descendants()->get(array("id", "title", "parent_id"))->toArray();
+
+        $children = $node->descendants();
+
+        $additionalWhere = $this->getAttribute('additional_where');
+
+        if ($additionalWhere) {
+            foreach ($additionalWhere as $field => $where) {
+                $children = $children->where($field, $where['sign'], $where['value']);
+            }
+        }
+
+        $children = $children->get(array("id", "title", "parent_id"))->toArray();
+
         $result = array();
         foreach ($children as $row) {
             $result[$row["parent_id"]][] = $row;
