@@ -28,9 +28,7 @@ class ManyToManyField extends AbstractField
               ->where($mtmExternalValueField, 'like', '%' . $value . '%')
               ->select($mtmKeyField)->pluck($mtmKeyField);
 
-          if (count($searchResult)) {
-              $db->whereIn($this->definition['db']['table'].'.id', $searchResult);
-          }
+          $db->whereIn($this->definition['db']['table'].'.id', $searchResult);
       }
 
     } // end onSearchFilter
