@@ -15,7 +15,24 @@ class ManyToManyField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-        // TODO:
+      if ($value) {
+          $mtmTable = $this->getAttribute('mtm_table');
+          $mtmExternalTable = $this->getAttribute('mtm_external_table');
+          $mtmKeyField = $this->getAttribute('mtm_key_field');
+          $mtmExternalKeyField = $this->getAttribute('mtm_external_key_field');
+          $mtmExternalForeignKeyField = $this->getAttribute('mtm_external_foreign_key_field');
+          $mtmExternalValueField = $this->getAttribute('mtm_external_value_field');
+
+          $searchResult = DB::table($mtmTable)
+              ->leftJoin($mtmExternalTable, $mtmExternalTable. '.'. $mtmExternalForeignKeyField , '=', $mtmTable . '.' . $mtmExternalKeyField)
+              ->where($mtmExternalValueField, 'like', '%' . $value . '%')
+              ->select($mtmKeyField)->pluck($mtmKeyField);
+
+          if (count($searchResult)) {
+              $db->whereIn($this->definition['db']['table'].'.id', $searchResult);
+          }
+      }
+
     } // end onSearchFilter
 
     public function onPrepareRowValues($values, $id)
