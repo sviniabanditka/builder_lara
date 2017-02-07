@@ -103,7 +103,7 @@ class TableAdminController extends Controller
         $arrSegments = explode("/", $slug);
         $slug = end($arrSegments);
 
-        if (!$slug || $slug == LaravelLocalization::setLocale()) {
+        if ($slug === '' || $slug == LaravelLocalization::setLocale()) {
             $slug = "/";
         }
 
@@ -112,13 +112,16 @@ class TableAdminController extends Controller
         $templates = Config::get('builder.tree.templates');
     
         //check correctly url
-        foreach ($nodes as $node) {
+        if (count($nodes)) {
+            foreach ($nodes as $node) {
 
-            if ($node->getUrl() == Request::url()) {
-                break;
+                if ($node->getUrl() == Request::url()) {
+                    break;
+                }
             }
+        } else {
+            App::abort(404);
         }
-
 
         if ($slug != '/' && $node->getUrl() != Request::url()) {
             App::abort(404);
