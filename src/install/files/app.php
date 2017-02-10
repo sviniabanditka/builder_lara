@@ -155,8 +155,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
-        Collective\Html\HtmlServiceProvider::class,
+        
         Vis\Builder\BuilderServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Devfactory\Minify\MinifyServiceProvider::class,
