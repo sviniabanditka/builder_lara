@@ -62,6 +62,8 @@ class BuilderServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
+
         $this->app->singleton('jarboe', function () {
             return new Jarboe();
         });
