@@ -17,7 +17,7 @@
         "yandex/translate-api": "1.5.x",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
-        "mcamara/laravel-localization": "1.1.*",
+        "mcamara/laravel-localization": "1.2.*",
         "predis/predis" : "~1.0",
         "barryvdh/laravel-ide-helper": "^2.1"
     },
