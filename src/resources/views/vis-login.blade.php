@@ -34,7 +34,8 @@
                             </div>
                         @endif
 
-                        {!! Form::open(array('route'=>'login', 'name'=>"repawning", "method"=>"post", "id"=>"login-form", "class"=>"smart-form client-form")) !!}
+                        <form method="post"action="{{route('login')}}" name="repawning" class="smart-form client-form">
+                            {{ csrf_field() }}
 
                             <header>
                                 {{__cms('Войти')}}
@@ -69,7 +70,7 @@
                                     {{__cms('Войти')}}
                                 </button>
                             </footer>
-                      {!! Form::close() !!}
+                      </form>
     
                     </div>
                         
