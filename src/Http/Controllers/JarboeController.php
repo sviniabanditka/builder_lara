@@ -56,7 +56,7 @@ class JarboeController
         }
         $this->query   = new QueryHandler($this);
 
-        $this->allowedIds = $this->query->getTableAllowedIds();
+        $this->allowedIds = (array) $this->query->getTableAllowedIds();
 
         $this->view    = new ViewHandler($this);
         $this->request = new RequestHandler($this);

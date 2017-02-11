@@ -13,16 +13,14 @@ class BuilderServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(\Illuminate\Routing\Router $router)
     {
-        $router = $this->app['router'];
         $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
         $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
 
         require __DIR__ . '/../vendor/autoload.php';
         require __DIR__ . '/Http/helpers.php';
         require __DIR__ . '/Http/view_composers.php';
-
 
         $this->setupRoutes($this->app->router);
 
@@ -63,6 +61,11 @@ class BuilderServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
+
+        if (method_exists(\Illuminate\Routing\Router::class, 'aliasMiddleware')) {
+            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
+            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+        }
 
         $this->app->singleton('jarboe', function () {
             return new Jarboe();

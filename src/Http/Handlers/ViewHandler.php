@@ -95,7 +95,7 @@ class ViewHandler
 
         $table->is_blank = true;
         if ($id) {
-            $table->row = $this->controller->query->getRow($id);
+            $table->row = (array) $this->controller->query->getRow($id);
             $table->is_blank = false;
         }
 
