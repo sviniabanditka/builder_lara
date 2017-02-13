@@ -90,14 +90,42 @@ class InstallCommand extends Command
      */
     private function loadFiles()
     {
+        $laravel = app();
+
+        //if not version 5.4.*
+        if (strpos($laravel::VERSION, '5.4') === false) {
+            copy($this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
+            $this->info('Created app/Http/routes.php - OK');
+
+            copy($this->installPath . '/files/app.php', config_path() . '/app.php');
+            $this->info('Replace app.php - OK');
+
+            copy($this->installPath . '/files/composer.json', base_path() . '/composer.json');
+            $this->info('Replace composer.json - OK');
+
+            copy($this->installPath . '/files/Handler.php', app_path() . '/Exceptions/Handler.php');
+            $this->info('Created app/Exceptions/Handler.php - OK');
+
+        } else {
+            $this->info('install for 5.4 version');
+            copy($this->installPath . '/files/routes.php', base_path() . '/routes/web.php');
+            $this->info('Created '.base_path() . '/routes/web.php - OK');
+
+            copy($this->installPath . '/files/app_for_laravel54.php', config_path() . '/app.php');
+            $this->info('Replace app.php - OK');
+
+            copy($this->installPath . '/files/composer_for_laravel54.json', base_path() . '/composer.json');
+            $this->info('Replace composer.json - OK');
+
+            copy($this->installPath . '/files/Handler_for_laravel54.php', app_path() . '/Exceptions/Handler.php');
+            $this->info('Created app/Exceptions/Handler.php - OK');
+        }
+
         copy($this->installPath . '/files/.htaccess', public_path() . '/.htaccess');
         $this->info('Replace htaccess - OK');
 
         copy($this->installPath . '/files/robots.txt', public_path() . '/robots.txt');
         $this->info('Replace robots.txt - OK');
-
-        copy($this->installPath . '/files/app.php', config_path() . '/app.php');
-        $this->info('Replace app.php - OK');
 
         if (!is_dir(app_path() . '/Models')) {
             File::makeDirectory(app_path() . '/Models', 0777, true);
@@ -129,13 +157,6 @@ class InstallCommand extends Command
         copy($this->installPath . '/files/Group.php', app_path() . '/Models/Group.php');
         $this->info('Created app/Models/Group.php - OK');
 
-
-        copy($this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
-        $this->info('Created app/Http/routes.php - OK');
-
-        copy($this->installPath . '/files/composer.json', base_path() . '/composer.json');
-        $this->info('Replace composer.json - OK');
-
         copy($this->installPath . '/files/HomeController.php', app_path() . '/Http/Controllers/HomeController.php');
         $this->info('Created app/Http/Controllers/HomeController.php- OK');
 
@@ -144,9 +165,6 @@ class InstallCommand extends Command
 
         copy($this->installPath . '/files/view_composers.php', app_path() . '/Http/view_composers.php');
         $this->info('Created app/Http/view_composers.php- OK');
-
-        copy($this->installPath . '/files/Handler.php', app_path() . '/Exceptions/Handler.php');
-        $this->info('Created app/Exceptions/Handler.php - OK');
 
 
         if (!is_dir(base_path() . '/resources/views/layouts')) {
