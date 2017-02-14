@@ -265,6 +265,7 @@ class ManyToManyField extends AbstractField
 
         $options = array();
         foreach ($res as $opt) {
+            $opt = (array) $opt;
             $id = $opt[$this->getAttribute('mtm_external_key_field')];
             $value = $opt[$this->getAttribute('mtm_external_value_field')];
 

@@ -293,6 +293,7 @@ class ForeignField extends AbstractField
         $foreignKey = $this->getAttribute('foreign_key_field');
         $foreignValue = $this->getAttribute('foreign_value_field');
         foreach ($res as $val) {
+            $val = (array) $val;
             $options[$val[$foreignKey]] = $val[$foreignValue];
         }
 
