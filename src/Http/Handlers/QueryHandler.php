@@ -332,7 +332,7 @@ class QueryHandler
 
         $model = $def['options']['model'];
 
-        $page = $this->db->where("id", $id)->select("*")->first();
+        $page = (array) $this->db->where("id", $id)->select("*")->first();
         Event::fire("table.clone", array($this->dbOptions['table'], $id));
         $idClonePage = $page['id'];
         unset($page['id']);
