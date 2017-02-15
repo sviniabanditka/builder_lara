@@ -1,6 +1,4 @@
-<?php
-
-namespace Vis\Builder\Handlers;
+<?php namespace Vis\Builder\Handlers;
 
 use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\View;
@@ -8,14 +6,12 @@ use Illuminate\Support\Facades\Session;
 
 class ViewHandler
 {
-
     protected $controller;
-
 
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
-    } // end __construct
+    }
     
     public function showEditFormPage($id)
     {
@@ -63,10 +59,8 @@ class ViewHandler
         $data = compact('form', 'js', 'definition', 'id');
         $templatePostfix = $id ? 'edit' : 'create';
         
-        $template = View::make('admin::table_page_'. $templatePostfix, $data)->render();
-        // FIXME: wut da fcuk
-        die($template);
-    } // end showEditFormPage
+        return View::make('admin::table_page_'. $templatePostfix, $data)->render();
+    }
 
     public function showList()
     {
@@ -80,7 +74,7 @@ class ViewHandler
         $table->per_page = Session::get($sessionPath);
 
         return $table;
-    } // end showList
+    }
 
     public function showEditForm($id = false, $isTree = false)
     {
@@ -100,7 +94,7 @@ class ViewHandler
         }
 
         return $table->render();
-    } // end showEditForm
+    }
 
     public function showRevisionForm($id = false, $isTree = false)
     {
@@ -138,17 +132,16 @@ class ViewHandler
     
     public function getRowHtml($data)
     {
-        // FIXME: primary key
         $data['values'] = $this->controller->query->getRow($data['id']);
         
         $row = View::make('admin::tb.single_row');
         $row->controller = $this->controller;
-        $row->actions    = $this->controller->actions;
-        $row->def        = $this->controller->getDefinition();
-        $row->row        = $data['values'];
+        $row->actions = $this->controller->actions;
+        $row->def = $this->controller->getDefinition();
+        $row->row = (array) $data['values'];
         
         return $row->render();
-    } // end getRowHtml
+    }
     
     public function fetchActions(array $row)
     {
@@ -158,5 +151,5 @@ class ViewHandler
         $actions->actions = $this->controller->actions;
         
         return $actions->render();
-    } // end fetchActions
+    }
 }
