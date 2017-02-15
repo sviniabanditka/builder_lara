@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class QueryHandler
 {
-
     protected $controller;
-
     protected $db;
     protected $dbOptions;
 
@@ -30,17 +28,17 @@ class QueryHandler
         }
 
         $this->dbOptions = $definition['db'];
-    } // end __construct
+    }
 
     protected function getOptionDB($ident)
     {
         return $this->dbOptions[$ident];
-    } // end getOptionDB
+    }
 
     protected function hasOptionDB($ident)
     {
         return isset($this->dbOptions[$ident]);
-    } // end hasOptionDB
+    }
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = array(), $isSelectAll = false)
     {
@@ -50,7 +48,7 @@ class QueryHandler
         if ($isSelectAll) {
             $this->db->addSelect($this->getOptionDB('table') .'.*');
         }
-      //  exit();
+
         $this->prepareFilterValues();
 
         if ($isUserFilters) {
@@ -73,7 +71,6 @@ class QueryHandler
             }
         }
 
-        // FIXME:
         if ($betweenWhere) {
             $betweenField  = $betweenWhere['field'];
             $betweenValues = $betweenWhere['values'];
@@ -85,22 +82,12 @@ class QueryHandler
             $pagination = $this->getOptionDB('pagination');
             $perPage = $this->getPerPageAmount($pagination['per_page']);
             $paginator = $this->db->paginate($perPage);
-            /*if ($this->cache && is_array($this->cache)) {
-                $paginator = Cache::tags($this->cache)->rememberForever($this->fileDefinition.$this->id,  function() use ($perPage) {
-                    return $this->db->paginate($perPage);
-                });
-
-            } else {
-                $paginator = $this->db->paginate($perPage);
-            }*/
-
-           // $paginator->setBaseUrl($pagination['uri']);
 
             return $paginator;
         }
 
         return $this->db->get();
-    } // end getRows
+    }
 
     private function dofilter()
     {
@@ -130,7 +117,7 @@ class QueryHandler
         }
 
         return $perPage;
-    } // end getPerPageAmount
+    }
 
     protected function prepareFilterValues()
     {
@@ -144,7 +131,7 @@ class QueryHandler
         foreach ($filters as $name => $field) {
             $this->db->where($name, $field['sign'], $field['value']);
         }
-    } // end prepareFilterValues
+    }
 
     protected function doPrependFilterValues(&$values)
     {
@@ -157,7 +144,7 @@ class QueryHandler
         foreach ($filters as $name => $field) {
             $values[$name] = $field['value'];
         }
-    } // end doPrependFilterValues
+    }
 
     protected function prepareSelectValues()
     {
@@ -181,7 +168,7 @@ class QueryHandler
         foreach ($fields as $name => $field) {
             $field->onSelectValue($this->db);
         }
-    } // end prepareSelectValues
+    }
 
     public function getRow($id)
     {
@@ -192,7 +179,7 @@ class QueryHandler
         $this->db->where($this->getOptionDB('table').'.id', $id);
 
         return $this->db->first();
-    } // end getRow
+    }
 
     public function getTableAllowedIds()
     {
@@ -210,7 +197,7 @@ class QueryHandler
         Session::push($this->getOptionDB('table') . "_exist", 'created');
 
         return $ids;
-    } // end getTableAllowedIds
+    }
 
     protected function onSearchFilterQuery()
     {
@@ -228,7 +215,7 @@ class QueryHandler
 
             $this->controller->getField($name)->onSearchFilter($this->db, $value);
         }
-    } // end onSearchFilterQuery
+    }
 
     public function updateRow($values)
     {
@@ -256,8 +243,6 @@ class QueryHandler
         }
         $this->doValidate($updateData);
 
-        //$this->doPrependFilterValues($updateData);
-
         $modelObj = $model::find($values['id']);
 
         if (method_exists($modelObj, "setFillable")) {
@@ -284,19 +269,9 @@ class QueryHandler
                 $updateDataRes[$fild] = $data;
             }
         }
-        //TODO: wtf?
-       /* if (isset($updateDataRes['slug']) && $updateDataRes['slug'] == "/") {
-            unset($updateDataRes['slug']);
-        }*/
 
         $modelObj->update($updateDataRes);
 
-      /*  $modelObj2 = $model::find($values['id']);
-        $modelObj2->update($updateDataRes);*/
-
-      //  Event::fire("table.updated", array($this->dbOptions['table'], $values['id']));
-
-        // FIXME: patterns
         foreach ($this->controller->getPatterns() as $pattern) {
             $pattern->update($values, $values['id']);
         }
@@ -316,12 +291,11 @@ class QueryHandler
         }
 
         return $res;
-    } // end updateRow
+    }
 
     public function cloneRow($id)
     {
         $this->clearCache();
-        $def = $this->controller->getDefinition();
 
         if ($this->controller->hasCustomHandlerMethod('handleCloneRow')) {
             $res = $this->controller->getCustomHandler()->handleCloneRow($id);
@@ -330,21 +304,17 @@ class QueryHandler
             }
         }
 
-        $model = $def['options']['model'];
-
         $page = (array) $this->db->where("id", $id)->select("*")->first();
         Event::fire("table.clone", array($this->dbOptions['table'], $id));
-        $idClonePage = $page['id'];
+
         unset($page['id']);
 
         $this->db->insertGetId($page);
 
-        $res = array(
+        return array(
             'id'     => $id,
             'status' => $page,
-        );
-
-        return $res;
+        );;
     }
 
     public function deleteRow($id)
@@ -378,7 +348,7 @@ class QueryHandler
         }
 
         return $res;
-    } // end deleteRow
+    }
 
     public function fastSave($input)
     {
@@ -420,7 +390,6 @@ class QueryHandler
         }
 
         if (!$id) {
-            //$this->doPrependFilterValues($insertData);
             $def = $this->controller->getDefinition();
             
             foreach ($insertData as $fild => $data) {
@@ -448,19 +417,16 @@ class QueryHandler
 
             $objectModel = new $model;
             foreach ($insertDataRes as $key => $value) {
-                $objectModel->$key = (null !== $value) ? "$value" : null;
-                ;
+                $objectModel->$key = $value ? : '';
             }
             $objectModel->save();
             $id = $objectModel->id;
         }
-        
-        // FIXME: patterns
+
         foreach ($this->controller->getPatterns() as $pattern) {
             $pattern->insert($values, $id);
         }
 
-        // FIXME:
         $fields = $this->controller->getFields();
         foreach ($fields as $field) {
             if (preg_match('~^many2many~', $field->getFieldName())) {
@@ -477,14 +443,14 @@ class QueryHandler
         }
 
         return $res;
-    } // end insertRow
+    }
 
     private function onManyToManyValues($ident, $values, $id)
     {
         $field = $this->controller->getField($ident);
         $vals = isset($values[$ident]) ? $values[$ident] : array();
         $field->onPrepareRowValues($vals, $id);
-    } // end onManyToManyValues
+    }
 
     private function doValidate($values)
     {
@@ -520,7 +486,7 @@ class QueryHandler
             $errors = implode('|', $errors);
             throw new JarboeValidationException($errors);
         }
-    } // end doValidate
+    }
 
     private function _getRowQueryValues($values)
     {
@@ -550,7 +516,7 @@ class QueryHandler
         }
 
         return $values;
-    } // end _getRowQueryValues
+    }
 
     private function _unsetFutileFields($values)
     {
@@ -571,7 +537,7 @@ class QueryHandler
         unset($values['__node']);
 
         return $values;
-    } // end _unsetFutileFields
+    }
 
     private function _checkFields(&$values)
     {
@@ -604,14 +570,14 @@ class QueryHandler
                 }
             }
         }
-    } // end _checkFields
+    }
 
     private function _checkField($values, $ident, $field)
     {
         if (!$field->isEditable()) {
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
-    } // end _checkField
+    }
 
 
     public function clearCache()
