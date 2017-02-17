@@ -12,22 +12,27 @@ use Illuminate\Support\Facades\Cache;
 class QueryHandler
 {
     protected $controller;
-    protected $db;
+    protected $dbName;
     protected $dbOptions;
+    protected $model;
+    protected $definition;
+    protected $definitionName;
 
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
+        $this->definition = $controller->getDefinition();
+        $this->definitionName = $controller->getOption('def_name');
 
-        $definition = $controller->getDefinition();
-
-        if (isset($definition['cache']['tags'])) {
-            $this->cache = $definition['cache']['tags'];
+        if (isset($this->definition['cache']['tags'])) {
+            $this->cache = $this->definition['cache']['tags'];
         } else {
             $this->cache = "";
         }
 
-        $this->dbOptions = $definition['db'];
+        $this->dbOptions = $this->definition['db'];
+        $this->model = $this->definition['options']['model'];
+        $this->dbName = $this->definition['db']['table'];
     }
 
     protected function getOptionDB($ident)
@@ -42,11 +47,11 @@ class QueryHandler
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = array(), $isSelectAll = false)
     {
-        $this->db = DB::table($this->dbOptions['table']);
+        $this->db = DB::table($this->dbName);
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $this->db->addSelect($this->getOptionDB('table') .'.*');
+            $this->db->addSelect($this->dbName .'.*');
         }
 
         $this->prepareFilterValues();
@@ -57,17 +62,16 @@ class QueryHandler
 
         $this->dofilter();
 
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.order';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         $order = Session::get($sessionPath, array());
 
         if ($order && $isUserFilters) {
-            $this->db->orderBy($this->getOptionDB('table') .'.'. $order['field'], $order['direction']);
+            $this->db->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->getOptionDB('table') .'.'. $field, $direction);
+                $this->db->orderBy($this->dbName .'.'. $field, $direction);
             }
         }
 
@@ -108,9 +112,9 @@ class QueryHandler
             return $info;
         }
 
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.per_page';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         $perPage = Session::get($sessionPath);
+
         if (!$perPage) {
             $keys = array_keys($info);
             $perPage = $keys[0];
@@ -121,8 +125,7 @@ class QueryHandler
 
     protected function prepareFilterValues()
     {
-        $definition = $this->controller->getDefinition();
-        $filters = isset($definition['filters']) ? $definition['filters'] : array();
+        $filters = isset($this->definition['filters']) ? $this->definition['filters'] : array();
         if (is_callable($filters)) {
             $filters($this->db);
             return;
@@ -135,8 +138,7 @@ class QueryHandler
 
     protected function doPrependFilterValues(&$values)
     {
-        $definition = $this->controller->getDefinition();
-        $filters = isset($definition['filters']) ? $definition['filters'] : array();
+        $filters = isset($this->definition['filters']) ? $this->definition['filters'] : array();
         if (is_callable($filters)) {
             return;
         }
@@ -148,19 +150,19 @@ class QueryHandler
 
     protected function prepareSelectValues()
     {
-        $this->db->select($this->getOptionDB('table') .'.id');
-        $def = $this->controller->getDefinition();
-        if (isset($def['options']['is_sortable']) && $def['options']['is_sortable']) {
-            if (!Schema::hasColumn($this->getOptionDB('table'), "priority")) {
+        $this->db->select($this->dbName .'.id');
+
+        if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
+            if (!Schema::hasColumn($this->dbName, "priority")) {
                 Schema::table(
-                    $this->getOptionDB('table'),
+                    $this->dbName,
                     function ($table) {
                         $table->integer("priority");
                     }
                 );
             }
 
-            $this->db->addSelect($this->getOptionDB('table') .'.priority');
+            $this->db->addSelect($this->dbName .'.priority');
         }
 
         $fields = $this->controller->getFields();
@@ -172,25 +174,25 @@ class QueryHandler
 
     public function getRow($id)
     {
-        $this->db = DB::table($this->getOptionDB('table'));
+        $this->db = DB::table($this->dbName);
 
         $this->prepareSelectValues();
 
-        $this->db->where($this->getOptionDB('table').'.id', $id);
+        $this->db->where($this->dbName.'.id', $id);
 
         return $this->db->first();
     }
 
     public function getTableAllowedIds()
     {
-        if (!Session::has($this->getOptionDB('table') . "_exist")) {
-            if (!Schema::hasTable($this->getOptionDB('table'))) {
-                Schema::create($this->getOptionDB('table'), function ($table) {
+        if (!Session::has($this->dbName . "_exist")) {
+            if (!Schema::hasTable($this->dbName)) {
+                Schema::create($this->dbName, function ($table) {
                     $table->increments('id');
                 });
             }
         }
-        $this->db = DB::table($this->getOptionDB('table'));
+        $this->db = DB::table($this->dbName);
         $this->prepareFilterValues();
         $ids = $this->db->pluck('id');
 
@@ -201,8 +203,7 @@ class QueryHandler
 
     protected function onSearchFilterQuery()
     {
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
 
         $filters = Session::get($sessionPath, array());
         foreach ($filters as $name => $value) {
@@ -233,9 +234,8 @@ class QueryHandler
         }
         
         $updateData = $this->_getRowQueryValues($values);
-        $def = $this->controller->getDefinition();
 
-        $model = $def['options']['model'];
+        $model = $this->model;
         $this->_checkFields($updateData);
 
         if ($this->controller->hasCustomHandlerMethod('onUpdateRowData')) {
@@ -305,7 +305,7 @@ class QueryHandler
         }
 
         $page = (array) $this->db->where("id", $id)->select("*")->first();
-        Event::fire("table.clone", array($this->dbOptions['table'], $id));
+        Event::fire("table.clone", array($this->dbName, $id));
 
         unset($page['id']);
 
@@ -335,9 +335,11 @@ class QueryHandler
         foreach ($this->controller->getPatterns() as $pattern) {
             $pattern->delete($id);
         }
-        $res = $this->db->where('id', $id)->delete();
 
-        Event::fire("table.delete", array($this->dbOptions['table'], $id));
+        $model = $this->model;
+        $res = $model::find($id)->delete();
+
+        Event::fire("table.delete", array($this->dbName, $id));
 
         $res = array(
             'id'     => $id,
@@ -357,8 +359,7 @@ class QueryHandler
         $nameField = $input['name'];
         $valueField = $input['value'];
 
-        $def = $this->controller->getDefinition();
-        $model = $def['options']['model'];
+        $model = $this->model;
         $modelObj = $model::find($input['id']);
         $modelObj->$nameField = $valueField;
 
@@ -390,12 +391,11 @@ class QueryHandler
         }
 
         if (!$id) {
-            $def = $this->controller->getDefinition();
-            
+
             foreach ($insertData as $fild => $data) {
                 if (is_array($data)) {
 
-                    if (isset($def['fields'][$fild]['multi']) &&  $def['fields'][$fild]['multi']) {
+                    if (isset($this->definition['fields'][$fild]['multi']) &&  $this->definition['fields'][$fild]['multi']) {
                         foreach ($data as $k => $dataElement) {
                             if (!$dataElement) {
                                 unset($data[$k]);
@@ -413,7 +413,7 @@ class QueryHandler
                 }
             }
 
-            $model = $def['options']['model'];
+            $model = $this->model;
 
             $objectModel = new $model;
             foreach ($insertDataRes as $key => $value) {
@@ -455,9 +455,8 @@ class QueryHandler
     private function doValidate($values)
     {
         $errors = array();
-        $definition = $this->controller->getDefinition();
+        $fields = $this->definition['fields'];
 
-        $fields = $definition['fields'];
         foreach ($fields as $ident => $options) {
             try {
                 $field = $this->controller->getField($ident);
@@ -492,8 +491,7 @@ class QueryHandler
     {
         $values = $this->_unsetFutileFields($values);
 
-        $definition = $this->controller->getDefinition();
-        $fields = $definition['fields'];
+        $fields = $this->definition['fields'];
 
         foreach ($fields as $ident => $options) {
             $field = $this->controller->getField($ident);
@@ -541,8 +539,7 @@ class QueryHandler
 
     private function _checkFields(&$values)
     {
-        $definition = $this->controller->getDefinition();
-        $fields = $definition['fields'];
+        $fields = $this->definition['fields'];
 
         foreach ($fields as $ident => $options) {
             $field = $this->controller->getField($ident);
@@ -578,14 +575,11 @@ class QueryHandler
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
     }
-
-
+    
     public function clearCache()
     {
-        $definition = $this->controller->getDefinition();
-
-        if (isset($definition['cache'])) {
-            $cache = $definition['cache'];
+        if (isset($this->definition['cache'])) {
+            $cache = $this->definition['cache'];
 
             foreach ($cache as $key => $cacheDelete) {
                 if ($key == "tags") {
