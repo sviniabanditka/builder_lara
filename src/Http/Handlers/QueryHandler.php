@@ -17,6 +17,7 @@ class QueryHandler
     protected $model;
     protected $definition;
     protected $definitionName;
+    protected $db;
 
     public function __construct(JarboeController $controller)
     {
@@ -47,36 +48,35 @@ class QueryHandler
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = array(), $isSelectAll = false)
     {
-        $this->db = DB::table($this->dbName);
         $modelName = $this->model;
-        $model = new $modelName();
+        $this->db = new $modelName();
+
+       // $model = new $modelName();
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $model = $model->addSelect($this->dbName .'.*');
+            $this->db->addSelect($this->dbName .'.*');
         }
 
-        $this->prepareFilterValues($model);
+        $this->prepareFilterValues();
 
         if ($isUserFilters) {
             $this->onSearchFilterQuery();
         }
 
-        $this->dofilter($model);
+        $this->dofilter();
 
         $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         $order = Session::get($sessionPath, array());
 
         if ($order && $isUserFilters) {
-            $model = $model->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
+             $this->db->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
 
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-
-                //exit($this->dbName .'.'. $field. "--". $direction);
-                $model = $model->orderBy($this->dbName .'.'. $field, $direction);
+                 $this->db->orderBy($this->dbName .'.'. $field, $direction);
             }
         }
 
@@ -84,28 +84,28 @@ class QueryHandler
             $betweenField  = $betweenWhere['field'];
             $betweenValues = $betweenWhere['values'];
 
-            $model = $model->whereBetween($betweenField, $betweenValues);
+            $this->db->whereBetween($betweenField, $betweenValues);
         }
 
         if ($this->hasOptionDB('pagination') && $isPagination) {
             $pagination = $this->getOptionDB('pagination');
             $perPage = $this->getPerPageAmount($pagination['per_page']);
-            $paginator = $model->paginate($perPage);
+            $paginator = $this->db->paginate($perPage);
 
             return $paginator;
         }
 
-        return $model->get();
+        return $this->db->get();
     }
 
-    private function dofilter($model)
+    private function dofilter()
     {
         if (Input::has("filter")) {
             $filters = Input::get("filter");
 
             foreach ($filters as $nameField => $valueField) {
                 if ($valueField) {
-                    $model->where($nameField, $valueField);
+                    $this->db->where($nameField, $valueField);
                 }
             }
         }
@@ -128,16 +128,16 @@ class QueryHandler
         return $perPage;
     }
 
-    protected function prepareFilterValues($model)
+    protected function prepareFilterValues()
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : array();
         if (is_callable($filters)) {
-            $filters($model);
+            $filters($this->db);
             return;
         }
 
         foreach ($filters as $name => $field) {
-            $model->where($name, $field['sign'], $field['value']);
+            $this->db->where($name, $field['sign'], $field['value']);
         }
     }
 
@@ -155,7 +155,7 @@ class QueryHandler
 
     protected function prepareSelectValues()
     {
-        $this->db->select($this->dbName .'.id');
+        $this->db = $this->db->select($this->dbName .'.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
             if (!Schema::hasColumn($this->dbName, "priority")) {
@@ -167,13 +167,13 @@ class QueryHandler
                 );
             }
 
-            $this->db->addSelect($this->dbName .'.priority');
+            $this->db = $this->db->addSelect($this->dbName .'.priority');
         }
 
         $fields = $this->controller->getFields();
-      
+
         foreach ($fields as $name => $field) {
-            $field->onSelectValue($this->db);
+             $field->onSelectValue($this->db);
         }
     }
 

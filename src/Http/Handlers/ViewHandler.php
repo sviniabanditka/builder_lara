@@ -138,7 +138,7 @@ class ViewHandler
         $row->controller = $this->controller;
         $row->actions = $this->controller->actions;
         $row->def = $this->definition;
-        $row->row = $data['values'];
+        $row->row = (array) $data['values'];
 
         return $row->render();
     }

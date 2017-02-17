@@ -2,9 +2,9 @@
 
 namespace Vis\Builder\Fields;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\DB;
 
 class ForeignField extends AbstractField
 {
@@ -40,12 +40,10 @@ class ForeignField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName ();
         $filter = Session::get($sessionPath, '');
 
-        $type = $this->getAttribute('filter');
-
-        $input = View::make('admin::tb.filter_'. $type);
+        $input = View::make('admin::tb.filter_foreign');
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
