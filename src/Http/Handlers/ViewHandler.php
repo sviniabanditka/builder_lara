@@ -1,16 +1,22 @@
 <?php namespace Vis\Builder\Handlers;
 
-use Vis\Builder\JarboeController;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
+use Vis\Builder\JarboeController;
 
 class ViewHandler
 {
     protected $controller;
+    protected $definition;
+    protected $definitionName;
+    protected $model;
 
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
+        $this->definition = $controller->getDefinition();
+        $this->definitionName = $controller->getOption('def_name');
+        $this->model = $this->definition['options']['model'];
     }
     
     public function showEditFormPage($id)
@@ -27,25 +33,27 @@ class ViewHandler
                 throw new \RuntimeException('Not allowed to edit row #'. $id);
             }
         }
-        
-        $form = View::make('admin::tb.form_create');
-        $js   = View::make('admin::tb.form_create_validation');
+
         if ($id) {
             $form = View::make('admin::tb.form_edit');
             $js = View::make('admin::tb.form_edit_validation');
+        } else {
+            $form = View::make('admin::tb.form_create');
+            $js   = View::make('admin::tb.form_create_validation');
         }
         
         $form->is_page = true;
         $form->is_tree = false;
         $js->is_tree = false;
         
-        $form->def = $this->controller->getDefinition();
+        $form->def = $this->definition;
         $form->controller = $this->controller;
-        $js->def = $this->controller->getDefinition();
+        $js->def = $this->definition;
         $js->controller = $this->controller;
 
         $form->is_blank = true;
         $js->is_blank = true;
+
         if ($id) {
             $row = $this->controller->query->getRow($id);
             
@@ -55,39 +63,38 @@ class ViewHandler
             $js->is_blank = false;
         }
         
-        $definition = $this->controller->getDefinition();
-        $data = compact('form', 'js', 'definition', 'id');
+        $definition = $this->definition;
         $templatePostfix = $id ? 'edit' : 'create';
         
-        return View::make('admin::table_page_'. $templatePostfix, $data)->render();
+        return View::make('admin::table_page_'. $templatePostfix, compact('form', 'js', 'definition', 'id'))
+                ->render();
     }
 
     public function showList()
     {
         $table = View::make('admin::tb.table_builder');
-        $table->def  = $this->controller->getDefinition();
+
+        $table->def  = $this->definition;
         $table->rows = $this->controller->query->getRows();
         $table->controller = $this->controller;
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.per_page';
-        $table->per_page = Session::get($sessionPath);
+        $table->per_page = Session::get('table_builder.' . $this->definitionName . '.per_page');
 
         return $table;
     }
 
     public function showEditForm($id = false, $isTree = false)
     {
-        $table = View::make('admin::tb.modal_form');
         if ($id) {
             $table = View::make('admin::tb.modal_form_edit');
+        } else {
+            $table = View::make('admin::tb.modal_form');
         }
-        $table->is_tree = $isTree;
-        
-        $table->def = $this->controller->getDefinition();
-        $table->controller = $this->controller;
 
+        $table->is_tree = $isTree;
+        $table->def = $this->definition;
+        $table->controller = $this->controller;
         $table->is_blank = true;
+
         if ($id) {
             $table->row = (array) $this->controller->query->getRow($id);
             $table->is_blank = false;
@@ -98,16 +105,13 @@ class ViewHandler
 
     public function showRevisionForm($id = false, $isTree = false)
     {
-        if ($id) {
-            $table = View::make('admin::tb.modal_revision');
-        }
-        $table->is_tree = $isTree;
-
-        $table->def = $this->controller->getDefinition();
-        $table->controller = $this->controller;
-
-        $model = $table->def['options']['model'];
+        $table = View::make('admin::tb.modal_revision');
+        $model = $this->model;
         $objModel = $model::find($id);
+
+        $table->is_tree = $isTree;
+        $table->def = $this->definition;
+        $table->controller = $this->controller;
         $table->history = $objModel->revisionHistory()->orderBy("created_at", "desc")->get();
 
         return $table->render();
@@ -115,39 +119,36 @@ class ViewHandler
 
     public function showViewsStatistic($id = false, $isTree = false)
     {
-        if ($id) {
-            $table = View::make('admin::tb.modal_views_statistic');
-        }
+        $table = View::make('admin::tb.modal_views_statistic');
+
         $table->is_tree = $isTree;
-
-        $table->def = $this->controller->getDefinition();
+        $table->def = $this->definition;
         $table->controller = $this->controller;
-
-        $model = $table->def['options']['model'];
         $table->id = $id;
-        $table->model = $model;
+        $table->model = $this->model;
 
         return $table->render();
     }
     
     public function getRowHtml($data)
     {
-        $data['values'] = $this->controller->query->getRow($data['id']);
-        
         $row = View::make('admin::tb.single_row');
+        $data['values'] = $this->controller->query->getRow($data['id']);
+
         $row->controller = $this->controller;
         $row->actions = $this->controller->actions;
-        $row->def = $this->controller->getDefinition();
-        $row->row = (array) $data['values'];
+        $row->def = $this->definition;
+        $row->row = $data['values'];
         
         return $row->render();
     }
     
-    public function fetchActions(array $row)
+    public function fetchActions($row)
     {
         $actions = View::make('admin::tb.single_row_actions');
+
         $actions->row = $row;
-        $actions->def = $this->controller->getDefinition();
+        $actions->def = $this->definition;
         $actions->actions = $this->controller->actions;
         
         return $actions->render();

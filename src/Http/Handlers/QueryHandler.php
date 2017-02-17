@@ -48,10 +48,12 @@ class QueryHandler
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = array(), $isSelectAll = false)
     {
         $this->db = DB::table($this->dbName);
+        $modelName = $this->model;
+        $model = new $modelName();
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $this->db->addSelect($this->dbName .'.*');
+            $model->addSelect($this->dbName .'.*');
         }
 
         $this->prepareFilterValues();
@@ -66,12 +68,12 @@ class QueryHandler
         $order = Session::get($sessionPath, array());
 
         if ($order && $isUserFilters) {
-            $this->db->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
+            $model->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->dbName .'.'. $field, $direction);
+                $model->orderBy($this->dbName .'.'. $field, $direction);
             }
         }
 
@@ -79,18 +81,18 @@ class QueryHandler
             $betweenField  = $betweenWhere['field'];
             $betweenValues = $betweenWhere['values'];
 
-            $this->db->whereBetween($betweenField, $betweenValues);
+            $model->whereBetween($betweenField, $betweenValues);
         }
 
         if ($this->hasOptionDB('pagination') && $isPagination) {
             $pagination = $this->getOptionDB('pagination');
             $perPage = $this->getPerPageAmount($pagination['per_page']);
-            $paginator = $this->db->paginate($perPage);
-
+            $paginator = $model->paginate($perPage);
+            
             return $paginator;
         }
 
-        return $this->db->get();
+        return $model->get();
     }
 
     private function dofilter()
@@ -575,7 +577,7 @@ class QueryHandler
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
     }
-    
+
     public function clearCache()
     {
         if (isset($this->definition['cache'])) {

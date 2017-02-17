@@ -1,21 +1,25 @@
 <?php namespace Vis\Builder\Handlers;
 
-use Vis\Builder\JarboeController;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Vis\Builder\JarboeController;
 use Vis\Builder\Revision;
 
 class RequestHandler
 {
     protected $controller;
+    protected $definitionName;
+    protected $definition;
 
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
-    } // end __construct
+        $this->definitionName = $controller->getOption('def_name');
+        $this->definition = $controller->getDefinition();
+    }
 
     public function handle()
     {
@@ -101,12 +105,8 @@ class RequestHandler
             default:
                 return $this->handleShowList();
         }
-    } // end handle
-
-    protected function handleMultiUploadPictures()
-    {
     }
-    
+
     protected function handleManyToManyAjaxSearch()
     {
         $query = Input::get('q');
@@ -119,7 +119,7 @@ class RequestHandler
         $data = $field->getAjaxSearchResult($query, $limit, $page);
         
         return Response::json($data);
-    } // end handleManyToManyAjaxSearch
+    }
     
     protected function handleChangeOrderAction()
     {
@@ -127,8 +127,6 @@ class RequestHandler
 
         parse_str(Input::get('order'), $order);
         $order = $order['sort'];
-        
-        $definition = $this->controller->getDefinition();
 
         if (Input::get('params')) {
             $params = ltrim(Input::get('params'), "?");
@@ -141,23 +139,24 @@ class RequestHandler
                 $pageThisCount = 1;
             }
 
-
             if (count($paramsUrl)>0) {
                 return Response::json(array(
                     'status' => false,
                     'message' => "Ошибка. Сортировка с параметрами фильтра невозможна"
                 ));
             }
+
         } else {
             $pageThisCount = 1;
         }
 
+        $info = $this->definition['db']['pagination']['per_page'];
 
-        $info = $definition['db']['pagination']['per_page'];
         if (is_array($info)) {
-            $definitionName = $this->controller->getOption('def_name');
-            $sessionPath = 'table_builder.'.$definitionName.'.per_page';
+
+            $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
             $perPage = Session::get($sessionPath);
+
             if (!$perPage) {
                 $keys = array_keys($info);
                 $perPage = $keys[0];
@@ -170,7 +169,7 @@ class RequestHandler
         
         foreach ($order as $id) {
             ++$lowest;
-            \DB::table($definition['db']['table'])->where('id', $id)->update(array(
+            \DB::table($this->definition['db']['table'])->where('id', $id)->update(array(
                 'priority' => $lowest
             ));
         }
@@ -178,17 +177,15 @@ class RequestHandler
         return Response::json(array(
             'status' => true
         ));
-    } // end handleChangeOrderAction
+    }
     
     protected function handleMultiAction()
     {
-        // FIXME: move to separate class
-        $def = $this->controller->getDefinition();
-        
         $type = Input::get('type');
-        $action = $def['multi_actions'][$type];
-        
+        $action = $this->definition['multi_actions'][$type];
+
         $isAllowed = $action['check'];
+
         if (!$isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '. $type);
         }
@@ -199,21 +196,20 @@ class RequestHandler
         
         $data['ids'] = $ids;
         $data['is_hide_rows'] = false;
+
         if (isset($action['is_hide_rows'])) {
             $data['is_hide_rows'] = $action['is_hide_rows'];
         }
         
         return Response::json($data);
-    } // end handleMultiAction
+    }
     
     protected function handleMultiActionWithOption()
     {
-        // FIXME: move to separate class
-        $def = $this->controller->getDefinition();
-        
+
         $type = Input::get('type');
         $option = Input::get('option');
-        $action = $def['multi_actions'][$type];
+        $action = $this->definition['multi_actions'][$type];
         
         $isAllowed = $action['check'];
         if (!$isAllowed()) {
@@ -226,12 +222,13 @@ class RequestHandler
         
         $data['ids'] = $ids;
         $data['is_hide_rows'] = false;
+
         if (isset($action['is_hide_rows'])) {
             $data['is_hide_rows'] = $action['is_hide_rows'];
         }
         
         return Response::json($data);
-    } // end handleMultiActionWithOption
+    }
     
     protected function handleImportTemplateDownload()
     {
@@ -239,7 +236,7 @@ class RequestHandler
         $method = 'do'. ucfirst($type) .'TemplateDownload';
         
         $this->controller->import->$method();
-    } // end handleImportTemplateDownload
+    }
     
     protected function handleImport()
     {
@@ -253,7 +250,7 @@ class RequestHandler
             'status' => $res
         );
         return Response::json($response);
-    } // end handleImport
+    }
     
     protected function handleExport()
     {
@@ -262,21 +259,21 @@ class RequestHandler
         $idents = array_keys(Input::get('b', array()));
         
         $this->controller->export->$method($idents);
-    } // end handleExport
+    }
 
     protected function handleSetPerPageAmountAction()
     {
         $perPage = Input::get('per_page');
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.per_page';
+
+        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         Session::put($sessionPath, $perPage);
         
         $response = array(
             'url' => $this->controller->getOption('url')
         );
+
         return Response::json($response);
-    } // end handleSetPerPageAmountAction
+    }
     
     protected function handleChangeDirection()
     {
@@ -284,16 +281,15 @@ class RequestHandler
             'direction' => Input::get('direction'),
             'field' => Input::get('field')
         );
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.order';
+
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         Session::put($sessionPath, $order);
 
         $response = array(
             'url' => $this->controller->getOption('url')
         );
         return Response::json($response);
-    } // end handleChangeDirection
+    }
     
     protected function handleFileUpload()
     {
@@ -309,13 +305,12 @@ class RequestHandler
         $extension = $file->getClientOriginalExtension();
         $nameFile = explode(".", $file->getClientOriginalName());
         $fileName  = time() .'_'. \Jarboe::urlify($nameFile[0]) .'.'. $extension;
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $prefixPath = 'storage/tb-'.$definitionName.'/';
+
+        $prefixPath = 'storage/tb-' . $this->definitionName . '/';
         $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
         $destinationPath = $prefixPath . $postfixPath;
 
-        $status = $file->move($destinationPath, $fileName);
+        $file->move($destinationPath, $fileName);
 
         $data = array(
             'status' => true,
@@ -325,7 +320,7 @@ class RequestHandler
         );
 
         return Response::json($data);
-    } // end handleFileUpload
+    }
     
     protected function handlePhotoUpload()
     {
@@ -345,17 +340,16 @@ class RequestHandler
         }
         
         $data = $field->doUpload($file);
-        // HACK: for generating multiple image upload template | mb no need
+
         if ($num) {
             $data['num'] = $data;
         }
         
         return Response::json($data);
-    } // end handlePhotoUpload
+    }
     
     protected function handlePhotoUploadFromWysiwyg()
     {
-        // FIXME:
         $file = Input::file('image');
         
         if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
@@ -367,10 +361,9 @@ class RequestHandler
         
         $extension = $file->guessExtension();
         $fileName = md5_file($file->getRealPath()) .'_'. time() .'.'. $extension;
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $prefixPath = 'storage/tb-'.$definitionName.'/';
-        $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
+
+        $prefixPath = 'storage/tb-' . $this->definitionName . '/';
+        $postfixPath = date ('Y') . '/' . date ('m') . '/' . date ('d') . '/';
         $destinationPath = $prefixPath . $postfixPath;
         
         $status = $file->move($destinationPath, $fileName);
@@ -381,11 +374,10 @@ class RequestHandler
         );
 
         return Response::json($data);
-    } // end handlePhotoUploadFromWysiwyg
+    }
     
     protected function handlePhotoUploadFromWysiwygRedactor()
     {
-        // FIXME:
         $file = Input::file('file');
         
         if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
@@ -397,9 +389,8 @@ class RequestHandler
         
         $extension = $file->guessExtension();
         $fileName = md5_file($file->getRealPath()) .'_'. time() .'.'. $extension;
-        
-        $definitionName = $this->controller->getOption('def_name');
-        $prefixPath = 'storage/tb-'.$definitionName.'/';
+
+        $prefixPath = 'storage/tb-'.$this->definitionName.'/';
         $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
         $destinationPath = $prefixPath . $postfixPath;
         
@@ -410,7 +401,7 @@ class RequestHandler
         );
 
         return Response::json($data);
-    } // end handlePhotoUploadFromWysiwygRedactor
+    }
     
     protected function handleDeleteAction()
     {
@@ -420,12 +411,13 @@ class RequestHandler
         $result = $this->controller->query->deleteRow($idRow);
 
         return Response::json($result);
-    } // end handleDeleteAction
+    }
 
     protected function handleFastSaveAction()
     {
         $result = $this->controller->query->fastSave(Input::all());
         $result['status'] = "ok";
+
         return Response::json($result);
     }
 
@@ -438,15 +430,14 @@ class RequestHandler
         $result['html'] = "ok";
 
         return Response::json($result);
-    } // end handleDeleteAction
-
+    }
 
     protected function handleShowAddFormAction()
     {
         $result = $this->controller->view->showEditForm();
 
         return Response::json($result);
-    } // end handleShowAddFormAction
+    }
 
     protected function handleSaveAddFormAction()
     {
@@ -454,7 +445,7 @@ class RequestHandler
         $result['html'] = $this->controller->view->getRowHtml($result);
 
         return Response::json($result);
-    } // end handleSaveAddFormAction
+    }
 
     protected function handleSaveEditFormAction()
     {
@@ -465,7 +456,7 @@ class RequestHandler
         $result['html'] = $this->controller->view->getRowHtml($result);
 
         return Response::json($result);
-    } // end handleSaveEditFormAction
+    }
 
     protected function handleShowEditFormAction()
     {
@@ -479,7 +470,7 @@ class RequestHandler
         );
 
         return Response::json($data);
-    } // end handleShowEditFormAction
+    }
 
     protected function handleShowRevisionForm()
     {
@@ -532,7 +523,7 @@ class RequestHandler
         if (!$this->controller->isAllowedID($id)) {
            // throw new \RuntimeException("Permission denied to perform edit for #{$id}.");
         }
-    } // end checkEditPermission
+    }
 
     private function _getRowID()
     {
@@ -540,31 +531,30 @@ class RequestHandler
             return Input::get('id');
         }
         throw new \RuntimeException("Undefined row id for action.");
-    } // end _getRowID
+    }
 
     protected function handleShowList()
     {
-
         return array(
            'showList' => $this->controller->view->showList(),
-          //  $this->controller->view->showEditForm()
         );
-    } // end handleShowList
+    }
     
     protected function handleShowEditFormPageAction($id = false)
     {
         return $this->controller->view->showEditFormPage($id);
-    } // end handleShowAddFormPageAction
+    }
 
     protected function handleSearchAction()
     {
         $this->_prepareSearchFilters();
 
         $response = array(
-            'url' => $this->controller->getOption('url') .'?catalog='. Input::get('catalog') // HACK: FIXME:
+            'url' => $this->controller->getOption ('url') . '?catalog='
+                . Input::get ('catalog')
         );
         return Response::json($response);
-    } // end handleSearchAction
+    }
 
     private function _prepareSearchFilters()
     {
@@ -590,8 +580,7 @@ class RequestHandler
             $this->controller->getCustomHandler()->onPrepareSearchFilters($newFilters);
         }
 
-        $definitionName = $this->controller->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
         Session::put($sessionPath, $newFilters);
-    } // end _prepareSearchFilters
+    }
 }
