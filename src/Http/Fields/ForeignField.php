@@ -69,16 +69,9 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('alias')) {
             $foreignTable = $this->getAttribute('alias');
         }
-        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
 
-        // FIXME:
-        if ($this->getAttribute('filter') == 'foreign') {
-            $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
-            $db->where($foreignValueField, $value);
-            return;
-        }
-
-        $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
+        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
+        $db->where($foreignValueField, $value);
     } // end onSearchFilter
 
     public function onSelectValue(&$db)
