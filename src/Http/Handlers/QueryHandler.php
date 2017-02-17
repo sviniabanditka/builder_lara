@@ -53,27 +53,30 @@ class QueryHandler
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $model->addSelect($this->dbName .'.*');
+            $model = $model->addSelect($this->dbName .'.*');
         }
 
-        $this->prepareFilterValues();
+        $this->prepareFilterValues($model);
 
         if ($isUserFilters) {
             $this->onSearchFilterQuery();
         }
 
-        $this->dofilter();
+        $this->dofilter($model);
 
         $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         $order = Session::get($sessionPath, array());
 
         if ($order && $isUserFilters) {
-            $model->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
+            $model = $model->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
+
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-                $model->orderBy($this->dbName .'.'. $field, $direction);
+
+                //exit($this->dbName .'.'. $field. "--". $direction);
+                $model = $model->orderBy($this->dbName .'.'. $field, $direction);
             }
         }
 
@@ -81,28 +84,28 @@ class QueryHandler
             $betweenField  = $betweenWhere['field'];
             $betweenValues = $betweenWhere['values'];
 
-            $model->whereBetween($betweenField, $betweenValues);
+            $model = $model->whereBetween($betweenField, $betweenValues);
         }
 
         if ($this->hasOptionDB('pagination') && $isPagination) {
             $pagination = $this->getOptionDB('pagination');
             $perPage = $this->getPerPageAmount($pagination['per_page']);
             $paginator = $model->paginate($perPage);
-            
+
             return $paginator;
         }
 
         return $model->get();
     }
 
-    private function dofilter()
+    private function dofilter($model)
     {
         if (Input::has("filter")) {
             $filters = Input::get("filter");
 
             foreach ($filters as $nameField => $valueField) {
                 if ($valueField) {
-                    $this->db->where($nameField, $valueField);
+                    $model->where($nameField, $valueField);
                 }
             }
         }
@@ -125,16 +128,16 @@ class QueryHandler
         return $perPage;
     }
 
-    protected function prepareFilterValues()
+    protected function prepareFilterValues($model)
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : array();
         if (is_callable($filters)) {
-            $filters($this->db);
+            $filters($model);
             return;
         }
 
         foreach ($filters as $name => $field) {
-            $this->db->where($name, $field['sign'], $field['value']);
+            $model->where($name, $field['sign'], $field['value']);
         }
     }
 
@@ -195,7 +198,7 @@ class QueryHandler
             }
         }
         $this->db = DB::table($this->dbName);
-        $this->prepareFilterValues();
+        $this->prepareFilterValues($this->db);
         $ids = $this->db->pluck('id');
 
         Session::push($this->getOptionDB('table') . "_exist", 'created');

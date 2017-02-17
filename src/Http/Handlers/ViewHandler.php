@@ -139,7 +139,7 @@ class ViewHandler
         $row->actions = $this->controller->actions;
         $row->def = $this->definition;
         $row->row = $data['values'];
-        
+
         return $row->render();
     }
     
