@@ -9,7 +9,7 @@
     @else
 
         @foreach ($options as $value => $caption)
-            <option value="{{ $value }}" {{($caption == $selected) ? "selected" : ""}}>{{ __cms($caption) }}</option>
+            <option value="{{ $value }}" {{($value == $selected) ? "selected" : ""}}>{{ __cms($caption) }}</option>
         @endforeach
 
     @endif
