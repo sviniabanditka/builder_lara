@@ -42,8 +42,9 @@ class ForeignField extends AbstractField
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName ();
         $filter = Session::get($sessionPath, '');
+        $type = $this->getAttribute('filter');
 
-        $input = View::make('admin::tb.filter_foreign');
+        $input = View::make('admin::tb.filter_' . $type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
@@ -70,8 +71,15 @@ class ForeignField extends AbstractField
             $foreignTable = $this->getAttribute('alias');
         }
 
-        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
-        $db->where($foreignValueField, $value);
+        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
+
+        if ($this->getAttribute('filter') == 'foreign') {
+            $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
+            $db->where($foreignValueField, $value);
+            return;
+        }
+
+        $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
     } // end onSearchFilter
 
     public function onSelectValue(&$db)
