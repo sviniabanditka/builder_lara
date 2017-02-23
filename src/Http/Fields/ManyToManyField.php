@@ -339,15 +339,21 @@ class ManyToManyField extends AbstractField
 
     public function getAjaxSearchResult($query, $limit, $page)
     {
-        // TODO: create handler callback & lambda callback
+        if ($this->hasCustomHandlerMethod('onGetAjaxSearchResult')) {
+            $res = $this->handler->onGetAjaxSearchResult($this, $query, $limit, $page);
+            if ($res) {
+                return $res;
+            }
+        }
+
         $results = DB::table($this->getAttribute('mtm_external_table'))
             ->select('id', $this->getAttribute('mtm_external_value_field'))
             ->where($this->getAttribute('mtm_external_value_field'), 'LIKE', '%'. $query .'%')
             ->take($limit)
             ->skip(($limit * $page) - $limit);
-        // ->get();
 
         $additionalWheres = $this->getAttribute('additional_where');
+
         if ($additionalWheres) {
             foreach ($additionalWheres as $key => $opt) {
                 $results->where($key, $opt['sign'], $opt['value']);
@@ -355,11 +361,10 @@ class ManyToManyField extends AbstractField
         }
 
         $results = $results->get();
-
-
         $results = $results ? : array();
 
         $res = array();
+
         foreach ($results as $result) {
             $result = (array) $result;
             $res[] = array(
@@ -371,6 +376,7 @@ class ManyToManyField extends AbstractField
         return array(
             'results' => $res,
             'more'    => $res && !empty($res),
+            'message' => ''
         );
     } // end getAjaxSearchResult
 }
