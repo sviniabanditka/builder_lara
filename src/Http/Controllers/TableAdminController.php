@@ -25,7 +25,7 @@ class TableAdminController extends Controller
         $model = Config::get('builder.' . $nameTree . '_tree.model');
         $option = [];
 
-        $controller = JarboeFacade::tree($model, $option, $nameTree."_tree");
+        $controller = JarboeFacade::tree($model, $option, $nameTree . "_tree");
 
         return $controller->handle();
     }
@@ -42,7 +42,7 @@ class TableAdminController extends Controller
         $model = Config::get('builder.' . $nameTree . '_tree.model');
         $option = [];
 
-        $controller = JarboeFacade::tree($model, $option, $nameTree."_tree");
+        $controller = JarboeFacade::tree($model, $option, $nameTree . "_tree");
 
         return $controller->process();
     } // end handleTree
@@ -51,7 +51,13 @@ class TableAdminController extends Controller
     public function showTreeAll($nameTree)
     {
         $model = Config::get('builder.' . $nameTree . '.model');
-        $tree = $model::all()->toHierarchy();
+        $actions = config('builder.' . $nameTree . '.actions.show');
+
+        if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
+            $tree = $model::whereIn('id', $actions['check']())->get()->toHierarchy();
+        } else {
+            $tree = $model::all()->toHierarchy();
+        }
 
         $idNode  = \Input::get('node', 1);
         $current = $model::find($idNode);

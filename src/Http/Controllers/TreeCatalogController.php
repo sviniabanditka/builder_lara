@@ -269,25 +269,44 @@ class TreeCatalogController
 
     private function handleShowCatalog()
     {
+        $parentIDs = array();
         $model = $this->model;
+        $treeName = $this->nameTree;
 
         $idNode  = Input::get('node', 1);
         $current = $model::find($idNode);
 
-        $parentIDs = array();
         foreach ($current->getAncestors() as $anc) {
             $parentIDs[] = $anc->id;
         }
-        $children = $current->children()->paginate(20);
 
-        $templates = Config::get('builder::' . $this->nameTree . '.templates');
-        $template = Config::get('builder::' . $this->nameTree . '.default');
+        $children = $current->children();
+
+        //filter ids
+        $actions = config('builder.' . $treeName . '.actions.show');
+
+        if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
+
+            $arrIdsShow = $actions['check']();
+
+            foreach ($actions['check']() as $id) {
+                $arrIdsShow[] = $model::find($id)->getDescendants()->pluck('id')->toArray();
+            }
+
+            $arrIdsShow = array_flatten($arrIdsShow);
+            $children = $children->whereIn('id', $arrIdsShow);
+        }
+        //filter ids end
+
+        $children = $children->paginate(20);
+
+        $templates = config('builder.' . $treeName . '.templates');
+        $template = config('builder.' . $treeName . '.default');
+
+
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
-
-        $treeName = $this->nameTree;
-
 
         $content = View::make('admin::tree.content', compact('current', 'template', 'treeName', "children"));
 
