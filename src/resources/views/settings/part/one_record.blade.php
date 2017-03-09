@@ -6,7 +6,7 @@
 <td>{{__cms(isset(Config::get('builder.settings.groups')[$el->group_type])? Config::get('builder.settings.groups')[$el->group_type] : "")}}</td>
 <td>
   @if($el->type==1 || $el->type==6)
-        <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Тексовое поле')}}</a>
+        <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Текстовое поле')}}</a>
   @elseif($el->type==2)
         <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Список')}}</a>
   @elseif($el->type==3)
