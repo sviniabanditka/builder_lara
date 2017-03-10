@@ -1,19 +1,20 @@
 <?php namespace Vis\Builder\Helpers\Traits;
 
-use Cartalyst\Sentry\Facades\Laravel\Sentry;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\View;
 
 trait QuickEditTrait
 {
     public function editor($field)
     {
-        $admin = Sentry::findGroupByName('admin');
 
-        if (Sentry::check() && Sentry::getUser()->inGroup($admin)) {
+        $user = Sentinel::getUser();
+
+        if (Sentinel::check() && $user->hasAccess(['admin.access'])) {
             $pageEditor = $this;
             $fieldEdit = "editor_init_".get_class($pageEditor)."_".$field."_".$pageEditor->id;
 
-            return View::make('builder::partials.editor_init', compact("pageEditor", "field", "fieldEdit"));
+            return View::make('admin::partials.editor_init', compact("pageEditor", "field", "fieldEdit"));
         } else {
             return $this->$field;
         }
