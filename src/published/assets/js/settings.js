@@ -81,8 +81,7 @@ var Settings =
     {
         $("#modal_form").modal('show');
         Settings.preloadPage();
-        var urlPage = "settings_all";
-        window.history.pushState(urlPage, '', urlPage);
+     
         $.post("/admin/settings/create_pop", {},
             function(data) {
                 $("#modal_form .modal-content").html(data);
@@ -221,7 +220,28 @@ var Settings =
     {
         $(".types").hide();
         $(".type_" + type.value).show();
-    } // end typeChange
+    }, // end typeChange
+
+    saveFastEdit : function (context, rowId) {
+
+        var field = $('[name=title_' + rowId + ']'),
+            value;
+
+        if (field.attr('type') == 'checkbox') {
+            if (field.is(':checked')) {
+                value = 1;
+            } else {
+                value = 0;
+            }
+        } else {
+            value = field.val();
+        }
+
+        $.post("/admin/settings/fast_save", {id : rowId, value : value },
+            function(data){
+                doAjaxLoadContent(window.location.href);
+            });
+    }
 };
 
 jQuery(document).ready(function() {

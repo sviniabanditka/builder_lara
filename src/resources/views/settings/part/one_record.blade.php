@@ -1,5 +1,5 @@
 <td style="text-align: left;">
-    <a onclick="Settings.getEdit({{$el->id}})">{{{$el->title}}}</a>
+    <a onclick="Settings.getEdit({{$el->id}})">{{$el->title}}</a>
 </td>
 <td><span class="select_text">Setting::get("{{$el->slug}}")</span></td>
 <td>{{__cms(Config::get('builder.settings.type')[$el->type])}}</td>
@@ -14,11 +14,49 @@
    @elseif($el->type==5)
          <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Тройной список')}}</a>
   @elseif($el->type==4)
-        <a href="{{$el->value}}" target="_blank">{{{basename($el->value)}}}</a>
+        <a href="{{$el->value}}" target="_blank">{{basename($el->value)}}</a>
   @elseif($el->type==7)
-      {{$el->value == 1 ? "Вкл" : "Выкл"}}
+      <span class="dblclick-edit selectable element_title" onclick="TableBuilder.showFastEdit(this)">
+      @if ($el->value == 1)
+            <span class="glyphicon glyphicon-ok"></span>
+      @else
+            <span class="glyphicon glyphicon-minus"></span>
+      @endif
+      </span>
+
+          <div class="fast-edit-buttons">
+              <div class="input_field">
+                  <div class="div_input">
+                      <div class="input_content smart-form input_content_toggle">
+
+                          <label class="toggle">
+
+                              <input type="checkbox" {{$el->value == 1 ? "checked" : ""}} value="1" name="title_{{$el->id}}">
+                              <i data-swchoff-text="ВЫКЛ" data-swchon-text="ВКЛ"></i>
+                          </label>
+
+                      </div>
+                  </div>
+              </div>
+              <span class="fa fa-save" onclick="Settings.saveFastEdit(this, {{$el->id}});"></span>
+              <i class="glyphicon glyphicon-remove btn-cancel" onclick="TableBuilder.closeFastEdit(this, 'cancel');"></i>
+          </div>
+
   @else
-        {{{$el->value}}}
+        <span class="dblclick-edit selectable element_title" onclick="TableBuilder.showFastEdit(this)">{{$el->value}}</span>
+        <div class="fast-edit-buttons">
+            <div class="input_field">
+                <div class="div_input">
+                    <div class="input_content">
+                        <label class="input">
+                            <input class="dblclick-edit-input form-control input-sm unselectable settings_fast_edit_input" value="{{$el->value}}" name="title_{{$el->id}}" type="text" placeholder="Введите значение" >
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <span class="fa fa-save" onclick="Settings.saveFastEdit(this, {{$el->id}});"></span>
+            <i class="glyphicon glyphicon-remove btn-cancel" onclick="TableBuilder.closeFastEdit(this, 'cancel');"></i>
+        </div>
   @endif
 </td>
 <td>
@@ -29,9 +67,6 @@
              <li>
                 <a class="edit_record" onclick="Settings.getEdit({{$el->id}})"><i class="fa fa-pencil"></i> {{__cms('Редактировать')}}</a>
              </li>
-            {{-- <li>
-                 <a onclick="Settings.doDelete({{$el->id}});" style="color:red"><i class="fa red fa-times"></i> {{__cms('Удалить')}}</a>
-             </li>--}}
         </ul>
     </div>
   </div>

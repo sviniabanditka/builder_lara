@@ -49,6 +49,14 @@ Route::group(['middleware' => ['web']], function () {
                             'uses' => 'Vis\Builder\SettingsController@doDeleteSettingSelect'
                             )
                         );
+                        Route::post(
+                            '/settings/fast_save',
+                            array(
+                                'as' => 'm.fast_save_setting',
+                                'uses' => 'Vis\Builder\SettingsController@doFastSave'
+                            )
+                        );
+
             }
         }
     );

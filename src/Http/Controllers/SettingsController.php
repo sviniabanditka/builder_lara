@@ -139,4 +139,13 @@ class SettingsController extends Controller
             )
         );
     } //end doSettingSelectDelete
+
+    public function doFastSave()
+    {
+        if (Input::has('id') && Input::has('value')) {
+           $setting = Setting::find(Input::get('id'));
+           $setting->value = trim(Input::get('value'));
+           $setting->save();
+        }
+    }
 }
