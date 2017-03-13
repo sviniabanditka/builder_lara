@@ -67,6 +67,30 @@ trait ImagesTrait
         return $imagesRes;
     }
 
+    public function getOtherImgWatermark($nameField = "additional_pictures", $paramImg = "")
+    {
+        if (!$this->$nameField) {
+            return;
+        }
+
+        $images = json_decode($this->$nameField);
+
+        $imagesRes = [];
+        foreach ($images as $imgOne) {
+            if ($paramImg) {
+                if (Config::get("builder.watermark.active") && $imgOne) {
+                    $imagesRes[] = "/img/watermark/" . ltrim($imgOne, "/");
+                } else {
+                    $imagesRes[] = glide($imgOne, $paramImg);
+                }
+            } else {
+                $imagesRes[] = "/" . $imgOne;
+            }
+        }
+
+        return $imagesRes;
+    }
+
     /**
      * get array additional pictures with original img in key
      *
