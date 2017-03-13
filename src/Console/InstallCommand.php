@@ -206,6 +206,9 @@ class InstallCommand extends Command
         copy($this->installPath . '/files/laravellocalization.php', config_path() . '/laravellocalization.php');
         $this->info('Replace laravellocalization.php - OK');
 
+        copy($this->installPath . '/files/imagecache.php', config_path() . '/imagecache.php');
+        $this->info('Replace imagecache.php - OK');
+        
         copy($this->installPath . '/files/cartalyst.sentinel.php', config_path() . '/cartalyst.sentinel.php');
         $this->info('Replace cartalyst.sentinel.php - OK');
 
