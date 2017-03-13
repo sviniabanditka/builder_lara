@@ -95,7 +95,7 @@ trait ImagesTrait
 
     public function getWatermark($width = '', $height = '', $options = array())
     {
-        if (Config::get("builder::watermark.active") && $this->picture) {
+        if (Config::get("builder.watermark.active") && $this->picture) {
             return "/img/watermark/" . ltrim($this->picture, "/");
         } else {
             return $this->getImgPath($width, $height, $options);
