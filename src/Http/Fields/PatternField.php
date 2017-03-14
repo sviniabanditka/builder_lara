@@ -4,7 +4,7 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\View;
 
-class PatternField
+class PatternField extends AbstractField
 {
     
     protected $fieldName;
@@ -26,7 +26,7 @@ class PatternField
         $this->handler = &$handler;
         
         $patternName = preg_replace('~^pattern\.~', '', $fieldName);
-        $path = app_path() .'/tb-definitions/patterns/'. $patternName .'.php';
+        $path = config_path() .'/builder/tb-definitions/pattern/'. $patternName .'.php';
         if (!file_exists($path)) {
             throw new \RuntimeException("No pattern definition - [{$patternName}].");
         }
@@ -61,4 +61,32 @@ class PatternField
     {
         return true;
     } // end isPattern
+
+    public function onSearchFilter(&$db, $value){
+        return;
+    }
+
+    public function getClientsideValidatorRules()
+    {
+        return;
+    }
+
+    public function getClientsideValidatorMessages()
+    {
+        return;
+    }
+
+    public function doValidate($value)
+    {
+        return;
+    }
+
+    public function getEditInput($row = array())
+    {
+        return $this->render($row);
+    }
+    public function getTabbedEditInput($row = array())
+    {
+        return $this->render($row);
+    }
 }
