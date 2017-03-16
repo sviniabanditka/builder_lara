@@ -1,7 +1,7 @@
 <?php namespace Vis\Builder\Helpers\Traits;
 
 use Illuminate\Support\Facades\App;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Facades\Config;
 
 trait TranslateTrait
 {
@@ -14,8 +14,11 @@ trait TranslateTrait
 
     public function t_fild($ident)
     {
-        $lang = LaravelLocalization::setLocale();
-        if ($lang) {
+        $lang = App::getLocale();
+
+        $defaultLocale = Config::get('translations.config.def_locale');
+
+        if ($lang != $defaultLocale) {
             $ident = $ident."_".$lang;
         }
 
