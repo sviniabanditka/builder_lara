@@ -1,3 +1,4 @@
+
 <aside id="left-panel">
     <div class="login-info">
         <span>
@@ -85,3 +86,11 @@
         <i class="fa fa-arrow-circle-left hit"></i>
     </span>
 </aside>
+<script>
+    //check empty folder
+    $( "#left-panel .level1 ul" ).each(function( index ) {
+        if ($.trim($(this).html()) == '') {
+            $(this).parent().hide();
+        }
+    });
+</script>
