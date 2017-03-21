@@ -129,6 +129,11 @@ class TableAdminController extends Controller
             App::abort(404);
         }
 
+        //check is active
+        if (!$node->is_active) {
+            App::abort(404);
+        }
+
         if ($slug != '/' && $node->getUrl() != Request::url()) {
             App::abort(404);
         }
