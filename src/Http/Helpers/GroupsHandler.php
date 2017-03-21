@@ -20,26 +20,103 @@ class GroupsHandler extends CustomHandler
 
     public function onGetEditInput($formField, array &$row)
     {
-
         if ($formField->getFieldName() == 'permissions') {
-
             $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
 
-            if (isset($row['id'])) {
-                $group = Group::find($row['id']);
-                $groupPermissionsThis = $group->permissions;
+            if (isset($permissions['generatePermissions']) && $permissions['generatePermissions']) {
+                return $this->generatePermissions($row);
             } else {
-                $groupPermissionsThis = [];
-            }
 
-            return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
+                $groupPermissionsThis = $this->getPermissionsThis($row['id']);
+
+                return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
+            }
+        }
+    }
+
+    private function generatePermissions(array &$row)
+    {
+        $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
+        unset($permissions['generatePermissions']);
+        $permissionsMenu = config('builder.admin.menu');
+
+        foreach ($permissionsMenu as $permission) {
+            if (isset($permission['link']) && isset($permission['title'])) {
+
+                $slug = str_replace("/", "", $permission['link']);
+
+                $actions = config('builder.tb-definitions.' . $slug . '.actions');
+
+                if (count($actions)) {
+
+                    foreach ($actions as $slugAction => $action) {
+                        if (isset($action['caption'])) {
+                            $permissions[$permission['title']][$slug . '.'. $slugAction] = $action['caption'];
+                        }
+                    }
+                } else {
+                    $actions = config('builder.' . $slug . '.actions');
+
+                    if (count($actions)) {
+                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
+                        foreach ($actions as $slugAction => $action) {
+                            if (isset($action['caption'])) {
+                                $permissions[$permission['title']][$slug . '.' . $slugAction] = $action['caption'];
+                            }
+                        }
+                    } else {
+                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
+                    }
+                }
+
+            } else {
+
+                if (isset($permission['submenu'])) {
+
+                    foreach ($permission['submenu'] as $subMenu) {
+
+                        if (isset($subMenu['link'])) {
+
+                            $slug = str_replace ("/", "", $subMenu['link']);
+                            $actions = config ('builder.tb-definitions.' . $slug . '.actions');
+
+                            if (isset($subMenu['link']) && isset($subMenu['title'])) {
+                                $permissions[$permission['title']][$subMenu['title']][$slug . '.view'] = 'Просмотр';
+
+                                if (count ($actions)) {
+                                    foreach ($actions as $slugAction => $action) {
+                                        $permissions[$permission['title']][$subMenu['title']][$slug . '.' . $slugAction]
+                                            = $action['caption'];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-    } // end onGetEditInput
+        $groupPermissionsThis = $this->getPermissionsThis($row['id']);
+
+        return View::make('admin::tb.group_access_list_auto', compact('permissions', 'groupPermissionsThis'));
+    }
+
+    private function getPermissionsThis($id)
+    {
+        if (isset($id)) {
+            $group = Group::find($id);
+            $groupPermissionsThis = $group->permissions;
+        } else {
+            $groupPermissionsThis = [];
+        }
+
+        return $groupPermissionsThis;
+    }
 
     public function onAddSelectField($field, $db)
     {
         if ($field->getFieldName() == "permissions") {
+
             return true;
         }
     }
