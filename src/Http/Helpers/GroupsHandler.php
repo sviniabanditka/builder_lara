@@ -96,7 +96,7 @@ class GroupsHandler extends CustomHandler
             }
         }
 
-        $groupPermissionsThis = $this->getPermissionsThis($row['id']);
+        $groupPermissionsThis = isset($row['id']) ? $this->getPermissionsThis($row['id']) : [];
 
         return View::make('admin::tb.group_access_list_auto', compact('permissions', 'groupPermissionsThis'));
     }
