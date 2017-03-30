@@ -25,8 +25,12 @@
                     @if (isset($def['buttons']))
                      {!! $controller->buttons->fetch() !!}
                     @endif
+                    @if (isset($def['import']) && $def['import'])
                     {!! $controller->import->fetch() !!}
+                    @endif
+                    @if (isset($def['export']) && $def['export'])
                     {!!  $controller->export->fetch() !!}
+                    @endif
                 </header>
                 <div>
                     <div class="jarviswidget-editbox"></div>

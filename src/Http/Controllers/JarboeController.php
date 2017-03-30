@@ -49,14 +49,21 @@ class JarboeController
 
         $this->actions = new ActionsHandler($this->definition['actions'], $this);
 
-        $this->export  = new ExportHandler($this->definition['export'], $this);
-        $this->import  = new ImportHandler($this->definition['import'], $this);
+        if ($this->definition['export']) {
+            $this->export = new ExportHandler($this->definition['export'], $this);
+        }
+
+        if ($this->definition['import']) {
+            $this->import = new ImportHandler($this->definition['import'], $this);
+        }
+
         if (isset($this->definition['buttons'])) {
             $this->buttons  = new ButtonsHandler($this->definition['buttons'], $this);
         }
         $this->query   = new QueryHandler($this);
 
-        $this->allowedIds = (array) $this->query->getTableAllowedIds();
+        //TODO hz or needed this
+       // $this->allowedIds = (array) $this->query->getTableAllowedIds();
 
         $this->view    = new ViewHandler($this);
         $this->request = new RequestHandler($this);

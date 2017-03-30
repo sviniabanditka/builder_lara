@@ -96,7 +96,7 @@ if (!function_exists('geturl')) {
         if (!$locale) {
             $locale = App::getLocale();
         }
-
+        
         return LaravelLocalization::getLocalizedURL($locale, $url, $attributes);
     } // end geturl
 }

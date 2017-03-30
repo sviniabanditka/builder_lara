@@ -88,7 +88,7 @@ class TableAdminController extends Controller
             'url'      => '/admin/'.$page,
             'def_name' => $page,
         );
-
+      
         return JarboeFacade::table($options)['showList'];
     }
 

@@ -520,9 +520,7 @@ class RequestHandler
 
     protected function checkEditPermission($id)
     {
-        if (!$this->controller->isAllowedID($id)) {
-           // throw new \RuntimeException("Permission denied to perform edit for #{$id}.");
-        }
+        
     }
 
     private function _getRowID()

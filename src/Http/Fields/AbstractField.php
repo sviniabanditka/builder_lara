@@ -212,7 +212,7 @@ abstract class AbstractField
             }
 
         }
-        
+
         return $tabs;
     } // end getPreparedTabs
 
@@ -267,18 +267,18 @@ abstract class AbstractField
 
         if ($tabs) {
             foreach ($tabs as $tab) {
-                $name = $table_name .'.'. $this->getFieldName() . $tab['postfix'];
 
+                $name = $table_name .'.'. $this->getFieldName() . $tab['postfix'];
                 $this->doCreateField($table_name, $this->getFieldName() . $tab['postfix']);
                 $db->addSelect($name);
             }
+
         } else {
-            //echo $field_name."<br>";
             $this->doCreateField($table_name, $field_name);
             $db->addSelect($table_name .'.'. $field_name);
         }
     } // end onSelectValue
-
+    
     //autocreate fields in db
     protected function doCreateField($table_name, $field_name)
     {
