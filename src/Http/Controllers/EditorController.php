@@ -15,7 +15,7 @@ class EditorController extends Controller
         $photo = Input::file('file');
 
         $rules = array(
-            'file'  => 'required|image|max:25000',
+            'file'  => 'required|image',
         );
 
         $validator = Validator::make(Input::all(), $rules);
@@ -44,7 +44,7 @@ class EditorController extends Controller
         $file = Input::file('file');
 
         $rules = array(
-            'file'  => 'required|max:25000',
+            'file'  => 'required',
         );
 
         $validator = Validator::make(Input::all(), $rules);
