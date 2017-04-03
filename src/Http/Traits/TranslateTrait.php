@@ -18,7 +18,7 @@ trait TranslateTrait
 
         $defaultLocale = Config::get('translations.config.def_locale');
 
-        if ($lang != $defaultLocale) {
+        if ($lang != $defaultLocale && $defaultLocale) {
             $ident = $ident."_".$lang;
         }
 
