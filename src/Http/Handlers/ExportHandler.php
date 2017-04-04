@@ -86,7 +86,8 @@ class ExportHandler
         
         $between = $this->getBetweenValues();
         // FIXME: move to separate method, maybe
-        $rows = $this->controller->query->getRows(false, true, $between, true); // without pagination & with user filters & with all fields
+        $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
+
         if (isset($this->def['handle']['export']['filter'])) {
             $filterHandler = $this->def['handle']['export']['filter'];
             $rows = $filterHandler($rows);
@@ -159,7 +160,8 @@ class ExportHandler
         
         $between = $this->getBetweenValues();
         // FIXME: move to separate method, maybe
-        $rows = $this->controller->query->getRows(false, false, $between); // without pagination & user filters
+        $rows = $this->controller->query->getRows(false, false, $between)->toArray(); // without pagination & user filters
+
         foreach ($rows as $row) {
             $xlsRow = array();
             foreach ($idents as $ident) {
