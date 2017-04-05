@@ -38,10 +38,5 @@
         "psr-4": {
             "Vis\\Builder\\": "src/"
         }
-    },
-    "scripts": {
-        "post-update-cmd": [
-            "php artisan vendor:publish --tag=public --force"
-        ]
     }
 }
