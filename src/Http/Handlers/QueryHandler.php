@@ -308,7 +308,7 @@ class QueryHandler
                 return $res;
             }
         }
-
+        $this->db = DB::table($this->dbName);
         $page = (array) $this->db->where("id", $id)->select("*")->first();
         Event::fire("table.clone", array($this->dbName, $id));
 
