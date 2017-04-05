@@ -101,7 +101,7 @@ class Setting extends Eloquent
             $ext = $file -> getClientOriginalExtension();
             $hashname = md5(time()) . '.' . $ext;
             $full_path_img = "/" . $destinationPath . '/' . $hashname;
-            $upload_success = $file -> move($destinationPath, $hashname);
+            $file->move($destinationPath, $hashname);
             $settings->value = $full_path_img;
         }
 
@@ -210,12 +210,6 @@ class Setting extends Eloquent
         }
 
         Setting::reCacheSettings();
-
-        /*  if ($data['id'] == 0) {
-              Event::fire("setting.created", array($settings));
-          } else {
-              Event::fire("setting.changed", array($settings));
-          }*/
 
         return $settings;
     }

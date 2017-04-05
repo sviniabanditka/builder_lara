@@ -1,7 +1,6 @@
 <?php namespace Vis\Builder\Handlers;
 
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
@@ -405,7 +404,7 @@ class RequestHandler
     
     protected function handleDeleteAction()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
         $result = $this->controller->query->deleteRow($idRow);
@@ -423,7 +422,7 @@ class RequestHandler
 
     protected function handleCloneAction()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
         $result = $this->controller->query->cloneRow($idRow);
 
@@ -449,7 +448,7 @@ class RequestHandler
 
     protected function handleSaveEditFormAction()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
         $result = $this->controller->query->updateRow(Input::all());
@@ -460,7 +459,7 @@ class RequestHandler
 
     protected function handleShowEditFormAction()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showEditForm($idRow);
@@ -474,7 +473,7 @@ class RequestHandler
 
     protected function handleShowRevisionForm()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showRevisionForm($idRow);
@@ -488,7 +487,7 @@ class RequestHandler
 
     protected function handleShowViewsStatisic()
     {
-        $idRow = $this->_getRowID();
+        $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showViewsStatistic($idRow);
@@ -523,7 +522,7 @@ class RequestHandler
         
     }
 
-    private function _getRowID()
+    private function getRowID()
     {
         if (Input::has('id')) {
             return Input::get('id');
@@ -545,7 +544,7 @@ class RequestHandler
 
     protected function handleSearchAction()
     {
-        $this->_prepareSearchFilters();
+        $this->prepareSearchFilters();
 
         $response = array(
             'url' => $this->controller->getOption ('url') . '?catalog='
@@ -554,7 +553,7 @@ class RequestHandler
         return Response::json($response);
     }
 
-    private function _prepareSearchFilters()
+    private function prepareSearchFilters()
     {
         $filters = Input::get('filter', array());
 

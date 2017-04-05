@@ -1,7 +1,6 @@
 <?php
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
 class GroupField extends AbstractField

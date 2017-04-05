@@ -1,6 +1,5 @@
 <?php namespace Vis\Builder;
 
-use Illuminate\Support\Facades\Session;
 use Vis\Builder\Handlers\ViewHandler;
 use Vis\Builder\Handlers\RequestHandler;
 use Vis\Builder\Handlers\QueryHandler;
@@ -36,7 +35,7 @@ class JarboeController
 
     public function __construct($options)
     {
-        $this->options = $options; //$this->getPreparedOptions($options);
+        $this->options = $options;
         $this->definition = $this->getTableDefinition($this->getOption('def_name'));
         $this->doPrepareDefinition();
 
@@ -61,10 +60,6 @@ class JarboeController
             $this->buttons  = new ButtonsHandler($this->definition['buttons'], $this);
         }
         $this->query   = new QueryHandler($this);
-
-        //TODO hz or needed this
-       // $this->allowedIds = (array) $this->query->getTableAllowedIds();
-
         $this->view    = new ViewHandler($this);
         $this->request = new RequestHandler($this);
 
@@ -266,13 +261,13 @@ class JarboeController
             throw new \RuntimeException("Empty definition?");
         }
 
-        $definition['is_searchable'] = $this->_isSearchable($definition);
+        $definition['is_searchable'] = $this->isSearchable($definition);
         $definition['options']['admin_uri'] = \Config::get('builder.admin.uri');
 
         return $definition;
     } // end getTableDefinition
 
-    private function _isSearchable($definition)
+    private function isSearchable($definition)
     {
         $isSearchable = false;
 
@@ -284,5 +279,5 @@ class JarboeController
         }
 
         return $isSearchable;
-    } // end _isSearchable
+    }
 }

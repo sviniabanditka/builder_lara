@@ -65,8 +65,7 @@ class DatetimeField extends AbstractField
         }
         
         $timestamp = $this->getTimestamp($this->getValue($row));
-        
-        // FIXME:
+
         return date('d/m/Y H:i:s', $timestamp);
     } // end getListValue
 
@@ -78,8 +77,7 @@ class DatetimeField extends AbstractField
                 return $res;
             }
         }
-
-        // FIXME:
+        
         $value = $this->getValue($row);
         $value = $value ? date('d/m/Y H:i:s', $this->getTimestamp($value)) : '';
 

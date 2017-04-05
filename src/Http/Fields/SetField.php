@@ -15,7 +15,6 @@ class SetField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-        // FIXME: add multiple search attributes
         $table = $this->definition['db']['table'];
         $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'. $value .'%');
     } // end onSearchFilter
@@ -57,14 +56,12 @@ class SetField extends AbstractField
 
     public function getRowColor($row)
     {
-        // FIXME:
         $colors = $this->getAttribute('colors');
         if ($colors) {
             return isset($colors[$this->getValue($row)]) ? $colors[$this->getValue($row)] : '';
         }
-    } // end getRowColor
-    
-    //
+    }
+
     public function getValue($row, $postfix = '')
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {

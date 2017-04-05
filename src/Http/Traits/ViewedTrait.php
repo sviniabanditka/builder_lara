@@ -1,6 +1,5 @@
 <?php namespace Vis\Builder\Helpers\Traits;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 

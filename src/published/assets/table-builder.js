@@ -757,8 +757,7 @@ var TableBuilder = {
         });
 
         values = values.concat(selectMultiple);
-
-        // FIXME:
+        
         if (TableBuilder.onDoCreate) {
             values = TableBuilder.onDoCreate(values);
         }

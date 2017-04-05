@@ -1,7 +1,6 @@
 <?php namespace Vis\Builder\Handlers;
 
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 
 class ButtonsHandler
 {

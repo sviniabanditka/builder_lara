@@ -1,15 +1,11 @@
 <?php namespace Vis\Builder;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
-
-//use Illuminate\Http\Request;
 
 class TreeCatalogController
 {
@@ -24,7 +20,6 @@ class TreeCatalogController
         $this->nameTree = $nameTree;
     } // end __construct
 
-    // FIXME:
     public function setOptions(array $options = array())
     {
         $this->options = $options;
@@ -32,7 +27,6 @@ class TreeCatalogController
 
     public function handle()
     {
-      // print_arr(Input::all());
         switch (Input::get('query_type')) {
             case 'do_create_node':
                 return $this->doCreateNode();
@@ -101,7 +95,6 @@ class TreeCatalogController
 
         $node->makeChildOf($root);
 
-        //$model::rebuild(true);
         $root->clearCache();
 
         return Response::json(array(
@@ -136,9 +129,6 @@ class TreeCatalogController
         unset($page['id']);
         if ($parentId) {
             $page['parent_id'] = $parentId;
-          //  $page['slug'] = $page['slug'] . "_" . $page['parent_id'];
-        } else {
-          //  $page['slug'] = $page['slug'] . "_" . time();
         }
 
         if ($page['parent_id']) {
@@ -214,7 +204,6 @@ class TreeCatalogController
             }
         }
 
-        //$model::rebuild();
         $root->clearCache();
 
         $item = $model::find($item->id);
@@ -257,7 +246,7 @@ class TreeCatalogController
     {
         $model = $this->model;
 
-        $status = $model::destroy(Input::get('id'));
+        $model::destroy(Input::get('id'));
 
         $modelObj = $model::find("1");
         $modelObj->clearCache();

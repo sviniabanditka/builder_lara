@@ -129,12 +129,6 @@ class CustomClosureHandler
             $closure = $closure->bindTo($this);
             return $closure($id);
         }
-        /*
-        return array(
-            'id'     => $id,
-            'status' => true|false
-        );
-        */
     } // end handleDeleteRow
     
     public function handleInsertRow($values)
@@ -144,12 +138,7 @@ class CustomClosureHandler
             $closure = $closure->bindTo($this);
             return $closure($values);
         }
-        /*
-        return array(
-            'id' => $idInsertedRow,
-            'values' => $values
-        );
-        */
+
     } // end handleInsertRow
     
     public function handleUpdateRow($values)
@@ -159,12 +148,6 @@ class CustomClosureHandler
             $closure = $closure->bindTo($this);
             return $closure($values);
         }
-        /*
-        return array(
-            'id' => $idUpdatedRow,
-            'values' => $values
-        );
-        */
     } // end handleUpdateRow
     
     public function onUpdateFastRowResponse(array &$response)
@@ -264,13 +247,6 @@ class CustomClosureHandler
             $closure = $closure->bindTo($this);
             return $closure($file);
         }
-        /*
-        $data = array(
-            'status' => true|false,
-            'link'   => absolute path
-        );
-        return Response::json($data);
-        */
     } // end onPhotoUploadFromWysiwyg
     
     

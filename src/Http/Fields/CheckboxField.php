@@ -83,14 +83,14 @@ class CheckboxField extends AbstractField
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
 
-            if ($res != false) {
+            if ($res !== false) {
                 return $res;
             }
         }
 
         $value = (
             (isset($row[$this->getFieldName()]) && $row[$this->getFieldName()]) ||
-            (!isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') != true)
+            (!isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') !== true)
 
                 )
                     ? '1' : '0';

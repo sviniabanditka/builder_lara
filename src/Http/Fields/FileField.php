@@ -71,7 +71,6 @@ class FileField extends AbstractField
             return '';
         }
         
-        // FIXME: move to template
         $src = URL::to($this->getValue($row));
         $html = '<a href="'. $src .'" target="_blank">'. $src .'</a>';
         

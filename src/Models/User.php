@@ -1,6 +1,7 @@
 <?php namespace Vis\Builder;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
+use DB;
 
 class User extends EloquentUser
 {
@@ -21,5 +22,15 @@ class User extends EloquentUser
     public function getFullName()
     {
         return $this->first_name." ".$this->last_name;
+    }
+
+    public function getIdsTreeAccess() {
+
+        return DB::table('role_users')
+            ->leftJoin('roles2tree', 'roles2tree.id_role', '=', 'role_users.role_id')
+            ->where('user_id', $this->id)
+            ->where('id_tree', '!=', null)
+            ->select('roles2tree.id_tree')
+            ->get();
     }
 }

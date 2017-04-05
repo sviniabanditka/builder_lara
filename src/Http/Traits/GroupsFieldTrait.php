@@ -1,7 +1,5 @@
 <?php namespace Vis\Builder\Helpers\Traits;
 
-use App\Modules\Settings\Models\Setting;
-use Illuminate\Support\Facades\Config;
 
 trait GroupsFieldTrait
 {
@@ -21,6 +19,7 @@ trait GroupsFieldTrait
             } else {
                 return "Поле неправильного  формата";
             }
+
         } else {
             return "Нет такого поля";
         }

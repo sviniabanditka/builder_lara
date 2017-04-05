@@ -2,7 +2,6 @@
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationMiddlewareBase;
 
 class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase

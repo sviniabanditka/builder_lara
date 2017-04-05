@@ -7,12 +7,12 @@ trait TranslateTrait
 {
     public function t($ident)
     {
-        $ident = $this->t_fild($ident);
+        $ident = $this->tField($ident);
 
         return $this->$ident;
     }
 
-    public function t_fild($ident)
+    private function tField($ident)
     {
         $lang = App::getLocale();
 

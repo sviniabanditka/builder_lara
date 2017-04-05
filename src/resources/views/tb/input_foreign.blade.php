@@ -15,11 +15,11 @@
         });
     });
 </script>
-@endif 
+@endif
 
 <label class="select">
     <select
-
+     style="width: 500px; max-width: 920px; overflow: hidden"
      @if (Input::has("id") && $readonly_for_edit)
          disabled
      @endif

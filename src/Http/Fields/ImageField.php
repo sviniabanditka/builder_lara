@@ -3,11 +3,9 @@
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
-use Vis\Builder\OptmizationImg;
 use Vis\Builder\Facades\Jarboe;
 
 class ImageField extends AbstractField

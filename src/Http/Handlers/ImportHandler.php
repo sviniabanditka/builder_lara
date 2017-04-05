@@ -4,7 +4,6 @@ namespace Vis\Builder\Handlers;
 
 use Vis\Builder\Exceptions\JarboeValidationException;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
 class ImportHandler
@@ -48,8 +47,7 @@ class ImportHandler
         
         $definition = $this->controller->getDefinition();
         $table = $definition['db']['table'];
-        
-        // FIXME: move default to options
+
         $delimiter = ',';
         if (isset($this->def['files']['csv']['delimiter'])) {
             $delimiter = $this->def['files']['csv']['delimiter'];
@@ -103,14 +101,12 @@ class ImportHandler
         }
         
         return true;
-        //$this->doCheckFields();
     } // end doImportCsv
     
     public function doCsvTemplateDownload()
     {
         $this->doCheckPermission();
         
-        // FIXME: move default to options
         $delimiter = ',';
         if (isset($this->def['files']['csv']['delimiter'])) {
             $delimiter = $this->def['files']['csv']['delimiter'];

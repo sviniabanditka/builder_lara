@@ -1,10 +1,6 @@
 <?php namespace Vis\Builder;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class GeneratePassword extends Command

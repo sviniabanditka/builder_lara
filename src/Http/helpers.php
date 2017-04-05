@@ -111,8 +111,7 @@ if (!function_exists("__cms")) {
     function __cms($phrase)
     {
         $this_lang = Cookie::get("lang_admin");
-
-        //Cache::forget("translations");
+        
         $array_translate = Vis\TranslationsCMS\Trans::fillCacheTrans();
 
         if (isset($array_translate[$phrase][$this_lang])) {

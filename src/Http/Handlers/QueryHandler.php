@@ -4,7 +4,6 @@ use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Cache;
@@ -51,7 +50,6 @@ class QueryHandler
         $modelName = $this->model;
         $this->db = new $modelName();
 
-       // $model = new $modelName();
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
@@ -238,10 +236,10 @@ class QueryHandler
             }
         }
         
-        $updateData = $this->_getRowQueryValues($values);
+        $updateData = $this->getRowQueryValues($values);
 
         $model = $this->model;
-        $this->_checkFields($updateData);
+        $this->checkFields($updateData);
 
         if ($this->controller->hasCustomHandlerMethod('onUpdateRowData')) {
             $this->controller->getCustomHandler()->onUpdateRowData($updateData, $values);
@@ -386,8 +384,8 @@ class QueryHandler
             }
         }
 
-        $insertData = $this->_getRowQueryValues($values);
-        $this->_checkFields($insertData);
+        $insertData = $this->getRowQueryValues($values);
+        $this->checkFields($insertData);
 
         $this->doValidate($insertData);
         $id = false;
@@ -492,9 +490,9 @@ class QueryHandler
         }
     }
 
-    private function _getRowQueryValues($values)
+    private function getRowQueryValues($values)
     {
-        $values = $this->_unsetFutileFields($values);
+        $values = $this->unsetFutileFields($values);
 
         $fields = $this->definition['fields'];
 
@@ -521,7 +519,7 @@ class QueryHandler
         return $values;
     }
 
-    private function _unsetFutileFields($values)
+    private function unsetFutileFields($values)
     {
         unset($values['id']);
         unset($values['query_type']);
@@ -542,7 +540,7 @@ class QueryHandler
         return $values;
     }
 
-    private function _checkFields(&$values)
+    private function checkFields(&$values)
     {
         $fields = $this->definition['fields'];
 
@@ -564,17 +562,17 @@ class QueryHandler
 
             if ($tabs) {
                 foreach ($tabs as $tab) {
-                    $this->_checkField($values, $ident, $field);
+                    $this->checkField($values, $ident, $field);
                 }
             } else {
                 if (isset($values[$ident])) {
-                    $this->_checkField($values, $ident, $field);
+                    $this->checkField($values, $ident, $field);
                 }
             }
         }
     }
 
-    private function _checkField($values, $ident, $field)
+    private function checkField($values, $ident, $field)
     {
         if (!$field->isEditable()) {
             throw new \RuntimeException("Field [{$ident}] is not editable");
@@ -588,9 +586,7 @@ class QueryHandler
 
             foreach ($cache as $key => $cacheDelete) {
                 if ($key == "tags") {
-                    foreach ($cacheDelete as $tag) {
-                        Cache::tags($tag)->flush();
-                    }
+                    Cache::tags($cacheDelete)->flush();
                 }
 
                 if ($key == "keys") {

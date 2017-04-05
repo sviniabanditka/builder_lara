@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Yandex\Translate\Translator;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Cookie;
 
 class TranslateController extends Controller
 {

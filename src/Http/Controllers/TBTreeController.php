@@ -166,9 +166,7 @@ class TBTreeController extends \Controller
                 $item->moveToLeftOf(Tree::find($idRightSibling));
             }
         }
-        
-        //Tree::rebuild();
-        
+
         $this->doFlushTreeStructureCache();
 
         $item = Tree::find($item->id);
@@ -216,9 +214,7 @@ class TBTreeController extends \Controller
         $node->save();
         
         $node->makeChildOf($root);
-        
-      //  Tree::rebuild();
-        
+
         $this->doFlushTreeStructureCache();
         
         return Response::json(array(

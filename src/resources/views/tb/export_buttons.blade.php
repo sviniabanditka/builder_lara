@@ -61,7 +61,6 @@ jQuery('#tb-export-form').bind('click', function(e) {
     e.stopPropagation() 
 });
 
-// FIXME: move to options
 jQuery(document).ready(function() {
     jQuery("#export-date-from, #export-date-to").datepicker({
         changeMonth: true,

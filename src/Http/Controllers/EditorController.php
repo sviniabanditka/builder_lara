@@ -31,7 +31,7 @@ class EditorController extends Controller
 
         $full_path_img = "/".$destinationPath.'/'.$hashname;
 
-        $upload_success = Input::file('file')->move($destinationPath, $hashname);
+        Input::file('file')->move($destinationPath, $hashname);
 
         return Response::json(array('link' => $full_path_img));
     }//end uploadFoto
@@ -60,7 +60,7 @@ class EditorController extends Controller
 
         $full_path_img = "/".$destinationPath.'/'.$hashname;
 
-        $upload_success = Input::file('file')->move($destinationPath, $hashname);
+        Input::file('file')->move($destinationPath, $hashname);
 
         return Response::json(array('link' => $full_path_img));
     } //end uploadFile
@@ -84,8 +84,6 @@ class EditorController extends Controller
                 $k++;
             }
         }
-
-        //print_arr($imgRes);
 
         return Response::json($imgRes);
     }

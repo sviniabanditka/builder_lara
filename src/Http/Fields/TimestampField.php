@@ -41,9 +41,7 @@ class TimestampField extends AbstractField
             }
         }
 
-        // FIMXE: MariaDB wtf
         return date('Y-m-d H:i:s', $this->getTimestamp($value)) . '.000000';
-        // return $this->getTimestamp($value);
     } // end prepareQueryValue
     
     private function getTimestamp($date)
@@ -63,8 +61,7 @@ class TimestampField extends AbstractField
         if (!$this->getValue($row)) {
             return '';
         }
-        
-        // FIXME: MariaDB timestamp
+
         return date('d/m/Y', $this->getTimestamp($this->getValue($row)));
     } // end getListValue
 
@@ -77,7 +74,6 @@ class TimestampField extends AbstractField
             }
         }
 
-        // FIXME:
         $value = $this->getValue($row);
         $value = $value ? date('d/m/Y', $this->getTimestamp($value)) : '';
 

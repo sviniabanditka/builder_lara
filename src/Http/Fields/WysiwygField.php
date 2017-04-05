@@ -31,8 +31,6 @@ class WysiwygField extends AbstractField
             }
         }
 
-        //$wysiwyg = $this->getAttribute('wysiwyg', 'summernote');
-
         $input = \View::make('admin::tb.input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
         $input->name  = $this->getFieldName();
@@ -59,9 +57,7 @@ class WysiwygField extends AbstractField
                 return $res;
             }
         }
-        
-        //$wysiwyg = $this->getAttribute('wysiwyg', 'summernote');
-        
+
         $input = \View::make('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
         $input->name  = $this->getFieldName();
@@ -76,7 +72,6 @@ class WysiwygField extends AbstractField
             $action = $this->definition['options']['action_url_tree'];
         }
         $input->action = $action;
-        // HACK: for tabs right behaviour in edit-create modals
         $input->pre = $row ? 'e' : 'c';
         
         

@@ -1,7 +1,4 @@
-
-
 <div class="">
-
     <table class="tbb" style="width: 100%;border-collapse: separate; border-spacing: 2px;">
     <thead>
         <tr>
@@ -124,7 +121,6 @@ var m2m4{{$name}}{{$postfix}} =
     }, // end addRow
     
     delRow: function(context) {
-        // FIXME: confirm
         jQuery(context).parent().parent().remove();
     }, // end delRow
     

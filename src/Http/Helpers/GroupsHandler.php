@@ -2,9 +2,7 @@
 
 use Vis\Builder\Handlers\CustomHandler;
 use Illuminate\Support\Facades\View;
-use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Illuminate\Support\Facades\DB;
 use \Group;
 
 class GroupsHandler extends CustomHandler

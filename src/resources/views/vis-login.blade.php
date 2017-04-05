@@ -1,9 +1,7 @@
 @extends('admin::layouts.vis-login')
 
 @section('main')
-    <?
 
-    ?>
     <div id="main" role="main" style="background-image: url({{config('builder.login.background_url')}});">
         <div id="content" class="container">
 

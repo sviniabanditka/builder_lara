@@ -1,6 +1,5 @@
 <?php namespace Vis\Builder;
 
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Input;

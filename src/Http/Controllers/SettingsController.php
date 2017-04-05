@@ -2,7 +2,6 @@
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
@@ -68,7 +67,7 @@ class SettingsController extends Controller
             return $validation;
         }
 
-        $setting = Setting::doSaveSetting($data, $file);
+        Setting::doSaveSetting($data, $file);
 
         if ($data["id"] != 0 && is_numeric($data["id"])) {
             $ok_messages = "Запись успешно обновлена";

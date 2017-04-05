@@ -47,8 +47,7 @@ class ExportHandler
     public function doExportCsv($idents)
     {
         $this->doCheckPermission();
-        
-        // FIXME: move default to options
+
         $delimiter = ',';
         if (isset($this->def['buttons']['csv']['delimiter'])) {
             $delimiter = $this->def['buttons']['csv']['delimiter'];
@@ -85,7 +84,7 @@ class ExportHandler
         
         
         $between = $this->getBetweenValues();
-        // FIXME: move to separate method, maybe
+
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
 
         if (isset($this->def['handle']['export']['filter'])) {
@@ -110,14 +109,12 @@ class ExportHandler
                 $csvRow .= '"'. $value .'"'. $delimiter;
             }
             $csvRow = rtrim($csvRow, $delimiter);
-            //$csvRow = iconv("WINDOWS-1251", "UTF-8", $csvRow);
             $csv .= $csvRow;
         }
         
         $name = $this->getAttribute('filename', 'export');
         $this->doSendHeaders($name .'_'. date("Y-m-d") .'.csv');
 
-        //$csv = iconv("WINDOWS-1251", "UTF-8", $csv);
         echo "\xEF\xBB\xBF";
         die($csv);
     } // end doExportCsv
@@ -128,11 +125,11 @@ class ExportHandler
         
         $between = array();
         if ($this->getAttribute('date_range_field')) {
-            // XXX:
+
             $from = Input::get('d.from', '01/01/1900');
             $from = strtotime(str_replace('/', '-', $from));
             $from = date('Y-m-d', $from) .' 00:00:00';
-            // XXX:
+
             $to = Input::get('d.$to', '01/01/2199');
             $to = strtotime(str_replace('/', '-', $to));
             $to = date('Y-m-d', $to) .' 23:59:59';
@@ -159,7 +156,7 @@ class ExportHandler
         $this->addXlsRow($row, $xls);
         
         $between = $this->getBetweenValues();
-        // FIXME: move to separate method, maybe
+    
         $rows = $this->controller->query->getRows(false, false, $between)->toArray(); // without pagination & user filters
 
         foreach ($rows as $row) {
@@ -253,7 +250,6 @@ class ExportHandler
         header('Content-Type: application/download');
 
         header('Content-Encoding: UTF-8');
-      // header('Content-type: text/csv; charset=UTF-8');
 
         // disposition / encoding on response body
         header('Content-Disposition: attachment; filename='. $filename);

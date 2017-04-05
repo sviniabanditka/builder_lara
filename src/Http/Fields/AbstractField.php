@@ -16,8 +16,7 @@ abstract class AbstractField
 
     public function __construct($fieldName, $attributes, $options, $definition, $handler)
     {
-        //echo $fieldName."<br>";
-        $this->attributes = $this->_prepareAttributes($attributes);
+        $this->attributes = $this->prepareAttributes($attributes);
         $this->options    = $options;
         $this->definition = $definition;
         $this->fieldName  = $fieldName;
@@ -35,16 +34,15 @@ abstract class AbstractField
         return $this->fieldName;
     } // end getFieldName
 
-    private function _prepareAttributes($attributes)
+    private function prepareAttributes($attributes)
     {
-        // TODO:
         $attributes['fast-edit'] = isset($attributes['fast-edit']) && $attributes['fast-edit'];
         $attributes['filter'] = isset($attributes['filter']) ? $attributes['filter'] : false;
         $attributes['hide'] = isset($attributes['hide']) ? $attributes['hide'] : false;
         $attributes['is_null'] = isset($attributes['is_null']) ? $attributes['is_null'] : false;
 
         return $attributes;
-    } // end _prepareAttributes
+    }
 
     protected function getOption($ident)
     {
@@ -102,6 +100,7 @@ abstract class AbstractField
     public function getExportValue($type, $row, $postfix = '')
     {
         if ($this->hasCustomHandlerMethod('onGetExportValue')) {
+           
             $res = $this->handler->onGetExportValue($this, $type, $row, $postfix);
             if ($res) {
                 return $res;
@@ -283,7 +282,6 @@ abstract class AbstractField
     protected function doCreateField($table_name, $field_name)
     {
         $field_bd = $this->getAttribute('field');
-        $data = Session::all();
 
         if (!Session::has($table_name.'.'.$field_name)) {
             if ($field_bd && !Schema::hasColumn($table_name, $field_name)) {

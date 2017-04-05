@@ -1,7 +1,6 @@
 <?php namespace Vis\Builder;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;

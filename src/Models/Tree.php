@@ -108,6 +108,7 @@ class Tree extends \Baum\Node
 
     public function getUrl()
     {
+
         if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
@@ -167,9 +168,6 @@ class Tree extends \Baum\Node
             $slugs[] = $node->slug;
         }
 
-      /*  if (Config::get('builder.' . $this->fileDefinition . '.remove_first_part_in_url')) {
-            unset($slugs[0]);
-        }*/
 
         if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
             && Config::get('builder.' . $this->fileDefinition . '.basic_domain')
@@ -194,8 +192,7 @@ class Tree extends \Baum\Node
         $tags = $this->getCacheTags();
 
         if ($tags) {
-            $db = $this;
-
+           
             $countPages = Cache::tags($tags)->rememberForever("count_".$this->fileDefinition.$this->id, function () {
                 return $this->children()->count();
             });

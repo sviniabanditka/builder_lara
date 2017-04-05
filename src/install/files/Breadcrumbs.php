@@ -7,7 +7,6 @@ class Breadcrumbs extends ArrayObject
     public function __construct($current)
     {
         $breadcrumbs = $current->getAncestorsAndSelf();
-        //$breadcrumbs = $current->getAncestors();
 
         foreach ($breadcrumbs as $breadcrumb) {
             $this->breadcrumbs[] = array(

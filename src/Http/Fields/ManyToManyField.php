@@ -133,7 +133,7 @@ class ManyToManyField extends AbstractField
         }
 
         $showType = $this->getAttribute('show_type', 'checkbox');
-        // FIXME:
+        
         if ($showType == 'extra') {
             return $this->getEditInputWithExtra($row);
         }
