@@ -74,7 +74,7 @@ class Img
         }
     }
 
-    protected function createRatioImg(Image $img, $options)
+    protected function createRatioImg($img, $options)
     {
         if (isset($options['fit']) && $options['fit'] == 'crop') {
             $img->fit(
