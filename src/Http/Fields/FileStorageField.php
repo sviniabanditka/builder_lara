@@ -14,9 +14,7 @@ class FileStorageField extends AbstractField
 
     public function getListValue($row)
     {
-        // TODO:
     } // end getListValue
-    
 
     public function onSearchFilter(&$db, $value)
     {

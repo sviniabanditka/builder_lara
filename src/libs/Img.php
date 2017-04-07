@@ -4,7 +4,6 @@ use Intervention\Image\Facades\Image;
 
 class Img
 {
-
     private $size;
     private $nameFile;
     private $picturePath;
@@ -75,7 +74,7 @@ class Img
         }
     }
 
-    protected function createRatioImg($img, $options)
+    protected function createRatioImg(Image $img, $options)
     {
         if (isset($options['fit']) && $options['fit'] == 'crop') {
             $img->fit(

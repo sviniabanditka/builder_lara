@@ -478,7 +478,7 @@ class QueryHandler
                         $field->doValidate($values[$ident]);
                     }
                 }
-            } catch (JarboePreValidationException $e) {
+            } catch (\Exception $e) {
                 $errors = array_merge($errors, explode('|', $e->getMessage()));
                 continue;
             }
@@ -486,7 +486,8 @@ class QueryHandler
 
         if ($errors) {
             $errors = implode('|', $errors);
-            throw new JarboeValidationException($errors);
+            
+            throw new \RuntimeException($errors);
         }
     }
 

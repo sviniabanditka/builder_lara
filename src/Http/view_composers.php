@@ -1,13 +1,15 @@
 <?php
 
-View::composer('admin::partials.navigation', function ($view) {
+use Illuminate\View\View as ViewParam;
+
+View::composer('admin::partials.navigation', function (ViewParam $view) {
     $user = Sentinel::getUser();
     $menu = config('builder.admin.menu');
 
     $view->with('user', $user)->with("menu", $menu);
 });
 
-View::composer(array('admin::layouts.default', 'admin::partials.scripts'), function ($view) {
+View::composer(array('admin::layouts.default', 'admin::partials.scripts'), function (ViewParam $view) {
 
     $skin = Cookie::get('skin') ? : "smart-style-4";
     $thisLang = Cookie::get("lang_admin") ? : config("builder.translate_cms.lang_default");

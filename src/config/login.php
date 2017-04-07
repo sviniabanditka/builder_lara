@@ -17,6 +17,5 @@ return array(
     'on_logout' => function() {
         return \Redirect::to('/');
     },
-    
 );
     

@@ -146,7 +146,7 @@ class TranslateController extends Controller
             } else {
                 return "error.No get results";
             }
-        } catch (Yandex\Translate\Exception $e) {
+        } catch (\Yandex\Translate\Exception $e) {
             return $e->getMessage();
             // handle exception
         }

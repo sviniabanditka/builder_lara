@@ -25,7 +25,7 @@ if ($arrSegments[0] != "admin") {
 
                 Route::group(
                     ['middleware' => ['web']],
-                    function () use ($node, $_nodeUrl) {
+                    function () {
                         Route::group(
                             ['prefix' => LaravelLocalization::setLocale()],
                             function () {

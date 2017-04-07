@@ -287,7 +287,12 @@ abstract class AbstractField
             if ($field_bd && !Schema::hasColumn($table_name, $field_name)) {
                 Session::push($table_name . '.' . $field_name, 'created');
 
-                @list($field, $param) = explode("|", $field_bd);
+                try{
+                    list($field, $param) = explode("|", $field_bd);
+                }
+                catch(\Exception $e){
+                    throw new \RuntimeException($e->getMessage());
+                }
 
                 Schema::table(
                     $table_name,

@@ -1,20 +1,22 @@
 <?php namespace Vis\Builder;
 
+use Illuminate\Database\Eloquent\Model;
+
 class TreeObserver
 {
 
-    public function saving($model)
+    public function saving(Model $model)
     {
         $model->clearCache();
     }
 
-    public function updating($model)
+    public function updating(Model $model)
     {
         $model->clearCache();
     }
 
 
-    public function deleting($model)
+    public function deleting(Model $model)
     {
         $model->clearCache();
     }

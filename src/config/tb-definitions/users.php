@@ -232,5 +232,4 @@ return array(
             'caption' => 'Удалить',
         ),
     ),
-
 );

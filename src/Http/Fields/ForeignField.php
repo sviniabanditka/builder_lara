@@ -1,7 +1,5 @@
 <?php
-
 namespace Vis\Builder\Fields;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -16,53 +14,45 @@ class ForeignField extends AbstractField
     public function isEditable()
     {
         return true;
-    } // end isEditable
-
+    }
 
     public function getExportValue($type, $row, $postfix = '')
     {
         $value = $this->getValue($row, $postfix);
-        // FIXME:
+
         if ($value == '<i class="fa fa-minus"></i>') {
             $value = '';
         }
-
         // cuz double quotes is escaping by more double quotes in csv
         $escapedValue = preg_replace('~"~', '""', $value);
-
         return $escapedValue;
-    } // end getExportValue
+    }
 
     public function getFilterInput()
     {
         if (!$this->getAttribute('filter')) {
             return '';
         }
-
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName ();
         $filter = Session::get($sessionPath, '');
         $type = $this->getAttribute('filter');
-
         $input = View::make('admin::tb.filter_' . $type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
-
         $input->value = $filter;
         if ($input->recursive) {
             $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
             $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
             $this->selectOption = $input->selected;
             $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
-
             $input->options = $this->treeOptions;
         } else {
             $input->options  = $this->getForeignKeyOptions();
         }
-
         return $input->render();
-    } // end getFilterInput
+    }
 
     public function onSearchFilter(&$db, $value)
     {
@@ -70,17 +60,14 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('alias')) {
             $foreignTable = $this->getAttribute('alias');
         }
-
         $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
-
         if ($this->getAttribute('filter') == 'foreign') {
             $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
             $db->where($foreignValueField, $value);
             return;
         }
-
         $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
-    } // end onSearchFilter
+    }
 
     public function onSelectValue(&$db)
     {
@@ -90,11 +77,8 @@ class ForeignField extends AbstractField
                 return $res;
             }
         }
-
         $internalSelect = $this->definition['db']['table'] .'.'. $this->getFieldName();
-
         $db->addSelect($internalSelect);
-
         $foreignTable = $this->getAttribute('foreign_table');
         $foreignTableName = $foreignTable;
         if ($this->getAttribute('alias')) {
@@ -102,27 +86,23 @@ class ForeignField extends AbstractField
             $foreignTable = $this->getAttribute('alias');
         }
         $foreignKeyField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
-
         $join = $this->getAttribute('is_null') ? 'leftJoin' : 'join';
         $db->$join(
             $foreignTableName,
             $foreignKeyField, '=', $internalSelect
         );
-
         if ($this->getAttribute('is_select_all')) {
             $db->addSelect($foreignTable .'.*');
         } else {
             $fieldAlias = ' as '. $foreignTable.'_'.$this->getAttribute('foreign_value_field');
             $db->addSelect($foreignTable .'.'. $this->getAttribute('foreign_value_field') . $fieldAlias);
         }
-    } // end onSelectValue
+    }
 
     public function getValueId($row)
     {
         $fieldName = $this->getFieldName();
-
         $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
-
         return $value;
     }
 
@@ -131,7 +111,6 @@ class ForeignField extends AbstractField
         $new_id = null;
         if (strlen($input)) {
             $foreignTable = $this->getAttribute('foreign_table');
-            $foreignKey = $this->getAttribute('foreign_key_field');
             $foreignValueField = $this->getAttribute('foreign_value_field');
             $first = DB::table($foreignTable)->where($foreignValueField, '=', $input)->first();
             if (!$first) {
@@ -149,22 +128,17 @@ class ForeignField extends AbstractField
                 return $res;
             }
         }
-
         $foreignTableName = $this->getAttribute('foreign_table');
         if ($this->getAttribute('alias')) {
             $foreignTableName = $this->getAttribute('alias');
         }
         $fieldName = $foreignTableName .'_'. $this->getAttribute('foreign_value_field');
-
         $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
-
         if (!$value && $this->getAttribute('is_null')) {
-            // FIXME:
             $value = $this->getAttribute('null_caption', '<i class="fa fa-minus"></i>');
         }
-
         return $value;
-    } // end getValue
+    }
 
     public function getEditInput($row = array())
     {
@@ -174,11 +148,9 @@ class ForeignField extends AbstractField
                 return $res;
             }
         }
-
         if ($this->getAttribute('is_readonly')) {
             return $this->getValue($row);
         }
-
         $input = View::make('admin::tb.input_foreign');
         $input->selected = $this->getValueId($row);
         $input->name     = $this->getFieldName();
@@ -186,13 +158,11 @@ class ForeignField extends AbstractField
         $input->null_caption = $this->getAttribute('null_caption');
         $input->recursive = $this->getAttribute('recursive');
         $input->allow_foreign_add = $this->getAttribute('foreign_allow_add');
-
         if ($input->recursive) {
             $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
             $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
             $this->selectOption = $input->selected;
             $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
-
             $input->options = $this->treeOptions;
         } else {
             $input->options  = $this->getForeignKeyOptions();
@@ -200,18 +170,14 @@ class ForeignField extends AbstractField
         $input->readonly_for_edit = $this->getAttribute('readonly_for_edit');
         $input->relation = $this->getAttribute('relation');
         $input->field = $this->attributes;
-
         return $input->render();
-    } // end getEditInput
+    }
 
     private function getCategory($id)
     {
         $node = \Tree::find($id);
-
         $children = $node->descendants();
-
         $additionalWhere = $this->getAttribute('additional_where');
-
         if ($additionalWhere) {
             foreach ($additionalWhere as $field => $where) {
                 if ($where['sign'] == 'in') {
@@ -219,12 +185,9 @@ class ForeignField extends AbstractField
                 } else {
                     $children = $children->where($field, $where['sign'], $where['value']);
                 }
-
             }
         }
-
         $children = $children->get(array("id", "title", "parent_id"))->toArray();
-
         $result = array();
         foreach ($children as $row) {
             $result[$row["parent_id"]][] = $row;
@@ -242,13 +205,11 @@ class ForeignField extends AbstractField
                 } else {
                     $disable = "";
                 }
-
                 $selectOption = $this->selectOption == $value["id"] ? "selected" : "";
                 $paddingLeft = "";
                 for ($i=0; $i<$level; $i++) {
                     $paddingLeft .= "--";
                 }
-
                 $this->treeOptions[] = "<option $selectOption $disable value ='" . $value["id"] . "'>". $paddingLeft . $value["title"] . "</option>";
                 $level = $level + 1;
                 $this->printCategories($value["id"], $level);
@@ -262,8 +223,6 @@ class ForeignField extends AbstractField
         $db = DB::table($this->getAttribute('foreign_table'))
             ->select($this->getAttribute('foreign_value_field'))
             ->addSelect($this->getAttribute('foreign_key_field'));
-
-
         $additionalWheres = $this->getAttribute('additional_where');
         if ($additionalWheres) {
             foreach ($additionalWheres as $key => $opt) {
@@ -276,7 +235,6 @@ class ForeignField extends AbstractField
                 }
             }
         }
-
         $orderBy = $this->getAttribute('orderBy');
         if ($orderBy && is_array($orderBy)) {
             foreach ($orderBy as $order) {
@@ -285,18 +243,16 @@ class ForeignField extends AbstractField
                 }
             }
         }
-
         $res = $db->get();
-
         $options = array();
         $foreignKey = $this->getAttribute('foreign_key_field');
         $foreignValue = $this->getAttribute('foreign_value_field');
+
         foreach ($res as $val) {
             $val = (array) $val;
             $options[$val[$foreignKey]] = $val[$foreignValue];
         }
 
         return $options;
-    } // end getForeignKeyOptions
-
+    }
 }

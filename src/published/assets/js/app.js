@@ -74,8 +74,7 @@ $(document).ready(function() {
 	if ($("[rel=tooltip]").length) {
 		$("[rel=tooltip]").tooltip();
 	}
-
-	//TODO: was moved from window.load due to IE not firing consist
+	
 	nav_page_height()
 
 	// INITIALIZE LEFT NAV
@@ -419,8 +418,7 @@ function check_if_mobile_width() {
  * ie > 7 // IE8, IE9 ...
  * ie < 9 // Anything less than IE9
  */
-
-// TODO: delete this function later on - no longer needed (?)
+	
 var ie = ( function() {
 
 		var undef, v = 3, div = document.createElement('div'), all = div.getElementsByTagName('i');
@@ -1255,7 +1253,6 @@ function loadURL(url, container) {
 			container.html('<h1><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
 		
 			// Only draw breadcrumb if it is main content material
-			// TODO: see the framerate for the animation in touch devices
 			
 			if (container[0] == $("#content")[0]) {
 				drawBreadCrumb();
