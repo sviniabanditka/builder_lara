@@ -33,7 +33,7 @@
                 {!! $field->getSubActions() !!}
             </div>
         @else
-            <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}111</label>
+            <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
             <div style="position: relative;">
                 {!! $field->getEditInput($row) !!}
                 {!! $field->getSubActions() !!}

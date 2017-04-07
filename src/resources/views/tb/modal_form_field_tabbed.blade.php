@@ -1,5 +1,11 @@
-@foreach ($fields as $ident)
 
+@foreach ($fields as $ident)
+        @if (is_array($ident))
+            <div class="row">
+                @include('admin::tb.modal_form_field_tabbed', ['fields' => $ident])
+            </div>
+            @continue
+        @endif
     <?php
     $options = $def['fields'][$ident];
     $field = $controller->getField($ident);
@@ -36,29 +42,16 @@
             @if ($options['type'] != "readonly")
              <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
                 <div style="position: relative;">
-
                     {!! $field->getEditInput() !!}
                     {!! $field->getSubActions() !!}
-
                 </div>
             @endif
         @else
-            <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
+            <label class="label" for="{{$ident}}">22{{__cms($options['caption'])}}</label>
             <div style="position: relative;">
-              @if($options['type'] == "wysiwyg")
-
-                    {!! $field->getEditInput($row) !!}
-                    {!! $field->getSubActions() !!}
-
-              @else
-
-                      {!! $field->getEditInput($row) !!}
-                      {!! $field->getSubActions() !!}
-
-              @endif
-
+                {!! $field->getEditInput($row) !!}
+                {!! $field->getSubActions() !!}
             </div>
         @endif
     </section>
-
 @endforeach

@@ -1,5 +1,11 @@
-@foreach ($fields as $ident)
 
+@foreach ($fields as $ident)
+    @if (is_array($ident))
+        <div class="row">
+            @include('admin::tb.modal_form_edit_field_tabbed', ['fields' => $ident])
+        </div>
+        @continue
+    @endif
     <?php
     $options = $def['fields'][$ident];
     $field = $controller->getField($ident);
@@ -20,7 +26,7 @@
     @endif
 
     @if ($options['type'] == 'checkbox')
-      <section>
+      <section class="{{$field->getAttribute('class_name') ? "section_field ".$field->getAttribute('class_name'): ""}}">
         @if ($is_blank)
             {!! $field->getEditInput() !!}
         @else
@@ -34,26 +40,16 @@
         @if ($is_blank)
             <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
             <div style="position: relative;">
-
                 {!! $field->getEditInput() !!}
                 {!! $field->getSubActions() !!}
 
             </div>
         @else
+
             <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
             <div style="position: relative;">
-              @if($options['type'] == "wysiwyg")
-
-                      {!! $field->getEditInput($row) !!}
-                      {!! $field->getSubActions() !!}
-
-              @else
-
-                      {!! $field->getEditInput($row) !!}
-                      {!! $field->getSubActions() !!}
-
-              @endif
-
+                {!! $field->getEditInput($row) !!}
+                {!! $field->getSubActions() !!}
             </div>
         @endif
     </section>
