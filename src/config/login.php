@@ -18,4 +18,3 @@ return array(
         return \Redirect::to('/');
     },
 );
-    

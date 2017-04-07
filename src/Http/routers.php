@@ -111,11 +111,6 @@ if ($menuLinks) {
                         'uses' => 'Vis\Builder\PhotosController@doSaveAlbum'
                     ));
 
-                Route::get('/load_view_statistic', array (
-                        'as' => 'load_view_statistic',
-                        'uses' => 'Vis\Builder\ViewStatisticController@getStatistic'
-                    ));
-
                 Route::post('upload_image', array (
                         'as' => 'upload_image',
                         'uses' => 'Vis\Builder\EditorController@uploadFoto'

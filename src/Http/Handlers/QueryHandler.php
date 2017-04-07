@@ -486,7 +486,7 @@ class QueryHandler
 
         if ($errors) {
             $errors = implode('|', $errors);
-            
+
             throw new \RuntimeException($errors);
         }
     }
@@ -585,17 +585,15 @@ class QueryHandler
         if (isset($this->definition['cache'])) {
             $cache = $this->definition['cache'];
 
-            foreach ($cache as $key => $cacheDelete) {
-                if ($key == "tags") {
-                    Cache::tags($cacheDelete)->flush();
-                }
 
-                if ($key == "keys") {
-                    foreach ($cacheDelete as $key) {
-                        Cache::forget($key);
-                    }
-                }
+            if (isset($cache['tags'])) {
+                Cache::tags($cache['tags'])->flush();
             }
+
+            if (isset($cache['keys'])) {
+                Cache::forget($cache['keys']);
+            }
+
         }
     }
 }

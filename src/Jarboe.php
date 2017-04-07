@@ -26,13 +26,7 @@ class Jarboe
 
         return $result;
     }
-
-    public function checkNavigationPermissions()
-    {
-        $menu = new NavigationMenu();
-        $menu->checkPermissions();
-    }
-
+    
     public function urlify($string)
     {
         return URLify::filter($string);
