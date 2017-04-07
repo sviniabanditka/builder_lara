@@ -1,7 +1,5 @@
 
 <div class="tb-tree-content-inner">
-
-
     <div class="smart-form">
     <table class="table table-bordered">
         <thead>
@@ -77,8 +75,7 @@
             $('.tpl-editable').editable2({
                 url: window.location.href,
                 source: [
-                @set ('tpls' , Config::get('builder.' . $treeName . '.templates'))
-                @foreach ($tpls as $capt => $tpl)
+                @foreach ($templates as $capt => $tpl)
                     { value: '{{$capt}}', text: '{{isset($tpl['title']) ? $tpl['title'] : $capt}}' },
                 @endforeach
                 ],

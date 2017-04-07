@@ -23,7 +23,7 @@
          </tr>
         </tbody>
     </table>
- @include('admin::tree.create_modal')
+ @include('admin::tree.create_modal', ['treeName' => $treeName])
 
  <script>
 

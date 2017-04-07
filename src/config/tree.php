@@ -13,7 +13,8 @@ return array(
             'check' => function() {
                 return true;
             },
-            'title' => 'Контакты'
+            'title' => 'Контакты',
+            //'show_templates' => ['news', 'about']
         ),
         'news' => array(
             'action' => 'NewsController@showPages',
