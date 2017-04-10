@@ -56,7 +56,7 @@ class CheckboxField extends AbstractField
                 return $res;
             }
         }
-
+       
         $table = View::make('admin::tb.input_checkbox');
         $table->value = $this->getValue($row);
         $table->name  = $this->getFieldName();
@@ -83,7 +83,7 @@ class CheckboxField extends AbstractField
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
 
-            if ($res !== false) {
+            if ($res != false) {
                 return $res;
             }
         }
