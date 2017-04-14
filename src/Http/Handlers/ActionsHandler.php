@@ -164,6 +164,20 @@ class ActionsHandler
         $action->model = $model;
         $action->url = $model::find($row['id'])->getUrl();
 
+        if (isset($this->def['preview']['query']) && is_array($this->def['preview']['query'])) {
+            foreach ($this->def['preview']['query'] as $k => $val) {
+                if (isset($row[$val])) {
+                    $params[$k] = $row[$val] ;
+                } else {
+                    $params[$k] = $val;
+                }
+            }
+        } else {
+            $params['show'] = 1;
+        }
+
+        $action->url .= '?' . http_build_query($params);
+
         return $action;
     }
 
