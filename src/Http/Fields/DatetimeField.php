@@ -15,7 +15,7 @@ class DatetimeField extends AbstractField
             if (!isset($value['from']) && !isset($value['to'])) {
                 return;
             }
-            
+
             $dateFrom = isset($value['from']) ? $this->getTimestamp($value['from']) : '28800';
             $dateTo = isset($value['to']) ? $this->getTimestamp($value['to']) : '2146939932';
             $db->whereBetween(
@@ -32,7 +32,7 @@ class DatetimeField extends AbstractField
             );
         }
     } // end onSearchFilter
-    
+
     public function prepareQueryValue($value)
     {
         if (!$value) {
@@ -45,12 +45,12 @@ class DatetimeField extends AbstractField
 
         return date('Y-m-d H:i:s', $this->getTimestamp($value));
     } // end prepareQueryValue
-    
+
     private function getTimestamp($date)
     {
         return strtotime(str_replace('/', '-', $date));
     } // end getTimestamp
-    
+
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -59,11 +59,15 @@ class DatetimeField extends AbstractField
                 return $res;
             }
         }
-        
+
         if (!$this->getValue($row)) {
             return '';
         }
-        
+
+        if ($this->getValue($row) == '0000-00-00 00:00:00') {
+            return '-';
+        }
+
         $timestamp = $this->getTimestamp($this->getValue($row));
 
         return date('d/m/Y H:i:s', $timestamp);
@@ -77,9 +81,9 @@ class DatetimeField extends AbstractField
                 return $res;
             }
         }
-        
+
         $value = $this->getValue($row);
-        $value = $value ? date('d/m/Y H:i:s', $this->getTimestamp($value)) : '';
+        $value = $value && $value != '0000-00-00 00:00:00' ? date('d/m/Y H:i:s', $this->getTimestamp($value)) : '';
 
         $input = View::make('admin::tb.input_datetime');
         $input->value  = $value;
@@ -90,14 +94,14 @@ class DatetimeField extends AbstractField
 
         return $input->render();
     } // end getEditInput
-    
-    
+
+
     public function getFilterInput()
     {
         if (!$this->getAttribute('filter')) {
             return '';
         }
-        
+
         if ($this->getAttribute('is_range')) {
             return $this->getFilterRangeInput();
         }
@@ -113,7 +117,7 @@ class DatetimeField extends AbstractField
 
         return $input->render();
     } // end getFilterInput
-    
+
     private function getFilterRangeInput()
     {
         $definitionName = $this->getOption('def_name');
