@@ -23,4 +23,8 @@
            }
         });
     </script>
+@else
+    <tr>
+        <td colspan="5" style="text-align: center; padding: 30px 0; width: 680px">Пока нет файлов</td>
+    </tr>
 @endif

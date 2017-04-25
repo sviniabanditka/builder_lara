@@ -1048,7 +1048,8 @@ var TableBuilder = {
             processData: false,
             success: function(response) {
                 if (response.status) {
-                    $(context).parent().next().val(response.long_link);
+
+                    $("[name= " + ident + "]").val(response.long_link);
 
                     var html = '<a href="'+ response.link +'" target="_blank">Скачать</a>';
                     $(context).parent().parent().next().html(html);
@@ -1129,6 +1130,41 @@ var TableBuilder = {
             });
         }
     }, // end uploadFileMulti
+
+    selectWithUploaded : function (name, type) {
+        $("#files_uploaded_table_" + name).show();
+
+        var data = {
+            query_type: "select_with_uploaded",
+        };
+        $('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        $.post(TableBuilder.getActionUrl(), data,
+            function(response){
+                $('#files_uploaded_table_' + name + ' tbody').html(response.data);
+                $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+        }, 'json');
+
+    }, 
+
+    selectFilesUploaded : function (name, type) {
+
+        if (type == 'multi') {
+            $( "#files_uploaded_table_" + name + " input:checked" ).each(function( index ) {
+                var html = '<li> ' + $(this).attr('data-basename') + ' <a href="' + $(this).val() + '" target="_blank" path ="' + $(this).val() + '">Скачать</a> <a class="delete" onclick="TableBuilder.doDeleteFile(this)">Удалить</a></li>';
+                $('.tb-uploaded-file-container-' + name + " .ui-sortable").append(html);
+            });
+
+            TableBuilder.doSetInputFiles($('.tb-uploaded-file-container-' + name + " ul"));
+
+            TableBuilder.doSortFileUpload();
+        } else {
+            var file = $( "#files_uploaded_table_" + name + " input:checked" ).val();
+            $('[name=' + name + ']').val(file);
+            $('.tb-uploaded-file-container-' + name).html('<a href="' + file + '" target="_blank">Скачать</a> | <a class="delete" style="color:red;" onclick="$(\'[name=file_one]\').val(\'\'); $(this).parent().hide()">Удалить</a>');
+        }
+
+        $(".files_uploaded_table").hide();
+    },
 
     doSetInputFiles : function(context)
     {

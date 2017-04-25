@@ -77,11 +77,11 @@
 @endif
 
 <!-- Modal -->
-<div class="modal files_uploaded_table" id ='files_uploaded_table_{{$name}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="z-index: 1000000">
-    <div class="modal-dialog " style="width: 700px">
+<div class="modal files_uploaded_table" id ='files_uploaded_table_{{$name}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
         <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
-        <div class="modal-content" style="height: 600px">
-            <div class="modal-header" style="padding: 10px;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
                 <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
             </div>
