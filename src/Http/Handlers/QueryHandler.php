@@ -598,7 +598,7 @@ class QueryHandler
         }
     }
 
-    public function getUploadedFile()
+    public function getUploadedFiles()
     {
         $list = File::files(public_path() . "/storage/files");
 
@@ -608,6 +608,18 @@ class QueryHandler
         ];
 
         return $data;
+    }
 
+
+    public function getUploadedImages()
+    {
+        $list = File::files(public_path() . "/storage/editor/fotos");
+
+        $data = [
+            'status' => 'success',
+            'data'   => view('admin::tb.images_list', compact('list'))->render()
+        ];
+
+        return $data;
     }
 }

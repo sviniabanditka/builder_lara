@@ -104,6 +104,9 @@ class RequestHandler
             case 'select_with_uploaded':
                 return $this->handleSelectWithUploaded();
 
+            case 'select_with_uploaded_images':
+                return $this->handleSelectWithUploadedImages();
+
             default:
                 return $this->handleShowList();
         }
@@ -111,7 +114,14 @@ class RequestHandler
 
     protected function handleSelectWithUploaded()
     {
-        $result = $this->controller->query->getUploadedFile();
+        $result = $this->controller->query->getUploadedFiles();
+
+        return Response::json($result);
+    }
+
+    protected function handleSelectWithUploadedImages()
+    {
+        $result = $this->controller->query->getUploadedImages();
 
         return Response::json($result);
     }

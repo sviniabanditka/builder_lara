@@ -55,9 +55,7 @@ class ImageField extends AbstractField
 
         $html = '<div style="cursor:pointer;height: 50px;overflow: hidden;" onclick="$(this).css(\'height\', \'auto\').css(\'overflow\', \'auto\');">';
         foreach ($images as $source) {
-            $src = $this->getAttribute('before_link')
-                . $source['sizes']['original']
-                . $this->getAttribute('after_link');
+            $src = $source;
 
             $src = $this->getAttribute('is_remote') ? $src : URL::asset($src);
             $html .= '<img height="'. $this->getAttribute('img_height', '50px') .'" src="'
@@ -115,9 +113,9 @@ class ImageField extends AbstractField
         $fileName = $rawFileName .'.'. $extension;
 
         $definitionName = $this->getOption('def_name');
-        $prefixPath = 'storage/tb-'.$definitionName.'/';
-        $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
-        $destinationPath = $prefixPath . $postfixPath;
+        $prefixPath = 'storage/editor/fotos/';
+       
+        $destinationPath = $prefixPath;
 
         if ($model && Input::has("page_id")) {
             $infoPage = $model::find(Input::get("page_id"));

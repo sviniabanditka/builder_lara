@@ -974,17 +974,17 @@ var TableBuilder = {
     setInputImages : function(context)
     {
         var arrImages = new Array();
-        $(context).parent().parent().parent().find('.tb-uploaded-image-container ul li img' ).each(function( index ) {
+        $(context).parents('.multi_pictures').find('.tb-uploaded-image-container ul li img' ).each(function( index ) {
             arrImages.push($(this).attr("data_src_original"));
         });
         var jsonArray = JSON.stringify(arrImages);
 
-        $(context).parent().parent().find("[type=hidden]").val(jsonArray);
+        $(context).parents('.multi_pictures').find("[type=hidden]").val(jsonArray);
     },
 
     deleteImage: function(context)
     {
-        var contextFile = $(context).parent().parent().parent().parent().parent().find("[type=file]");
+        var contextFile = $(context).parents('.multi_pictures').find("[type=file]");
         var $li = $(context).parent().parent();
         $li.remove();
         TableBuilder.setInputImages(contextFile);
@@ -993,7 +993,7 @@ var TableBuilder = {
     deleteSingleImage: function(ident, context)
     {
         var $imageWrapper = $(context).parent().parent();
-        var $imageInput = $(context).parent().parent().parent().parent().find("input[type=hidden]");
+        var $imageInput = $(context).parents('.picture_block').find("input[type=hidden]");
         $imageWrapper.hide();
         $imageInput.val("")
 
@@ -1143,8 +1143,21 @@ var TableBuilder = {
                 $('#files_uploaded_table_' + name + ' tbody').html(response.data);
                 $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
         }, 'json');
+    },
 
-    }, 
+    selectWithUploadedImages : function (name, type) {
+        $("#files_uploaded_table_" + name).show();
+
+        var data = {
+            query_type: "select_with_uploaded_images",
+        };
+        $('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        $.post(TableBuilder.getActionUrl(), data,
+            function(response){
+                $('#files_uploaded_table_' + name + ' tbody').html(response.data);
+                $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+            }, 'json');
+    },
 
     selectFilesUploaded : function (name, type) {
 
@@ -1161,6 +1174,30 @@ var TableBuilder = {
             var file = $( "#files_uploaded_table_" + name + " input:checked" ).val();
             $('[name=' + name + ']').val(file);
             $('.tb-uploaded-file-container-' + name).html('<a href="' + file + '" target="_blank">Скачать</a> | <a class="delete" style="color:red;" onclick="$(\'[name=file_one]\').val(\'\'); $(this).parent().hide()">Удалить</a>');
+        }
+
+        $(".files_uploaded_table").hide();
+    },
+
+    selectImageUploaded : function (name, type) {
+
+        if (type == 'multi') {
+
+            $('.one_img_uploaded.selected img').each(function( index ) {
+                var img = $(this).attr('data-path');
+                var html = '<li><img src="/' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
+                $('.tb-uploaded-image-container_' + name +' ul').append(html);
+
+                TableBuilder.setInputImages('.tb-uploaded-image-container_' + name);
+                $('.no_photo').hide();
+            });
+
+        } else {
+            var img = $('.one_img_uploaded.selected img').attr('data-path');
+            if (img != undefined) {
+                $('[name=' + name + ']').val(img);
+                $('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
+            }
         }
 
         $(".files_uploaded_table").hide();
