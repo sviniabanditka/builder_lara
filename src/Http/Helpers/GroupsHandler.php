@@ -19,13 +19,18 @@ class GroupsHandler extends CustomHandler
     public function onGetEditInput($formField, array &$row)
     {
         if ($formField->getFieldName() == 'permissions') {
+
             $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
 
             if (isset($permissions['generatePermissions']) && $permissions['generatePermissions']) {
                 return $this->generatePermissions($row);
             } else {
-
-                $groupPermissionsThis = $this->getPermissionsThis($row['id']);
+                
+                if (isset($row['id'])) {
+                    $groupPermissionsThis = $this->getPermissionsThis($row['id']);
+                } else {
+                    $groupPermissionsThis = [];
+                }
 
                 return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
             }
