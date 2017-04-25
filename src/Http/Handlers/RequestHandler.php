@@ -101,9 +101,19 @@ class RequestHandler
             case 'many_to_many_ajax_search':
                 return $this->handleManyToManyAjaxSearch();
 
+            case 'select_with_uploaded':
+                return $this->handleSelectWithUploaded();
+
             default:
                 return $this->handleShowList();
         }
+    }
+
+    protected function handleSelectWithUploaded()
+    {
+        $result = $this->controller->query->getUploadedFile();
+
+        return Response::json($result);
     }
 
     protected function handleManyToManyAjaxSearch()
@@ -293,7 +303,8 @@ class RequestHandler
     protected function handleFileUpload()
     {
         $file = Input::file('file');
-        
+        $prefixPath = 'storage/files/';
+
         if ($this->controller->hasCustomHandlerMethod('onFileUpload')) {
             $res = $this->controller->getCustomHandler()->onFileUpload($file);
             if ($res) {
@@ -303,11 +314,13 @@ class RequestHandler
         
         $extension = $file->getClientOriginalExtension();
         $nameFile = explode(".", $file->getClientOriginalName());
-        $fileName  = time() .'_'. \Jarboe::urlify($nameFile[0]) .'.'. $extension;
+        $fileName  = \Jarboe::urlify($nameFile[0]) .'.'. $extension;
 
-        $prefixPath = 'storage/tb-' . $this->definitionName . '/';
-        $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
-        $destinationPath = $prefixPath . $postfixPath;
+        if (file_exists(public_path() . '/' . $prefixPath . $fileName)) {
+            $fileName = \Jarboe::urlify($nameFile[0]) . '_' . time() . '.'. $extension;
+        }
+        
+        $destinationPath = $prefixPath;
 
         $file->move($destinationPath, $fileName);
 

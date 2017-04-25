@@ -124,7 +124,7 @@ if ($menuLinks) {
                     'as' => 'change-relation-field',
                     'uses' => 'Vis\Builder\TableAdminController@doChangeRelationField'
                 ));
-
+              
             }
         );
     });

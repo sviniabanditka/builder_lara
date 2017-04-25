@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 class QueryHandler
 {
@@ -595,5 +596,18 @@ class QueryHandler
             }
 
         }
+    }
+
+    public function getUploadedFile()
+    {
+        $list = File::files(public_path() . "/storage/files");
+
+        $data = [
+            'status' => 'success',
+            'data'   => view('admin::tb.files_list', compact('list'))->render()
+        ];
+
+        return $data;
+
     }
 }

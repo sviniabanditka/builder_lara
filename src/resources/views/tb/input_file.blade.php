@@ -6,8 +6,11 @@
     <div class="input input-file">
         <span class="button">
             <input type="file"  multiple onchange="TableBuilder.uploadFileMulti(this, '{{$name}}');" {{$accept ? "accept='$accept'" : ""}}>
-            Выбрать
+            Загрузить
         </span>
+         <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'multi_file')">
+            Выбрать из загруженных
+         </span>
         <input type="hidden" name="{{$name}}" value='{{$value}}'>
         <input type="text"
                id="{{ $name }}"
@@ -46,7 +49,10 @@
      <div class="input input-file">
          <span class="button">
              <input type="file" onchange="TableBuilder.uploadFile(this, '{{$name}}');" {{$accept ? "accept='$accept'" : ""}}>
-             Выбрать
+             Загрузить
+         </span>
+          <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'one_file')">
+            Выбрать из загруженных
          </span>
          <input type="text"
                 id="{{ $name }}"
@@ -68,7 +74,37 @@
          <a class="delete" style="color:red;" onclick="$('[name={{ $name }}]').val(''); $(this).parent().hide()">Удалить</a>
          @endif
      </div>
-
 @endif
 
+<!-- Modal -->
+<div class="modal files_uploaded_table" id ='files_uploaded_table_{{$name}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="z-index: 1000000">
+    <div class="modal-dialog " style="width: 700px">
+        <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
+        <div class="modal-content" style="height: 600px">
+            <div class="modal-header" style="padding: 10px;">
+                <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
+                <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th class="name">Имя</th>
+                        <th class="type">Тип</th>
+                        <th class="size">Размер</th>
+                        <th class="date">Дата</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
+                <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> Отмена </span>
+            </div>
+        </div>
+    </div>
+</div>
 
