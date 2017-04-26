@@ -114,7 +114,7 @@ class ImageField extends AbstractField
 
         $definitionName = $this->getOption('def_name');
         $prefixPath = 'storage/editor/fotos/';
-       
+
         $destinationPath = $prefixPath;
 
         if ($model && Input::has("page_id")) {
@@ -152,6 +152,14 @@ class ImageField extends AbstractField
             $link = $destinationPath . $fileName;
         } else {
             $link = glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
+        }
+
+        if ($this->getAttribute('use_image_storage') && class_exists('\Vis\ImageStorage\Image')) {
+            $imgStorage = new \Vis\ImageStorage\Image;
+            $imgStorage->file_folder = '/storage/editor/fotos/';
+            $imgStorage->file_source = $fileName;
+            $imgStorage->file_cms_preview = str_replace('/storage/editor/fotos/', '', $link);
+            $imgStorage->save();
         }
 
         if (Input::get("type") == "single_photo") {

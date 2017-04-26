@@ -80,7 +80,7 @@
             </div>
             <div class="modal-body">
                 <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
-                    <tbody style="padding-left: 10px">
+                    <tbody>
                     </tbody>
                 </table>
             </div>
