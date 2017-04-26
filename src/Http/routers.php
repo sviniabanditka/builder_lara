@@ -101,16 +101,7 @@ if ($menuLinks) {
                         'as' => 'change_lang',
                         'uses' => 'Vis\Builder\TBController@doChangeLangAdmin'
                     ));
-
-                Route::any('/photos/gallery', array (
-                        'as' => 'photos_all',
-                        'uses' => 'Vis\Builder\PhotosController@fetchShowAll'
-                    ));
-                Route::post('/photos/save_album', array (
-                        'as' => 'save_album',
-                        'uses' => 'Vis\Builder\PhotosController@doSaveAlbum'
-                    ));
-
+                
                 Route::post('upload_image', array (
                         'as' => 'upload_image',
                         'uses' => 'Vis\Builder\EditorController@uploadFoto'
