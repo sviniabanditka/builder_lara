@@ -1131,6 +1131,21 @@ var TableBuilder = {
         }
     }, // end uploadFileMulti
 
+    selectImgInStorage : function (content) {
+
+        var type = content.parents('tbody').attr('data-type');
+
+        if (type == 'one_file') {
+            content.parents('tbody').find('.one_img_uploaded').removeClass('selected');
+        }
+
+        if (content.hasClass('selected')) {
+            content.removeClass('selected');
+        } else {
+            content.addClass('selected');
+        }
+    },
+
     selectWithUploaded : function (name, type) {
         $("#files_uploaded_table_" + name).show();
 
@@ -1150,6 +1165,7 @@ var TableBuilder = {
 
         var data = {
             query_type: "select_with_uploaded_images",
+            ident : name
         };
         $('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(TableBuilder.getActionUrl(), data,

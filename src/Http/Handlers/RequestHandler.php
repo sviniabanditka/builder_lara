@@ -121,7 +121,9 @@ class RequestHandler
 
     protected function handleSelectWithUploadedImages()
     {
-        $result = $this->controller->query->getUploadedImages();
+        $field = $this->controller->getField(Input::get('ident'));
+
+        $result = $this->controller->query->getUploadedImages($field);
 
         return Response::json($result);
     }
@@ -134,6 +136,7 @@ class RequestHandler
         $ident = Input::get('ident');
         
         $field = $this->controller->getField($ident);
+
         
         $data = $field->getAjaxSearchResult($query, $limit, $page);
         

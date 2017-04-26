@@ -611,7 +611,35 @@ class QueryHandler
     }
 
 
-    public function getUploadedImages()
+    public function getUploadedImages($field)
+    {
+        if ($field->getAttribute('use_image_storage')) {
+            return $this->getImagesWithImageStorage();
+        } else {
+            return $this->getImagesWithDefaultPath();
+        }
+    }
+
+    private function getImagesWithImageStorage()
+    {
+        if (class_exists('\Vis\ImageStorage\Image')) {
+            $list = \Vis\ImageStorage\Image::orderBy ('created_at', 'desc')->get ()->toArray ();
+
+            $data = [
+                'status' => 'success',
+                'data' => view ('admin::tb.image_storage_list', compact ('list'))->render ()
+            ];
+        } else {
+            $data = [
+                'status' => 'success',
+                'data' => 'Не подключен пакет ImageStorage'
+            ];
+        }
+
+        return $data;
+    }
+
+    private function getImagesWithDefaultPath()
     {
         $list = File::files(public_path() . "/storage/editor/fotos");
 

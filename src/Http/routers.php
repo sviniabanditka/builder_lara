@@ -101,7 +101,7 @@ if ($menuLinks) {
                         'as' => 'change_lang',
                         'uses' => 'Vis\Builder\TBController@doChangeLangAdmin'
                     ));
-                
+
                 Route::post('upload_image', array (
                         'as' => 'upload_image',
                         'uses' => 'Vis\Builder\EditorController@uploadFoto'
