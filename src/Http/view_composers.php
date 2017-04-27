@@ -12,7 +12,7 @@ View::composer('admin::partials.navigation', function (ViewParam $view) {
 View::composer(array('admin::layouts.default', 'admin::partials.scripts'), function (ViewParam $view) {
 
     $skin = config('skin') ? : "smart-style-4";
-    $thisLang = config("lang_admin") ? : config("builder.translate_cms.lang_default");
+    $thisLang = Cookie::get("lang_admin") ? : config("builder.translate_cms.lang_default");
     $customJs = config('builder.admin.custom_js');
    
     $view->with('skin', $skin)
