@@ -282,17 +282,12 @@ abstract class AbstractField
     protected function doCreateField($table_name, $field_name)
     {
         $field_bd = $this->getAttribute('field');
-
+      
         if (!Session::has($table_name.'.'.$field_name)) {
             if ($field_bd && !Schema::hasColumn($table_name, $field_name)) {
                 Session::push($table_name . '.' . $field_name, 'created');
 
-                try{
-                    list($field, $param) = explode("|", $field_bd);
-                }
-                catch(\Exception $e){
-                    throw new \RuntimeException($e->getMessage());
-                }
+                @list($field, $param) = explode("|", $field_bd);
 
                 Schema::table(
                     $table_name,
