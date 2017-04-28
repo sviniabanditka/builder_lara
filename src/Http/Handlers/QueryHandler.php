@@ -422,6 +422,10 @@ class QueryHandler
             $objectModel = new $model;
             foreach ($insertDataRes as $key => $value) {
                 $objectModel->$key = $value ? : '';
+                
+                if ($key == 'created_at' && $value == '') {
+                    $objectModel->$key  = date("Y-m-d G:i:s");
+                }
             }
             $objectModel->save();
             $id = $objectModel->id;
