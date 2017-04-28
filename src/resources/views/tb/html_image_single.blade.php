@@ -1,7 +1,11 @@
 <div style="position: relative; display: inline-block;" >
     <img class="image-attr-editable"
          data-tbident="{{$name}}"
-         data-width="{{$width}}"
+
+         @if ($width)
+            data-width="{{$width}}"
+            style="max-width: {{$width}}"
+         @endif
          data-height="{{$height}}"
          @if (strpos($value, ".svg"))
             width="{{$width}}"
