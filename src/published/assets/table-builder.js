@@ -757,7 +757,7 @@ var TableBuilder = {
         });
 
         values = values.concat(selectMultiple);
-        
+
         if (TableBuilder.onDoCreate) {
             values = TableBuilder.onDoCreate(values);
         }
@@ -1157,7 +1157,7 @@ var TableBuilder = {
             function(response){
                 $('#files_uploaded_table_' + name + ' tbody').html(response.data);
                 $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
-        }, 'json');
+            }, 'json');
     },
 
     selectWithUploadedImages : function (name, type) {
@@ -1176,7 +1176,7 @@ var TableBuilder = {
     },
 
     selectFilesUploaded : function (name, type) {
-
+        alert(name);
         if (type == 'multi') {
             $( "#files_uploaded_table_" + name + " input:checked" ).each(function( index ) {
                 var html = '<li> ' + $(this).attr('data-basename') + ' <a href="' + $(this).val() + '" target="_blank" path ="' + $(this).val() + '">Скачать</a> <a class="delete" onclick="TableBuilder.doDeleteFile(this)">Удалить</a></li>';
@@ -1199,7 +1199,7 @@ var TableBuilder = {
 
         if (type == 'multi') {
 
-            $('.one_img_uploaded.selected img').each(function( index ) {
+            $('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').each(function( index ) {
                 var img = $(this).attr('data-path');
                 var html = '<li><img src="/' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
                 $('.tb-uploaded-image-container_' + name +' ul').append(html);
@@ -1209,7 +1209,7 @@ var TableBuilder = {
             });
 
         } else {
-            var img = $('.one_img_uploaded.selected img').attr('data-path');
+            var img = $('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
             if (img != undefined) {
                 $('[name=' + name + ']').val(img);
                 $('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
