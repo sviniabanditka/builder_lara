@@ -18,12 +18,22 @@ trait ImagesTrait
         return  '<img src = "'.$img_res.'" title = "'.$this->title.'" alt = "'.$this->title.'">';
     } // end getImg
 
-    public function getImgPath($width = '', $height = '', $options = array())
+    public function getImgLang($width = '', $height = '', $options = array())
     {
+        $img_res = $this->getImgPath($width, $height, $options, $lang = true);
 
-        if ($this->picture) {
-            $picture = $this->picture;
-        } else {
+        return  '<img src = "'.$img_res.'" title = "'.$this->title.'" alt = "'.$this->title.'">';
+    } // end getImg
+
+    public function getImgPath($width = '', $height = '', $options = array(), $lang = false)
+    {
+        $picture = $this->picture;
+
+        if ($lang) {
+            $picture = $this->t('picture');
+        }
+
+        if (!$picture) {
             $picture = Setting::get("no-foto");
         }
 
