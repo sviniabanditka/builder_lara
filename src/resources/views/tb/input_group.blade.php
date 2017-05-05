@@ -2,10 +2,10 @@
 <div class="group" name="{{$name}}">
     <div class="other_section">
         @foreach($rows as $k => $filds)
-            <div class="section_group @if(isset([$fild['class_name']])) row @endif">
+            <div class="section_group">
                 <p style="text-align: right"><a class="delete_group"  onclick="TableBuilder.deleteGroup(this)"><i class="fa red fa-times"></i> Удалить</a></p>
                 @foreach($filds as $titleField => $fild)
-                    <section class="{{$fild['class_name'] or ''}}" @if(isset($fild['tabs'])) style='margin-top:20px' @endif  >
+                    <section class="{{$fild['class_name'] or ''}}" @if(isset($fild['tabs'])) style="margin-top:20px" @endif>
 
                         @if (!isset($fild['tabs']))
                             <label class="label">{{$fild['caption']}}</label>
