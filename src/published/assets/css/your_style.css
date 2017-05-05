@@ -503,3 +503,6 @@ div.dataTables_info{
     border: 1px solid #666;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
+.smart-form .checkbox, .smart-form .radio {
+    display: table;
+}
