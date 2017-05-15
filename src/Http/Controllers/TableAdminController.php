@@ -205,6 +205,7 @@ class TableAdminController extends Controller
         $options = array();
         $foreignKey = $data->foreign_key_field;
         $foreignValue = $data->foreign_value_field;
+		$options['0'] = 'Без категории';
         foreach ($res as $val) {
             $val = (array) $val;
             $options[$val[$foreignKey]] = $val[$foreignValue];
