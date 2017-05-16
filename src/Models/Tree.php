@@ -11,7 +11,8 @@ class Tree extends \Baum\Node
         \Vis\Builder\Helpers\Traits\SeoTrait,
         \Vis\Builder\Helpers\Traits\ImagesTrait,
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
-        \Venturecraft\Revisionable\RevisionableTrait;
+        \Venturecraft\Revisionable\RevisionableTrait,
+		\Watson\Rememberable\Rememberable;
 
 
     protected $fillable = [];
