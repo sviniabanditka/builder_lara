@@ -8,7 +8,7 @@ class BaseModel extends Eloquent
         \Vis\Builder\Helpers\Traits\QuickEditTrait,
         \Venturecraft\Revisionable\RevisionableTrait,
         \Vis\Builder\Helpers\Traits\GroupsFieldTrait,
-		\Watson\Rememberable\Rememberable;
+        \Vis\Builder\Helpers\Traits\Rememberable;
 
     protected $fillable = array('title');
 

@@ -7,12 +7,12 @@ use Request;
 
 class Tree extends \Baum\Node
 {
-    use \Vis\Builder\Helpers\Traits\TranslateTrait,
+    use \Vis\Builder\Helpers\Traits\Rememberable,
+        \Vis\Builder\Helpers\Traits\TranslateTrait,
         \Vis\Builder\Helpers\Traits\SeoTrait,
         \Vis\Builder\Helpers\Traits\ImagesTrait,
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
-        \Venturecraft\Revisionable\RevisionableTrait,
-		\Watson\Rememberable\Rememberable;
+        \Venturecraft\Revisionable\RevisionableTrait;
 
 
     protected $fillable = [];
@@ -263,4 +263,5 @@ class Tree extends \Baum\Node
             }
         }
     }
+
 }
