@@ -62,6 +62,7 @@ class LoginController extends Controller
     public function doLogout()
     {
         Sentinel::logout();
+        $this->clearSessionsAdmin();
 
         return Redirect::route("login_show");
     } // end doLogout
@@ -80,5 +81,10 @@ class LoginController extends Controller
         } else {
             return true;
         }
+    }
+
+    private function clearSessionsAdmin()
+    {
+        Session::forget('table_builder');
     }
 }
