@@ -41,3 +41,41 @@ View::composer(array('admin::tree.create_modal', 'admin::tree.content'), functio
 
     $view->with('templates', $templates);
 });
+
+
+View::composer(array('admin::tree.partials.update',
+                     'admin::tree.partials.preview',
+                     'admin::tree.partials.clone',
+                     'admin::tree.partials.revisions',
+                     'admin::tree.partials.delete',
+                     'admin::tree.partials.constructor'
+), function (ViewParam $view) {
+
+     $type = $view->getData()['type'];
+     $active = false;
+     $caption = '';
+
+    //check present config in template file
+   if (config("builder." .$view->treeName.".templates.".$view->item->template.".node_definition")) {
+      $update = config("builder.tb-definitions." .$view->treeName.".".$view->item->template.".actions." . $type);
+      if ($update) {
+          $pathToConfig = "builder.tb-definitions." .$view->treeName.".".$view->item->template.".actions." . $type;
+      }
+   }
+
+    //check in main file config
+   if (!isset($update) || !$update) {
+       $pathToConfig = 'builder.' . $view->treeName . '.actions.' . $type;
+       $update = config('builder.' . $view->treeName . '.actions.' . $type);
+   }
+
+   if ($update) {
+       $caption = config($pathToConfig . '.caption');
+       $checkFunction = config($pathToConfig. '.check');
+       $active = $checkFunction && $checkFunction();
+   }
+
+    $view->with('active', $active)
+        ->with('caption', $caption);
+
+});
