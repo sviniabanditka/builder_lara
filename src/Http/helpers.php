@@ -165,3 +165,19 @@ if (!function_exists("recurseMyTree")) {
         return implode('/', array_reverse($slugs));
     }
 }
+
+/**
+ * Returns entire string with current locale postfix, ex. string_ua
+ *
+ * @param  string
+ * @return string
+ */
+if (! function_exists('getWithLocalePostfix')) {
+
+    function getWithLocalePostfix($string){
+
+        $currentLocale = LaravelLocalization::getCurrentLocale();
+
+        return $currentLocale == config('app.locale') ? $string : $string . '_' . $currentLocale;
+    }
+}
