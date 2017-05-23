@@ -1,4 +1,4 @@
-<div style="position: relative; display: inline-block;" >
+<div class="{{strpos($value, ".svg") || strpos($value, ".png") || strpos($value, ".gif") ? 'transparent-image' : ''}}" style="position: relative; display: inline-block;" >
     <img class="image-attr-editable"
          data-tbident="{{$name}}"
 
