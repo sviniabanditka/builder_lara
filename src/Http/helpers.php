@@ -173,11 +173,10 @@ if (!function_exists("recurseMyTree")) {
  * @return string
  */
 if (! function_exists('getWithLocalePostfix')) {
-
+ 
     function getWithLocalePostfix($string){
 
         $currentLocale = LaravelLocalization::getCurrentLocale();
-
-        return $currentLocale == config('app.locale') ? $string : $string . '_' . $currentLocale;
+        return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string . '_' . $currentLocale;
     }
 }
