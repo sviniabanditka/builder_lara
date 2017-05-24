@@ -11,6 +11,7 @@
                        @endforeach
                 @endif
 
+                {!! $actions->fetch('constructor', $row) !!}
                 {!! $actions->fetch('update', $row) !!}
                 {!! $actions->fetch('clone', $row) !!}
                 {!! $actions->fetch('revisions', $row) !!}

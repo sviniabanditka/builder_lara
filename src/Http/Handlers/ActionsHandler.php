@@ -37,10 +37,13 @@ class ActionsHandler
 
             case 'views_statistic':
                 return $this->onViewStatisticButton($row);
-                
+
+            case 'constructor':
+                return $this->onConstructorButton($row, $buttonDefinition);
+
             case 'custom':
                 return $this->onCustomButton($row, $buttonDefinition);
-            
+
             default:
                 throw new \RuntimeException('Not implemented row action');
         }
@@ -177,6 +180,23 @@ class ActionsHandler
         }
 
         $action->url .= '?' . http_build_query($params);
+
+        return $action;
+    }
+
+    private function onConstructorButton($row)
+    {
+        if (!$this->isAllowed('constructor') || !$this->controller->getDefinition()['options']['model']) {
+            return '';
+        }
+
+        $action = View::make('admin::tb.action_constructor');
+        $action->row = $row;
+        $action->def = $this->def['constructor'];
+        $action->definition = $this->controller->getDefinition();
+        $model = $action->definition['options']['model'];
+        $action->model = $model;
+        $action->url = $model::find($row['id'])->getUrl()."?mode=construct";
 
         return $action;
     }

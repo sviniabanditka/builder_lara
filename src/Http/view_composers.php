@@ -51,31 +51,34 @@ View::composer(array('admin::tree.partials.update',
                      'admin::tree.partials.constructor'
 ), function (ViewParam $view) {
 
-     $type = $view->getData()['type'];
-     $active = false;
-     $caption = '';
+    $type = $view->getData ()['type'];
+    $active = false;
+    $caption = '';
 
+    $node_definition = config ("builder." . $view->treeName . ".templates."
+        . $view->item->template . ".node_definition");
+
+    $update = config ("builder.tb-definitions." . $view->treeName . "."
+        . $node_definition . ".actions." . $type);
     //check present config in template file
-   if (config("builder." .$view->treeName.".templates.".$view->item->template.".node_definition")) {
-      $update = config("builder.tb-definitions." .$view->treeName.".".$view->item->template.".actions." . $type);
-      if ($update) {
-          $pathToConfig = "builder.tb-definitions." .$view->treeName.".".$view->item->template.".actions." . $type;
-      }
-   }
+    if ($update) {
+        $pathToConfig = "builder.tb-definitions." . $view->treeName . "."
+            . $node_definition . ".actions." . $type;
+    }
 
     //check in main file config
-   if (!isset($update) || !$update) {
-       $pathToConfig = 'builder.' . $view->treeName . '.actions.' . $type;
-       $update = config('builder.' . $view->treeName . '.actions.' . $type);
-   }
+    if (!isset($update) || !$update) {
+        $pathToConfig = 'builder.' . $view->treeName . '.actions.' . $type;
+        $update = config ('builder.' . $view->treeName . '.actions.' . $type);
+    }
 
-   if ($update) {
-       $caption = config($pathToConfig . '.caption');
-       $checkFunction = config($pathToConfig. '.check');
-       $active = $checkFunction && $checkFunction();
-   }
+    if ($update) {
+        $caption = config ($pathToConfig . '.caption');
+        $checkFunction = config ($pathToConfig . '.check');
+        $active = $checkFunction && $checkFunction();
+    }
 
-    $view->with('active', $active)
-        ->with('caption', $caption);
+    $view->with ('active', $active)
+        ->with ('caption', $caption);
 
 });
