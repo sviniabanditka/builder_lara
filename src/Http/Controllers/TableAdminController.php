@@ -130,7 +130,7 @@ class TableAdminController extends Controller
         }
 
         //check is active
-        if (!$node->is_active) {
+        if (!$node->is_active && Input::get('show') != 1) {
             App::abort(404);
         }
 
