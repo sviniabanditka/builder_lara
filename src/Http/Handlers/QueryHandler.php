@@ -67,7 +67,7 @@ class QueryHandler
 
         $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         $order = Session::get($sessionPath, array());
-
+        
         if ($order && $isUserFilters) {
              $this->db->orderBy($this->dbName .'.'. $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
@@ -226,10 +226,6 @@ class QueryHandler
     {
         $this->clearCache();
 
-        if (!$this->controller->actions->isAllowed('update')) {
-            throw new \RuntimeException('Update action is not permitted');
-        }
-
         if ($this->controller->hasCustomHandlerMethod('handleUpdateRow')) {
             $res = $this->controller->getCustomHandler()->handleUpdateRow($values);
             if ($res) {
@@ -238,7 +234,7 @@ class QueryHandler
         }
         
         $updateData = $this->getRowQueryValues($values);
-
+      
         $model = $this->model;
         $this->checkFields($updateData);
 
@@ -273,6 +269,8 @@ class QueryHandler
                 $updateDataRes[$fild] = $data;
             }
         }
+
+
 
         $modelObj->update($updateDataRes);
 
@@ -324,10 +322,7 @@ class QueryHandler
     public function deleteRow($id)
     {
         $this->clearCache();
-
-        if (!$this->controller->actions->isAllowed('delete')) {
-            throw new \RuntimeException('Delete action is not permitted');
-        }
+        
 
         if ($this->controller->hasCustomHandlerMethod('handleDeleteRow')) {
             $res = $this->controller->getCustomHandler()->handleDeleteRow($id);
@@ -373,11 +368,7 @@ class QueryHandler
     public function insertRow($values)
     {
         $this->clearCache();
-
-        if (!$this->controller->actions->isAllowed('insert')) {
-            throw new \RuntimeException('Insert action is not permitted');
-        }
-
+        
         if ($this->controller->hasCustomHandlerMethod('handleInsertRow')) {
             $res = $this->controller->getCustomHandler()->handleInsertRow($values);
             if ($res) {
