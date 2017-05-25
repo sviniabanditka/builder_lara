@@ -11,12 +11,13 @@
                        @endforeach
                 @endif
 
-                {!! $actions->fetch('constructor', $row) !!}
+
                 {!! $actions->fetch('update', $row) !!}
                 {!! $actions->fetch('clone', $row) !!}
                 {!! $actions->fetch('revisions', $row) !!}
                 {!! $actions->fetch('preview', $row) !!}
                 {!! $actions->fetch('views_statistic', $row) !!}
+                {!! $actions->fetch('constructor', $row) !!}
                 {!! $actions->fetch('delete', $row) !!}
 
             </ul>

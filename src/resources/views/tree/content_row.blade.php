@@ -57,11 +57,12 @@
               <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
 
                 <ul class="dropdown-menu">
-                    @include('admin::tree.partials.constructor', ['type' => 'constructor'])
+
                     @include('admin::tree.partials.update', ['type' => 'update'])
                     @include('admin::tree.partials.preview', ['type' => 'preview'])
                     @include('admin::tree.partials.clone', ['type' => 'clone'])
                     @include('admin::tree.partials.revisions', ['type' => 'revisions'])
+                    @include('admin::tree.partials.constructor', ['type' => 'constructor'])
                   {{--  @include('admin::tree.partials.statistic', ['type' => 'statistic'])--}}
                     @include('admin::tree.partials.delete', ['type' => 'delete'])
 
