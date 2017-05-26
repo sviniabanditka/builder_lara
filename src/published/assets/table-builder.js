@@ -1176,7 +1176,6 @@ var TableBuilder = {
     },
 
     selectFilesUploaded : function (name, type) {
-        alert(name);
         if (type == 'multi') {
             $( "#files_uploaded_table_" + name + " input:checked" ).each(function( index ) {
                 var html = '<li> ' + $(this).attr('data-basename') + ' <a href="' + $(this).val() + '" target="_blank" path ="' + $(this).val() + '">Скачать</a> <a class="delete" onclick="TableBuilder.doDeleteFile(this)">Удалить</a></li>';
