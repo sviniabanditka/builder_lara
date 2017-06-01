@@ -30,16 +30,18 @@
 </div>
 <script>
 
+    var i = 0;
     $(".group[name={{$name}}] input, .group[name={{$name}}] select, .group[name={{$name}}] textarea" ).each(function( index ) {
 
         if ($(this).attr("name") != undefined) {
+            i++;
             $(this).attr("id", "{{$name}}_" + $(this).attr("name"));
             $(this).attr("name", "{{$name}}[" + $(this).attr("name")+ "][]");
 
             if ($(this).attr("data-multi") == 'multi') {
                 $(this).removeAttr('name');
             }
-
+          //  $(this).addClass($(this).attr("id") + '_' + i);
         }
     });
 

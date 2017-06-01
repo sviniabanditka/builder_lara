@@ -18,6 +18,7 @@ var TableBuilder = {
     edit_form: '#edit_form',
     filter: '#filters-row :input',
     is_page_form: false,
+    thisFileElementInGroup : null,
 
     onDoEdit: null,
     onDoCreate: null,
@@ -1049,10 +1050,9 @@ var TableBuilder = {
             success: function(response) {
                 if (response.status) {
 
-                    $("[name= " + ident + "]").val(response.long_link);
-
                     var html = '<a href="'+ response.link +'" target="_blank">Скачать</a>';
-                    $(context).parent().parent().next().html(html);
+                    $(context).parents('.input-file').next().html(html);
+                    $(context).parents('.files_type_fields').find('input[type=text]').val(response.long_link);
 
                 } else {
                     TableBuilder.showErrorNotification("Ошибка при загрузке файла");
@@ -1146,8 +1146,10 @@ var TableBuilder = {
         }
     },
 
-    selectWithUploaded : function (name, type) {
+    selectWithUploaded : function (name, type, thisFileElement) {
         $("#files_uploaded_table_" + name).show();
+
+        TableBuilder.thisFileElementInGroup = thisFileElement;
 
         var data = {
             query_type: "select_with_uploaded",
@@ -1176,6 +1178,7 @@ var TableBuilder = {
     },
 
     selectFilesUploaded : function (name, type) {
+
         if (type == 'multi') {
             $( "#files_uploaded_table_" + name + " input:checked" ).each(function( index ) {
                 var html = '<li> ' + $(this).attr('data-basename') + ' <a href="' + $(this).val() + '" target="_blank" path ="' + $(this).val() + '">Скачать</a> <a class="delete" onclick="TableBuilder.doDeleteFile(this)">Удалить</a></li>';
@@ -1187,8 +1190,9 @@ var TableBuilder = {
             TableBuilder.doSortFileUpload();
         } else {
             var file = $( "#files_uploaded_table_" + name + " input:checked" ).val();
-            $('[name=' + name + ']').val(file);
-            $('.tb-uploaded-file-container-' + name).html('<a href="' + file + '" target="_blank">Скачать</a> | <a class="delete" style="color:red;" onclick="$(\'[name=file_one]\').val(\'\'); $(this).parent().hide()">Удалить</a>');
+            var elementForUpdate = TableBuilder.thisFileElementInGroup.parent().find('input[type=text]');
+            elementForUpdate.val(file);
+            elementForUpdate.parents('.input-file').next().html('<a href="' + file + '" target="_blank">Скачать</a> | <a class="delete" style="color:red;" onclick="$(this).parents(\'.files_type_fields\').find(\'input[type=text]\').val(\'\'); $(this).parent().hide()">Удалить</a>');
         }
 
         $(".files_uploaded_table").hide();
@@ -1617,11 +1621,11 @@ var TableBuilder = {
         if ($(sectionGroup).find('input[data-multi=multi]').size() > 1) {
             $(sectionGroup).find('input[data-multi=multi]').not(":first").remove();
 
-            //   sectionGroup = $(sectionGroup).find('input[data-multi=multi]').first();
         }
         $(sectionGroup).find("input, textarea").val("");
         $(sectionGroup).find(".tb-uploaded-image-container").html("<ul class='dop_foto'></ul>");
         $(sectionGroup).find(".uploaded-files").html("<ul class='ui-sortable'></ul>");
+        $(sectionGroup).find(".tb-uploaded-file-container").html("");
 
         $(context).parent().find(".other_section").append(sectionGroup);
 
