@@ -130,10 +130,10 @@ class ExportHandler
             $from = strtotime(str_replace('/', '-', $from));
             $from = date('Y-m-d', $from) .' 00:00:00';
 
-            $to = Input::get('d.$to', '01/01/2199');
+            $to = Input::get('d.to', '01/01/2199');
             $to = strtotime(str_replace('/', '-', $to));
             $to = date('Y-m-d', $to) .' 23:59:59';
-            
+          
             $between['field'] = $this->getAttribute('date_range_field');
             $between['values'] = array(
                 $from, $to
