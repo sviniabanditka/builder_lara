@@ -157,7 +157,7 @@ class ExportHandler
         
         $between = $this->getBetweenValues();
     
-        $rows = $this->controller->query->getRows(false, false, $between)->toArray(); // without pagination & user filters
+        $rows = $this->controller->query->getRows(false, true, $between)->toArray(); // without pagination & user filters
 
         foreach ($rows as $row) {
             $xlsRow = array();
