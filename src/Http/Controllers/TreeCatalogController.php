@@ -77,11 +77,13 @@ class TreeCatalogController
 
     public function doCreateNode()
     {
+
         $model = $this->model;
 
         $root = $model::find(Input::get('node', 1));
 
         $node = new $model();
+
         $node->parent_id = Input::get('node', 1);
         $node->title     = Input::get('title');
         $node->template  = Input::get('template') ? : '';
@@ -90,7 +92,6 @@ class TreeCatalogController
 
         $node->slug = Input::get('slug') ? : Input::get('title');
         $node->save();
-
         $node->checkUnicUrl();
 
         $node->makeChildOf($root);

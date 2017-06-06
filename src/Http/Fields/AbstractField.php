@@ -261,20 +261,25 @@ abstract class AbstractField
         
         $tabs = $this->getAttribute('tabs');
 
-        $table_name = $this->definition['db']['table'];
-        $field_name = $this->getFieldName();
 
+        $tableName = $this->definition['db']['table'];
+        $fieldName = $this->getFieldName();
+
+        if ($extendsTable = $this->getAttribute('extends_table')) {
+            $tableName = $extendsTable;
+        }
+      
         if ($tabs) {
             foreach ($tabs as $tab) {
 
-                $name = $table_name .'.'. $this->getFieldName() . $tab['postfix'];
-                $this->doCreateField($table_name, $this->getFieldName() . $tab['postfix']);
+                $name = $tableName .'.'. $this->getFieldName() . $tab['postfix'];
+                $this->doCreateField($tableName, $this->getFieldName() . $tab['postfix']);
                 $db->addSelect($name);
             }
 
         } else {
-            $this->doCreateField($table_name, $field_name);
-            $db->addSelect($table_name .'.'. $field_name);
+            $this->doCreateField($tableName, $fieldName);
+            $db->addSelect($tableName .'.'. $fieldName);
         }
     } // end onSelectValue
     

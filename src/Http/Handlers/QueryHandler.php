@@ -18,6 +18,9 @@ class QueryHandler
     protected $definition;
     protected $definitionName;
     protected $db;
+    protected $extendsTable;
+    protected $extendsTableId;
+    protected $extendsFields = [];
 
     public function __construct(JarboeController $controller)
     {
@@ -34,6 +37,21 @@ class QueryHandler
         $this->dbOptions = $this->definition['db'];
         $this->model = $this->definition['options']['model'];
         $this->dbName = $this->definition['db']['table'];
+
+        if (isset($this->definition['options']['extends']) && count($this->definition['options']['extends'])) {
+
+            foreach ($this->definition['options']['extends'] as $extend) {
+                $table = $extend['table'];
+                $this->extendsTable[$table] = $table;
+
+                if (isset($extend['id'])) {
+                    $this->extendsTableId[$table] = $extend['id'];
+                } else {
+                    $this->extendsTableId[$table] = $this->dbName . '_id';
+                }
+            }
+        }
+
     }
 
     protected function getOptionDB($ident)
@@ -61,6 +79,12 @@ class QueryHandler
 
         if ($isUserFilters) {
             $this->onSearchFilterQuery();
+        }
+
+        if ($this->extendsTable) {
+            foreach ($this->extendsTable as $table) {
+                $this->db->leftJoin($table, "{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+            }
         }
 
         $this->dofilter();
@@ -180,6 +204,13 @@ class QueryHandler
     {
         $this->db = DB::table($this->dbName);
 
+        if ($this->extendsTable) {
+            foreach ($this->extendsTable as $table) {
+                $this->db->leftJoin($table, "{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+            }
+        }
+
+
         $this->prepareSelectValues();
 
         $this->db->where($this->dbName.'.id', $id);
@@ -270,8 +301,6 @@ class QueryHandler
             }
         }
 
-
-
         $modelObj->update($updateDataRes);
 
         foreach ($this->controller->getPatterns() as $pattern) {
@@ -284,6 +313,9 @@ class QueryHandler
                 $this->onManyToManyValues($field->getFieldName(), $values, $values['id']);
             }
         }
+
+        $this->updateExtendsTable($values['id']);
+
         $res = array(
             'id'     => $values['id'],
             'values' => $updateData
@@ -293,6 +325,27 @@ class QueryHandler
         }
 
         return $res;
+    }
+
+    public function updateExtendsTable($id)
+    {
+        if (count($this->extendsFields)) {
+
+            foreach ($this->extendsFields as $tableEx => $fields) {
+
+                $table = DB::table($tableEx);
+
+                $hasExistRecord = DB::table($tableEx)->where($this->extendsTableId[$tableEx], $id)->count();
+                if ($hasExistRecord) {
+                    $table->where($this->extendsTableId[$tableEx], $id)->update($fields);
+                } else {
+                    $fields[$this->extendsTableId[$tableEx]] = $id;
+                    $table->insert($fields);
+                }
+
+            }
+
+        }
     }
 
     public function cloneRow($id)
@@ -311,12 +364,26 @@ class QueryHandler
 
         unset($page['id']);
 
-        $this->db->insertGetId($page);
+        $newId = $this->db->insertGetId($page);
 
+        $this->cloneExtendsTables($id, $newId);
         return array(
             'id'     => $id,
             'status' => $page,
         );;
+    }
+
+    private function cloneExtendsTables($id, $newId)
+    {
+        if (isset($this->extendsTable) && count($this->extendsTable)) {
+
+            foreach ($this->extendsTable as $table) {
+                $page = (array) DB::table($table)->where($this->extendsTableId[$table], $id)->select("*")->first();
+                unset($page['id']);
+                $page[$this->extendsTableId[$table]] = $newId;
+                DB::table($table)->insertGetId($page);
+            }
+        }
     }
 
     public function deleteRow($id)
@@ -344,11 +411,24 @@ class QueryHandler
             'id'     => $id,
             'status' => $res
         );
+
+        $this->deleteExtendsTables($id);
+
         if ($this->controller->hasCustomHandlerMethod('onDeleteRowResponse')) {
             $this->controller->getCustomHandler()->onDeleteRowResponse($res);
         }
 
         return $res;
+    }
+
+    private function deleteExtendsTables($id)
+    {
+        if (isset($this->extendsTable) && count($this->extendsTable)) {
+
+            foreach ($this->extendsTable as $table) {
+                DB::table($table)->where($this->extendsTableId[$table], $id)->delete();
+            }
+        }
     }
 
     public function fastSave($input)
@@ -433,6 +513,8 @@ class QueryHandler
             }
         }
 
+        $this->updateExtendsTable($id);
+
         $res = array(
             'id' => $id,
             'values' => $insertData
@@ -508,9 +590,17 @@ class QueryHandler
                 }
             } else {
                 if (isset($values[$ident])) {
+
+                    if ($field->getAttribute('extends_table')) {
+                        $this->extendsFields[$field->getAttribute('extends_table')][$ident] = $field->prepareQueryValue($values[$ident]);
+                        unset($values[$ident]);
+                        continue;
+                    }
+
                     $values[$ident] = $field->prepareQueryValue($values[$ident]);
                 }
             }
+
         }
 
         return $values;

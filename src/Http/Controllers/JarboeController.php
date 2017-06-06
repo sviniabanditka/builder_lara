@@ -141,6 +141,7 @@ class JarboeController
 
     public function getField($ident)
     {
+
         if (isset($this->fields[$ident])) {
             return $this->fields[$ident];
         } elseif (isset($this->patterns[$ident])) {
