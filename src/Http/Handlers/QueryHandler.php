@@ -547,10 +547,13 @@ class QueryHandler
                 
                 $tabs = $field->getAttribute('tabs');
                 if ($tabs) {
-                    foreach ($tabs as $tab) {
-                        $fieldName = $ident . $tab['postfix'];
-                        $field->doValidate($values[$fieldName]);
+                    if (!$field->getAttribute('extends_table')) {
+                        foreach ($tabs as $tab) {
+                            $fieldName = $ident . $tab['postfix'];
+                            $field->doValidate($values[$fieldName]);
+                        }
                     }
+
                 } else {
                     if (array_key_exists($ident, $values)) {
                         $field->doValidate($values[$ident]);
@@ -587,6 +590,12 @@ class QueryHandler
                 foreach ($tabs as $tab) {
                     $fieldName = $ident . $tab['postfix'];
                     $values[$fieldName] = $field->prepareQueryValue($values[$fieldName]);
+
+                    if ($field->getAttribute('extends_table') && isset($values[$fieldName])) {
+                        $this->extendsFields[$field->getAttribute('extends_table')][$fieldName] = $field->prepareQueryValue($values[$fieldName]);
+                        unset($values[$fieldName]);
+                        continue;
+                    }
                 }
             } else {
                 if (isset($values[$ident])) {
@@ -602,7 +611,7 @@ class QueryHandler
             }
 
         }
-
+      
         return $values;
     }
 
