@@ -6,7 +6,7 @@
         </div>
         <div class="input input-file">
             <span class="button">
-                <input type="file"  multiple onchange="TableBuilder.uploadFileMulti(this, '{{$name}}');" {{$accept ? "accept='$accept'" : ""}}>
+                <input type="file"  multiple onchange="TableBuilder.uploadFileMulti(this, '{{$name}}');" {{$accept ? "accept=$accept" : ""}}>
                 Загрузить
             </span>
              <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'multi_file', $(this) )">
@@ -49,7 +49,7 @@
         </div>
          <div class="input input-file">
              <span class="button">
-                 <input type="file" onchange="TableBuilder.uploadFile(this, '{{$name}}');" {{$accept ? "accept='$accept'" : ""}}>
+                 <input type="file" onchange="TableBuilder.uploadFile(this, '{{$name}}');" {{$accept ? "accept=$accept" : ""}}>
                  Загрузить
              </span>
               <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'one_file', $(this))">
