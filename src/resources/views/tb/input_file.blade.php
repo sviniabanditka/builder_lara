@@ -76,36 +76,38 @@
              @endif
          </div>
     @endif
-</div>
-<!-- Modal -->
-<div class="modal files_uploaded_table" id ='files_uploaded_table_{{$name}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
-        <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
-                <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
-                    <thead>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th class="name">Имя</th>
-                        <th class="type">Тип</th>
-                        <th class="size">Размер</th>
-                        <th class="date">Дата</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
-                <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> Отмена </span>
+
+            <!-- Modal -->
+    <div class="modal files_uploaded_table" id ='files_uploaded_table_{{$name}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
+                    <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                        <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th class="name">Имя</th>
+                            <th class="type">Тип</th>
+                            <th class="size">Размер</th>
+                            <th class="date">Дата</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
+                    <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> Отмена </span>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 

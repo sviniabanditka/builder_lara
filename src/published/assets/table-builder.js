@@ -19,6 +19,7 @@ var TableBuilder = {
     filter: '#filters-row :input',
     is_page_form: false,
     thisFileElementInGroup : null,
+    thisPictureElementInGroup : null,
 
     onDoEdit: null,
     onDoCreate: null,
@@ -1147,33 +1148,43 @@ var TableBuilder = {
     },
 
     selectWithUploaded : function (name, type, thisFileElement) {
-        $("#files_uploaded_table_" + name).show();
+
+        var section = thisFileElement.parents('.files_type_fields');
+
+        section.find("#files_uploaded_table_" + name).show();
 
         TableBuilder.thisFileElementInGroup = thisFileElement;
 
         var data = {
             query_type: "select_with_uploaded",
         };
-        $('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(TableBuilder.getActionUrl(), data,
             function(response){
-                $('#files_uploaded_table_' + name + ' tbody').html(response.data);
-                $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+
+                // alert(section.find('tbody').html());
+                section.find('tbody').html(response.data);
+                section.find('tbody').attr('data-type', type);
             }, 'json');
     },
 
-    selectWithUploadedImages : function (name, type) {
-        $("#files_uploaded_table_" + name).show();
+    selectWithUploadedImages : function (name, type, thisFileElement) {
+
+        TableBuilder.thisPictureElementInGroup = thisFileElement;
+
+        var section = thisFileElement.parents('.pictures_input_field');
+
+        section.find("#files_uploaded_table_" + name).show();
 
         var data = {
             query_type: "select_with_uploaded_images",
             ident : name
         };
-        $('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(TableBuilder.getActionUrl(), data,
             function(response){
-                $('#files_uploaded_table_' + name + ' tbody').html(response.data);
-                $('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+                section.find('#files_uploaded_table_' + name + ' tbody').html(response.data);
+                section.find('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
             }, 'json');
     },
 
@@ -1199,23 +1210,24 @@ var TableBuilder = {
     },
 
     selectImageUploaded : function (name, type) {
+        var section = TableBuilder.thisPictureElementInGroup.parents('.pictures_input_field');
 
         if (type == 'multi') {
 
-            $('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').each(function( index ) {
+            section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').each(function( index ) {
                 var img = $(this).attr('data-path');
                 var html = '<li><img src="/' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
-                $('.tb-uploaded-image-container_' + name +' ul').append(html);
+                section.find('.tb-uploaded-image-container_' + name +' ul').append(html);
 
                 TableBuilder.setInputImages('.tb-uploaded-image-container_' + name);
                 $('.no_photo').hide();
             });
 
         } else {
-            var img = $('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
+            var img = section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
             if (img != undefined) {
-                $('[name=' + name + ']').val(img);
-                $('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
+                section.find('[type=hidden]').val(img);
+                section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
             }
         }
 
