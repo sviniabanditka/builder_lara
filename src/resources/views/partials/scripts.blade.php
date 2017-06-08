@@ -63,8 +63,8 @@
    langCms = "{{$thisLang}}";
 
    function doAjaxLoadContent(url) {
-      $(".load_page").show();
 
+      $(".load_page").show();
       $.get( url, { })
         .done(function( data ) {
            $("#content_admin").html(data);
@@ -97,9 +97,12 @@
 
     $(document).on('click', '.pagination a', function (e) {
 
-        var href = $(this).attr('href');
-        doAjaxLoadContent(href);
-        e.preventDefault();
+        if (!$(this).parents('div').hasClass('paginator_pictures')) {
+            var href = $(this).attr('href');
+            doAjaxLoadContent(href);
+            e.preventDefault();
+        }
+
     });
 
 $(document).ready(function() {

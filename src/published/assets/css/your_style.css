@@ -513,3 +513,7 @@ div.dataTables_info{
     max-width: 100px;
     max-height: 100px;
 }
+.files_uploaded_table label.select{
+    width: auto;
+    height:auto;
+}

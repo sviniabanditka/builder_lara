@@ -717,11 +717,24 @@ class QueryHandler
     private function getImagesWithImageStorage()
     {
         if (class_exists('\Vis\ImageStorage\Image')) {
-            $list = \Vis\ImageStorage\Image::orderBy ('created_at', 'desc')->get ()->toArray ();
+            $list = \Vis\ImageStorage\Image::orderBy ('created_at', 'desc');
+
+            if (Input::get('tag')) {
+                $list->leftJoin('vis_tags2entities', 'id_entity', '=' , 'vis_images.id')->where('entity_type', 'Vis\ImageStorage\Image')->where('id_tag', Input::get('tag'));
+            }
+
+            if (Input::get('gallary')) {
+                $list->leftJoin('vis_images2galleries', 'id_image', '=' , 'vis_images.id')->where('id_gallery', Input::get('gallary'));
+            }
+
+            $list = $list->groupBy('vis_images.id')->paginate(18);
+
+            $tags = \Vis\ImageStorage\Tag::where('is_active', 1)->orderBy ('title', 'asc')->get ();
+            $galleries = \Vis\ImageStorage\Gallery::where('is_active', 1)->orderBy ('title', 'asc')->get ();
 
             $data = [
                 'status' => 'success',
-                'data' => view ('admin::tb.image_storage_list', compact ('list'))->render ()
+                'data' => view ('admin::tb.image_storage_list', compact ('list', 'tags', 'galleries'))->render ()
             ];
         } else {
             $data = [
