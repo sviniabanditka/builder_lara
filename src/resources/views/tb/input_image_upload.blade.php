@@ -76,7 +76,7 @@
             <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
             <div class="modal-content">
                 <div class="modal-header">
-                    <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
+                    <span class="close_window" onclick="TableBuilder.closeWindowWithPictures();"> &times; </span>
                     <h4 class="modal-title" id="modal_form_label">Выберите изображения</h4>
                 </div>
                 <div class="modal-body">
@@ -87,7 +87,7 @@
                 </div>
                 <div class="modal-footer">
                     <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
-                    <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> Отмена </span>
+                    <span class="btn btn-default"  onclick="TableBuilder.closeWindowWithPictures();"> Отмена </span>
                 </div>
             </div>
         </div>

@@ -1230,8 +1230,13 @@ var TableBuilder = {
                 section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
             }
         }
-
+        section.find('tbody').html('');
         $(".files_uploaded_table").hide();
+    },
+
+    closeWindowWithPictures : function () {
+        $('.files_uploaded_table tbody').html('');
+        $('.files_uploaded_table').hide();
     },
 
     doSetInputFiles : function(context)
