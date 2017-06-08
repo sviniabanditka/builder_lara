@@ -1,6 +1,11 @@
 <div class="smart-form" style="padding: 0 20px">
     <div class="row filter_gallary_images" style="padding-top: 10px">
-        <section class="col col-6">
+        <section  class="col col-4">
+            <label class="input">
+                <input type="text" value="{{Input::get('q')}}" name="q" placeholder="Введите название картинки">
+            </label>
+        </section>
+        <section class="col col-4">
             <label class="select">
                 <select name="id_gallery" onchange="TableBuilder.changeGalleryAndTags($(this))">
                     <option value="">Выбрать галерею</option>
@@ -12,7 +17,7 @@
             </label>
         </section>
 
-        <section class="col col-6">
+        <section class="col col-4">
             <label class="select">
                 <select name="id_tag" onchange="TableBuilder.changeGalleryAndTags($(this))">
                     <option value="">Выбрать тег</option>
@@ -23,6 +28,7 @@
                 <i></i>
             </label>
         </section>
+
     </div>
 </div>
 
@@ -46,5 +52,13 @@
                 function(response){
                     section.html(response.data);
             });
+        });
+        $('[name=q]').keyup(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+
+            if (code==13) {
+                e.preventDefault();
+                TableBuilder.changeGalleryAndTags($('.filter_gallary_images [name=q]'));
+            }
         });
     </script>

@@ -727,6 +727,10 @@ class QueryHandler
                 $list->leftJoin('vis_images2galleries', 'id_image', '=' , 'vis_images.id')->where('id_gallery', Input::get('gallary'));
             }
 
+            if (Input::get('q')) {
+                $list->where('vis_images.title', 'like', Input::get('q'). '%');
+            }
+
             $list = $list->groupBy('vis_images.id')->paginate(18);
 
             $tags = \Vis\ImageStorage\Tag::where('is_active', 1)->orderBy ('title', 'asc')->get ();

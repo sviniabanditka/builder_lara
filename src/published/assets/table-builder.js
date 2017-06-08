@@ -1267,12 +1267,14 @@ var TableBuilder = {
     {
         var idGallary = context.parents('.filter_gallary_images').find('[name=id_gallery]').val();
         var idTag = context.parents('.filter_gallary_images').find('[name=id_tag]').val();
+        var searchQuery = context.parents('.filter_gallary_images').find('[name=q]').val();
 
         var data = {
             query_type: "select_with_uploaded_images",
             ident : 'picture',
             tag : idTag,
-            gallary : idGallary
+            gallary : idGallary,
+            q : searchQuery
         };
         var section = context.parents('tbody');
 
@@ -1280,7 +1282,6 @@ var TableBuilder = {
             function(response){
                 section.html(response.data);
             });
-
     },
 
     doSortFileUpload : function ()
