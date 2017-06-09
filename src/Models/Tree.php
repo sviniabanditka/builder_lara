@@ -71,24 +71,26 @@ class Tree extends \Baum\Node
     public function checkUnicUrl()
     {
         $slug = $this->slug;
-        $slugCheck = $this->where('slug', 'like', $this->slug)
-                    ->where('parent_id', $this->parent_id)
-                    ->where("id", "!=", $this->id)->count();
+        if ($slug) {
+            $slugCheck = $this->where ('slug', 'like', $this->slug)
+                ->where ('parent_id', $this->parent_id)
+                ->where ("id", "!=", $this->id)->count ();
 
-        if ($slugCheck) {
-            $slug = $this->slug . "_" . $this->id;
+            if ($slugCheck) {
+                $slug = $this->slug . "_" . $this->id;
+            }
+
+            $slugCheckId = $this->where ('slug', 'like', $slug)
+                ->where ('parent_id', $this->parent_id)
+                ->where ("id", "!=", $this->id)->count ();
+
+            if ($slugCheckId) {
+                $slug = $slug . "_" . time ();
+            }
+
+            $this->slug = $slug;
+            $this->save ();
         }
-
-        $slugCheckId = $this->where('slug', 'like', $slug)
-            ->where('parent_id', $this->parent_id)
-            ->where("id", "!=", $this->id)->count();
-
-        if ($slugCheckId) {
-            $slug = $slug . "_" . time();
-        }
-
-        $this->slug = $slug;
-        $this->save();
     }
 
     public function hasTableDefinition()

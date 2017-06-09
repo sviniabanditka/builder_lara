@@ -1,6 +1,6 @@
- RewriteCond %{THE_REQUEST} ^.+?\ [^?]+\.php[?\ ]
+ RewriteCond %{THE_REQUEST} ^.+?\ [^?]+\.php|.php3|.phtml|.shtml|.php5|.php4|.phpt[?\ ]
  RewriteCond %{THE_REQUEST} !index.php
- RewriteRule \.php$ - [F]
+ RewriteRule \.php|.php3|.phtml|.shtml|.php5|.php4|.phpt$ - [F]
 
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml application/javascript application/xml application/x-font-woff application/x-font-ttf application/xhtml+xml text/javascript text/css application/x-javascript
