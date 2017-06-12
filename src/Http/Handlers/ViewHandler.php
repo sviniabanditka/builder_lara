@@ -73,7 +73,7 @@ class ViewHandler
     public function showList()
     {
         $table = View::make('admin::tb.table_builder');
-
+        
         $table->def  = $this->definition;
         $table->rows = $this->controller->query->getRows();
         $table->controller = $this->controller;

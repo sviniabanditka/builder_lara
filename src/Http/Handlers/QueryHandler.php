@@ -66,6 +66,8 @@ class QueryHandler
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = array(), $isSelectAll = false)
     {
+        $this->checkExistTable();
+
         $modelName = $this->model;
         $this->db = new $modelName();
 
@@ -218,7 +220,7 @@ class QueryHandler
         return $this->db->first();
     }
 
-    public function getTableAllowedIds()
+    private function checkExistTable()
     {
         if (!Session::has($this->dbName . "_exist")) {
             if (!Schema::hasTable($this->dbName)) {
@@ -227,13 +229,8 @@ class QueryHandler
                 });
             }
         }
-        $this->db = DB::table($this->dbName);
-        $this->prepareFilterValues($this->db);
-        $ids = $this->db->pluck('id');
 
-        Session::push($this->getOptionDB('table') . "_exist", 'created');
-
-        return $ids;
+        Session::push($this->dbName . "_exist", 'created');
     }
 
     protected function onSearchFilterQuery()
