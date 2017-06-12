@@ -23,6 +23,7 @@ class TBController extends Controller
     public function doChangeSkin()
     {
         $skin = Input::get('skin');
+        
         Cookie::queue('skin', $skin, "100000");
     }
 
