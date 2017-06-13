@@ -145,6 +145,8 @@ class SettingsController extends Controller
            $setting = Setting::find(Input::get('id'));
            $setting->value = trim(Input::get('value'));
            $setting->save();
+
+           Setting::reCacheSettings();
         }
     }
 }
