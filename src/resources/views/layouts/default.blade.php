@@ -80,6 +80,12 @@
             @endforeach
          @endif
 
+        @if (isset($customCss) && count($customCss))
+            @foreach($customCss as $cssFile)
+                <link type="text/css" rel="stylesheet" href="{{$cssFile}}" />
+            @endforeach
+        @endif
+
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
         <div id="modal_wrapper"></div>

@@ -14,10 +14,12 @@ View::composer(array('admin::layouts.default', 'admin::partials.scripts'), funct
     $skin = Cookie::get('skin') ? : "smart-style-4";
     $thisLang = Cookie::get("lang_admin") ? : config("builder.translate_cms.lang_default");
     $customJs = config('builder.admin.custom_js');
+    $customCss = config('builder.admin.custom_css');
    
     $view->with('skin', $skin)
         ->with("thisLang", $thisLang)
-        ->with("customJs", $customJs);
+        ->with("customJs", $customJs)
+        ->with("customCss", $customCss);
 });
 
 View::composer(array('admin::tree.create_modal', 'admin::tree.content'), function (ViewParam $view) {
