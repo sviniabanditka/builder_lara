@@ -1409,7 +1409,13 @@ var TableBuilder = {
                     processData: false,
                     success: function(response) {
                         if (response.status) {
-                            TableBuilder.showSuccessNotification('Импорт прошел успешно');
+
+                            if (response.callback && window[response.callback]){
+                                window[response.callback](response);
+                            }else {
+                                TableBuilder.showSuccessNotification('Импорт прошел успешно');
+                            }
+
                         } else {
                             if (typeof response.errors === "undefined") {
                                 TableBuilder.showErrorNotification('Что-то пошло не так');
