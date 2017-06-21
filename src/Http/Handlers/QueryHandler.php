@@ -595,8 +595,8 @@ class QueryHandler
                     }
                 }
             } else {
-                if (isset($values[$ident])) {
-
+                if (array_key_exists($ident, $values)) {
+                 
                     if ($field->getAttribute('extends_table')) {
                         $this->extendsFields[$field->getAttribute('extends_table')][$ident] = $field->prepareQueryValue($values[$ident]);
                         unset($values[$ident]);
@@ -606,9 +606,8 @@ class QueryHandler
                     $values[$ident] = $field->prepareQueryValue($values[$ident]);
                 }
             }
-
         }
-      
+
         return $values;
     }
 

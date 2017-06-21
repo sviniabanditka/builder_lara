@@ -8,6 +8,11 @@ class User extends EloquentUser
 
     protected $table = 'users';
 
+    public function setFillable(array $params)
+    {
+        $this->fillable = $params;
+    }
+
     public function getAvatar(array $imgParam)
     {
         if ($this->image) {
