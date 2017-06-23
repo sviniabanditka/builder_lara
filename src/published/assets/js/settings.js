@@ -81,7 +81,7 @@ var Settings =
     {
         $("#modal_form").modal('show');
         Settings.preloadPage();
-     
+
         $.post("/admin/settings/create_pop", {},
             function(data) {
                 $("#modal_form .modal-content").html(data);
@@ -171,6 +171,8 @@ var Settings =
 
         window.history.pushState(urlPage, '', urlPage);
 
+
+
         $.post("/admin/settings/edit_record", {id: idPage },
             function(data) {
                 $("#modal_form .modal-content").html(data);
@@ -182,8 +184,12 @@ var Settings =
                     }
                 );
                 Settings.handleSaveSetting();
+            }).fail(function(xhr) {
+            var errorResult = jQuery.parseJSON(xhr.responseText);
 
-            });
+            TableBuilder.showErrorNotification(errorResult.message);
+            TableBuilder.hidePreloader();
+        });
     }, // end getEdit
 
     preloadPage: function()

@@ -72,18 +72,12 @@
 
              <div class="row">
                 <section class="col" style="float: none">
-                   <label class="label" >{{__cms('Значение')}}</label>
-                   <div class='type_0 types' {!! !isset($info->type) || $info->type==0 ? 'style="display: block"' : "" !!} >
-                        <label class="input">
-                            <input type="text" value="{{ $info->value or "" }}" name="value0" class="dblclick-edit-input form-control input-sm unselectable">
-                        </label>
-                   </div>
-                    <div class='type_1 types' {!!  isset($info->type) && $info->type==1 ? 'style="display: block"' : "" !!}>
-                       <label class="textarea">
-                           <textarea name="value1" style="height: 250px" class="custom-scroll">{{ $info->value or "" }}</textarea>
-                       </label>
-                    </div>
+                   @include("admin::settings.partials.type_input")
+                   @include("admin::settings.partials.type_textarea")
+
+
                     <div class='type_2 types' {!! isset($info->type) && $info->type==2 ? 'style="display: block"' : "" !!}>
+                        <label class="label" >{{__cms('Значение')}}</label>
                      <table style="width: 100%" class="sort_table">
                           <tbody>
 
@@ -122,8 +116,8 @@
 
                        <p><a class="add_option" onclick="Settings.addOption(2)">{{__cms('Добавить еще')}}</a></p>
                     </div>
-
                     <div class='type_3 types' {!! isset($info->type) && $info->type==3 ? 'style="display: block"' : "" !!} >
+                     <label class="label" >{{__cms('Значение')}}</label>
                      <table style="width: 100%" class="sort_table">
                           <tbody>
 
@@ -169,9 +163,8 @@
 
                        <p><a class="add_option2" onclick="Settings.addOption(3)">{{__cms('Добавить еще')}}</a></p>
                     </div>
-
-
                     <div class='type_4 types' {!! isset($info->type) && $info->type==4?'style="display: block"':"" !!}>
+                        <label class="label" >{{__cms('Значение')}}</label>
                         <div class="input input-file">
                             <span class="button"><input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">{{__cms('Выбрать')}}</span>
                             <input type="text" placeholder="{{__cms('Выбрать файл для загрузки')}}" readonly="">
@@ -181,8 +174,8 @@
                         @endif
 
                     </div>
-
-                        <div class='type_5 types' {!! isset($info->type) && $info->type==5 ? 'style="display: block"' :"" !!}>
+                    <div class='type_5 types' {!! isset($info->type) && $info->type==5 ? 'style="display: block"' :"" !!}>
+                         <label class="label" >{{__cms('Значение')}}</label>
                          <table style="width: 100%" class="sort_table">
                               <tbody>
 
@@ -236,18 +229,18 @@
                            <p><a class="add_option3" onclick="Settings.addOption(5)">{{__cms('Добавить еще')}}</a></p>
                         </div>
 
-                        <div class='type_6 types' {!! isset($info->type) && $info->type==6? 'style="display: block"' :"" !!}>
-                           <textarea name="value6" class="text_block custom-scroll">{{ $info->value or "" }}</textarea>
-                        </div>
-                        <div class='type_7 types'
-                                {!!  isset($info->type) && $info->type==7 ? 'style=display: block' :""!!}
-                        >
-                              <label class="toggle" style="padding-right: 51px">
-                                  <input type="hidden" value="0" name="status">
-                                  <input type="checkbox" {{isset($info->value) && $info->value == 1 ? "checked" : ""}} value="1" name="status">
-                                  <i data-swchoff-text="ВЫКЛ" data-swchon-text="ВКЛ"></i>
-                              </label>
-                        </div>
+                    @include("admin::settings.partials.type_textarea_froala")
+
+                    <div class='type_7 types'
+                            {!!  isset($info->type) && $info->type==7 ? 'style=display: block' :""!!}
+                    >
+                          <label class="label" >{{__cms('Значение')}}</label>
+                          <label class="toggle" style="padding-right: 51px">
+                              <input type="hidden" value="0" name="status">
+                              <input type="checkbox" {{isset($info->value) && $info->value == 1 ? "checked" : ""}} value="1" name="status">
+                              <i data-swchoff-text="ВЫКЛ" data-swchon-text="ВКЛ"></i>
+                          </label>
+                    </div>
 
                 </section>
              </div>
