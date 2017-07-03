@@ -42,6 +42,10 @@ class LoginController extends Controller
                     return Redirect::route("login_show");
                 }
 
+                if (config('builder.login.on_login')) {
+                    return config('builder.login.on_login')();
+                }
+
                 return Redirect::intended(config('builder.admin.uri'));
             } catch (\Cartalyst\Sentinel\Checkpoints\ThrottlingException $e) {
                 Session::flash("login_not_found", "Превышено количество возможных попыток входа");
