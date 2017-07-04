@@ -1697,8 +1697,8 @@ var TableBuilder = {
 
     deleteGroup : function(context)
     {
-        var sizeGroup = $(context).parent().parent().parent().find(".section_group").size();
-        var sectionGroup = $(context).parent().parent();
+        var sizeGroup = $(context).parents('.group').find(".section_group").size();
+        var sectionGroup = $(context).parents('.section_group');
         if (sizeGroup == 1) {
             $(sectionGroup).find("input, textarea").val("");
             $(sectionGroup).find(".tb-uploaded-image-container").html("");
