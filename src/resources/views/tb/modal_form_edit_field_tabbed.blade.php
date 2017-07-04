@@ -45,8 +45,9 @@
 
             </div>
         @else
-
+            @if (!isset($options['is_hide_caption']) || !$options['is_hide_caption'])
             <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
+            @endif
             <div style="position: relative;">
                 {!! $field->getEditInput($row) !!}
                 {!! $field->getSubActions() !!}

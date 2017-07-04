@@ -3,7 +3,7 @@
     <div class="other_section">
         @foreach($rows as $k => $filds)
             <div class="section_group">
-                <p style="text-align: right"><a class="delete_group"  onclick="TableBuilder.deleteGroup(this)"><i class="fa red fa-times"></i> Удалить</a></p>
+                <a class="delete_group" onclick="TableBuilder.deleteGroup(this)" style="float: right; cursor: pointer; position: absolute; right: 0; z-index: 10"><i class="fa red fa-times"></i> Удалить</a>
                 @foreach($filds as $titleField => $fild)
                     <section class="{{$fild['class_name'] or ''}}" @if(isset($fild['tabs'])) style="margin-top:20px" @endif>
 
