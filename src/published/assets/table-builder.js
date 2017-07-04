@@ -128,7 +128,7 @@ var TableBuilder = {
         });
 
         $('.text_block').on('froalaEditor.contentChanged', function (e, editor) {
-            $('textarea[name=' + $(this).attr('name') + ']').val($(this).froalaEditor('html.get'));
+            $(this).parent().find('textarea').val($(this).froalaEditor('html.get'))
         });
 
         $('.group').on('keyup, blur', '[data-multi=multi]', function(){
@@ -307,9 +307,12 @@ var TableBuilder = {
 
         TableBuilder.showPreloader();
 
-        // if ($(".table_form_create #modal_form").size() == 0) {
-        $.post(TableBuilder.getActionUrl(),{"query_type" : "show_add_form"},
-            function(data){
+        jQuery.ajax({
+            type: "POST",
+            url: TableBuilder.getActionUrl(),
+            data: {"query_type" : "show_add_form"},
+            dataType: 'json',
+            success: function(data) {
                 $(".table_form_create").html(data);
                 jQuery(TableBuilder.form).modal('show');
                 TableBuilder.initFroalaEditor();
@@ -317,7 +320,14 @@ var TableBuilder = {
                 TableBuilder.handleActionSelect();
 
                 TableBuilder.refreshMask();
-            });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorResult = jQuery.parseJSON(xhr.responseText);
+
+                TableBuilder.showErrorNotification(errorResult.message);
+                TableBuilder.hidePreloader();
+            }
+        });
 
     }, // end getCreateForm
 

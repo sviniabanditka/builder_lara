@@ -262,7 +262,7 @@ class QueryHandler
         }
         
         $updateData = $this->getRowQueryValues($values);
-      
+
         $model = $this->model;
         $this->checkFields($updateData);
 
@@ -298,6 +298,8 @@ class QueryHandler
             }
         }
 
+
+
         $modelObj->update($updateDataRes);
 
         foreach ($this->controller->getPatterns() as $pattern) {
@@ -309,6 +311,8 @@ class QueryHandler
             if (preg_match('~^many2many~', $field->getFieldName())) {
                 $this->onManyToManyValues($field->getFieldName(), $values, $values['id']);
             }
+
+            $this->updateGroupIfUseTable($field, $values['id']);
         }
 
         $this->updateExtendsTable($values['id']);
@@ -322,6 +326,29 @@ class QueryHandler
         }
 
         return $res;
+    }
+
+    private function updateGroupIfUseTable($field, $id)
+    {
+        if ($field->getAttribute('use_table') && $field->getAttribute('type') == 'group') {
+            $nameField = $field->getFieldName();
+            $group = Input::get($nameField);
+            $tableUse = $field->getAttribute('use_table')['table'];
+            $fieldForeign = $field->getAttribute('use_table')['id'];
+            DB::table ($tableUse)->where($fieldForeign, $id)->delete();
+
+            foreach ($group as $name => $arrayValue) {
+                foreach ($arrayValue as $k => $item) {
+                    $resultArray[$k][$fieldForeign] = $id;
+                    $resultArray[$k][$name] = $item;
+                }
+            }
+
+            if (isset($resultArray)) {
+                DB::table($tableUse)->insert ($resultArray);
+            }
+
+        }
     }
 
     public function updateExtendsTable($id)
@@ -364,6 +391,7 @@ class QueryHandler
         $newId = $this->db->insertGetId($page);
 
         $this->cloneExtendsTables($id, $newId);
+
         return array(
             'id'     => $id,
             'status' => $page,
@@ -508,6 +536,7 @@ class QueryHandler
             if (preg_match('~^many2many~', $field->getFieldName())) {
                 $this->onManyToManyValues($field->getFieldName(), $values, $id);
             }
+            $this->updateGroupIfUseTable($field, $id);
         }
 
         $this->updateExtendsTable($id);
@@ -604,6 +633,10 @@ class QueryHandler
                     }
 
                     $values[$ident] = $field->prepareQueryValue($values[$ident]);
+
+                    if ($field->getAttribute('type') == 'group' && $field->getAttribute('use_table')) {
+                        unset($values[$ident]);
+                    }
                 }
             }
         }
