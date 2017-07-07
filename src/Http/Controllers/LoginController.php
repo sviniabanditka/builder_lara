@@ -42,7 +42,7 @@ class LoginController extends Controller
                     return Redirect::route("login_show");
                 }
 
-                if (config('builder.login.on_login')) {
+                if (config('builder.login.on_login') && config('builder.login.on_login')()) {
                     return config('builder.login.on_login')();
                 }
 
