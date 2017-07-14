@@ -362,7 +362,7 @@ abstract class AbstractField
 
         if (isset($validation['server']['ignore_this_id']) && $validation['server']['ignore_this_id']) {
             $rules = explode("|", $rules);
-            $rules[] = Rule::unique($validation['server']['ignore_this_id'])->ignore(Input::get("id"));
+            $rules[] = Rule::unique($this->definition['db']['table'])->ignore(Input::get("id"));
         }
        
         $validator = Validator::make(
