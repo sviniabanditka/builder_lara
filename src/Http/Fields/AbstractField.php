@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\Rule;
 
 abstract class AbstractField
 {
@@ -360,7 +361,8 @@ abstract class AbstractField
         $name = $this->getFieldName();
 
         if (isset($validation['server']['ignore_this_id']) && $validation['server']['ignore_this_id']) {
-            $rules .= ",".Input::get("id");
+            $rules = explode("|", $rules);
+            $rules[] = Rule::unique($validation['server']['ignore_this_id'])->ignore(Input::get("id"));
         }
        
         $validator = Validator::make(
