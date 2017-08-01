@@ -702,6 +702,7 @@ var TableBuilder = {
 
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
+                TableBuilder.hideFormPreloader(TableBuilder.form_edit);
             }
         });
     }, // end doEdit
@@ -823,6 +824,7 @@ var TableBuilder = {
 
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
+                TableBuilder.hideFormPreloader(TableBuilder.form);
             }
 
         });

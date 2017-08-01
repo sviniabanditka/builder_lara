@@ -5,5 +5,6 @@
        @if ($value) 
            checked="checked" 
        @endif
+       value = '1'
        >
 <i></i>{{__cms($caption)}}</label>
