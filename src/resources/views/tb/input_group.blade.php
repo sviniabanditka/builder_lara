@@ -8,7 +8,9 @@
                     <section class="{{$fild['class_name'] or ''}}" @if(isset($fild['tabs'])) style="margin-top:20px" @endif>
 
                         @if (!isset($fild['tabs']))
-                            <label class="label">{{$fild['caption']}}</label>
+                            @if (!isset($fild['no_show_caption']) || !$fild['no_show_caption'])
+                                <label class="label">{{$fild['caption']}}</label>
+                            @endif
                         @endif
                         <div style="position: relative;">
                             <div class="tabs_section">
