@@ -517,3 +517,100 @@ div.dataTables_info{
     width: auto;
     height:auto;
 }
+.delete_answer{
+    position: relative;
+    top: 5px;
+}
+
+
+/*responsive*/
+html.hidden-menu-mobile-lock .pagination-bottom-wrapper,
+body.mobile-view-activated .pagination-bottom-wrapper {
+    left: 0px;
+    right: auto;
+    width: 100%;
+}
+.modal-dialog {
+    max-width: 100%;
+}
+.select2-hidden-accessible {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    #content, #ribbon {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .modal-dialog {
+        margin: 0px;
+    }
+    .table-responsive {
+        border: none;
+    }
+    #main-content, .files_uploaded_table .modal-body {
+        overflow-y: auto;
+        width: 100%;
+    }
+    .nav-tabs {
+        white-space: nowrap;
+        overflow-y: auto;
+    }
+    .nav-tabs li {
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+        white-space: normal;
+    }
+    .superbox-show {
+        min-width: 700px;
+    }
+    .files_uploaded_table {
+        top: 0px;
+        left: 0px;
+        margin: 0px;
+    }
+    .files_uploaded_table .modal-body {
+        max-height: -webkit-calc(100vh - 110px);
+        max-height: calc(100vh - 110px);
+    }
+
+}
+
+@media (max-width: 567px) {
+
+    .smart-form .input-file .button {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 10px 10px 0px 0px;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        text-align: center;
+    }
+    .smart-form .input-file .button:last-child {
+        margin-right: 0px;
+    }
+    .smart-form .input-file .button.select_with_uploaded {
+        margin-right: 10px;
+    }
+    .smart-form .input-file input[type="text"] {
+        margin: 10px 0px 0px;
+    }
+    .ui-multiselect div.selected,
+    .ui-multiselect div.available {
+        width: 100% !important;
+    }
+    .modal-header {
+        text-align: center;
+    }
+    .modal-header .btn {
+        float: none !important;
+        margin: 5px !important;
+    }
+
+}
+
+/*responsive*/
