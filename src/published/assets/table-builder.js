@@ -47,41 +47,41 @@ var TableBuilder = {
             langEditor = langCms;
         }
 
+        //TODO need fix crops in froala
+        /*$.FroalaEditor.DefineIcon('crop', {NAME: 'crop'});
+         $.FroalaEditor.RegisterCommand('crop', {
+         title: 'Image Crop',
+         focus: false,
+         undo: false,
+         refreshAfterCallback: false,
+         callback: function () {
 
-        $.FroalaEditor.DefineIcon('crop', {NAME: 'crop'});
-        $.FroalaEditor.RegisterCommand('crop', {
-            title: 'Image Crop',
-            focus: false,
-            undo: false,
-            refreshAfterCallback: false,
-            callback: function () {
-                var imgThis = this.image.get();
-                $('#modal_crop_img').modal("show");
+         var imgThis = this.image.get();
+         $('#modal_crop_img').modal("show");
 
-                var srcImg = imgThis.attr('src');
-                TableBuilder.tableEditorImg = imgThis;
+         var srcImg = imgThis.attr('src');
+         TableBuilder.tableEditorImg = imgThis;
 
-                $("#modal_crop_img #image").attr("src", "");
-                $("#modal_crop_img #image").attr("src", srcImg);
-                $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
+         $("#modal_crop_img #image").attr("src", "");
+         $("#modal_crop_img #image").attr("src", srcImg);
+         $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
 
-                var $image = $('#image');
-                $image.cropper('destroy');
-                var result = $image.cropper({
+         var $image = $('#image');
+         $image.cropper('destroy');
+         var result = $image.cropper({
 
-                    crop: function (data) {
-                        $(".width_crop").text(Math.round(data.width));
-                        $(".height_crop").text(Math.round(data.height));
+         crop: function (data) {
+         $(".width_crop").text(Math.round(data.width));
+         $(".height_crop").text(Math.round(data.height));
 
-                    },
-                    built: function () {
+         },
+         built: function () {
 
-                    },
-                    // responsive : false
-                });
-                setTimeout('$("#modal_crop_img #image").attr("src", "' + srcImg + '")', 1000);
-            }
-        });
+         },
+         });
+         setTimeout('$("#modal_crop_img #image").attr("src", "' + srcImg + '")', 1000);
+         }
+         });*/
 
         $( ".text_block" ).each(function( index ) {
 
@@ -694,6 +694,7 @@ var TableBuilder = {
                     });
 
                     TableBuilder.showBigErrorNotification(errors);
+
                 }
                 TableBuilder.hidePreloader();
             },
