@@ -617,7 +617,7 @@ class QueryHandler
                     $fieldName = $ident . $tab['postfix'];
                     $values[$fieldName] = $field->prepareQueryValue($values[$fieldName]);
 
-                    if ($field->getAttribute('extends_table') && isset($values[$fieldName])) {
+                    if ($field->getAttribute('extends_table') && array_key_exists($fieldName, $values)) {
                         $this->extendsFields[$field->getAttribute('extends_table')][$fieldName] = $field->prepareQueryValue($values[$fieldName]);
                         unset($values[$fieldName]);
                         continue;
