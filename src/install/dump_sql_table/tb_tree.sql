@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `tb_tree` (
   `id` int(10) unsigned NOT NULL,
-  `parent_id` int(11) DEFAULT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
   `lft` int(11) DEFAULT NULL,
   `rgt` int(11) DEFAULT NULL,
   `depth` int(11) DEFAULT NULL,
@@ -83,6 +83,13 @@ ALTER TABLE `tb_tree`
 --
 ALTER TABLE `tb_tree`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
+  
+--
+-- Связь с parent_id -> id для `tb_tree`
+--
+ALTER TABLE `tb_tree`
+ADD CONSTRAINT `tb_tree_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `tb_tree`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
