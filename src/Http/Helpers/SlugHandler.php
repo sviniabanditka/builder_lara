@@ -1,7 +1,7 @@
 <?php namespace Vis\Builder\Helpers;
 
 use Vis\Builder\Handlers\CustomHandler;
-use Vis\Builder\Jarboe;
+use Vis\Builder\Facades\Jarboe;
 
 class SlugHandler extends CustomHandler
 {
