@@ -5,7 +5,7 @@ use Vis\Builder\Jarboe;
 
 class SlugHandler extends CustomHandler
 {
-    private function setSlug(array &$response)
+    private function setSlug(array $response)
     {
         $model =  $this->controller->getDefinition()['options']['model'];
         $model::where('id',$response['id'])->update(['slug' => Jarboe::urlify(($response['values']['title']))]);
