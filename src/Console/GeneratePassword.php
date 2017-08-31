@@ -37,7 +37,7 @@ class GeneratePassword extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $this->replacePassword();
     }

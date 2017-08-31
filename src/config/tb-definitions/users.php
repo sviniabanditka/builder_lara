@@ -58,14 +58,12 @@ return array(
             'placeholder' => "Email",
             'validation' => array(
                 'server' => array(
-                    'server' => array(
-                        'rules' => 'required|email',
-                        'messages' => array(
-                            'required' => 'Обязательно к заполнению',
-                            "unique" => "Пользователь с таким емейлом уже существует"
-                        ),
-                        'ignore_this_id' => 'users'
+                    'rules' => 'required|email',
+                    'messages' => array(
+                        'required' => 'Обязательно к заполнению',
+                        "unique" => "Пользователь с таким емейлом уже существует"
                     ),
+                    'ignore_this_id' => 'users'
                 ),
                 'client' => array(
                     'rules' => array(

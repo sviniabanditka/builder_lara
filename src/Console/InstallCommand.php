@@ -41,7 +41,7 @@ class InstallCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
             $this->sqlDumpLoad();
@@ -90,34 +90,19 @@ class InstallCommand extends Command
     {
         $laravel = app();
 
-        //if not version 5.4.*
-        if (strpos($laravel::VERSION, '5.4') === false) {
-            copy($this->installPath . '/files/routes.php', app_path() . '/Http/routes.php');
-            $this->info('Created app/Http/routes.php - OK');
 
-            copy($this->installPath . '/files/app.php', config_path() . '/app.php');
-            $this->info('Replace app.php - OK');
+        copy($this->installPath . '/files/routes.php', base_path() . '/routes/web.php');
+        $this->info('Created '.base_path() . '/routes/web.php - OK');
 
-            copy($this->installPath . '/files/composer.json', base_path() . '/composer.json');
-            $this->info('Replace composer.json - OK');
+        copy($this->installPath . '/files/app.php', config_path() . '/app.php');
+        $this->info('Replace app.php - OK');
 
-            copy($this->installPath . '/files/Handler.php', app_path() . '/Exceptions/Handler.php');
-            $this->info('Created app/Exceptions/Handler.php - OK');
+        copy($this->installPath . '/files/composer.json', base_path() . '/composer.json');
+        $this->info('Replace composer.json - OK');
 
-        } else {
-            $this->info('install for 5.4 version');
-            copy($this->installPath . '/files/routes.php', base_path() . '/routes/web.php');
-            $this->info('Created '.base_path() . '/routes/web.php - OK');
+       /* copy($this->installPath . '/files/Handler_for_laravel54.php', app_path() . '/Exceptions/Handler.php');
+        $this->info('Created app/Exceptions/Handler.php - OK');*/
 
-            copy($this->installPath . '/files/app_for_laravel54.php', config_path() . '/app.php');
-            $this->info('Replace app.php - OK');
-
-            copy($this->installPath . '/files/composer_for_laravel54.json', base_path() . '/composer.json');
-            $this->info('Replace composer.json - OK');
-
-            copy($this->installPath . '/files/Handler_for_laravel54.php', app_path() . '/Exceptions/Handler.php');
-            $this->info('Created app/Exceptions/Handler.php - OK');
-        }
 
         copy($this->installPath . '/files/.htaccess', public_path() . '/.htaccess');
         $this->info('Replace htaccess - OK');
@@ -220,12 +205,9 @@ class InstallCommand extends Command
     private function deleteFiles()
     {
         @unlink(app_path()."/User.php");
-        File::deleteDirectory(base_path()."/resources/lang");
-        File::deleteDirectory(base_path()."/resources/views/errors");
-        File::deleteDirectory(base_path()."/resources/views/vendor");
+
         File::deleteDirectory(app_path()."/Http/Controllers/Auth");
         @unlink(base_path()."/resources/views/welcome.blade.php");
-        @unlink(app_path()."/Http/Controllers/Controller.php");
     }
 
     /*
