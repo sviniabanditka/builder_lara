@@ -7,8 +7,10 @@ class SlugHandler extends CustomHandler
 {
     protected function setSlug(array $response)
     {
-        $model =  $this->controller->getDefinition()['options']['model'];
-        $model::where('id',$response['id'])->update(['slug' => Jarboe::urlify(($response['values']['title']))]);
+        if (isset($response['values']['title'])) {
+            $model = $this->controller->getDefinition()['options']['model'];
+            $model::where('id', $response['id'])->update(['slug' => Jarboe::urlify(($response['values']['title']))]);
+        }
     }
     
     public function onInsertRowResponse(array &$response)
