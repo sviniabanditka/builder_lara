@@ -142,6 +142,10 @@ class TableAdminController extends Controller
         if (!isset($templates[$node->template])) {
             App::abort(404);
         }
+	    
+	if (empty($templates[$node->template]['action'])) {
+            App::abort(404);
+        }
 
         $def = $templates[$node->template]['node_definition'];
 
