@@ -8,9 +8,12 @@ var Cropper = {
     init: function () {
         var cropBoxData;
         var canvasData;
-        $('#modal_crop_img').on('shown.bs.modal', function (event) {
 
-            Cropper.imgThis = $(event.relatedTarget);
+        jQuery(document).on('click', '.image-attr-editable', function() {
+            var top = $(document).scrollTop();
+            $('#modal_crop_img').show().css({ top: top + 'px', 'opacity': '100' });
+            Cropper.imgThis = $(this);
+
             var srcImg = Cropper.imgThis.attr("src_original");
             $("#modal_crop_img #image").attr("src", "");
             $("#modal_crop_img #image").attr("src", "/" + srcImg);
@@ -26,15 +29,11 @@ var Cropper = {
 
                 },
             });
-        }).on('hidden.bs.modal', function () {
-            cropBoxData = Cropper.image.cropper('getCropBoxData');
-            canvasData = Cropper.image.cropper('getCanvasData');
-            Cropper.image.cropper('destroy');
+
         });
 
-        $("#modal_crop_img .close_crop, #modal_crop_img .close").click(function () {
-            $("#modal_crop_img").modal("hide");
-            $("body").addClass("modal-open");
+        jQuery(document).on('click', '#modal_crop_img .close_crop, #modal_crop_img .close', function() {
+            $("#modal_crop_img").hide()
         });
     },
 
@@ -60,6 +59,9 @@ var Cropper = {
                     }
                     var contextFile = Cropper.imgThis.parents(".multi_pictures").find("[type=file]");
                     TableBuilder.setInputImages(contextFile);
+
+                    $("#modal_crop_img").hide();
+
                 }
             }, "json");
     },
