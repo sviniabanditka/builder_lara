@@ -5,11 +5,25 @@ use Vis\Builder\Facades\Jarboe;
 
 class SlugHandler extends CustomHandler
 {
+    protected function generateUniqueSlug(array $response, $model)
+    {
+        $slug = Jarboe::urlify(($response['values']['title']));
+
+        $slugCheck = false;
+
+        while ($slugCheck === false) {
+            $slugCheckQuery = $model::where('slug', 'like', $slug)->where("id", "!=", $response['id'])->first();
+            $slugCheckQuery ?  $slug = $slug. "-1" : $slugCheck = true;
+        }
+
+        return $slug;
+    }
+
     protected function setSlug(array $response)
     {
         if (isset($response['values']['title'])) {
             $model = $this->controller->getDefinition()['options']['model'];
-            $model::where('id', $response['id'])->update(['slug' => Jarboe::urlify(($response['values']['title']))]);
+            $model::where('id', $response['id'])->update(['slug' => $this->generateUniqueSlug($response, $model)]);
         }
     }
     
@@ -22,5 +36,5 @@ class SlugHandler extends CustomHandler
     {
         $this->setSlug($response);
     }
-   
+
 }
