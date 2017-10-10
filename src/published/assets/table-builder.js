@@ -427,7 +427,10 @@ var TableBuilder = {
         jQuery(TableBuilder.form_edit).remove()
         jQuery(TableBuilder.form).remove();
 
-
+        if (context != undefined) {
+            TableBuilder.action_url = $(context).parents('form').attr('action');
+        }
+        
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
@@ -472,9 +475,11 @@ var TableBuilder = {
 
     getViewsStatistic : function (id, context)
     {
+        TableBuilder.action_url = $(context).parents('form').attr('action');
         var urlPage = "?views_statistic=" + id;
         window.history.pushState(urlPage, '', urlPage);
         TableBuilder.showPreloader();
+
         var data = [
             {name: "query_type", value: "show_views_statistic"},
             {name: "id", value: id},
@@ -511,6 +516,7 @@ var TableBuilder = {
         var urlPage = "?revision_page=" + id;
         window.history.pushState(urlPage, '', urlPage);
         TableBuilder.showPreloader();
+        TableBuilder.action_url = $(context).parents('form').attr('action');
 
         var data = [
             {name: "query_type", value: "show_revisions"},
@@ -584,6 +590,7 @@ var TableBuilder = {
         }, function(ButtonPressed) {
             if (ButtonPressed === phrase["Да"]) {
                 TableBuilder.showPreloader();
+                TableBuilder.action_url = $(context).parents('form').attr('action');
 
                 jQuery.ajax({
                     type: "POST",

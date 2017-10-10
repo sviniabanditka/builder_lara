@@ -80,7 +80,7 @@ var ForeignDefinition  = {
                 if (response.html) {
                     $('.definition_' + attributesJson.name).html(response.html);
 
-                    if (attributesJson.sortable) {
+                    if (attributesJson.sortable != undefined) {
                         $('.definition_'+ attributesJson.name +' tbody').sortable({
                             handle: ".handle",
                             update: function( event, ui ) {
@@ -88,7 +88,7 @@ var ForeignDefinition  = {
                             }
                         });
                     } else {
-                        $('.definition_' + attributesJson.name + '.col_sort').hide();
+                        $('.definition_' + attributesJson.name + ' .col_sort').hide();
                     }
                 }
             },
