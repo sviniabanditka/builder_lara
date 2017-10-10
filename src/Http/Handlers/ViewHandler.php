@@ -82,6 +82,65 @@ class ViewHandler
         return $table;
     }
 
+    public function showHtmlForeignDefinition()
+    {
+        $params =  (array) json_decode (request('paramsJson'));
+        $result = [];
+
+        foreach ($params['show'] as $field) {
+            $arrayDefinitionFields[$field] =
+                config('builder.tb-definitions.' . $params['definition']. '.fields.'. $field);
+        }
+
+        if (request('id')) {
+            $model = config('builder.tb-definitions.' .  $params['definition']. '.options.model');
+            $result = $model::where( $params['foreign_field'], request('id'));
+            $result = isset($params['sortable'])
+                    ? $result->orderBy($params['sortable'], 'asc')->orderBy('created_at', 'desc')
+                    : $result->orderBy('created_at', 'desc');;
+
+            $result = $result->get();
+        }
+
+        $idUpdate = request('id') ? : '';
+        $attributes = request('paramsJson');
+
+        return View::make('admin::tb.input_definition_table_data',
+                compact ('arrayDefinitionFields', 'result', 'idUpdate', 'attributes'))
+                ->render();
+    }
+
+    public function deleteForeignDefinition()
+    {
+        $params =  (array) json_decode (request('paramsJson'));
+        $model = config('builder.tb-definitions.' .  $params['definition']. '.options.model');
+
+        $model::find(request('idDelete'))->delete();
+
+        return $this->showHtmlForeignDefinition();
+    }
+
+    public function changePositionDefinition()
+    {
+        $params = (array) json_decode (request('paramsJson'));
+
+        if (!isset($params['sortable'])) throw new \RuntimeException('Не определено поле для сортировки');
+
+        $idsPositionUpdate = (array) json_decode (request('idsPosition'));
+        $model = config('builder.tb-definitions.' .  $params['definition']. '.options.model');
+        $sortField = $params['sortable'];
+
+        $records = $model::whereIn('id', $idsPositionUpdate)
+            ->orderByRaw('FIELD(id, '. implode (',', $idsPositionUpdate) .')')->get();
+
+        foreach ($records as $k=>$record) {
+            $record->$sortField = $k;
+            $record->save();
+        }
+
+        return true;
+    }
+
     public function showEditForm($id = false, $isTree = false)
     {
         if ($id) {

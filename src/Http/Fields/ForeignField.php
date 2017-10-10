@@ -112,6 +112,7 @@ class ForeignField extends AbstractField
         if (strlen($input)) {
             $foreignTable = $this->getAttribute('foreign_table');
             $foreignValueField = $this->getAttribute('foreign_value_field');
+
             $first = DB::table($foreignTable)->where($foreignValueField, '=', $input)->first();
             if (!$first) {
                 $new_id = DB::table($foreignTable)->insertGetId([$foreignValueField => $input]);
@@ -128,11 +129,13 @@ class ForeignField extends AbstractField
                 return $res;
             }
         }
+
         $foreignTableName = $this->getAttribute('foreign_table');
         if ($this->getAttribute('alias')) {
             $foreignTableName = $this->getAttribute('alias');
         }
         $fieldName = $foreignTableName .'_'. $this->getAttribute('foreign_value_field');
+
         $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
         if (!$value && $this->getAttribute('is_null')) {
             $value = $this->getAttribute('null_caption', '<i class="fa fa-minus"></i>');
@@ -151,6 +154,7 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('is_readonly')) {
             return $this->getValue($row);
         }
+
         $input = View::make('admin::tb.input_foreign');
         $input->selected = $this->getValueId($row);
         $input->name     = $this->getFieldName();
@@ -254,5 +258,25 @@ class ForeignField extends AbstractField
         }
 
         return $options;
+    }
+
+    public function getListValueDefinitionPopup($row)
+    {
+        if ($this->hasCustomHandlerMethod('onGetListValue')) {
+            $res = $this->handler->onGetListValue($this, $row);
+            if ($res) {
+                return $res;
+            }
+        }
+
+        $nameField = $this->getFieldName();
+
+        if (!$row->$nameField) return $this->getAttribute('null_caption');
+
+        $result = (array) DB::table($this->getAttribute('foreign_table'))
+            ->select($this->getAttribute('foreign_value_field'))
+            ->where($this->getAttribute('foreign_key_field'), $row->$nameField)->first();
+
+        return  $result[$this->getAttribute('foreign_value_field')];
     }
 }

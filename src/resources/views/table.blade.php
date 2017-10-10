@@ -2,6 +2,7 @@
 
 @section('main')
      {!! $table !!}
+
 @stop
 
 

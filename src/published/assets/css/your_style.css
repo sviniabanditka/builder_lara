@@ -29,10 +29,17 @@ a.select2-search-choice-close:before {
     right: 4px;
 }
 
+.loader_create_definition {
+    display: inline-block;
+}
+.loader_create_definition.hide{
+    display: none;
+}
+
 .modal-open{
     overflow: auto;
 }
-div#modal_wrapper div.modal, div#modal_form{
+div#modal_wrapper div.modal, div#modal_form, div#modal_form_edit{
     z-index: 2000;
 }
 
@@ -290,6 +297,7 @@ p.table_album_action_a a{
     padding:5px;
     display:none;
     color:#fff;
+    z-index: 200011;
 }
 
 .section_group{
@@ -522,6 +530,26 @@ div.dataTables_info{
     top: 5px;
 }
 
+.definition_blocks{
+    position: relative;
+    padding-top: 20px;
+}
+.loader_definition {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    opacity: 0.2;
+    z-index: 100;
+    display: none;
+}
+
+.col_sort{
+    width: 10px;
+}
+tbody .col_sort{
+    cursor:s-resize;
+}
 
 /*responsive*/
 html.hidden-menu-mobile-lock .pagination-bottom-wrapper,
@@ -536,6 +564,8 @@ body.mobile-view-activated .pagination-bottom-wrapper {
 .select2-hidden-accessible {
     display: none;
 }
+
+
 
 @media (max-width: 767px) {
     #content, #ribbon {

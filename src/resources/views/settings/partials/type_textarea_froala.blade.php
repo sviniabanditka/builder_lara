@@ -23,8 +23,10 @@
         </div>
     @else
         <label class="label" >{{__cms('Значение')}}</label>
-        <label class="textarea">
-            <textarea name="value6" style="height: 250px" class="custom-scroll">{{ $info->value or "" }}</textarea>
-        </label>
+        <div style="position: relative;">
+            <label class="textarea">
+                <textarea name="value6" style="height: 250px" class="custom-scroll text_block">{{ $info->value or "" }}</textarea>
+            </label>
+        </div>
     @endif
 </div>

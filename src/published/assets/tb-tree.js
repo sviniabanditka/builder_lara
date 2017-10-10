@@ -294,6 +294,8 @@ var Tree =
                         $input.mask($input.attr('data-mask'));
                     });
                     TableBuilder.handleActionSelect();
+
+                    $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
                 } else {
                     TableBuilder.showErrorNotification(phrase['Что-то пошло не так, попробуйте позже']);
                 }
@@ -309,8 +311,11 @@ var Tree =
         });
     }, // end showEditForm
 
-    doEdit: function(id)
+    doEdit: function(id, form)
     {
+        TableBuilder.edit_form = form;
+        TableBuilder.action_url = $(form).attr('action');
+
         TableBuilder.showPreloader();
         TableBuilder.showFormPreloader(TableBuilder.form_edit);
 

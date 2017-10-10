@@ -24,6 +24,7 @@ var TableBuilder = {
     onDoEdit: null,
     onDoCreate: null,
     onDoDelete: null,
+    handlerCreate: null,
     tableEditorImg : null,
 
     init: function(options)
@@ -447,13 +448,12 @@ var TableBuilder = {
             dataType: 'json',
             success: function(response) {
                 if (response.status) {
-                    jQuery(TableBuilder.form_wrapper).html(response.html);
+                    $(TableBuilder.form_wrapper).html(response.html);
+                    $(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
                     TableBuilder.initFroalaEditor();
-
-                    jQuery(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
-
                     TableBuilder.refreshMask();
                     TableBuilder.handleActionSelect();
+                    $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
                 } else {
                     TableBuilder.showErrorNotification("Что-то пошло не так, попробуйте позже");
                 }
@@ -619,8 +619,11 @@ var TableBuilder = {
         });
     }, // end doDelete
 
-    doEdit: function(id)
+    doEdit: function(id, form, foreign_field_id, foreign_attributes)
     {
+        TableBuilder.edit_form = form;
+        TableBuilder.action_url = $(form).attr('action');
+
         TableBuilder.showPreloader();
         TableBuilder.showFormPreloader(TableBuilder.form_edit);
 
@@ -668,6 +671,12 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form_edit);
 
                 if (response.id) {
+
+                    if (foreign_field_id != '' && foreign_attributes != '') {
+
+                        ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
+                        return;
+                    }
 
                     $('.text_block').froalaEditor('destroy');
 
@@ -737,8 +746,11 @@ var TableBuilder = {
         jQuery('.state-success, .state-error', context).removeClass('state-success').removeClass('state-error');
     }, // end removeInputValues
 
-    doCreate: function()
+    doCreate: function(create_form, foreign_field_id, foreign_attributes)
     {
+        TableBuilder.create_form = create_form;
+        TableBuilder.action_url = $(create_form).attr('action');
+
         TableBuilder.showPreloader();
         TableBuilder.showFormPreloader(TableBuilder.form);
 
@@ -748,7 +760,6 @@ var TableBuilder = {
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
 
-        console.log(values);
         values.push({ name: "query_type", value: "save_add_form" });
         values.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
 
@@ -793,7 +804,19 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form);
 
                 if (response.id) {
-                    TableBuilder.showSuccessNotification('Новая запись добавлена');
+
+                    if (foreign_field_id != '' && foreign_attributes != '') {
+
+                        ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
+                        return;
+                    }
+
+                    if (TableBuilder.handlerCreate) {
+                        TableBuilder.handlerCreate(TableBuilder.getActionUrl(), response.id);
+                        return;
+                    }
+
+                    TableBuilder.showSuccessNotification(phrase['Сохранено']);
 
                     if (TableBuilder.options.is_page_form) {
                         //window.location.href = TableBuilder.options.list_url;
@@ -801,14 +824,22 @@ var TableBuilder = {
                         return;
                     }
 
-                    jQuery('#wid-id-1 .widget-body').find('tbody').prepend(response.html);
+                    var form = $(create_form).parents('#modal_form');
 
-                    TableBuilder.removeInputValues(TableBuilder.form);
-                    jQuery(TableBuilder.form).modal('hide');
+                    TableBuilder.removeInputValues(form);
+                    form.modal('hide');
+
+                    if (form.parent().attr('class') == 'foreign_popup') {
+                        form.remove();
+                    } else {
+                        jQuery('#wid-id-1 .widget-body').find('tbody').prepend(response.html);
+
+                    }
 
                     if (TableBuilder.onDoCreate) {
                         TableBuilder.onDoCreate(TableBuilder.getActionUrl());
                     }
+
 
                 } else {
                     var errors = '';
@@ -833,12 +864,12 @@ var TableBuilder = {
 
     showPreloader: function()
     {
-        jQuery(TableBuilder.preloader).show();
+        $(TableBuilder.preloader).show();
     }, // end showPreloader
 
     hidePreloader: function()
     {
-        jQuery(TableBuilder.preloader).hide();
+        $(TableBuilder.preloader).hide();
     }, // end hidePreloader
 
     showFormPreloader: function(context)
@@ -848,7 +879,7 @@ var TableBuilder = {
 
     hideFormPreloader: function(context)
     {
-        jQuery(TableBuilder.form_preloader, context).hide();
+        $(TableBuilder.form_preloader, context).hide();
     }, // end hidePreloader
 
     uploadImage: function(context, ident)
@@ -1796,7 +1827,34 @@ var TableBuilder = {
         // Так же удаляем символы перевода строки, но это наверное уже лишнее
 
         return newStr.replace(/[_]{2,}/gim, '_').replace(/\n/gim, '');
-    }
+    },
+
+    doClosePopup : function (table) {
+
+        if ($('.modal_form_' + table).parent().hasClass('modal_popup_first')) {
+            TableBuilder.hideBackgroundForm();
+        }
+
+        $('.modal_form_' + table).remove();
+    },
+
+    hideBackgroundForm : function() {
+        $('body').removeClass('modal-open').css('padding-right', '0');
+        $('.modal-backdrop').remove();
+        $('#table-preloader').hide();
+
+        TableBuilder.clearParamsWithUrl();
+    },
+
+    clearParamsWithUrl : function () {
+        var url = Core.delPrm("id");
+
+        if (url != undefined) {
+            window.history.pushState(url, '', url);
+        }
+    },
+
+
 
 };
 
@@ -1816,4 +1874,3 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-

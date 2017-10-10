@@ -3,7 +3,7 @@
        id="{{ $prefix . $name }}"
        value="{{$value}}" 
        name="{{$name}}" 
-       class="form-control datepicker" >
+       class="form-control datepicker timePicker" >
        
 <span class="input-group-addon form-input-icon">
     <i class="fa fa-calendar"></i>
@@ -16,7 +16,7 @@
 @endif
 <script>
 jQuery(document).ready(function() {
-    jQuery("#{{ $prefix . $name }}").datetimepicker({
+    jQuery(".timePicker").datetimepicker({
         prevText: '<i class="fa fa-chevron-left"></i>',
         nextText: '<i class="fa fa-chevron-right"></i>',
         //dateFormat: "",

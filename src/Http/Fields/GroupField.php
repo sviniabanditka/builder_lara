@@ -71,6 +71,13 @@ class GroupField extends AbstractField
         return $input->render();
     } // end getEditInput
 
+    public function getAttribute($ident, $default = false)
+    {
+        if ($ident == 'hide_list') return true;
+
+        return parent::getAttribute ($ident, $default);
+    } // end getAttribute
+
     private function isJson($string)
     {
         json_decode($string);

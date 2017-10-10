@@ -6,7 +6,7 @@
         var $select2{{$name}}{{$postfix}} = jQuery('#{{$name}}{{$postfix}}').select2({
             placeholder: "{{ $search['placeholder'] or 'Поиск' }}",
             minimumInputLength: {{ $search['minimum_length'] or '3' }},
-            multiple: true,
+            multiple: false,
             language: "ru",
             ajax: {
                 url: TableBuilder.options.action_url,

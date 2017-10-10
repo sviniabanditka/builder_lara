@@ -13,8 +13,6 @@
          @else
            src="{{ glide($value, ['w' => $width, 'h' => $height]) }}" src_original="{{$value}}"
          @endif
-         data-target="#modal_crop_img"
-         data-toggle="modal"
      />
     <div class="tb-btn-delete-wrap">
         <button class="btn btn-default btn-sm tb-btn-image-delete"

@@ -1,6 +1,10 @@
 <div class="modal-body">
 
-    <form id="edit_form" class="smart-form">
+    <form id="edit_form_{{$def['db']['table']}}" class="smart-form" method="post" action="{{$def['options']['action_url']}}" novalidate="novalidate">
+
+        @if (request('foreign_field') && request('foreign_field_id'))
+            <input type="hidden" name="{{request('foreign_field')}}" value="{{request('foreign_field_id')}}">
+        @endif
 
         @if (!isset($def['position']))
             <fieldset style="{{ Input::get('edit') ? '' : 'padding:0;' }}">
@@ -41,10 +45,10 @@
 </div>
 
 <div class="modal-footer">
-    <button onclick="jQuery('#edit_form').submit();" type="button" class="btn btn-success btn-sm">
+    <button onclick="$('#edit_form_{{$def['db']['table']}}').submit();" type="button" class="btn btn-success btn-sm">
         <span class="glyphicon glyphicon-floppy-disk"></span> {{__cms('Сохранить')}}
     </button>
-    <button @if (isset($is_page)) onclick="window.history.back();" @endif type="button" class="btn btn-default" data-dismiss="modal">
+    <button onclick="TableBuilder.doClosePopup('{{$def['db']['table']}}')" type="button" class="btn btn-default close_button">
        {{__cms('Отмена')}}
     </button>
 </div>

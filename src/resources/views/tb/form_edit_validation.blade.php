@@ -1,6 +1,6 @@
 <script>
-jQuery(document).ready(function() {
-    var $validator = jQuery("#edit_form").validate({
+
+   $("#edit_form_{{$def['db']['table']}}").validate({
         rules: {
             @foreach ($def['fields'] as $ident => $options)
                 <?php $field = $controller->getField($ident); ?>
@@ -15,10 +15,14 @@ jQuery(document).ready(function() {
                 {!! $field->getClientsideValidatorMessages() !!}
             @endforeach
         },
-        submitHandler: function(form) {   
-
-            {{ $is_tree ? 'Tree' : 'TableBuilder' }}.doEdit({{$row['id']}});
+        submitHandler: function(form) {
+            {{ $is_tree ? 'Tree' : 'TableBuilder' }}.doEdit(
+                    {{$row['id']}},
+                "#edit_form_{{$def['db']['table']}}",
+                '{{request('foreign_field_id')}}',
+                '{!! request('foreign_attributes')!!}'
+            );
         }
     });
-});   
+
 </script>

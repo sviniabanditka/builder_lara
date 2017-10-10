@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div  class="modal fade" id="modal_form" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog <?php echo isset($def['options']['is_form_fullscreen']) ? 'tb-modal-fullscreen' : '';?>"
+<div class="modal fade modal_form_{{$def['db']['table']}}" id="modal_form" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog"
     @if (isset($def['options']['form_width']))
         style="width: {{$def['options']['form_width']}};" data-width="{{$def['options']['form_width']}}" 
     @endif
@@ -11,12 +11,19 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <button class="btn btn-default" style="float: right; margin: 0 5px" data-dismiss="modal" type="button"> Отмена </button>
-                <button class="btn btn-success btn-sm" style="float: right" type="button" onclick="jQuery('#create_form').submit();">
+                <button class="btn btn-default close_button" style="float: right; margin: 0 5px"  type="button"
+                        onclick="TableBuilder.doClosePopup('{{$def['db']['table']}}')"
+                > Отмена </button>
+                <button class="btn btn-success btn-sm" style="float: right" type="button"
+                        onclick="jQuery('#create_form_{{$def['db']['table']}}').submit();">
                      <span class="glyphicon glyphicon-floppy-disk"></span>
                      Сохранить
                 </button>
-                <h4 class="modal-title" id="modal_form_label">{{__cms('Создание')}}</h4>
+                @if ($def['options']['caption'])
+                    <h4 class="modal-title" id="modal_form_label">{{$def['options']['caption']}}: {{__cms('создание')}}</h4>
+                @else
+                    <h4 class="modal-title" id="modal_form_label">{{__cms('Создание')}}</h4>
+                @endif
             </div>
             
             @include('admin::tb.form_create')

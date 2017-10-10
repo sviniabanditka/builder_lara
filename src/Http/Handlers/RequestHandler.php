@@ -107,6 +107,15 @@ class RequestHandler
             case 'select_with_uploaded_images':
                 return $this->handleSelectWithUploadedImages();
 
+            case 'get_html_foreign_definition':
+                return $this->handleShowHtmlForeignDefinition();
+
+            case 'delete_foreign_row':
+                return $this->handleDeleteForeignDefinition();
+
+            case 'change_position':
+                return $this->handleChangePositionDefinition();
+
             default:
                 return $this->handleShowList();
         }
@@ -562,7 +571,28 @@ class RequestHandler
            'showList' => $this->controller->view->showList(),
         );
     }
-    
+
+    protected function handleShowHtmlForeignDefinition()
+    {
+        return array(
+            'html' => $this->controller->view->showHtmlForeignDefinition(),
+        );
+    }
+
+    protected function handleDeleteForeignDefinition()
+    {
+        return array(
+            'html' => $this->controller->view->deleteForeignDefinition(),
+        );
+    }
+
+    protected function handleChangePositionDefinition()
+    {
+        return array(
+            'result' => $this->controller->view->changePositionDefinition(),
+        );
+    }
+
     protected function handleShowEditFormPageAction($id = false)
     {
         return $this->controller->view->showEditFormPage($id);

@@ -55,6 +55,7 @@
                   '/packages/vis/builder/js/core.js',
                   '/packages/vis/builder/js/slug_generate.js',
                   '/packages/vis/builder/table-builder.js',
+                  '/packages/vis/builder/foreign_definition.js',
                   '/packages/vis/builder/js/d3.v2.js',
                   ));
         !!}
@@ -88,8 +89,9 @@
 
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
-        <div id="modal_wrapper"></div>
-        <div class="table_form_create"></div>
+        <div id="modal_wrapper" class="modal_popup_first"></div>
+        <div class="table_form_create modal_popup_first"></div>
+        <div class="foreign_popups"></div>
         @include('admin::partials.header')
         @include('admin::partials.navigation')
         <div id="main" role="main">

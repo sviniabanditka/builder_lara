@@ -77,7 +77,7 @@ abstract class AbstractField
                 return $res;
             }
         }
-        
+
         $fieldName = $this->getFieldName() . $postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
@@ -123,7 +123,7 @@ abstract class AbstractField
                 return $res;
             }
         }
-        
+
         return $this->getValue($row);
     } // end getListValue
 
@@ -406,4 +406,9 @@ abstract class AbstractField
     } // end getRowColor
 
     abstract public function onSearchFilter(&$db, $value);
+
+    public function getListValueDefinitionPopup($row)
+    {
+        return strip_tags($this->getListValue($row), "<a><span><img><br>");
+    }
 }
