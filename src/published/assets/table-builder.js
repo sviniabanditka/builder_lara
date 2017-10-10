@@ -430,7 +430,7 @@ var TableBuilder = {
         if (context != undefined) {
             TableBuilder.action_url = $(context).parents('form').attr('action');
         }
-        
+
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
