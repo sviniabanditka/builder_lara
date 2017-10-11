@@ -6,7 +6,7 @@
         var $select2{{$name}}{{$postfix}} = jQuery('#{{$name}}{{$postfix}}').select2({
             placeholder: "{{ $search['placeholder'] or 'Поиск' }}",
             minimumInputLength: {{ $search['minimum_length'] or '3' }},
-            multiple: false,
+            multiple: true,
             language: "ru",
             ajax: {
                 url: TableBuilder.options.action_url,
@@ -36,7 +36,7 @@
                 return item.name;
             },
             formatNoMatches : function () {
-                 return 'По результату поиска ничего не найдено';
+                 return 'По результату поиска ничего не найдено ';
             },
             formatSearching: function () { return "Ищет..."; },
             formatInputTooShort: function (input, min) { var n = min - input.length; return "Введите еще " + n + "   символ "; },

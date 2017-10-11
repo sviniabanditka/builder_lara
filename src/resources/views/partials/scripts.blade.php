@@ -26,6 +26,7 @@
                    '/packages/vis/builder/js/multiselect_master/js/ui.multiselect.js'
                   ));
 !!}
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
 {!! Minify::javascript(
