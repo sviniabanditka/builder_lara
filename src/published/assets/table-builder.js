@@ -1861,7 +1861,10 @@ var TableBuilder = {
         }
     },
 
-
+    addNewRecort : function (content) {
+        var newTitle = content.parents('#select2-drop').find('.select2-input').val();
+        alert(newTitle);
+    }
 
 };
 

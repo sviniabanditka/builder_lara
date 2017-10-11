@@ -2,10 +2,6 @@
 
     <form id="edit_form_{{$def['db']['table']}}" class="smart-form" method="post" action="{{$def['options']['action_url']}}" novalidate="novalidate">
 
-        @if (request('foreign_field') && request('foreign_field_id'))
-            <input type="hidden" name="{{request('foreign_field')}}" value="{{request('foreign_field_id')}}">
-        @endif
-
         @if (!isset($def['position']))
             <fieldset style="{{ Input::get('edit') ? '' : 'padding:0;' }}">
 

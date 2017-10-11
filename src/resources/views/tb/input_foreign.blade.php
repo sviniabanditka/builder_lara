@@ -34,7 +34,8 @@
              @endforeach
         @else
              @foreach ($options as $value => $caption)
-                   <option value="{{ $value }}" {{$value == $selected ? "selected" : ""}} >{{ __cms($caption) }}</option>
+                   <option value="{{ $value }}" {{$value == $selected
+                    || ($value == request('foreign_field_id') && $name == request('foreign_field'))? "selected" : ""}} >{{ __cms($caption) }}</option>
              @endforeach
         @endif
 

@@ -54,10 +54,8 @@ var ForeignDefinition  = {
             },
             function(data){
                 $('.foreign_popups').append(data);
-                $('.foreign_popups .fade').addClass('in').show();
                 loader.addClass('hide');
-                $('.modal_form_' + table).css('top', $(window).scrollTop() + 50);
-                $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
+                ForeignDefinition.afterOpenPopup(table);
             });
     },
 
@@ -157,12 +155,9 @@ var ForeignDefinition  = {
             },
             dataType: 'json',
             success: function(data) {
-
                 $('.foreign_popups').append(data.html);
-                $('.foreign_popups .fade').addClass('in').show();
                 loader.addClass('hide');
-                $('.modal_form_' + attributesJson.table).css('top', $(window).scrollTop() + 50);
-                $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
+                ForeignDefinition.afterOpenPopup(attributesJson.table);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = jQuery.parseJSON(xhr.responseText);
@@ -170,6 +165,13 @@ var ForeignDefinition  = {
                 TableBuilder.showErrorNotification(errorResult.message);
             }
         });
+    },
+
+    afterOpenPopup : function (table) {
+        $('.foreign_popups .fade').addClass('in').show();
+        $('.modal_form_' + table).css('top', $(window).scrollTop() + 50);
+        $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
+        TableBuilder.initFroalaEditor();
     },
 
     changePosition : function (context, attributesJson) {
