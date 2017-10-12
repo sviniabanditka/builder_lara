@@ -61,6 +61,11 @@ if ($menuLinks) {
                     '/handle/{page_admin}',
                     'Vis\Builder\TableAdminController@handlePage'
                 );
+                Route::post(
+                    '/insert-new-record-for-many-to-many',
+                    'Vis\Builder\TableAdminController@insertRecordForManyToMany'
+                );
+
 
                 // view showDashboard
                 Route::get('/', 'Vis\Builder\TBController@showDashboard');

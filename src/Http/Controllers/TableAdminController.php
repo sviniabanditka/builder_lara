@@ -217,4 +217,22 @@ class TableAdminController extends Controller
 
         return View::make('admin::tb.foreign_options', compact("options", "selected"))->render();
     }
+
+    public function insertRecordForManyToMany()
+    {
+        $title = request('title');
+        $params = (array) json_decode (request('paramsJson'));
+
+        $record = (array) DB::table($params['mtm_external_table'])->where($params['mtm_external_value_field'], $title)->first();
+
+        if ($record) {
+            return $record['id'];
+        }
+
+        $id = DB::table($params['mtm_external_table'])->insertGetId([
+            $params['mtm_external_value_field'] => $title
+        ]);
+
+        return $id;
+    }
 }
