@@ -154,8 +154,12 @@ var TableBuilder = {
         hideInput.val(JSON.stringify(arrayData));
     },
 
-    getActionUrl: function()
+    getActionUrl: function(content)
     {
+        if (content != undefined) {
+            return content.parents('form').attr('action');
+        }
+
         return TableBuilder.action_url ? TableBuilder.action_url : '/admin/handle/tree';
     }, // end getActionUrl
 
@@ -348,9 +352,9 @@ var TableBuilder = {
 
     }, // end initSelect2Hider
 
-    getCloneForm: function(id)
+    getCloneForm: function(id, context)
     {
-        $.post( TableBuilder.getActionUrl(), {"query_type" : "clone_record", "id" : id})
+        $.post( TableBuilder.getActionUrl(context), {"query_type" : "clone_record", "id" : id})
             .done(function( data ) {
                 doAjaxLoadContent(location.href);
             }).fail(function(xhr, ajaxOptions, thrownError) {
@@ -424,12 +428,8 @@ var TableBuilder = {
 
     getEditForm: function(id, context)
     {
-        jQuery(TableBuilder.form_edit).remove()
-        jQuery(TableBuilder.form).remove();
-
-        if (context != undefined) {
-            TableBuilder.action_url = $(context).parents('form').attr('action');
-        }
+        $(TableBuilder.form_edit).remove()
+        $(TableBuilder.form).remove();
 
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
@@ -446,7 +446,7 @@ var TableBuilder = {
 
         jQuery.ajax({
             type: "POST",
-            url: TableBuilder.getActionUrl(),
+            url: TableBuilder.getActionUrl(context),
             data: data,
             dataType: 'json',
             success: function(response) {
@@ -475,7 +475,6 @@ var TableBuilder = {
 
     getViewsStatistic : function (id, context)
     {
-        TableBuilder.action_url = $(context).parents('form').attr('action');
         var urlPage = "?views_statistic=" + id;
         window.history.pushState(urlPage, '', urlPage);
         TableBuilder.showPreloader();
@@ -487,7 +486,7 @@ var TableBuilder = {
 
         jQuery.ajax({
             type: "POST",
-            url: TableBuilder.getActionUrl(),
+            url: TableBuilder.getActionUrl($(context)),
             data: data,
             dataType: 'json',
             success: function(response) {
@@ -516,7 +515,6 @@ var TableBuilder = {
         var urlPage = "?revision_page=" + id;
         window.history.pushState(urlPage, '', urlPage);
         TableBuilder.showPreloader();
-        TableBuilder.action_url = $(context).parents('form').attr('action');
 
         var data = [
             {name: "query_type", value: "show_revisions"},
@@ -524,7 +522,7 @@ var TableBuilder = {
         ];
         jQuery.ajax({
             type: "POST",
-            url: TableBuilder.getActionUrl(),
+            url: TableBuilder.getActionUrl(context),
             data: data,
             dataType: 'json',
             success: function(response) {
@@ -590,11 +588,10 @@ var TableBuilder = {
         }, function(ButtonPressed) {
             if (ButtonPressed === phrase["Да"]) {
                 TableBuilder.showPreloader();
-                TableBuilder.action_url = $(context).parents('form').attr('action');
 
                 jQuery.ajax({
                     type: "POST",
-                    url: TableBuilder.getActionUrl(),
+                    url: TableBuilder.getActionUrl(context),
                     data: { id: id, query_type: "delete_row", "__node": TableBuilder.getUrlParameter('node') },
                     dataType: 'json',
                     success: function(response) {
@@ -896,6 +893,7 @@ var TableBuilder = {
         data.append('ident', ident);
         data.append('query_type', 'upload_photo');
         data.append('type', "single_photo");
+
         if (TableBuilder.getUrlParameter('id_tree') != undefined) {
             data.append('page_id', TableBuilder.getUrlParameter('id_tree'));
         }
@@ -905,7 +903,7 @@ var TableBuilder = {
         }
 
 
-        var $progress = jQuery(context).parent().parent().parent().parent().parent().find('.progress-bar');
+        var $progress = $(context).parents('.picture_block').find('.progress-bar');
 
         jQuery.ajax({
             xhr: function() {
@@ -930,7 +928,7 @@ var TableBuilder = {
             },
             data: data,
             type: "POST",
-            url: TableBuilder.getActionUrl(),
+            url: TableBuilder.getActionUrl($(context)),
             cache: false,
             contentType: false,
             processData: false,
@@ -1198,19 +1196,19 @@ var TableBuilder = {
         }
     },
 
-    selectWithUploaded : function (name, type, thisFileElement) {
+    selectWithUploaded : function (name, type, content) {
 
-        var section = thisFileElement.parents('.files_type_fields');
+        var section = content.parents('.files_type_fields');
 
         section.find("#files_uploaded_table_" + name).show();
 
-        TableBuilder.thisFileElementInGroup = thisFileElement;
+        TableBuilder.thisFileElementInGroup = content;
 
         var data = {
             query_type: "select_with_uploaded",
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
-        $.post(TableBuilder.getActionUrl(), data,
+        $.post(TableBuilder.getActionUrl(content), data,
             function(response){
 
                 // alert(section.find('tbody').html());
@@ -1232,7 +1230,7 @@ var TableBuilder = {
             ident : name
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
-        $.post(TableBuilder.getActionUrl(), data,
+        $.post(TableBuilder.getActionUrl(thisFileElement), data,
             function(response){
                 section.find('#files_uploaded_table_' + name + ' tbody').html(response.data);
                 section.find('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
@@ -1860,11 +1858,6 @@ var TableBuilder = {
             window.history.pushState(url, '', url);
         }
     },
-
-    addNewRecort : function (content) {
-        var newTitle = content.parents('#select2-drop').find('.select2-input').val();
-        alert(newTitle);
-    }
 
 };
 
