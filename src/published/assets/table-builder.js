@@ -42,11 +42,7 @@ var TableBuilder = {
 
         var langEditor = "en";
 
-        if (langCms == "ua") {
-            langEditor = "uk";
-        } else {
-            langEditor = langCms;
-        }
+        langEditor =  langCms == "ua" ? 'uk' : langCms;
 
         //TODO need fix crops in froala
         /*$.FroalaEditor.DefineIcon('crop', {NAME: 'crop'});
@@ -125,11 +121,7 @@ var TableBuilder = {
         });
 
         $('.text_block').on('froalaEditor.initialized', function (e, editor) {
-            $(this).removeClass('no_active_froala');
-        });
-
-        $('.text_block').on('froalaEditor.contentChanged', function (e, editor) {
-            $(this).parent().find('textarea').val($(this).froalaEditor('html.get'))
+            $(this).parent().removeClass('no_active_froala');
         });
 
         $('.group').on('keyup, blur', '[data-multi=multi]', function(){
@@ -631,9 +623,10 @@ var TableBuilder = {
         TableBuilder.showPreloader();
         TableBuilder.showFormPreloader(TableBuilder.form_edit);
 
-        $(TableBuilder.edit_form + " .fr-link-insert-layer input").each(function( index ) {
-            $( this ).removeAttr("name")
-        });
+        $( '.fr-popup' ).remove();
+        /*  $(TableBuilder.edit_form + " .fr-link-insert-layer input").each(function( index ) {
+         $( this ).removeAttr("name")
+         });*/
 
         var values = $(TableBuilder.edit_form).serializeArray();
 
@@ -682,18 +675,19 @@ var TableBuilder = {
                         return;
                     }
 
-                    $('.text_block').froalaEditor('destroy');
-
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
+
                     $(document).height($(window).height());
+
                     if (TableBuilder.options.is_page_form) {
                         window.history.back();
                         return;
                     }
 
-                    jQuery(TableBuilder.form_edit).modal('hide');
+                    $(TableBuilder.form_edit).modal('hide');
                     $(document).height($(window).height());
-                    jQuery('#wid-id-1').find('tr[id-row="'+id+'"]').replaceWith(response.html);
+
+                    $('#wid-id-1').find('tr[id-row="'+id+'"]').replaceWith(response.html);
 
                     if (TableBuilder.onDoEdit) {
                         TableBuilder.onDoEdit(TableBuilder.getActionUrl());
@@ -702,7 +696,7 @@ var TableBuilder = {
                 } else {
 
                     var errors = '';
-                    jQuery(response.errors).each(function(key, val) {
+                    $(response.errors).each(function(key, val) {
                         errors += val +'<br>';
                     });
 
@@ -712,7 +706,7 @@ var TableBuilder = {
                 TableBuilder.hidePreloader();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                var errorResult = jQuery.parseJSON(xhr.responseText);
+                var errorResult = $.parseJSON(xhr.responseText);
 
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
