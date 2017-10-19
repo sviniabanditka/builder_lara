@@ -3,7 +3,9 @@
     <div class="other_section">
         @foreach($rows as $k => $filds)
             <div class="section_group">
+                @if (!$hideDelete)
                 <a class="delete_group" onclick="TableBuilder.deleteGroup(this)" style="float: right; cursor: pointer; position: absolute; right: 0; z-index: 10"><i class="fa red fa-times"></i> Удалить</a>
+                @endif
                 @foreach($filds as $titleField => $fild)
                     <section class="{{$fild['class_name'] or ''}}" @if(isset($fild['tabs'])) style="margin-top:20px" @endif>
 
@@ -26,7 +28,7 @@
         @endforeach
 
     </div>
-    @if (!$hide_add)
+    @if (!$hideAdd)
         <a class="add_group" onclick="TableBuilder.addGroup(this); groupTabsRefresh('{{$name}}');"><i class="fa fa-plus-square"></i> Добавить</a>
     @endif
 </div>

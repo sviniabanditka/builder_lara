@@ -66,7 +66,8 @@ class GroupField extends AbstractField
         $input->value = $valueArray;
         $input->name  = $this->getFieldName();
         $input->rows  = $sectionResult;
-        $input->hide_add = $this->getAttribute('hide_add');
+        $input->hideAdd = $this->getAttribute('hide_add');
+        $input->hideDelete= $this->getAttribute('hide_delete');
 
         return $input->render();
     } // end getEditInput
