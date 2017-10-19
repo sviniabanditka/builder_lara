@@ -143,16 +143,15 @@ class ViewHandler
 
     public function showEditForm($id = false, $isTree = false)
     {
-        if ($id) {
-            $table = View::make('admin::tb.modal_form_edit');
-        } else {
-            $table = View::make('admin::tb.modal_form');
-        }
+
+        $table = $id ? View::make('admin::tb.modal_form_edit') : View::make('admin::tb.modal_form');
 
         $table->is_tree = $isTree;
         $table->def = $this->definition;
         $table->controller = $this->controller;
         $table->is_blank = true;
+
+        $table->definitionName = $table->controller->getDefinitionName();
 
         if ($id) {
             $table->row = (array) $this->controller->query->getRow($id);

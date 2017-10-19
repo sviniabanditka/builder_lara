@@ -167,6 +167,13 @@ class JarboeController
         throw new \RuntimeException("Undefined option [{$ident}].");
     } // end getOption
 
+    public function getDefinitionName()
+    {
+        $definition = explode ('.', $this->getOption('def_name'));
+
+        return $definition[0];
+    }
+
     public function getAdditionalOptions()
     {
         if (isset($this->options['additional'])) {

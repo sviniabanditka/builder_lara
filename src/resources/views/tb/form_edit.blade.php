@@ -1,6 +1,6 @@
 <div class="modal-body">
 
-    <form id="edit_form_{{$def['db']['table']}}" class="smart-form" method="post" action="{{$def['options']['action_url']}}" novalidate="novalidate">
+    <form id="edit_form_{{$def['db']['table']}}" class="smart-form" method="post" action="/admin/handle/{{$definitionName}}" novalidate="novalidate">
 
         @if (!isset($def['position']))
             <fieldset style="{{ Input::get('edit') ? '' : 'padding:0;' }}">
