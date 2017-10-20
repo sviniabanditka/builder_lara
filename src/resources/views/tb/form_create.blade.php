@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <form id="create_form_{{$def['db']['table']}}" class="smart-form" method="post" action="{{$def['options']['action_url']}}" novalidate="novalidate">
+    <form id="create_form_{{$def['db']['table']}}" class="smart-form" method="post" action="{{ $controller->getUrlAction() }}" novalidate="novalidate">
       
         @if (!isset($def['position']))
             <fieldset style="{{ Input::get('edit') ? '' : 'padding:0;' }}">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="modal-footer">
-    <button onclick="jQuery('#create_form_{{$def['db']['table']}}').submit();" type="button" class="btn btn-success btn-sm">
+    <button onclick="$('#create_form_{{$def['db']['table']}}').submit();" type="button" class="btn btn-success btn-sm">
         <span class="glyphicon glyphicon-floppy-disk"></span> {{__cms('Сохранить')}}
     </button>
     <button type="button" class="btn btn-default close_button" onclick="TableBuilder.doClosePopup('{{$def['db']['table']}}')">

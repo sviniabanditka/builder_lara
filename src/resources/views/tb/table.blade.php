@@ -36,8 +36,8 @@
                     <div class="jarviswidget-editbox"></div>
                     <div class="widget-body no-padding">
 
-                        <form id="{{ $def['options']['table_ident'] }}"
-                              action="{{ $def['options']['action_url'] }}"
+                        <form
+                              action="{{$controller->getUrlAction()}}"
                               method="post"
                               class="form-horizontal tb-table"
                               target="submiter" >

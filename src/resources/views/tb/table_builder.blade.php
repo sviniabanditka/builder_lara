@@ -1,4 +1,4 @@
-<div id="{{ $def['options']['ident'] }}" class="widget-box table-builder dataTables_wrapper">
+<div class="widget-box table-builder dataTables_wrapper">
         @include('admin::tb.form')
         @include('admin::tb.table')
         @include('admin::tb.ui_overlay')
@@ -8,13 +8,10 @@
 </div>
 
 <script type="text/javascript">
+
     TableBuilder.optionsInit({
-        ident: '{{ $def['options']['ident'] }}',
-        table_ident: '{{ $def['options']['table_ident'] }}',
-        form_ident: '{{ $def['options']['form_ident'] }}',
-        action_url: '{{ $def['options']['action_url'] }}'
+        action_url: '{{ $controller->getUrlAction() }}'
     });
 
-    TableBuilder.action_url = '{{ $def['options']['action_url'] }}';
-    TableBuilder.admin_prefix = '{{ $def['options']['admin_uri'] }}';
+    TableBuilder.action_url = '{{ $controller->getUrlAction() }}';
 </script>

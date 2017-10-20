@@ -96,8 +96,8 @@ class ViewHandler
             $model = config('builder.tb-definitions.' .  $params['definition']. '.options.model');
             $result = $model::where( $params['foreign_field'], request('id'));
             $result = isset($params['sortable'])
-                    ? $result->orderBy($params['sortable'], 'asc')->orderBy('created_at', 'desc')
-                    : $result->orderBy('created_at', 'desc');;
+                    ? $result->orderBy($params['sortable'], 'asc')->orderBy('id', 'desc')
+                    : $result->orderBy('id', 'desc');;
 
             $result = $result->get();
         }

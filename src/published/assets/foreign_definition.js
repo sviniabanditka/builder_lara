@@ -17,11 +17,15 @@ var ForeignDefinition  = {
 
             TableBuilder.handlerCreate = function (url, idCreated) {
 
-                $.post(url, {
+                jQuery.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
                         'id' : idCreated,
                         'query_type' : 'show_edit_form'
                     },
-                    function(data){
+                    dataType: 'json',
+                    success: function(data) {
                         $('.table_form_create').html(data.html);
                         $('.table_form_create #modal_form_edit').addClass('in').show();
 
@@ -32,7 +36,13 @@ var ForeignDefinition  = {
                         loader.addClass('hide');
 
                         ForeignDefinition.sendRequestForShowDefinition(content, table, definition, idCreated, foreign_field, attributes);
-                    }, 'json');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        var errorResult = jQuery.parseJSON(xhr.responseText);
+
+                        TableBuilder.showErrorNotification(errorResult.message);
+                    }
+                });
             }
 
             return ;
@@ -46,22 +56,32 @@ var ForeignDefinition  = {
         var loader = content.parent().find('.loader_create_definition');
         loader.removeClass('hide').text('Загрузка окна...');
 
-        $.post("/admin/handle/" + definition, {
-                query_type:'show_add_form',
+        jQuery.ajax({
+            type: "POST",
+            url: "/admin/handle/" + definition,
+            data: {
+                'query_type' :'show_add_form',
                 'foreign_field_id' : foreign_field_id,
                 'foreign_field' : foreign_field,
                 'foreign_attributes' :  attributes
             },
-            function(data){
+            success: function(data) {
                 $('.foreign_popups').append(data);
                 loader.addClass('hide');
                 ForeignDefinition.afterOpenPopup(table);
-            });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorResult = jQuery.parseJSON(xhr.responseText);
+
+                TableBuilder.showErrorNotification(errorResult.message);
+            }
+        });
+
     },
 
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
         var attributesJson = jQuery.parseJSON(foreignAttributes);
-       // TableBuilder.showSuccessNotification(phrase['Сохранено']);
+        // TableBuilder.showSuccessNotification(phrase['Сохранено']);
         TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 

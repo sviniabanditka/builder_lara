@@ -39,7 +39,7 @@ class WysiwygField extends AbstractField
         $input->inlineStyles = $this->getAttribute('inlineStyles');
         $input->options = $this->getAttribute('options');
 
-        $action = $this->definition['options']['action_url'];
+        $action = $this->getUrlAction();
         if (isset($this->definition['options']['action_url_tree'])) {
             $action = $this->definition['options']['action_url_tree'];
         }
@@ -68,7 +68,7 @@ class WysiwygField extends AbstractField
         $input->options = $this->getAttribute('options');
         $input->comment = $this->getAttribute('comment');
         
-        $action = $this->definition['options']['action_url'];
+        $action = $this->getUrlAction();
         if (isset($this->definition['options']['action_url_tree'])) {
             $action = $this->definition['options']['action_url_tree'];
         }

@@ -174,6 +174,11 @@ class JarboeController
         return $definition[0];
     }
 
+    public function getUrlAction()
+    {
+        return '/admin/handle/' . $this->getDefinitionName();
+    }
+
     public function getAdditionalOptions()
     {
         if (isset($this->options['additional'])) {

@@ -693,6 +693,8 @@ var TableBuilder = {
                         TableBuilder.onDoEdit(TableBuilder.getActionUrl());
                     }
 
+                    TableBuilder.clearParamsWithUrl();
+
                 } else {
 
                     var errors = '';
@@ -1854,7 +1856,7 @@ var TableBuilder = {
     },
 
 };
- 
+
 $(window).load(function() {
     TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();

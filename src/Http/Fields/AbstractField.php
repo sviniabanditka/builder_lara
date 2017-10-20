@@ -35,6 +35,11 @@ abstract class AbstractField
         return $this->fieldName;
     } // end getFieldName
 
+    public function getUrlAction()
+    {
+        return '/admin/handle/' . $this->options['def_name'];
+    }
+
     private function prepareAttributes($attributes)
     {
         $attributes['fast-edit'] = isset($attributes['fast-edit']) && $attributes['fast-edit'];
