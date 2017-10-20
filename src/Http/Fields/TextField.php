@@ -68,6 +68,10 @@ class TextField extends AbstractField
             $input->value = json_decode($input->value);
         }
 
+        if ( $input->name == request('foreign_field')) {
+            $input->value = request('foreign_field_id');
+        }
+
         $input->placeholder = $this->getAttribute('placeholder');
         $input->is_password = $this->getAttribute('is_password');
         $input->comment = $this->getAttribute('comment');

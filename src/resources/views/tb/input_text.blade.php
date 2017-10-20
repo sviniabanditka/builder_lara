@@ -53,6 +53,11 @@
                 @endif
 
                 class="dblclick-edit-input form-control input-sm unselectable {{$only_numeric ? "only_num" : ""}}" />
+
+                @if ($custom_type == 'hidden')
+                    {{ $value }}
+                @endif
+
                 @if (isset($comment) && $comment)
                     <div class="note">
                         {{$comment}}
