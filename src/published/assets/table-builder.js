@@ -754,9 +754,7 @@ var TableBuilder = {
         TableBuilder.showPreloader();
         TableBuilder.showFormPreloader(TableBuilder.form);
 
-        $(TableBuilder.create_form + " .fr-link-insert-layer input").each(function( index ) {
-            $( this ).removeAttr("name")
-        });
+        $( '.fr-popup' ).remove();
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
 
