@@ -10,8 +10,6 @@ class BaseModel extends Eloquent
         \Vis\Builder\Helpers\Traits\GroupsFieldTrait,
         \Vis\Builder\Helpers\Traits\Rememberable;
 
-    protected $fillable = array('title');
-
     protected $revisionFormattedFieldNames = array(
         'title'  => 'Название',
         'description'  => 'Описание',

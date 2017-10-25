@@ -82,16 +82,18 @@ var TableBuilder = {
 
         $( ".text_block" ).each(function( index ) {
 
+            var csrfToken = $("meta[name=csrf-token]").attr("content");
+
             var option =  {
                 initOnClick: true,
                 inlineMode: false,
-                imageUploadURL: '/admin/upload_image?_token=' + $("meta[name=csrf-token]").attr("content"),
-                imageManagerDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
+                imageUploadURL: '/admin/upload_image?_token=' + csrfToken,
+                imageManagerDeleteURL: "/admin/delete_image?_token=" + csrfToken,
                 heightMin: 100,
                 heightMax: 500,
-                fileUploadURL: "/admin/upload_file?_token=" + $("meta[name=csrf-token]").attr("content"),
-                imageManagerLoadURL: "/admin/load_image?_token=" + $("meta[name=csrf-token]").attr("content"),
-                imageDeleteURL: "/admin/delete_image?_token=" + $("meta[name=csrf-token]").attr("content"),
+                fileUploadURL: "/admin/upload_file?_token=" + csrfToken,
+                imageManagerLoadURL: "/admin/load_image?_token=" + csrfToken,
+                imageDeleteURL: "/admin/delete_image?_token=" + csrfToken,
                 language: langEditor,
                 imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageDisplay', 'imageStyle', 'imageAlt', 'imageSize', 'crop'],
             };
@@ -218,7 +220,7 @@ var TableBuilder = {
     {
         TableBuilder.showProgressBar();
 
-        var $form = jQuery('#'+ TableBuilder.options.table_ident);
+        var $form = $('form[target=submiter]');
 
         var data = $form.serializeArray();
         data.push({ name: "query_type", value: "search" });
