@@ -13,20 +13,14 @@
             @foreach(config('builder.settings.langs') as $prefix => $name)
                 <?php $value = 'value' . $prefix;?>
                 <div id="etextarea_froala{{$prefix}}" class="tab-pane {{$loop->index1 == 1 ? 'active' : ''}}">
-                    <div style="position: relative;">
-                        <label class="textarea">
-                            <textarea name="value6{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll text_block">{{ $info->$value or "" }}</textarea>
-                        </label>
-                    </div>
+
+                  <textarea name="value6{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll text_block">{{ $info->$value or "" }}</textarea>
+
                 </div>
             @endforeach
         </div>
     @else
         <label class="label" >{{__cms('Значение')}}</label>
-        <div style="position: relative;">
-            <label class="textarea">
-                <textarea name="value6" style="height: 250px" class="custom-scroll text_block">{{ $info->value or "" }}</textarea>
-            </label>
-        </div>
+        <textarea name="value6" style="height: 250px" class="custom-scroll text_block">{{ $info->value or "" }}</textarea>
     @endif
 </div>
