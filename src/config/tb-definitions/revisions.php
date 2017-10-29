@@ -13,13 +13,6 @@ return array(
     ),
     'options' => array(
         'caption' => 'Контроль изменений',
-        'ident' => 'revisions',
-        'form_ident' => 'revisions-form',
-        'form_width' => '920px',
-        'table_ident' => 'revisions-table',
-        'action_url' => '/admin/handle/revisions',
-        'not_found' => 'пусто',
-        'is_sortable' => false,
         'model' => 'Vis\Builder\Revision',
     ),
     'position' => array(

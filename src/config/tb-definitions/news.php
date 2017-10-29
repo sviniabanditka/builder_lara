@@ -16,12 +16,6 @@ return array(
     ),
     'options' => array(
         'caption' => 'Новости',
-        'ident' => 'news',
-        'form_ident' => 'news-form',
-        'form_width' => '920px',
-        'table_ident' => 'news-table',
-        'action_url' => '/admin/handle/news',
-        'not_found' => 'пусто',
         'is_sortable' => true,
         'model' => 'News',
     ),
@@ -30,7 +24,6 @@ return array(
             'Общая' => array(
                 'id',
                 'title',
-                'many2many_tree',
                 'picture',
                 'short_description',
                 'description',
@@ -73,42 +66,6 @@ return array(
             'filter' => 'text',
             'is_sorting' => true,
             'field' => 'string',
-        ),
-
-        'many2many_tree' => array(
-            'caption'   => 'Подарок',
-            'type'      => 'many_to_many',
-            'show_type' => 'select2',
-            'mtm_table'                      => 'news2tb_tree',
-            'mtm_key_field'                  => 'id_news',
-            'mtm_external_foreign_key_field' => 'id',
-            'mtm_external_key_field'         => 'id_tb_tree',
-            'mtm_external_value_field'       => 'title',
-            'mtm_external_table'             => 'tb_tree',
-            'hide_list' => true,
-            'additional_where' => array(
-                'products.is_active' => array(
-                    'sign'  => '=',
-                    'value' => '1'
-                ),
-                'products.is_gift' => array(
-                    'sign'  => '=',
-                    'value' => '1'
-                ),
-                /*'products.id_city' => array(
-                    'sign'  => '=',
-                    'value' => function() {
-                        return  Product::find(Input::get('id'))->id_city;
-                    }
-                ),*/
-            ),
-            'select2_search' => array(
-                'placeholder'    => 'Поиск товаров',
-                'minimum_length' => 3,
-                'quiet_millis'   => 500,
-                'per_page'       => 20,
-            ),
-
         ),
 
         'short_description' => array(

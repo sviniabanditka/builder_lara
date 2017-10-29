@@ -13,13 +13,7 @@ return array(
     ),
     'options' => array(
         'caption' => 'Пользователи',
-        'ident' => 'users-container',
-        'form_ident' => 'users-form',
-        'form_width' => '700px',
-        'table_ident' => 'users-table',
-        'action_url' => '/admin/handle/users',
         'handler'    => 'Vis\Builder\Helpers\UsersHandler',
-        'not_found'  => 'NOT FOUND',
         'model' => 'User',
     ),
     'position' => array(

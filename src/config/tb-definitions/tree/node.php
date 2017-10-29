@@ -13,12 +13,6 @@ return array(
     ),
     'options' => array(
         'caption' => '',
-        'ident' => 'settings-container',
-        'form_ident' => 'about-form',
-        'form_width' => '920px',
-        'table_ident' => 'about-table',
-        'action_url' => '/admin/tree?node=',
-        'not_found' => 'NOT FOUND',
         'model' => 'Tree',
     ),
     'position' => array(

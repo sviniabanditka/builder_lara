@@ -14,11 +14,6 @@ return array(
 
     'options' => array(
         'caption' => "Группы пользователей",
-        'ident' => 'groups-container',
-        'form_ident' => 'groups-form',
-        'table_ident' => 'groups-table',
-        'action_url' => '/admin/handle/groups',
-        'not_found'  => 'NOT FOUND',
         'handler'    => 'Vis\Builder\Helpers\GroupsHandler',
         'model' => 'Group',
     ),

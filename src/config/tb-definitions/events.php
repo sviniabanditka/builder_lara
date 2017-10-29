@@ -13,12 +13,6 @@ return array(
     ),
     'options' => array(
         'caption' => 'Логирование',
-        'ident' => 'events',
-        'form_ident' => 'events-form',
-        'form_width' => '920px',
-        'table_ident' => 'events-table',
-        'action_url' => '/admin/handle/events',
-        'not_found' => 'пусто',
         'is_sortable' => false,
         'model' => 'Vis\Builder\Event',
     ),

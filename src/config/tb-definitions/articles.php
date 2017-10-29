@@ -16,12 +16,6 @@ return array(
     ),
     'options' => array(
         'caption' => 'Статьи',
-        'ident' => 'article',
-        'form_ident' => 'article-form',
-        'form_width' => '920px',
-        'table_ident' => 'news-table',
-        'action_url' => '/admin/handle/articles',
-        'not_found' => 'пусто',
         'is_sortable' => true,
         'model' => 'Article',
     ),

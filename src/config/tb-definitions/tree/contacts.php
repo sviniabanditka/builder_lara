@@ -13,12 +13,6 @@ return array(
     ),
     'options' => array(
         'caption' => '',
-        'form_width' => '920px',
-        'ident' => 'settings-container',
-        'form_ident' => 'about-form',
-        'table_ident' => 'about-table',
-        'action_url' => 'werwer',
-        'not_found' => 'NOT FOUND',
         'model' => 'Tree',
     ),
     'position' => array(
