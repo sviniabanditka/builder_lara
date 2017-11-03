@@ -105,9 +105,12 @@ class ViewHandler
         $idUpdate = request('id') ? : '';
         $attributes = request('paramsJson');
 
-        return View::make('admin::tb.input_definition_table_data',
-                compact ('arrayDefinitionFields', 'result', 'idUpdate', 'attributes'))
-                ->render();
+        return [
+            'html' => view('admin::tb.input_definition_table_data',
+                        compact ('arrayDefinitionFields', 'result', 'idUpdate', 'attributes'))
+                        ->render(),
+            'count_records' => count($result)
+        ];
     }
 
     public function deleteForeignDefinition()

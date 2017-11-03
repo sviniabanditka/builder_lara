@@ -574,16 +574,12 @@ class RequestHandler
 
     protected function handleShowHtmlForeignDefinition()
     {
-        return array(
-            'html' => $this->controller->view->showHtmlForeignDefinition(),
-        );
+        return $this->controller->view->showHtmlForeignDefinition();
     }
 
     protected function handleDeleteForeignDefinition()
     {
-        return array(
-            'html' => $this->controller->view->deleteForeignDefinition(),
-        );
+        return $this->controller->view->deleteForeignDefinition();
     }
 
     protected function handleChangePositionDefinition()

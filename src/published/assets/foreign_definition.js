@@ -108,6 +108,15 @@ var ForeignDefinition  = {
                     } else {
                         $('.definition_' + attributesJson.name + ' .col_sort').hide();
                     }
+
+                    if (attributesJson.only_once != undefined) {
+
+                        if (response.count_records) {
+                            $('.definition_' + attributesJson.name).parent().find('.btn-success').hide();
+                        } else {
+                            $('.definition_' + attributesJson.name).parent().find('.btn-success').show();
+                        }
+                    }
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -143,6 +152,15 @@ var ForeignDefinition  = {
                         if (response.html) {
                             $('.definition_' + attributesJson.name).html(response.html);
                             TableBuilder.showSuccessNotification('Удалено');
+
+                            if (attributesJson.only_once != undefined) {
+
+                                if (response.count_records) {
+                                    $('.definition_' + attributesJson.name).parent().find('.btn-success').hide();
+                                } else {
+                                    $('.definition_' + attributesJson.name).parent().find('.btn-success').show();
+                                }
+                            }
                         }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
