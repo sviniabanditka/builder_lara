@@ -34,7 +34,7 @@ class ImageField extends AbstractField
     private function getListSingle($row)
     {
         $pathPhoto = $this->getValue($row);
-        ;
+        
         if (!$pathPhoto) {
             return '';
         }
@@ -131,42 +131,15 @@ class ImageField extends AbstractField
         $data = array();
         $data['sizes']['original'] = $destinationPath . $fileName;
 
-        $variations = $this->getAttribute('variations', array());
-        foreach ($variations as $type => $methods) {
-            $img = Image::make($data['sizes']['original']);
-            foreach ($methods as $method => $args) {
-                call_user_func_array(array($img, $method), $args);
-            }
-
-            $path = $destinationPath . $rawFileName .'_'. $type .'.'. $extension;
-            $quality = $this->getAttribute('quality', 85);
-            $img->save(public_path() .'/'. $path, $quality);
-
-            $data['sizes'][$type] = $path;
-        }
-
         $width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
         $height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
 
-        if ($extension == 'svg') {
-            $link = $destinationPath . $fileName;
-        } else {
-            $link = glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
-        }
+        $link = $extension == 'svg' ? $destinationPath . $fileName
+                                    : glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
 
-        if ($this->getAttribute('use_image_storage') && class_exists('\Vis\ImageStorage\Image')) {
-            $imgStorage = new \Vis\ImageStorage\Image;
-            $imgStorage->file_folder = '/storage/editor/fotos/';
-            $imgStorage->file_source = $fileName;
-            $imgStorage->file_cms_preview = str_replace('/storage/editor/fotos/', '', $link);
-            $imgStorage->save();
-        }
+        $this->saveInImageStore($fileName, $link);
 
-        if (Input::get("type") == "single_photo") {
-            $returnView = "admin::tb.html_image_single";
-        } else {
-            $returnView = "admin::tb.html_image";
-        }
+        $returnView = request("type") == "single_photo" ? "admin::tb.html_image_single" : "admin::tb.html_image";
 
         $response = array(
             'data'       => $data,
@@ -179,7 +152,7 @@ class ImageField extends AbstractField
                 ['link' => $link,
                  'data' => $data,
                  'value' => $destinationPath . $fileName,
-                 'name' => Input::get("ident"),
+                 'name' => request("ident"),
                  'width' => $width,
                  'height' => $height
                 ]
@@ -189,13 +162,29 @@ class ImageField extends AbstractField
         return $response;
     } // end doUpload
 
+    private function saveInImageStore($fileName, $link)
+    {
+        if (!$this->getAttribute('use_image_storage') || !class_exists('\Vis\ImageStorage\Image')) return;
+
+        $fileCmsPreview = strpos ($fileName, '.svg') ?
+            $fileName :
+            str_replace('/storage/editor/fotos/', '', $link);
+
+        $imgStorage = new \Vis\ImageStorage\Image;
+        $imgStorage->file_folder = '/storage/editor/fotos/';
+        $imgStorage->file_source = $fileName;
+        $imgStorage->file_cms_preview = $fileCmsPreview;
+        $imgStorage->save();
+    }
+
     private function checkSizeFile($file)
     {
-        if ($this->getAttribute('limit_mb')) {
-            $limit_mb = $this->getAttribute('limit_mb')*1000000;
-            if ($file->getSize() > $limit_mb) {
-                App::abort(500, "Ошибка загрузки файла. Файл больше чем ".$this->getAttribute('limit_mb')." МБ");
-            }
+        if (!$this->getAttribute('limit_mb')) return;
+
+        $limitMb = $this->getAttribute('limit_mb') * 1000000;
+
+        if ($file->getSize() > $limitMb) {
+            App::abort(500, "Ошибка загрузки файла. Файл больше чем ".$this->getAttribute('limit_mb')." МБ");
         }
     }
 
@@ -217,5 +206,5 @@ class ImageField extends AbstractField
         }
 
         return $value;
-    } // end prepareQueryValue
+    }
 }
