@@ -22,6 +22,7 @@
                         <div class="col col-6">
                             <input placeholder="До" type="text" id="export-date-to" name="d[to]" class="form-control input-small datepicker">
                         </div>
+                    </div>
                 </section>
                 @endif
                 
@@ -57,20 +58,19 @@
 </div>
 
 <script type="text/javascript">
-jQuery('#tb-export-form').bind('click', function(e) { 
-    e.stopPropagation() 
+$('#tb-export-form').bind('click', function(e) {
+    e.stopPropagation()
 });
 
-jQuery(document).ready(function() {
-    jQuery("#export-date-from, #export-date-to").datepicker({
-        changeMonth: true,
-        numberOfMonths: 1,
-        prevText: '<i class="fa fa-chevron-left"></i>',
-        nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        //showButtonPanel: true,
-        regional: ["ru"],
-        onClose: function (selectedDate) {}
-    });
+$("#export-date-from, #export-date-to").datepicker({
+    changeMonth: true,
+    numberOfMonths: 1,
+    prevText: '<i class="fa fa-chevron-left"></i>',
+    nextText: '<i class="fa fa-chevron-right"></i>',
+    dateFormat: "yy-mm-dd",
+    //showButtonPanel: true,
+    regional: ["ru"],
+    onClose: function (selectedDate) {}
 });
+
 </script>

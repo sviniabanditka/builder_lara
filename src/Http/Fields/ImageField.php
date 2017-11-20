@@ -34,7 +34,7 @@ class ImageField extends AbstractField
     private function getListSingle($row)
     {
         $pathPhoto = $this->getValue($row);
-        
+
         if (!$pathPhoto) {
             return '';
         }

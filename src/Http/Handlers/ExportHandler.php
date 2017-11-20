@@ -85,6 +85,9 @@ class ExportHandler
         
         $between = $this->getBetweenValues();
 
+        print_arr($between);
+        exit();
+
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
 
         if (isset($this->def['handle']['export']['filter'])) {
@@ -121,26 +124,15 @@ class ExportHandler
     
     private function getBetweenValues()
     {
-        $this->doCheckPermission();
-        
-        $between = array();
-        if ($this->getAttribute('date_range_field')) {
+        $from = request('d.from') ? request('d.from') . ' 00:00:01' : '1900-01-01 00:00:01';
+        $to = request('d.to') ? request('d.to') . ' 23:59:59' : date("Y-m-d 23:59:59");
 
-            $from = Input::get('d.from', '01/01/1900');
-            $from = strtotime(str_replace('/', '-', $from));
-            $from = date('Y-m-d', $from) .' 00:00:00';
-
-            $to = Input::get('d.to', '01/01/2199');
-            $to = strtotime(str_replace('/', '-', $to));
-            $to = date('Y-m-d', $to) .' 23:59:59';
-          
-            $between['field'] = $this->getAttribute('date_range_field');
-            $between['values'] = array(
+        return [
+            'field' => $this->getAttribute('date_range_field') ? : 'created_at',
+            'values' => [
                 $from, $to
-            );
-        }
-        
-        return $between;
+            ]
+        ];
     } // end getBetweenValues
     
     public function doExportXls($idents)
@@ -156,7 +148,7 @@ class ExportHandler
         $this->addXlsRow($row, $xls);
         
         $between = $this->getBetweenValues();
-    
+
         $rows = $this->controller->query->getRows(false, true, $between)->toArray(); // without pagination & user filters
 
         foreach ($rows as $row) {
