@@ -644,3 +644,6 @@ body.mobile-view-activated .pagination-bottom-wrapper {
 }
 
 /*responsive*/
+.screenshot img {
+    max-width: 50px;
+}
