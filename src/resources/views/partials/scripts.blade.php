@@ -71,6 +71,9 @@
            $("#content_admin").html(data);
             window.history.pushState(url, '', url);
             $(".load_page").hide();
+
+            $(window).scrollTop(50);
+
         }).fail(function(xhr, ajaxOptions, thrownError) {
             var errorResult = jQuery.parseJSON(xhr.responseText);
             TableBuilder.showErrorNotification(errorResult.message);
