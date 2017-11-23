@@ -1517,10 +1517,17 @@ var TableBuilder = {
     {
         TableBuilder.showPreloader();
 
-        var values = jQuery('#'+ TableBuilder.options.table_ident).serializeArray();
+        var ids = [];
+        $(".multi-checkbox [type=checkbox]:checked").each(function(){
+            ids.push($(this).val());
+        });
+
+        var values = [];
         values.push({ name: 'type', value: type });
         values.push({ name: 'query_type', value: 'multi_action' });
         values.push({ name: '__node', value: TableBuilder.getUrlParameter('node') });
+        values.push({ name: 'multi_ids', value: ids });
+
 
         jQuery.ajax({
             type: "POST",
@@ -1530,8 +1537,8 @@ var TableBuilder = {
             success: function(response) {
                 if (response.status) {
                     if (response.is_hide_rows) {
-                        jQuery(response.ids).each(function(key, val) {
-                            jQuery('tr[id-row="'+ val +'"]', '#'+ TableBuilder.options.table_ident).remove();
+                        $(response.ids).each(function(key, val) {
+                            $('tr[id-row="'+ val +'"]').remove();
                         });
                     }
 

@@ -212,7 +212,11 @@ class RequestHandler
     
     protected function handleMultiAction()
     {
-        $type = Input::get('type');
+        $type = request('type');
+        $ids = request('multi_ids');
+
+        if (!$ids) return;
+
         $action = $this->definition['multi_actions'][$type];
 
         $isAllowed = $action['check'];
@@ -220,12 +224,14 @@ class RequestHandler
         if (!$isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '. $type);
         }
-        
-        $ids = Input::get('multi_ids', array());
+
         $handlerClosure = $action['handle'];
-        $data = $handlerClosure($ids);
+
+        $arrayIds = explode (',', $ids);
+
+        $data = $handlerClosure($arrayIds);
         
-        $data['ids'] = $ids;
+        $data['ids'] = $arrayIds;
         $data['is_hide_rows'] = false;
 
         if (isset($action['is_hide_rows'])) {
