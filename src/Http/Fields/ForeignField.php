@@ -190,6 +190,8 @@ class ForeignField extends AbstractField
                 ->select($this->getAttribute('foreign_value_field'))
                 ->find($id);
 
+            $result = $this->replaceObjectToArray($result);
+
             if ($id) {
                 return [
                     'id' => $id,
@@ -310,7 +312,7 @@ class ForeignField extends AbstractField
         }
 
         $results =  DB::table($this->getAttribute('foreign_table'))
-            ->select('id', $this->getAttribute('foreign_value_field'))
+            ->select($this->getAttribute ('foreign_key_field'), $this->getAttribute('foreign_value_field'))
             ->where($this->getAttribute('foreign_value_field'), 'LIKE', '%'. $query .'%')
             ->take($limit)
             ->skip(($limit * $page) - $limit);
@@ -320,15 +322,17 @@ class ForeignField extends AbstractField
         if ($additionalWheres) {
             foreach ($additionalWheres as $field => $where) {
                 $results = $where['sign'] == 'in' ? $results->whereIn($field, $where['value'])
-                                                  : $results->where($field, $where['sign'], $where['value']);
+                    : $results->where($field, $where['sign'], $where['value']);
             }
         }
 
-        $results = (array) $results->get();
+        $results = $this->replaceObjectToArray($results->get());
 
         $collection = collect($results)->map(function ($result) {
+            $result = (array) $result;
+
             return array(
-                'id'   => $result['id'],
+                'id'   => $result[$this->getAttribute('foreign_key_field')],
                 'name' => $result[$this->getAttribute('foreign_value_field')],
             );
         });
@@ -338,5 +342,14 @@ class ForeignField extends AbstractField
             'more'    => $collection && !empty($collection),
             'message' => ''
         );
+    }
+
+    private function replaceObjectToArray($params)
+    {
+        if (!is_array ($params)) {
+            return $params->toArray();
+        }
+
+        return $params;
     }
 }
