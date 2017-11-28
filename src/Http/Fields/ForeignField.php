@@ -153,8 +153,8 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('is_readonly')) return $this->getValue($row);
 
         $input = $this->getAttribute('ajax_search') ?
-                View::make('admin::tb.input_foreign_ajax_search') :
-                View::make('admin::tb.input_foreign');
+            View::make('admin::tb.input_foreign_ajax_search') :
+            View::make('admin::tb.input_foreign');
 
         $input->selected = $this->getSelected($row);
 
@@ -186,13 +186,14 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('ajax_search')) {
 
             $id = $this->getValueId($row);
-            $result = DB::table($this->getAttribute('foreign_table'))
-                ->select($this->getAttribute('foreign_value_field'))
-                ->find($id);
-
-            $result = $this->replaceObjectToArray($result);
 
             if ($id) {
+                $result = DB::table($this->getAttribute('foreign_table'))
+                    ->select($this->getAttribute('foreign_value_field'))
+                    ->where($this->getAttribute('foreign_key_field'), $id)->first();
+
+                $result = $this->replaceObjectToArray($result);
+
                 return [
                     'id' => $id,
                     'name' => $result[$this->getAttribute('foreign_value_field')]
@@ -346,10 +347,6 @@ class ForeignField extends AbstractField
 
     private function replaceObjectToArray($params)
     {
-        if (!is_array ($params)) {
-            return $params->toArray();
-        }
-
-        return $params;
+        return json_decode(json_encode($params), true);
     }
 }
