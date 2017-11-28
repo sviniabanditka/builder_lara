@@ -19,9 +19,7 @@
 
 <label class="select">
     <select
-     @if (Input::has("id") && $readonly_for_edit)
-         disabled
-     @endif
+     {{Input::has("id") && $readonly_for_edit ? 'disabled' : ''}}
 
      name="{{ $name }}" class="dblclick-edit-input form-control input-small unselectable {{ $name }}_foreign">
         @if ($is_null)
@@ -42,15 +40,15 @@
     </select>
     <i></i>
 </label>
+
 @if ($allow_foreign_add)
-<div class="{{ $name }}_add_new_foreign" style="display: none">
-    <input type="text" name="{{ $name }}_new_foreign" placeholder="Добавить новое значение" />
-</div>
+    <div class="{{ $name }}_add_new_foreign" style="display: none">
+        <input type="text" name="{{ $name }}_new_foreign" placeholder="Добавить новое значение" />
+    </div>
 @endif
 
 @if ($relation)
     <script>
-
         function change_relation_field{{$name}}() {
             $.post("/admin/change-relation-field", {id : $('[name={{$relation['field']}}]').val(), dataFieldJson : '{{json_encode($field)}}', selected : '{{$selected}}' },
                     function(data){
@@ -63,8 +61,6 @@
         $('[name={{$relation['field']}}]').change(function () {
             change_relation_field{{$name}}();
         });
-
-
 
     </script>
 @endif

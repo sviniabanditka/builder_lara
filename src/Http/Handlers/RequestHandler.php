@@ -116,6 +116,9 @@ class RequestHandler
             case 'change_position':
                 return $this->handleChangePositionDefinition();
 
+            case 'foreign_ajax_search':
+                return $this->handleForeignAjaxSearch();
+
             default:
                 return $this->handleShowList();
         }
@@ -130,7 +133,7 @@ class RequestHandler
 
     protected function handleSelectWithUploadedImages()
     {
-        $field = $this->controller->getField(Input::get('ident'));
+        $field = $this->controller->getField(request('ident'));
 
         $result = $this->controller->query->getUploadedImages($field);
 
@@ -139,16 +142,19 @@ class RequestHandler
 
     protected function handleManyToManyAjaxSearch()
     {
-        $query = Input::get('q');
-        $limit = Input::get('limit');
-        $page  = Input::get('page');
-        $ident = Input::get('ident');
-        
-        $field = $this->controller->getField($ident);
+        $field = $this->controller->getField(request('ident'));
 
+        $data = $field->getAjaxSearchResult(request('q'), request('limit'), request('page'));
         
-        $data = $field->getAjaxSearchResult($query, $limit, $page);
-        
+        return Response::json($data);
+    }
+
+    protected function handleForeignAjaxSearch()
+    {
+        $field = $this->controller->getField(request('ident'));
+
+        $data = $field->getAjaxSearchResult(request('q'), request('limit'), request('page'));
+
         return Response::json($data);
     }
     

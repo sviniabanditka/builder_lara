@@ -147,21 +147,23 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
-        }
-        if ($this->getAttribute('is_readonly')) {
-            return $this->getValue($row);
+            if ($res) return $res;
         }
 
-        $input = View::make('admin::tb.input_foreign');
-        $input->selected = $this->getValueId($row);
+        if ($this->getAttribute('is_readonly')) return $this->getValue($row);
+
+        $input = $this->getAttribute('ajax_search') ?
+                View::make('admin::tb.input_foreign_ajax_search') :
+                View::make('admin::tb.input_foreign');
+
+        $input->selected = $this->getSelected($row);
+
         $input->name     = $this->getFieldName();
         $input->is_null  = $this->getAttribute('is_null');
         $input->null_caption = $this->getAttribute('null_caption');
         $input->recursive = $this->getAttribute('recursive');
         $input->allow_foreign_add = $this->getAttribute('foreign_allow_add');
+
         if ($input->recursive) {
             $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
             $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
@@ -171,10 +173,32 @@ class ForeignField extends AbstractField
         } else {
             $input->options  = $this->getForeignKeyOptions();
         }
+
         $input->readonly_for_edit = $this->getAttribute('readonly_for_edit');
         $input->relation = $this->getAttribute('relation');
         $input->field = $this->attributes;
+
         return $input->render();
+    }
+
+    private function getSelected($row)
+    {
+        if ($this->getAttribute('ajax_search')) {
+
+            $id = $this->getValueId($row);
+            $result = DB::table($this->getAttribute('foreign_table'))
+                ->select($this->getAttribute('foreign_value_field'))
+                ->find($id);
+
+            if ($id) {
+                return [
+                    'id' => $id,
+                    'name' => $result[$this->getAttribute('foreign_value_field')]
+                ];
+            }
+        }
+
+        return $this->getValueId($row);;
     }
 
     private function getCategory($id)
@@ -264,9 +288,7 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res)  return $res;
         }
 
         $nameField = $this->getFieldName();
@@ -278,5 +300,43 @@ class ForeignField extends AbstractField
             ->where($this->getAttribute('foreign_key_field'), $row->$nameField)->first();
 
         return  $result[$this->getAttribute('foreign_value_field')];
+    }
+
+    public function getAjaxSearchResult($query, $limit, $page)
+    {
+        if ($this->hasCustomHandlerMethod('onGetAjaxSearchResult')) {
+            $res = $this->handler->onGetAjaxSearchResult($this, $query, $limit, $page);
+            if ($res) return $res;
+        }
+
+        $results =  DB::table($this->getAttribute('foreign_table'))
+            ->select('id', $this->getAttribute('foreign_value_field'))
+            ->where($this->getAttribute('foreign_value_field'), 'LIKE', '%'. $query .'%')
+            ->take($limit)
+            ->skip(($limit * $page) - $limit);
+
+        $additionalWheres = $this->getAttribute('additional_where');
+
+        if ($additionalWheres) {
+            foreach ($additionalWheres as $field => $where) {
+                $results = $where['sign'] == 'in' ? $results->whereIn($field, $where['value'])
+                                                  : $results->where($field, $where['sign'], $where['value']);
+            }
+        }
+
+        $results = (array) $results->get();
+
+        $collection = collect($results)->map(function ($result) {
+            return array(
+                'id'   => $result['id'],
+                'name' => $result[$this->getAttribute('foreign_value_field')],
+            );
+        });
+
+        return array(
+            'results' => $collection,
+            'more'    => $collection && !empty($collection),
+            'message' => ''
+        );
     }
 }

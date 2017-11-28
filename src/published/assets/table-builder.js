@@ -1518,7 +1518,7 @@ var TableBuilder = {
         TableBuilder.showPreloader();
 
         var ids = [];
-        $(".multi-checkbox [type=checkbox]:checked").each(function(){
+        $("tbody .multi-checkbox [type=checkbox]:checked").each(function(){
             ids.push($(this).val());
         });
 
@@ -1527,8 +1527,7 @@ var TableBuilder = {
         values.push({ name: 'query_type', value: 'multi_action' });
         values.push({ name: '__node', value: TableBuilder.getUrlParameter('node') });
         values.push({ name: 'multi_ids', value: ids });
-
-
+        
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(),
