@@ -247,10 +247,8 @@ abstract class AbstractField
 
     public function prepareQueryValue($value)
     {
-        if (!$value) {
-            if ($this->getAttribute('is_null')) {
-                return null;
-            }
+        if (!$value && $this->getAttribute('is_null')) {
+            return null;
         }
 
         return $value;

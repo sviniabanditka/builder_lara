@@ -482,6 +482,8 @@ class QueryHandler
         }
 
         $insertData = $this->getRowQueryValues($values);
+
+
         $this->checkFields($insertData);
 
         $this->doValidate($insertData);
@@ -517,7 +519,7 @@ class QueryHandler
 
             $objectModel = new $model;
             foreach ($insertDataRes as $key => $value) {
-                $objectModel->$key = $value ? : '';
+                $objectModel->$key = $value;
                 
                 if ($key == 'created_at' && $value == '') {
                     $objectModel->$key  = date("Y-m-d G:i:s");
@@ -610,7 +612,7 @@ class QueryHandler
             if ($field->isPattern()) {
                 continue;
             }
-            
+
             $tabs = $field->getAttribute('tabs');
             if ($tabs) {
                 foreach ($tabs as $tab) {
