@@ -482,8 +482,7 @@ class QueryHandler
         }
 
         $insertData = $this->getRowQueryValues($values);
-
-
+        
         $this->checkFields($insertData);
 
         $this->doValidate($insertData);

@@ -243,24 +243,22 @@ abstract class AbstractField
     protected function hasCustomHandlerMethod($methodName)
     {
         return $this->handler && is_callable(array($this->handler, $methodName));
-    } // end hasCustomHandlerMethod
+    }
 
     public function prepareQueryValue($value)
     {
-        if (!$value && $this->getAttribute('is_null')) {
-            return null;
-        }
+        if (!$value && $this->getAttribute('is_null')) return null;
+
+        if (is_null($value)) return '';
 
         return $value;
-    } // end prepareQueryValue
+    }
 
     public function onSelectValue(&$db)
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $tabs = $this->getAttribute('tabs');
