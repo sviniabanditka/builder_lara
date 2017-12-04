@@ -23,7 +23,7 @@
         @foreach($orderProducts as $product)
             <?php $tovar = $product->getTovar(); ?>
             <tr>
-                <td>{{$loop->index1}}</td>
+                <td>{{$loop->index + 1}}</td>
                 <td>
                     <a href="{{$tovar->getUrl()}}" target="_blank">{!! $tovar->getImg("50", "50")!!}</a>
                     <a href="{{$tovar->getUrl()}}" target="_blank">{{$tovar->title}}</a></td>

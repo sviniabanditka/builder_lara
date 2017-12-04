@@ -3,7 +3,7 @@
         <ul class="nav nav-tabs tabs-pull-right">
             <label class="label pull-left" style="line-height: 32px;">{{__cms('Значение')}}</label>
             @foreach(config('builder.settings.langs') as $prefix => $name)
-                <li class="{{$loop->index1 == 1 ? 'active' : ''}}">
+                <li class="{{$loop->index == 0 ? 'active' : ''}}">
                     <a href="#etextarea{{$prefix}}" data-toggle="tab">{{$name}}</a>
                 </li>
             @endforeach
@@ -11,7 +11,7 @@
         <div class="tab-content padding-5">
             @foreach(config('builder.settings.langs') as $prefix => $name)
                 <?php $value = 'value' . $prefix;?>
-                <div id="etextarea{{$prefix}}" class="tab-pane {{$loop->index1 == 1 ? 'active' : ''}}">
+                <div id="etextarea{{$prefix}}" class="tab-pane {{$loop->index == 0 ? 'active' : ''}}">
                     <div style="position: relative;">
                         <label class="textarea">
                             <textarea name="value1{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll">{{ $info->$value or "" }}</textarea>

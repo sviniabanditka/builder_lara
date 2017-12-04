@@ -14,12 +14,12 @@
         @else
             <ul class="nav nav-tabs bordered">
                 @foreach ($def['position']['tabs'] as $title => $fields)
-                    <li @if ($loop->first) class="active" @endif><a href="#tabform{{$def['db']['table']}}-{{$loop->index1}}" data-toggle="tab">{{ __cms($title) }}</a></li>
+                    <li @if ($loop->first) class="active" @endif><a href="#tabform{{$def['db']['table']}}-{{$loop->index}}" data-toggle="tab">{{ __cms($title) }}</a></li>
                 @endforeach
             </ul>
             <div class="tab-content padding-10">
                 @foreach ($def['position']['tabs'] as $title => $fields)
-                    <div class="tab-pane @if ($loop->first) active @endif" id="tabform{{$def['db']['table']}}-{{$loop->index1}}">
+                    <div class="tab-pane @if ($loop->first) active @endif" id="tabform{{$def['db']['table']}}-{{$loop->index}}">
                         <div class="table-responsive">
                             <fieldset style="padding:0">
 
