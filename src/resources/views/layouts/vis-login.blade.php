@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en-us">
-@minify('html')
+
     <head>
         <meta charset="utf-8">
         <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
@@ -35,6 +35,6 @@
         <script src="/packages/vis/builder/js/plugin/jquery-validate/jquery.validate.min.js"></script>
         <script src="/packages/vis/builder/js/login_validation.js"></script>
     </body>
-@endminify
+
 </html>
 

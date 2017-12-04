@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en-us">
-@minify('html')
     <head>
         <meta charset="utf-8">
         <title> @yield('title') - {{ __cms(config('builder.admin.caption')) }}</title>
@@ -103,7 +102,7 @@
                     @yield('headline')
                     <div id="content">
                         <div class="row" id="content_admin">
-                            @endminify
+
                             @yield('main')
 
                         </div>
