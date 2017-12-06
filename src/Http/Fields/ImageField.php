@@ -92,7 +92,7 @@ class ImageField extends AbstractField
         $input->delimiter   = $this->getAttribute('delimiter');
         $input->width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
         $input->height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
-
+        $input->hideChooseFromDownloaded = $this->getAttribute('hide_choose_from_downloaded');
 
         return $input->render();
     } // end getEditInput
