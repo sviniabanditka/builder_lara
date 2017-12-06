@@ -59,6 +59,7 @@ return array(
             'is_remote' => false,
             'hide_list' => true,
             'field' => 'string',
+
         ),
         'title' => array(
             'caption' => 'Название',

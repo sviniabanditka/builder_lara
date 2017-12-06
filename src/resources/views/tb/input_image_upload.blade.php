@@ -7,7 +7,7 @@
                      style="width: 0%;"></div>
             </div>
             <div class="input input-file">
-                @if (!$hideChooseFromDownloaded)
+                @if ($chooseFromUploaded)
                 <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this))"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
@@ -54,7 +54,7 @@
                      style="width: 0%;"></div>
             </div>
             <div class="input input-file">
-                @if (!$hideChooseFromDownloaded)
+                @if ($chooseFromUploaded)
                 <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this))"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
