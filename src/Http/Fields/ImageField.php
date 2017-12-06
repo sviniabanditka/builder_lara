@@ -105,7 +105,7 @@ class ImageField extends AbstractField
 
         $extension = $file->guessExtension();
 
-        if ($extension == 'html') {
+        if ($extension == 'html' || $extension == 'txt') {
             $extension = 'svg';
         }
 
