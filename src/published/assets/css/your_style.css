@@ -455,7 +455,7 @@ div.dataTables_info{
     height: 28px;
 }
 .files_uploaded_table tbody {
-    max-height: 465px;
+    max-height: 485px;
     display: block;
     width: 100%;
     overflow: auto;

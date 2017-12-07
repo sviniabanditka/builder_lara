@@ -782,7 +782,13 @@ class QueryHandler
 
     private function getImagesWithDefaultPath()
     {
-        $list = File::files(public_path() . "/storage/editor/fotos");
+        $files = collect(File::files(public_path('storage/editor/fotos')));
+        $page = (int) request('page') ?: 1;
+        $onPage = 24;
+        $slice = $files->slice(($page-1)* $onPage, $onPage);
+
+        $list = new \Illuminate\Pagination\LengthAwarePaginator($slice, $files->count(), $onPage);
+        $list->setPath(url()->current());
 
         $data = [
             'status' => 'success',
