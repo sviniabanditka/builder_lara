@@ -133,7 +133,7 @@ class RequestHandler
 
     protected function handleSelectWithUploadedImages()
     {
-        $field = $this->controller->getField(request('ident'));
+        $field = $this->controller->getField(request('baseName'));
 
         $result = $this->controller->query->getUploadedImages($field);
 
@@ -331,6 +331,7 @@ class RequestHandler
         $response = array(
             'url' => $this->controller->getOption('url')
         );
+
         return Response::json($response);
     }
     
@@ -341,9 +342,7 @@ class RequestHandler
 
         if ($this->controller->hasCustomHandlerMethod('onFileUpload')) {
             $res = $this->controller->getCustomHandler()->onFileUpload($file);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $extension = $file->getClientOriginalExtension();
@@ -372,25 +371,18 @@ class RequestHandler
     {
         $this->controller->query->clearCache();
 
-        $ident = Input::get('ident');
+        $baseIdent = Input::get('baseIdent');
         $file  = Input::file('image');
-        $num   = Input::get('num');
-        
-        $field = $this->controller->getField($ident);
+
+        $field = $this->controller->getField($baseIdent);
         
         if ($this->controller->hasCustomHandlerMethod('onPhotoUpload')) {
             $res = $this->controller->getCustomHandler()->onPhotoUpload($field, $file);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $data = $field->doUpload($file);
 
-        if ($num) {
-            $data['num'] = $data;
-        }
-        
         return Response::json($data);
     }
     
@@ -400,9 +392,7 @@ class RequestHandler
         
         if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
             $res = $this->controller->getCustomHandler()->onPhotoUploadFromWysiwyg($file);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $extension = $file->guessExtension();
@@ -428,9 +418,7 @@ class RequestHandler
         
         if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
             $res = $this->controller->getCustomHandler()->onPhotoUploadFromWysiwyg($file);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $extension = $file->guessExtension();

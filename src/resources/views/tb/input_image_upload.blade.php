@@ -8,11 +8,11 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this))"> Выбрать из загруженных </span>
+                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this), '{{$baseName}}')"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
                     <input type="file" multiple accept="image/*" class="image_{{$name}}"
-                           onchange="TableBuilder.uploadMultipleImages(this, '{{$name}}');">
+                           onchange="TableBuilder.uploadMultipleImages(this, '{{$name}}', '{{$baseName}}');">
                     Загрузить
                 </span>
                 <input type="hidden" name="{{$name}}" value='{{ $value }}'>
@@ -33,13 +33,13 @@
                 @endif
                 <script>
                     $('.dop_foto').sortable(
-                            {
-                                items: "> li",
-                                update: function (event, ui) {
-                                    var context = $(this).parent().parent().find("[type=file]");
-                                    TableBuilder.setInputImages(context);
-                                }
+                        {
+                            items: "> li",
+                            update: function (event, ui) {
+                                var context = $(this).parent().parent().find("[type=file]");
+                                TableBuilder.setInputImages(context);
                             }
+                        }
                     );
                 </script>
             </div>
@@ -55,10 +55,10 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this))"> Выбрать из загруженных </span>
+                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this), '{{$baseName}}')"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
-                    <input type="file" accept="image/*" onchange="TableBuilder.uploadImage(this, '{{$name}}');">
+                    <input type="file" accept="image/*" onchange="TableBuilder.uploadImage(this, '{{$name}}', '{{$baseName}}');">
                     {{__cms('Загрузить')}}
                 </span>
                 <input type="text" id="{{ $name }}" placeholder="{{__cms('Выберите изображение для загрузки')}}"

@@ -73,14 +73,46 @@ class ImageField extends AbstractField
         $db->where($this->getFieldName(), 'LIKE', '%'.$value.'%');
     } // end onSearchFilter
 
+    public function getTabbedEditInput($row = array())
+    {
+        if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
+            $res = $this->handler->onGetTabbedEditInput($this, $row);
+            if ($res) return $res;
+        }
+
+        $type = $this->getAttribute('type');
+
+        $input = View::make('admin::tb.tab_input_'. $type);
+        $input->value = $this->getValue($row);
+        $input->name  = $this->getFieldName();
+        $input->rows  = $this->getAttribute('rows');
+        $input->caption = $this->getAttribute('caption');
+        $input->tabs = $this->getPreparedTabs($row);
+        $input->is_multiple = $this->getAttribute('is_multiple');
+        $input->delimiter   = $this->getAttribute('delimiter');
+        $input->width   = $this->getAttribute('img_width', 200);
+        $input->height   = $this->getAttribute('img_height', 200);
+        $input->chooseFromUploaded = $this->getAttribute('choose_from_uploaded', true);
+
+        return $input->render();
+    } // end getTabbedEditInput
+
+    protected function getPreparedTabs($row)
+    {
+        $tabs = $this->getAttribute('tabs');
+
+        foreach ($tabs as &$tab) {
+            $tab['value'] = $this->getValue($row, $tab['postfix']);
+        }
+
+        return $tabs;
+    } // end getPreparedTabs
+
     public function getEditInput($row = array())
     {
-
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $input = View::make('admin::tb.input_image_upload');
@@ -90,10 +122,10 @@ class ImageField extends AbstractField
         $input->caption = $this->getAttribute('caption');
         $input->is_multiple = $this->getAttribute('is_multiple');
         $input->delimiter   = $this->getAttribute('delimiter');
-        $input->width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
-        $input->height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
-
+        $input->width   = $this->getAttribute('img_width', 200);
+        $input->height   = $this->getAttribute('img_height', 200);
         $input->chooseFromUploaded = $this->getAttribute('choose_from_uploaded', true);
+        $input->baseName = $this->getFieldName();
 
         return $input->render();
     } // end getEditInput
@@ -104,26 +136,19 @@ class ImageField extends AbstractField
 
         $this->checkSizeFile($file);
 
-        $extension = $file->guessExtension();
-
-        if ($extension == 'html' || $extension == 'txt') {
-            $extension = 'svg';
-        }
+        $extension = $this->getExtension($file->guessExtension());
 
         $rawFileName = md5_file($file->getRealPath()) .'_'. time();
         $fileName = $rawFileName .'.'. $extension;
 
-        $definitionName = $this->getOption('def_name');
-        $prefixPath = 'storage/editor/fotos/';
+        $destinationPath = 'storage/editor/fotos/';
 
-        $destinationPath = $prefixPath;
-
-        if ($model && Input::has("page_id")) {
-            $infoPage = $model::find(Input::get("page_id"));
-            $slug_page = isset($infoPage->title) ? Jarboe::urlify(strip_tags($infoPage->title)) : Input::get("page_id");
-            $fileName = $slug_page . '.' . $extension;
+        if ($model && request("page_id")) {
+            $infoPage = $model::find(request("page_id"));
+            $slugPage = isset($infoPage->title) ? Jarboe::urlify(strip_tags($infoPage->title)) : request("page_id");
+            $fileName = $slugPage . '.' . $extension;
             if (File::exists($destinationPath.$fileName)) {
-                $fileName = $slug_page . '_' . time() . rand(1, 1000) . '.' . $extension;
+                $fileName = $slugPage . '_' . time() . rand(1, 1000) . '.' . $extension;
             }
         }
 
@@ -132,8 +157,8 @@ class ImageField extends AbstractField
         $data = array();
         $data['sizes']['original'] = $destinationPath . $fileName;
 
-        $width   = $this->getAttribute('img_width') ? $this->getAttribute('img_width') : 200;
-        $height   = $this->getAttribute('img_height') ? $this->getAttribute('img_height') : 200;
+        $width   = $this->getAttribute('img_width', 200);
+        $height   = $this->getAttribute('img_height', 200);
 
         $link = $extension == 'svg' ? $destinationPath . $fileName
                                     : glide($destinationPath . $fileName, ['w' => $width, 'h' => $height]);
@@ -161,7 +186,16 @@ class ImageField extends AbstractField
         );
 
         return $response;
-    } // end doUpload
+    }
+
+    private function getExtension($guessExtension)
+    {
+        if ($guessExtension == 'html' || $guessExtension == 'txt') {
+            return 'svg';
+        }
+
+        return $guessExtension;
+    }
 
     private function saveInImageStore($fileName, $link)
     {

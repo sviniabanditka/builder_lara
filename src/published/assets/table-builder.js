@@ -627,8 +627,8 @@ var TableBuilder = {
 
         $( '.fr-popup' ).remove();
         /*  $(TableBuilder.edit_form + " .fr-link-insert-layer input").each(function( index ) {
-         $( this ).removeAttr("name")
-         });*/
+               $( this ).removeAttr("name")
+           });*/
 
         var values = $(TableBuilder.edit_form).serializeArray();
 
@@ -882,13 +882,15 @@ var TableBuilder = {
         $(TableBuilder.form_preloader, context).hide();
     }, // end hidePreloader
 
-    uploadImage: function(context, ident)
+    uploadImage: function(context, ident, baseIdent)
     {
         var data = new FormData();
         data.append("image", context.files[0]);
         data.append('ident', ident);
         data.append('query_type', 'upload_photo');
         data.append('type', "single_photo");
+        data.append('baseIdent', baseIdent);
+
 
         if (TableBuilder.getUrlParameter('id_tree') != undefined) {
             data.append('page_id', TableBuilder.getUrlParameter('id_tree'));
@@ -948,7 +950,7 @@ var TableBuilder = {
         });
     }, // end uploadImage
 
-    uploadMultipleImages: function(context, ident)
+    uploadMultipleImages: function(context, ident, baseIdent)
     {
         $(".no_photo").hide();
         var arr = context.files;
@@ -957,6 +959,8 @@ var TableBuilder = {
             var data = new FormData();
             data.append("image", context.files[index]);
             data.append('ident', ident);
+            data.append('baseIdent', baseIdent);
+
             data.append('query_type', 'upload_photo');
             if (TableBuilder.getUrlParameter('id_tree') != undefined) {
                 data.append('page_id', TableBuilder.getUrlParameter('id_tree'));
@@ -1213,7 +1217,7 @@ var TableBuilder = {
             }, 'json');
     },
 
-    selectWithUploadedImages : function (name, type, thisFileElement) {
+    selectWithUploadedImages : function (name, type, thisFileElement, baseName) {
 
         TableBuilder.thisPictureElementInGroup = thisFileElement;
 
@@ -1223,7 +1227,8 @@ var TableBuilder = {
 
         var data = {
             query_type: "select_with_uploaded_images",
-            ident : name
+            ident : name,
+            baseName : baseName
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(TableBuilder.getActionUrl(thisFileElement), data,
@@ -1527,7 +1532,7 @@ var TableBuilder = {
         values.push({ name: 'query_type', value: 'multi_action' });
         values.push({ name: '__node', value: TableBuilder.getUrlParameter('node') });
         values.push({ name: 'multi_ids', value: ids });
-        
+
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(),
