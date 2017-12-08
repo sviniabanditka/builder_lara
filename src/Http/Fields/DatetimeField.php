@@ -43,7 +43,7 @@ class DatetimeField extends AbstractField
             return date('Y-m-d H:i:s');
         }
 
-        return date('Y-m-d H:i:s', $this->getTimestamp($value));
+        return $value;
     } // end prepareQueryValue
 
     private function getTimestamp($date)
@@ -60,30 +60,19 @@ class DatetimeField extends AbstractField
             }
         }
 
-        if (!$this->getValue($row)) {
-            return '';
-        }
-
-        if ($this->getValue($row) == '0000-00-00 00:00:00') {
-            return '-';
-        }
-
-        $timestamp = $this->getTimestamp($this->getValue($row));
-
-        return date('d/m/Y H:i:s', $timestamp);
+        if (!$this->getValue($row)) return '';
+ 
+        return $this->getValue($row);
     } // end getListValue
 
     public function getEditInput($row = array())
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $value = $this->getValue($row);
-        $value = $value && $value != '0000-00-00 00:00:00' ? date('d/m/Y H:i:s', $this->getTimestamp($value)) : '';
 
         $input = View::make('admin::tb.input_datetime');
         $input->value  = $value;
@@ -98,13 +87,9 @@ class DatetimeField extends AbstractField
 
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
-            return '';
-        }
+        if (!$this->getAttribute('filter')) return '';
 
-        if ($this->getAttribute('is_range')) {
-            return $this->getFilterRangeInput();
-        }
+        if ($this->getAttribute('is_range')) return $this->getFilterRangeInput();
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();

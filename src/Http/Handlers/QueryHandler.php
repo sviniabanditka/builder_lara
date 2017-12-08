@@ -476,9 +476,7 @@ class QueryHandler
         
         if ($this->controller->hasCustomHandlerMethod('handleInsertRow')) {
             $res = $this->controller->getCustomHandler()->handleInsertRow($values);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $insertData = $this->getRowQueryValues($values);
@@ -517,13 +515,11 @@ class QueryHandler
             $model = $this->model;
 
             $objectModel = new $model;
+
             foreach ($insertDataRes as $key => $value) {
                 $objectModel->$key = $value;
-                
-                if ($key == 'created_at' && $value == '') {
-                    $objectModel->$key  = date("Y-m-d G:i:s");
-                }
             }
+
             $objectModel->save();
             $id = $objectModel->id;
         }
@@ -546,6 +542,7 @@ class QueryHandler
             'id' => $id,
             'values' => $insertData
         );
+
         if ($this->controller->hasCustomHandlerMethod('onInsertRowResponse')) {
             $this->controller->getCustomHandler()->onInsertRowResponse($res);
         }

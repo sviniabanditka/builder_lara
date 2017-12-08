@@ -4,7 +4,7 @@
        id="f-{{$name}}"
        value="{{$value}}" 
        name="filter[{{ $name }}]" 
-       class="form-control input-small datepicker" >
+       class="form-control input-small datepicker" style="text-align: center">
        
 <span class="input-group-addon form-input-icon form-input-filter-icon">
     <i class="fa fa-calendar"></i>
@@ -12,17 +12,17 @@
 </div>
 
 <script>
-jQuery(document).ready(function() {
-    jQuery("#f-{{$name}}").datetimepicker({
-        changeMonth: true,
-        numberOfMonths: {{ $months ? : '1' }},
-        prevText: '<i class="fa fa-chevron-left"></i>',
-        nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        timeFormat: 'HH:mm:ss',
-        //showButtonPanel: true,
-        regional: ["ru"],
-        onClose: function (selectedDate) {}
-    });
+
+$("#f-{{$name}}").datetimepicker({
+    changeMonth: true,
+    numberOfMonths: {{ $months ? : '1' }},
+    prevText: '<i class="fa fa-chevron-left"></i>',
+    nextText: '<i class="fa fa-chevron-right"></i>',
+    dateFormat: "yy-mm-dd",
+    timeFormat: 'HH:mm:ss',
+    //showButtonPanel: true,
+    regional: ["ru"],
+    onClose: function (selectedDate) {}
 });
+
 </script>
