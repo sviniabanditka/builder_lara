@@ -11,6 +11,9 @@
 					if (message_start != undefined) {
 						TableBuilder.showSuccessNotification(message_start);
 					}
+
+					TableBuilder.showPreloader();
+
                     $.post(link, {},
                         function(data){
                             if (data.status == 'success') {
@@ -18,6 +21,9 @@
                             } else {
                                 TableBuilder.showErrorNotification(data.message);
                             }
+
+                            TableBuilder.hidePreloader();
+
                         }, 'json');
                 }
             }
