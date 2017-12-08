@@ -44,7 +44,7 @@ class DatetimeField extends AbstractField
         }
 
         return $value;
-    } // end prepareQueryValue
+    }
 
     private function getTimestamp($date)
     {
@@ -55,13 +55,11 @@ class DatetimeField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         if (!$this->getValue($row)) return '';
- 
+
         return $this->getValue($row);
     } // end getListValue
 

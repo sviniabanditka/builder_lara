@@ -225,20 +225,7 @@ class ImageField extends AbstractField
 
     public function prepareQueryValue($value)
     {
-        $vals = json_decode($value, true);
-        if ($vals && $this->getAttribute('is_multiple')) {
-            foreach ($vals as $key => $image) {
-                if (isset($image['remove']) && $image['remove']) {
-                    unset($vals[$key]);
-                }
-            }
-            // HACK: cuz we have object instead of array
-            $value = json_encode(array_values($vals));
-        } elseif ($vals) {
-            if (isset($vals['remove']) && $vals['remove']) {
-                $value = '';
-            }
-        }
+        if (!$value) return '';
 
         return $value;
     }
