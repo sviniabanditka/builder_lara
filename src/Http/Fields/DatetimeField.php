@@ -38,9 +38,9 @@ class DatetimeField extends AbstractField
         if (!$value) {
             if ($this->getAttribute('is_null')) return null;
 
-            if ($this->getFieldName() == 'created_at') {
-                return date('Y-m-d H:i:s');
-            }
+            if ($this->getFieldName() == 'created_at')  return date('Y-m-d H:i:s');
+
+            return '0000-00-00 00:00:00';
         }
 
         return $value;
