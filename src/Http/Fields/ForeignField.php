@@ -159,6 +159,7 @@ class ForeignField extends AbstractField
         $input->selected = $this->getSelected($row);
 
         $input->name     = $this->getFieldName();
+        $input->search     = $this->getAttribute('search');
         $input->is_null  = $this->getAttribute('is_null');
         $input->null_caption = $this->getAttribute('null_caption');
         $input->recursive = $this->getAttribute('recursive');

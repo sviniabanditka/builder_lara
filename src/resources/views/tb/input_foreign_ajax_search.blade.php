@@ -1,6 +1,7 @@
 <label class="input">
     <input value="" type="text" name="{{ $name }}" class="form-control input-sm unselectable {{ $name }}_foreign">
 </label>
+<div style="padding-top: 4px"><a onclick="deleteForeing{{$name}}()">Удалить</a></div>
 
 <script>
     var $select2{{$name}} = jQuery('.{{$name}}_foreign').select2({
@@ -44,5 +45,9 @@
     @if ($selected)
         $select2{{$name}}.select2("data", {!! json_encode($selected) !!});
     @endif
+
+    function deleteForeing{{$name}}() {
+        $select2{{$name}}.select2("data", '');
+    }
 
 </script>
