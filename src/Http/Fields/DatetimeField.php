@@ -16,8 +16,8 @@ class DatetimeField extends AbstractField
                 return;
             }
 
-            $dateFrom = isset($value['from']) ? $this->getTimestamp($value['from']) : '28800';
-            $dateTo = isset($value['to']) ? $this->getTimestamp($value['to']) : '2146939932';
+            $dateFrom = isset($value['from']) ? $value['from'] : '28800';
+            $dateTo = isset($value['to']) ? $value['to'] : '2146939932';
             $db->whereBetween(
                 $table .'.'. $this->getFieldName(),
                 array(
@@ -28,7 +28,7 @@ class DatetimeField extends AbstractField
         } else {
             $db->where(
                 $table .'.'. $this->getFieldName(),
-                date('Y-m-d H:i:s', $this->getTimestamp($value))
+                $value
             );
         }
     } // end onSearchFilter
@@ -36,20 +36,15 @@ class DatetimeField extends AbstractField
     public function prepareQueryValue($value)
     {
         if (!$value) {
-            if ($this->getAttribute('is_null')) {
-                return null;
-            }
+            if ($this->getAttribute('is_null')) return null;
 
-            return date('Y-m-d H:i:s');
+            if ($this->getFieldName() == 'created_at') {
+                return date('Y-m-d H:i:s');
+            }
         }
 
         return $value;
     }
-
-    private function getTimestamp($date)
-    {
-        return strtotime(str_replace('/', '-', $date));
-    } // end getTimestamp
 
     public function getListValue($row)
     {
