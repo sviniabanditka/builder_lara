@@ -44,17 +44,21 @@
         @if ($field->getAttribute('is_sorting'))
             @if ($order && $order['field'] == $ident)
                 <th class="sorting sorting_{{$order['direction']}}" 
-                    onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);">
-                        {{ __cms($options['caption']) }}
+                    onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);"
+                    {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}
+                >
+                        {{ __cms($options['caption']) }}qq
                 </th>
             @else
                 <th class="sorting" 
-                    onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);">
-                        {{ __cms($options['caption']) }}
+                    onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);"
+                    {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}
+                >
+                        {{ __cms($options['caption']) }}22
                 </th>
             @endif
         @else
-            <th>{{ __cms($options['caption']) }}</th>
+            <th {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}>{{ __cms($options['caption']) }}44</th>
         @endif
     @endif
     @endforeach
