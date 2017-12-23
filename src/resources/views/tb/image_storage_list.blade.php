@@ -28,6 +28,8 @@
                 <i></i>
             </label>
         </section>
+        <input type="hidden" value="{{Input::get('ident')}}" name="ident">
+        <input type="hidden" value="{{Input::get('baseName')}}" name="baseName">
 
     </div>
 </div>
