@@ -1,18 +1,6 @@
-В composer.json добавляем в блок require
+Подкючаем 
 ```json
- "vis/builder_lara_5" : "1.*"
-```
-Выполняем
-```json
-composer update
-```
-Добавляем в файле app.php в блок providers
-```php
-  Vis\Builder\BuilderServiceProvider::class,
-```
-Добавляем в файле app.php в блок alias
-```php
-  'Jarboe' => Vis\Builder\Facades\Jarboe::class,
+ composer require "vis/builder_lara_5":"1.*"
 ```
 В корне проекта в файле .env заменяем подключение к БД на свои
 
