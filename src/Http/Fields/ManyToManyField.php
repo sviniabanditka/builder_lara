@@ -354,11 +354,15 @@ class ManyToManyField extends AbstractField
             ->take($limit)
             ->skip(($limit * $page) - $limit);
 
-        $additionalWheres = $this->getAttribute('additional_where');
-
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $key => $opt) {
+        if ($this->getAttribute('additional_where')) {
+            foreach ($this->getAttribute('additional_where') as $key => $opt) {
                 $results->where($key, $opt['sign'], $opt['value']);
+            }
+        }
+
+        if ($this->getAttribute('mtm_external_table_order')) {
+            foreach ($this->getAttribute('mtm_external_table_order') as $key => $opt) {
+                $results->orderBy($key, $opt);
             }
         }
 
