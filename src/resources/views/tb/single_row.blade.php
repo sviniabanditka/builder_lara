@@ -11,6 +11,7 @@
 
 @foreach ($def['fields'] as $ident => $field)
     <?php $field = $controller->getField($ident) ?>
+
     @if ($field->isPattern())
         @continue
     @endif
@@ -19,16 +20,9 @@
     @if (!$field->getAttribute('hide_list'))
         <td  width="{{ $field->getAttribute('width') }}" class="{{ $field->getAttribute('class') }} unselectable">
             @if ($field->getAttribute('fast-edit'))
-                <span class="dblclick-edit selectable element_{{ $ident }}" onclick="TableBuilder.showFastEdit(this)">{!! strip_tags($field->getListValue($row), "<a><span><img>") !!}</span>
-
-                <div class="fast-edit-buttons">
-                    <div class="input_field">{!! $field->getEditInput($row) !!}</div>
-                    <span class="fa fa-save"  onclick="TableBuilder.saveFastEdit(this, {{ $row['id'] }}, '{{ $ident }}');"></span>
-                    <i class="glyphicon glyphicon-remove btn-cancel" onclick="TableBuilder.closeFastEdit(this, 'cancel');"></i>
-                </div>
-
+                {!! $field->getListValueFastEdit($row, $ident) !!}
             @elseif($field->getAttribute('result_show'))
-                  {!!  strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
+                  {!! strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
             @else
                 <span>{!! strip_tags($field->getListValue($row), "<a><span><img><br>") !!}</span>
             @endif

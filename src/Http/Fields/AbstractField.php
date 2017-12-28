@@ -132,6 +132,13 @@ abstract class AbstractField
         return $this->getValue($row);
     } // end getListValue
 
+    public function getListValueFastEdit($row, $ident)
+    {
+        $field = $this;
+
+        return view('admin::tb.fast_edit_generally', compact ('row', 'ident', 'field'));
+    }
+
     public function getReplaceStr($row)
     {
         if ($this->getAttribute('result_show')) {

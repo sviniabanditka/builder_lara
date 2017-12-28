@@ -265,8 +265,6 @@ var TableBuilder = {
 
     saveFastEdit: function(context, rowId, rowIdent)
     {
-        // TableBuilder.showProgressBar();
-
         var $context = jQuery(context).parent().parent();
         var value = $context.find('.dblclick-edit-input').val();
         $("tr[id-row=" + rowId + "] .element_" + rowIdent).text(value);
@@ -278,22 +276,30 @@ var TableBuilder = {
             {name: "value", value: value}
         ];
 
-        var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
-
-        $posting.done(function(response) {
-
-        });
+        jQuery.post(TableBuilder.getActionUrl(), data);
     }, // end saveFastEdit
+
+    activeToggle : function (rowId, rowIdent, isActive) {
+
+        var value =  isActive ? 1 : 0;;
+
+        var data = [
+            {name: "query_type", value: "fast_save"},
+            {name: "id", value: rowId},
+            {name: "name", value: rowIdent},
+            {name: "value", value: value}
+        ];
+
+        $.post(TableBuilder.getActionUrl(), data);
+    },
 
     getUrlParameter: function(sParam)
     {
         var sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
-        for (var i = 0; i < sURLVariables.length; i++)
-        {
+        for (var i = 0; i < sURLVariables.length; i++) {
             var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam)
-            {
+            if (sParameterName[0] == sParam) {
                 return sParameterName[1];
             }
         }

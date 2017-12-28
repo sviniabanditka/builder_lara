@@ -72,8 +72,14 @@ class CheckboxField extends AbstractField
         
         return View::make('admin::tb.input_checkbox_list')->with('is_checked', $this->getValue($row));
     } // end getListValue
-    
-        
+
+    public function getListValueFastEdit($row, $ident)
+    {
+        $field = $this;
+
+        return view('admin::tb.fast_edit_checkbox', compact ('row', 'ident', 'field'));
+    }
+
     public function getValue($row, $postfix = '')
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {
