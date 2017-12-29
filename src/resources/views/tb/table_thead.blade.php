@@ -47,18 +47,18 @@
                     onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);"
                     {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}
                 >
-                        {{ __cms($options['caption']) }}qq
+                        {{ __cms($options['caption']) }}
                 </th>
             @else
                 <th class="sorting" 
                     onclick="TableBuilder.doChangeSortingDirection('{{$ident}}',this);"
                     {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}
                 >
-                        {{ __cms($options['caption']) }}22
+                        {{ __cms($options['caption']) }}
                 </th>
             @endif
         @else
-            <th {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}>{{ __cms($options['caption']) }}44</th>
+            <th {!! isset($options['width']) ? 'style="width:' . $options['width'] . '"' : ''; !!}>{{ __cms($options['caption']) }}</th>
         @endif
     @endif
     @endforeach
