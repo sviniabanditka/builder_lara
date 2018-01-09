@@ -133,7 +133,7 @@ class ManyToManyField extends AbstractField
         }
 
         $showType = $this->getAttribute('show_type', 'checkbox');
-        
+
         if ($showType == 'extra') {
             return $this->getEditInputWithExtra($row);
         }
@@ -302,6 +302,8 @@ class ManyToManyField extends AbstractField
             }
         }
 
+        $this->externalTableOrder($options);
+
         $res = $options->get();
         $options = array();
         foreach ($res as $opt) {
@@ -321,6 +323,7 @@ class ManyToManyField extends AbstractField
 
         return $options;
     } // end getAllExternalFieldOptions
+
 
     public function getFieldOptionForTree()
     {
@@ -360,11 +363,7 @@ class ManyToManyField extends AbstractField
             }
         }
 
-        if ($this->getAttribute('mtm_external_table_order')) {
-            foreach ($this->getAttribute('mtm_external_table_order') as $key => $opt) {
-                $results->orderBy($key, $opt);
-            }
-        }
+        $this->externalTableOrder($results);
 
         $results = $results->get();
         $results = $results ? : array();
@@ -385,4 +384,14 @@ class ManyToManyField extends AbstractField
             'message' => ''
         );
     } // end getAjaxSearchResult
+
+    private function externalTableOrder(&$options)
+    {
+        if ($this->getAttribute('mtm_external_table_order')) {
+            foreach ($this->getAttribute('mtm_external_table_order') as $key => $opt) {
+                $options->orderBy($key, $opt);
+            }
+        }
+    }
+
 }
