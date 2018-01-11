@@ -207,9 +207,12 @@ class ForeignField extends AbstractField
 
     private function getCategory($id)
     {
-        $node = \Tree::find($id);
+        $model = $this->getModelRecursive();
+
+        $node = $model::find($id);
         $children = $node->descendants();
         $additionalWhere = $this->getAttribute('additional_where');
+
         if ($additionalWhere) {
             foreach ($additionalWhere as $field => $where) {
                 if ($where['sign'] == 'in') {
@@ -219,12 +222,20 @@ class ForeignField extends AbstractField
                 }
             }
         }
+        
         $children = $children->get(array("id", "title", "parent_id"))->toArray();
+
         $result = array();
         foreach ($children as $row) {
             $result[$row["parent_id"]][] = $row;
         }
+
         return $result;
+    }
+
+    private function getModelRecursive()
+    {
+        return $this->getAttribute('recursiveUseModel') ? : 'Tree';
     }
 
     private function printCategories($parent_id, $level)
