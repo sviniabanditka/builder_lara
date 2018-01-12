@@ -3,11 +3,11 @@
     <div id="logo-group">
 
         <span id="logo" style="margin-top: 10px;">
-           @if($skin && $skin != "smart-style-0")
-                <img src="{{asset('/packages/vis/builder/img/logo-w.png')}}" alt="VIS-A-VIS">
-           @else
-                <img src="{{asset('/packages/vis/builder/img/logo.png')}}" alt="VIS-A-VIS">
-           @endif
+            @if (config('builder.admin.link_to_logo'))
+                <a href="{{config('builder.admin.link_to_logo')}}"><img src="{{$logo}}"></a>
+            @else
+                <img src="{{$logo}}">
+            @endif
         </span>
 
     </div>

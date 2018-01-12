@@ -15,11 +15,14 @@ View::composer(array('admin::layouts.default', 'admin::partials.scripts'), funct
     $thisLang = Cookie::get("lang_admin") ? : config("builder.translate_cms.lang_default");
     $customJs = config('builder.admin.custom_js');
     $customCss = config('builder.admin.custom_css');
-   
-    $view->with('skin', $skin)
-        ->with("thisLang", $thisLang)
-        ->with("customJs", $customJs)
-        ->with("customCss", $customCss);
+    $logo = config('builder.admin.logo_url') ? : '/packages/vis/builder/img/logo.png';
+    $logoWhite = config('builder.admin.logo_url_white') ? : '/packages/vis/builder/img/logo-w.png';
+
+    if ($skin && $skin != "smart-style-0") {
+        $logo = $logoWhite;
+    }
+
+    $view->with(compact('skin', 'thisLang', 'customJs', 'customCss', 'logo'));
 });
 
 View::composer(array('admin::tree.create_modal', 'admin::tree.content'), function (ViewParam $view) {
@@ -80,7 +83,6 @@ View::composer(array('admin::tree.partials.update',
         $active = $checkFunction && $checkFunction();
     }
 
-    $view->with ('active', $active)
-        ->with ('caption', $caption);
+    $view->with(compact('active', 'caption'));
 
 });
