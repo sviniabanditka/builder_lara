@@ -256,9 +256,7 @@ class QueryHandler
 
         if ($this->controller->hasCustomHandlerMethod('handleUpdateRow')) {
             $res = $this->controller->getCustomHandler()->handleUpdateRow($values);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
         $updateData = $this->getRowQueryValues($values);
@@ -378,9 +376,7 @@ class QueryHandler
 
         if ($this->controller->hasCustomHandlerMethod('handleCloneRow')) {
             $res = $this->controller->getCustomHandler()->handleCloneRow($id);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         $this->db = DB::table($this->dbName);
         $page = (array) $this->db->where("id", $id)->select("*")->first();

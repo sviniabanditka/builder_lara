@@ -100,8 +100,12 @@ class TableAdminController extends Controller
         );
         
         return JarboeFacade::table($options);
-    } // end handleСases
+    }
 
+    public function fastEditText($table)
+    {
+        DB::table($table)->where('id', request('pk'))->update([request('name') => request('value')]);
+    }
 
     public function showPageUrlTree($slug = '')
     {

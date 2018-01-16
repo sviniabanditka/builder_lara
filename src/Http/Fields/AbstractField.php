@@ -135,8 +135,9 @@ abstract class AbstractField
     public function getListValueFastEdit($row, $ident)
     {
         $field = $this;
+        $def = $this->definition;
 
-        return view('admin::tb.fast_edit_generally', compact ('row', 'ident', 'field'));
+        return view('admin::tb.fast_edit_generally', compact ('row', 'ident', 'field', 'def'));
     }
 
     public function getReplaceStr($row)

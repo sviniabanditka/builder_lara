@@ -73,6 +73,7 @@
             $(".load_page").hide();
 
             $(window).scrollTop(50);
+            $('.selectable').editable();
 
         }).fail(function(xhr, ajaxOptions, thrownError) {
             var errorResult = jQuery.parseJSON(xhr.responseText);

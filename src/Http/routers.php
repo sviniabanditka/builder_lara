@@ -61,6 +61,12 @@ if ($menuLinks) {
                     '/handle/{page_admin}',
                     'Vis\Builder\TableAdminController@handlePage'
                 );
+
+                Route::post(
+                    '/handle/{page_admin}/fast-edit',
+                    'Vis\Builder\TableAdminController@fastEditText'
+                );
+
                 Route::post(
                     '/insert-new-record-for-many-to-many',
                     'Vis\Builder\TableAdminController@insertRecordForManyToMany'

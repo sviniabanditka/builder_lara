@@ -46,8 +46,9 @@
 
         <!-- GOOGLE FONT -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
-        <script src="/packages/vis/builder/js/libs/jquery-2.0.2.min.js"></script>
+        <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
         {!! Minify::javascript(
             array(
@@ -70,9 +71,12 @@
                   '/packages/vis/builder/js/plugin/resizableColumns/jquery.resizableColumns.js',
                   '/packages/vis/builder/js/plugin/resizableColumns/store.js',
                   '/packages/vis/builder/tb-tree.js',
-                  '/packages/vis/builder/js/cropper.js'
+                  '/packages/vis/builder/js/cropper.js',
                   ));
         !!}
+
+        <script src="/packages/vis/builder/js/plugin/x-editable/x-editable.js"></script>
+
          <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
          @if (isset($customJs) && count($customJs))
             @foreach($customJs as $jsFile)

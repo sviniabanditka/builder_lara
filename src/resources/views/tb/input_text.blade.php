@@ -52,7 +52,9 @@
                     disabled
                 @endif
 
-                class="dblclick-edit-input form-control input-sm unselectable {{$only_numeric ? "only_num" : ""}}" />
+                class="dblclick-edit-input form-control input-sm unselectable {{$only_numeric ? "only_num" : ""}}"
+
+                />
 
                 @if ($custom_type == 'hidden')
                     {{ $value }}
