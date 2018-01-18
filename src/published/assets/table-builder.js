@@ -1881,7 +1881,6 @@ $(window).load(function() {
     TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();
     TableBuilder.initSearchOnEnterPressed();
-    $('.selectable').editable();
 
     $(document).on('click', 'a.node_link', function (e) {
         var href = $(this).attr('href');

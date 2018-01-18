@@ -26,7 +26,7 @@
                    '/packages/vis/builder/js/multiselect_master/js/ui.multiselect.js'
                   ));
 !!}
-
+<script src="/packages/vis/builder/js/plugin/x-editable/x-editable.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
 {!! Minify::javascript(
@@ -60,6 +60,7 @@
 !!}
 
 <script type="text/javascript">
+   $('.selectable').editable();
 
    langCms = "{{$thisLang}}";
 
