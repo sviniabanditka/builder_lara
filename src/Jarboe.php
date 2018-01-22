@@ -34,7 +34,10 @@ class Jarboe
 
     public function tree(
         $model = 'Vis\Builder\Tree',
-        $options = array(),
+        $options = [
+            'url' => '/admin/tree',
+            'def_name' => 'tree/node'
+        ],
         $nameTree = "tree"
     ) {
         $controller = new TreeCatalogController($model, $options, $nameTree);
