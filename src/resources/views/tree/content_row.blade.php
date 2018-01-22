@@ -10,8 +10,9 @@
         @foreach(config('builder.' . $treeName . '.list_fields') as $nameBDField => $field)
             <td style="text-align: center">
                  @if (isset($item->$nameBDField))
-                        <?php $fieldClass =  $controller->getField($nameBDField); ?>
-                        {!! $fieldClass->getListValue($item) !!}
+                        <?php $fieldClass =  $controller->getField($nameBDField);?>
+
+                        {!! $fieldClass->getListValue($item->toArray()) !!}
                  @endif
             </td>
         @endforeach

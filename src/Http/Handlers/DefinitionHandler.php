@@ -31,14 +31,21 @@ class DefinitionHandler
         $result = [];
         foreach ($this->def['fields'] as $name => $value) {
 
-            if ((!isset($value['hide_list']) || (isset($value['hide_list']) && !$value['hide_list']))
-                && $value['type'] != 'pattern'
-            ) {
+            if ($this->checkShowList($value)) {
                 $result[] = $this->controller->getField($name);
             }
         }
 
         return $result;
+    }
+
+    private function checkShowList($value)
+    {
+        if ($value['type'] == 'pattern' || $value['type'] == 'definition') return false;
+
+        if (isset($value['hide_list']) && $value['hide_list']) return false;
+
+        return true;
     }
 
 }
