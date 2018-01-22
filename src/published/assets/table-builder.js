@@ -26,16 +26,41 @@ var TableBuilder = {
     onDoDelete: null,
     handlerCreate: null,
     tableEditorImg : null,
+    sort : true,
 
     init: function(options)
     {
         TableBuilder.options = TableBuilder.getOptions(options);
         TableBuilder.initSelect2Hider();
-    }, // end init
+    },
 
     optionsInit : function(options)
     {
         TableBuilder.options = TableBuilder.getOptions(options);
+    },
+
+    afterLoadPage : function()
+    {
+        $('.selectable').editable();
+
+        $('.tb-sort-me-gently', '.tb-table').on('mousedown', function() {
+            $('.widget-body', '.table-builder').css('overflow-x', 'visible');
+        });
+        $('.tb-sort-me-gently', '.tb-table').on('mouseup', function() {
+            $('.widget-body', '.table-builder').css('overflow-x', 'scroll');
+        });
+
+        $('tbody', '#datatable_fixed_column').sortable({
+            scroll: true,
+            axis: "y",
+            handle: ".tb-sort",
+            update: function () {
+
+                var order = $('tbody', '#datatable_fixed_column').sortable("serialize");
+                TableBuilder.saveOrder(order);
+            }
+        });
+
     },
 
     initFroalaEditor: function () {
@@ -1060,9 +1085,9 @@ var TableBuilder = {
 
     doChangeSortingDirection: function(ident, context)
     {
-        // TableBuilder.showPreloader();
+        if (!this.sort) return;
 
-        var $context = jQuery(context);
+        var $context = $(context);
 
         var isAscDirection = $context.hasClass('sorting_asc');
         var direction = isAscDirection ? 'desc' : 'asc';
@@ -1088,7 +1113,31 @@ var TableBuilder = {
                 TableBuilder.showErrorNotification(errorResult.message);
             }
         });
-    }, // end doChangeSortingDirection
+    },
+
+    doClearOrder : function () {
+        this.sort = false;
+
+        jQuery.ajax({
+            data: [
+                {name: "query_type", value: "clear_order_by"},
+            ],
+            type: "POST",
+            url: TableBuilder.getActionUrl(),
+            cache: false,
+            dataType: "json",
+            success: function(response) {
+                doAjaxLoadContent(window.location.href);
+                TableBuilder.sort = true;
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorResult = jQuery.parseJSON(xhr.responseText);
+                TableBuilder.showErrorNotification(errorResult.message);
+                TableBuilder.sort = true;
+            }
+        });
+
+    },
 
     uploadFile: function(context, ident)
     {
@@ -1391,9 +1440,9 @@ var TableBuilder = {
         };
 
         var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
-        alert(location.pathname);
+
         $posting.done(function(response) {
-            location.href(location.pathname);
+            doAjaxLoadContent(location.pathname);
         });
     }, // end setPerPageAmount
 
@@ -1635,7 +1684,7 @@ var TableBuilder = {
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(),
-            data: { order: order, params: window.location.search, query_type: 'change_order' },
+            data: { order: order, params: TableBuilder.getUrlParameter('page'), query_type: 'change_order' },
             dataType: 'json',
             success: function(response) {
                 if (response.status) {

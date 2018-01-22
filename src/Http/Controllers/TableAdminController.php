@@ -23,9 +23,14 @@ class TableAdminController extends Controller
     public function showTreeOther($nameTree)
     {
         $model = Config::get('builder.' . $nameTree . '_tree.model');
-        $option = [];
+        $nameTree = $nameTree . "_tree";
 
-        $controller = JarboeFacade::tree($model, $option, $nameTree . "_tree");
+        $option = [
+            'url' => '/admin/' . $nameTree,
+            'def_name' => $nameTree. '/node'
+        ];
+
+        $controller = JarboeFacade::tree($model, $option, $nameTree);
 
         return $controller->handle();
     }

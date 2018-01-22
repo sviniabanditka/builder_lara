@@ -9,13 +9,9 @@
     @if(config('builder.' . $treeName . '.list_fields'))
         @foreach(config('builder.' . $treeName . '.list_fields') as $nameBDField => $field)
             <td style="text-align: center">
-               
                  @if (isset($item->$nameBDField))
-                     @if (isset($field['type']) && $field['type'] == 'picture')
-                         <img src="{{glide($item->$nameBDField, ['w'=> '50', 'h' => '50'])}}">
-                     @else
-                          {{strip_tags($item->$nameBDField)}}
-                     @endif
+                        <?php $fieldClass =  $controller->getField($nameBDField); ?>
+                        {!! $fieldClass->getListValue($item) !!}
                  @endif
             </td>
         @endforeach

@@ -57,7 +57,6 @@
             <div class="col-sm-8 text-right">
                 <div class="dataTables_paginate paging_bootstrap_full">
                     {{$children->appends(Input::all())->links()}}
-
                 </div>
             </div>
         </div>

@@ -12,12 +12,15 @@ class TreeCatalogController
     protected $model;
     protected $options;
     protected $nameTree;
+    protected $controller;
 
     public function __construct($model, array $options, $nameTree)
     {
         $this->model   = $model;
         $this->options = $options;
         $this->nameTree = $nameTree;
+
+        $this->controller = new JarboeController($options);
     } // end __construct
 
     public function setOptions(array $options = array())
@@ -262,6 +265,7 @@ class TreeCatalogController
         $parentIDs = array();
         $model = $this->model;
         $treeName = $this->nameTree;
+        $controller = $this->controller;
 
         $idNode  = Input::get('node', 1);
         $current = $model::find($idNode);
@@ -298,14 +302,13 @@ class TreeCatalogController
             $template = $templates[$current->template];
         }
 
-        $content = View::make('admin::tree.content', compact('current', 'template', 'treeName', "children"));
 
-        if (Request::ajax()) {
-            return View::make('admin::tree_ajax', compact('content', 'current', 'parentIDs', 'treeName'));
-        } else {
-            return View::make('admin::tree', compact('content', 'current', 'parentIDs', 'treeName'));
-        }
-    } // end handleShowCatalog
+
+        $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller'));
+        $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
+
+        return view('admin::'. $treeView, compact('content', 'current', 'parentIDs', 'treeName'));
+    }
 
     public function getEditModalForm()
     {

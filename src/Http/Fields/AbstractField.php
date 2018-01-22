@@ -91,16 +91,18 @@ abstract class AbstractField
             $fieldName = $fieldName . $tabs[0]['postfix'];
         }
 
-        $value = '';
+        if (is_object ($row) && isset($row->$fieldName)) {
+            return $row->$fieldName;
+        }
+
         if (isset($row[$fieldName])) {
-            $value = $row[$fieldName];
+            return $row[$fieldName];
         } else {
             if ($this->getAttribute('default')) {
-                $value = $this->getAttribute('default');
+                return $this->getAttribute('default');
             }
         }
 
-        return $value;
     } // end getValue
     
     public function getExportValue($type, $row, $postfix = '')
