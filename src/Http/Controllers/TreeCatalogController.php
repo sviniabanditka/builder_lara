@@ -302,12 +302,10 @@ class TreeCatalogController
             $template = $templates[$current->template];
         }
 
-
-
         $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller'));
         $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
 
-        return view('admin::'. $treeView, compact('content', 'current', 'parentIDs', 'treeName'));
+        return view('admin::'. $treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller'));
     }
 
     public function getEditModalForm()
@@ -372,7 +370,7 @@ class TreeCatalogController
         $item->clearCache();
         $item->checkUnicUrl();
         $treeName = $this->nameTree;
-        $result['html'] = View::make('admin::tree.content_row', compact('item', 'treeName'))->render();
+        $result['html'] = view('admin::tree.content_row', compact('item', 'treeName', 'controller'))->render();
 
         return Response::json($result);
     } // end doEditNode

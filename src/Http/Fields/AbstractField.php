@@ -90,7 +90,7 @@ abstract class AbstractField
             $tabs = $this->getAttribute('tabs');
             $fieldName = $fieldName . $tabs[0]['postfix'];
         }
-        
+
         if (isset($row[$fieldName])) {
             return $row[$fieldName];
         } else {
