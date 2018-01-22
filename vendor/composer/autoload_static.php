@@ -58,6 +58,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Handlers\\ButtonsHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/ButtonsHandler.php',
         'Vis\\Builder\\Handlers\\CustomClosureHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/CustomClosureHandler.php',
         'Vis\\Builder\\Handlers\\CustomHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/CustomHandler.php',
+        'Vis\\Builder\\Handlers\\DefinitionHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/DefinitionHandler.php',
         'Vis\\Builder\\Handlers\\ExportHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/ExportHandler.php',
         'Vis\\Builder\\Handlers\\ImportHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/ImportHandler.php',
         'Vis\\Builder\\Handlers\\QueryHandler' => __DIR__ . '/../..' . '/src/Http/Handlers/QueryHandler.php',

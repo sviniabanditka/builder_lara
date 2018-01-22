@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade tb-modal" id="modal_form_edit"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog " style="width: 1100px" >
         <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
@@ -43,10 +42,7 @@
                 </tbody>
             </table>
             </div>
-
-
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 

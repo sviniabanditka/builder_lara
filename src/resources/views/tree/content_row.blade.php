@@ -3,28 +3,23 @@
         <i class="fa fa-sort"></i>
     </td>
     <td>
-        @if($item->isHasChilder())
-            <i class="fa fa-folder"></i>
-        @else
-            <i class="fa fa-file-o"></i>
-        @endif
-        &nbsp;
-            <a href="?node={{ $item->id }}" class="node_link">{{ $item->title }}</a>
+        <i class="fa {{$item->isHasChilder() ? 'fa-folder' : 'fa-file-o'}}"></i>&nbsp;
+        <a href="?node={{ $item->id }}" class="node_link">{{ $item->title }}</a>
     </td>
-    @if(Config::get('builder.'.$treeName.'.list_fields'))
-
-        @foreach(Config::get('builder.'.$treeName.'.list_fields') as $nameBDField => $field)
-
-            <td>
+    @if(config('builder.' . $treeName . '.list_fields'))
+        @foreach(config('builder.' . $treeName . '.list_fields') as $nameBDField => $field)
+            <td style="text-align: center">
+               
                  @if (isset($item->$nameBDField))
-                    {{strip_tags($item->$nameBDField)}}
+                     @if (isset($field['type']) && $field['type'] == 'picture')
+                         <img src="{{glide($item->$nameBDField, ['w'=> '50', 'h' => '50'])}}">
+                     @else
+                          {{strip_tags($item->$nameBDField)}}
+                     @endif
                  @endif
             </td>
-
         @endforeach
-
     @else
-
         <td>
             <a class="tpl-editable" href="javascript:void(0);"
                 data-type="select"
@@ -32,8 +27,8 @@
                 data-pk="{{ $item->id }}"
                 data-value="{{ $item->template }}"
                 data-original-title="{{__cms("Выберите шаблон")}}">
-                    @if (isset(Config::get('builder.'.$treeName.'.templates')[$item->template]['title']))
-                        {{Config::get('builder.'.$treeName.'.templates')[$item->template]['title']}}
+                    @if (isset(config('builder.' . $treeName . '.templates')[$item->template]['title']))
+                        {{config('builder.' . $treeName . '.templates')[$item->template]['title']}}
                     @else
                         {{ $item->template }}
                     @endif
@@ -54,10 +49,8 @@
     <td style="text-align: center">
        <div style="display: inline-block">
          <div class="btn-group hidden-phone pull-right">
-              <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
-
+              <a class="btn dropdown-toggle btn-default" data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-
                     @include('admin::tree.partials.update', ['type' => 'update'])
                     @include('admin::tree.partials.preview', ['type' => 'preview'])
                     @include('admin::tree.partials.clone', ['type' => 'clone'])
@@ -65,7 +58,6 @@
                     @include('admin::tree.partials.constructor', ['type' => 'constructor'])
                   {{--  @include('admin::tree.partials.statistic', ['type' => 'statistic'])--}}
                     @include('admin::tree.partials.delete', ['type' => 'delete'])
-
                 </ul>
          </div>
     </div>

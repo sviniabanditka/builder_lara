@@ -3,7 +3,6 @@
 namespace Vis\Builder\Handlers;
 
 use Vis\Builder\Exceptions\JarboeValidationException;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 
 class ImportHandler
@@ -24,7 +23,7 @@ class ImportHandler
 
         if (isset($def['caption'])) {
 
-            return View::make('admin::tb.import_buttons', compact('def'));
+            return view('admin::tb.import_buttons', compact('def'));
 
             // 2 or more buttons 
         } else {
@@ -33,7 +32,7 @@ class ImportHandler
             $html = "";
 
             foreach ($defArray as $def) {
-                $html .= View::make('admin::tb.import_buttons', compact('def'))->render();
+                $html .= view('admin::tb.import_buttons', compact('def'))->render();
             }
 
             return $html;

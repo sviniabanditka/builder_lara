@@ -136,7 +136,7 @@ class QueryHandler
         }
     }
 
-    private function getPerPageAmount($info)
+    public function getPerPageAmount($info)
     {
         if (!is_array($info)) {
             return $info;
@@ -696,6 +696,14 @@ class QueryHandler
         if (!$field->isEditable()) {
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
+    }
+
+    public function clearOrderBy()
+    {
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
+        Session::forget($sessionPath);
+
+        return true;
     }
 
     public function clearCache()

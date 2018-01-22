@@ -74,9 +74,7 @@
                   '/packages/vis/builder/js/cropper.js',
                   ));
         !!}
-
-
-
+        
          <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
          @if (isset($customJs) && count($customJs))
             @foreach($customJs as $jsFile)

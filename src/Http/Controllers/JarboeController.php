@@ -8,6 +8,7 @@ use Vis\Builder\Handlers\ExportHandler;
 use Vis\Builder\Handlers\ImportHandler;
 use Vis\Builder\Handlers\ButtonsHandler;
 use Vis\Builder\Handlers\CustomClosureHandler;
+use Vis\Builder\Handlers\DefinitionHandler;
 
 class JarboeController
 {
@@ -30,6 +31,7 @@ class JarboeController
     public $import;
     public $imageStorage;
     public $fileStorage;
+    public $definitionClass;
 
     protected $allowedIds;
 
@@ -37,7 +39,10 @@ class JarboeController
     {
         $this->options = $options;
         $this->definition = $this->getTableDefinition($this->getOption('def_name'));
+        $this->definitionClass = new DefinitionHandler($this->definition, $this);
+
         $this->doPrepareDefinition();
+
 
         $this->handler = $this->createCustomHandlerInstance();
         if (isset($this->definition['callbacks'])) {
@@ -63,13 +68,13 @@ class JarboeController
         $this->view    = new ViewHandler($this);
         $this->request = new RequestHandler($this);
 
-        $this->currentID = \Input::get('id');
-    } // end __construct
+        $this->currentID = request('id');
+    }
 
     public function getCurrentID()
     {
         return $this->currentID;
-    } // end getCurrentID
+    }
 
     private function doPrepareDefinition()
     {
@@ -259,7 +264,6 @@ class JarboeController
 
     protected function getTableDefinition($table)
     {
-
         $table = preg_replace('~\.~', '/', $table);
         $path = config_path() .'/builder/tb-definitions/'. $table .'.php';
 
@@ -267,8 +271,8 @@ class JarboeController
             throw new \RuntimeException("Definition \n[{$path}]\n does not exist.");
         }
 
-        $options = $this->getAdditionalOptions();
         $definition = require($path);
+
         if (!$definition) {
             throw new \RuntimeException("Empty definition?");
         }
@@ -291,5 +295,19 @@ class JarboeController
         }
 
         return $isSearchable;
+    }
+
+    public function getFiltersDefinition()
+    {
+       $defName = $this->getOption('def_name');
+
+       return session('table_builder.' . $defName . '.filters', array());
+    }
+
+    public function getOrderDefinition()
+    {
+        $defName = $this->getOption('def_name');
+
+        return session('table_builder.' . $defName . '.order', array());
     }
 }

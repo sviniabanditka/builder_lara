@@ -22,15 +22,11 @@
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>{{ __cms($def['options']['caption']) }}</h2>
-                    @if (isset($def['buttons']))
-                     {!! $controller->buttons->fetch() !!}
-                    @endif
-                    @if (isset($def['import']) && $def['import'])
-                    {!! $controller->import->fetch() !!}
-                    @endif
-                    @if (isset($def['export']) && $def['export'])
-                    {!!  $controller->export->fetch() !!}
-                    @endif
+
+                    {!! isset($def['buttons']) && $def['buttons'] ?  $controller->buttons->fetch() : '' !!}
+                    {!! isset($def['import']) && $def['import']  ? $controller->import->fetch() : '' !!}
+                    {!! isset($def['export']) && $def['export'] ? $controller->export->fetch() : '' !!}
+
                 </header>
                 <div>
                     <div class="jarviswidget-editbox"></div>

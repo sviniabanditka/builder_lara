@@ -22,13 +22,7 @@ class RequestHandler
 
     public function handle()
     {
-        if (Input::get('edit')) {
-            return $this->handleShowEditFormPageAction(Input::get('edit'));
-        } elseif (Input::has('make')) {
-            return $this->handleShowEditFormPageAction();
-        }
-
-        switch (Input::get('query_type')) {
+        switch (request('query_type')) {
             case 'search':
                 return $this->handleSearchAction();
                 
@@ -85,13 +79,7 @@ class RequestHandler
 
             case 'upload_photo':
                 return $this->handlePhotoUpload();
-            
-            case 'upload_photo_wysiwyg':
-                return $this->handlePhotoUploadFromWysiwyg();
-                
-            case 'redactor_image_upload':
-                return $this->handlePhotoUploadFromWysiwygRedactor();
-                
+
             case 'change_direction':
                 return $this->handleChangeDirection();
 
@@ -118,6 +106,9 @@ class RequestHandler
 
             case 'foreign_ajax_search':
                 return $this->handleForeignAjaxSearch();
+
+            case 'clear_order_by':
+                return $this->handleClearOrderBy();
 
             default:
                 return $this->handleShowList();
@@ -161,59 +152,31 @@ class RequestHandler
     protected function handleChangeOrderAction()
     {
         $this->controller->query->clearCache();
+        parse_str(request('order'), $order);
 
-        parse_str(Input::get('order'), $order);
-        $order = $order['sort'];
-
-        if (Input::get('params')) {
-            $params = ltrim(Input::get('params'), "?");
-            parse_str($params, $paramsUrl);
-
-            if (isset($paramsUrl['page'])) {
-                $pageThisCount = $paramsUrl['page'];
-                unset($paramsUrl['page']);
-            } else {
-                $pageThisCount = 1;
-            }
-
-            if (count($paramsUrl)>0) {
-                return Response::json(array(
-                    'status' => false,
-                    'message' => "Ошибка. Сортировка с параметрами фильтра невозможна"
-                ));
-            }
-
-        } else {
-            $pageThisCount = 1;
+        if (count($this->controller->getFiltersDefinition())
+          || count($this->controller->getOrderDefinition())
+        ) {
+            return Response::json([
+                'status' => false,
+                'message' => 'Изменение порядка невозможно при фильтрации и сортировки'
+            ]);
         }
 
-        $info = $this->definition['db']['pagination']['per_page'];
+        $pageThisCount = request('params') ? : 1;
 
-        if (is_array($info)) {
-
-            $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
-            $perPage = Session::get($sessionPath);
-
-            if (!$perPage) {
-                $keys = array_keys($info);
-                $perPage = $keys[0];
-            }
-        } else {
-            $perPage = $info;
-        }
+        $perPage = $this->controller->query->getPerPageAmount($this->definition['db']['pagination']['per_page']);
 
         $lowest = ($pageThisCount * $perPage) - $perPage;
         
-        foreach ($order as $id) {
+        foreach ($order['sort'] as $id) {
             ++$lowest;
             \DB::table($this->definition['db']['table'])->where('id', $id)->update(array(
                 'priority' => $lowest
             ));
         }
         
-        return Response::json(array(
-            'status' => true
-        ));
+        return Response::json(['status' => true]);
     }
     
     protected function handleMultiAction()
@@ -288,11 +251,10 @@ class RequestHandler
         $method = 'doImport'. ucfirst($type);
         
         $res = $this->controller->import->$method($file);
-        
-        $response = array(
+
+        return Response::json([
             'status' => $res
-        );
-        return Response::json($response);
+        ]);
     }
     
     protected function handleExport()
@@ -328,11 +290,9 @@ class RequestHandler
         $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         Session::put($sessionPath, $order);
 
-        $response = array(
+        return Response::json([
             'url' => $this->controller->getOption('url')
-        );
-
-        return Response::json($response);
+        ]);
     }
     
     protected function handleFileUpload()
@@ -385,58 +345,7 @@ class RequestHandler
 
         return Response::json($data);
     }
-    
-    protected function handlePhotoUploadFromWysiwyg()
-    {
-        $file = Input::file('image');
-        
-        if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
-            $res = $this->controller->getCustomHandler()->onPhotoUploadFromWysiwyg($file);
-            if ($res) return $res;
-        }
-        
-        $extension = $file->guessExtension();
-        $fileName = md5_file($file->getRealPath()) .'_'. time() .'.'. $extension;
 
-        $prefixPath = 'storage/tb-' . $this->definitionName . '/';
-        $postfixPath = date ('Y') . '/' . date ('m') . '/' . date ('d') . '/';
-        $destinationPath = $prefixPath . $postfixPath;
-        
-        $status = $file->move($destinationPath, $fileName);
-        
-        $data = array(
-            'status' => $status,
-            'link'   => URL::to($destinationPath . $fileName)
-        );
-
-        return Response::json($data);
-    }
-    
-    protected function handlePhotoUploadFromWysiwygRedactor()
-    {
-        $file = Input::file('file');
-        
-        if ($this->controller->hasCustomHandlerMethod('onPhotoUploadFromWysiwyg')) {
-            $res = $this->controller->getCustomHandler()->onPhotoUploadFromWysiwyg($file);
-            if ($res) return $res;
-        }
-        
-        $extension = $file->guessExtension();
-        $fileName = md5_file($file->getRealPath()) .'_'. time() .'.'. $extension;
-
-        $prefixPath = 'storage/tb-'.$this->definitionName.'/';
-        $postfixPath = date('Y') .'/'. date('m') .'/'. date('d') .'/';
-        $destinationPath = $prefixPath . $postfixPath;
-        
-        $file->move($destinationPath, $fileName);
-        
-        $data = array(
-            'filelink'   => URL::to($destinationPath . $fileName)
-        );
-
-        return Response::json($data);
-    }
-    
     protected function handleDeleteAction()
     {
         $idRow = $this->getRowID();
@@ -512,12 +421,11 @@ class RequestHandler
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showRevisionForm($idRow);
-        $data = array(
+
+        return Response::json([
             'html' => $html,
             'status' => true
-        );
-
-        return Response::json($data);
+        ]);
     }
 
     protected function handleShowViewsStatisic()
@@ -526,17 +434,16 @@ class RequestHandler
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showViewsStatistic($idRow);
-        $data = array(
+
+        return Response::json([
             'html' => $html,
             'status' => true
-        );
-
-        return Response::json($data);
+        ]);
     }
 
     protected function handleReturnRevisions()
     {
-        $idRevision = Input::get("id");
+        $idRevision = request("id");
         $thisRevision = Revision::find($idRevision);
 
         $model = $thisRevision->revisionable_type;
@@ -545,11 +452,7 @@ class RequestHandler
         $modelObject->$key = $thisRevision->old_value;
         $modelObject->save();
 
-        $data = array(
-            'status' => true
-        );
-
-        return Response::json($data);
+        return Response::json(['status' => true]);
     }
 
     protected function checkEditPermission($id)
@@ -559,9 +462,10 @@ class RequestHandler
 
     private function getRowID()
     {
-        if (Input::has('id')) {
-            return Input::get('id');
+        if (request('id')) {
+            return request('id');
         }
+
         throw new \RuntimeException("Undefined row id for action.");
     }
 
@@ -589,25 +493,27 @@ class RequestHandler
         );
     }
 
-    protected function handleShowEditFormPageAction($id = false)
+    protected function handleClearOrderBy()
     {
-        return $this->controller->view->showEditFormPage($id);
+        return array(
+            'result' => $this->controller->query->clearOrderBy(),
+        );
     }
 
     protected function handleSearchAction()
     {
         $this->prepareSearchFilters();
 
-        $response = array(
-            'url' => $this->controller->getOption ('url') . '?catalog='
-                . Input::get ('catalog')
-        );
+        $response = [
+            'url' => $this->controller->getOption ('url') . '?catalog=' . request ('catalog')
+        ];
+
         return Response::json($response);
     }
 
     private function prepareSearchFilters()
     {
-        $filters = Input::get('filter', array());
+        $filters = request('filter', array());
 
         $newFilters = array();
         foreach ($filters as $key => $value) {

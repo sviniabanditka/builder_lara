@@ -221,8 +221,8 @@ var TableBuilder = {
         TableBuilder.showProgressBar();
 
         var $form = $('form[target=submiter]');
-
         var data = $form.serializeArray();
+
         data.push({ name: "query_type", value: "search" });
         data.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
 
@@ -234,10 +234,12 @@ var TableBuilder = {
                 }).get()
         );
 
-        var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
+        var url = TableBuilder.getActionUrl();
+
+        var $posting = jQuery.post(url, data);
 
         $posting.done(function(response) {
-            doAjaxLoadContent(location.href);
+            doAjaxLoadContent(location.pathname);
         });
 
     }, // end search
@@ -1389,9 +1391,9 @@ var TableBuilder = {
         };
 
         var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
+        alert(location.pathname);
         $posting.done(function(response) {
-            window.location.replace(window.location.origin + window.location.pathname + window.location.search);
-            //window.location.replace(response.url);
+            location.href(location.pathname);
         });
     }, // end setPerPageAmount
 

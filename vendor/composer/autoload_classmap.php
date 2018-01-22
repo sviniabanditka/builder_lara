@@ -43,6 +43,7 @@ return array(
     'Vis\\Builder\\Handlers\\ButtonsHandler' => $baseDir . '/src/Http/Handlers/ButtonsHandler.php',
     'Vis\\Builder\\Handlers\\CustomClosureHandler' => $baseDir . '/src/Http/Handlers/CustomClosureHandler.php',
     'Vis\\Builder\\Handlers\\CustomHandler' => $baseDir . '/src/Http/Handlers/CustomHandler.php',
+    'Vis\\Builder\\Handlers\\DefinitionHandler' => $baseDir . '/src/Http/Handlers/DefinitionHandler.php',
     'Vis\\Builder\\Handlers\\ExportHandler' => $baseDir . '/src/Http/Handlers/ExportHandler.php',
     'Vis\\Builder\\Handlers\\ImportHandler' => $baseDir . '/src/Http/Handlers/ImportHandler.php',
     'Vis\\Builder\\Handlers\\QueryHandler' => $baseDir . '/src/Http/Handlers/QueryHandler.php',

@@ -420,4 +420,17 @@ abstract class AbstractField
     {
         return strip_tags($this->getListValue($row), "<a><span><img><br>");
     }
+
+    public function getWidth()
+    {
+       return $this->getAttribute('width') ? 'style="width:' . $this->getAttribute('width') . '"' : '';
+    }
+
+
+    public function isOrder($controller)
+    {
+        $order = $controller->getOrderDefinition();
+
+        return $order && $order['field'] == $this->getFieldName() ? 'sorting_' . $order['direction'] : '';
+    }
 }

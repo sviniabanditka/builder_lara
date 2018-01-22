@@ -1,7 +1,5 @@
 <?php namespace Vis\Builder\Handlers;
 
-use Illuminate\Support\Facades\View;
-
 class ButtonsHandler
 {
     protected $def;
@@ -15,14 +13,15 @@ class ButtonsHandler
 
     public function fetch()
     {
-        $def = $this->def;
+        $buttons = $this->def;
+
         $buttonsHtml = "";
-        if (count($def)) {
-            foreach ($def as $button) {
+        if (count($buttons)) {
+            foreach ($buttons as $button) {
                 if (!$button || !$button['check']()) {
                     $buttonsHtml .= '';
                 } else {
-                    $buttonsHtml .= View::make('admin::tb.button', compact('button'));
+                    $buttonsHtml .= view('admin::tb.button', compact('button'));
                 }
             }
         }

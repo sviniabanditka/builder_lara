@@ -66,18 +66,20 @@ class ViewHandler
         $definition = $this->definition;
         $templatePostfix = $id ? 'edit' : 'create';
         
-        return View::make('admin::table_page_'. $templatePostfix, compact('form', 'js', 'definition', 'id'))
+        return view('admin::table_page_'. $templatePostfix,
+                compact('form', 'js', 'definition', 'id'))
                 ->render();
     }
 
     public function showList()
     {
-        $table = View::make('admin::tb.table_builder');
+        $table = view('admin::tb.table_builder');
         
         $table->def  = $this->definition;
         $table->rows = $this->controller->query->getRows();
         $table->controller = $this->controller;
         $table->per_page = Session::get('table_builder.' . $this->definitionName . '.per_page');
+        $table->fieldsList = $this->controller->definitionClass->getFieldsList();
 
         return $table;
     }
@@ -146,7 +148,6 @@ class ViewHandler
 
     public function showEditForm($id = false, $isTree = false)
     {
-
         $table = $id ? View::make('admin::tb.modal_form_edit') : View::make('admin::tb.modal_form');
 
         $table->is_tree = $isTree;

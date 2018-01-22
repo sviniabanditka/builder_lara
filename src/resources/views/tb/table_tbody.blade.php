@@ -1,4 +1,4 @@
-@if ($rows->count())
+@if (count($rows))
     @foreach ($rows as $row)
         <?php $row = $row->toArray();?>
         @include('admin::tb.single_row')

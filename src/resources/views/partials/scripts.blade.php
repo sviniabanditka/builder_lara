@@ -60,9 +60,9 @@
 !!}
 
 <script type="text/javascript">
-   $('.selectable').editable();
 
    langCms = "{{$thisLang}}";
+
 
    function doAjaxLoadContent(url) {
 
@@ -74,7 +74,8 @@
             $(".load_page").hide();
 
             $(window).scrollTop(50);
-            $('.selectable').editable();
+
+            TableBuilder.afterLoadPage();
 
         }).fail(function(xhr, ajaxOptions, thrownError) {
             var errorResult = jQuery.parseJSON(xhr.responseText);
@@ -113,6 +114,7 @@
 
 $(document).ready(function() {
     pageSetUp();
+    TableBuilder.afterLoadPage();
 
     $.timepicker.regional['ru'] = {
         timeOnlyTitle: '{{__cms('Выберите время')}}',

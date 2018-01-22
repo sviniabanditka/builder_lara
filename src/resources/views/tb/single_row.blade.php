@@ -1,6 +1,6 @@
 <tr id-row="{{ $row['id'] }}" id="sort-{{ $row['id'] }}">
     @if (isset($def['options']['is_sortable']) && $def['options']['is_sortable'])
-        <td class="tb-sort-me-gently" style="cursor:s-resize;">
+        <td class="tb-sort" style="cursor:s-resize;">
             <i class="fa fa-sort"></i>
         </td>
     @endif
