@@ -64,7 +64,7 @@ class TreeCatalogController
     {
         $model = $this->model;
 
-        switch (Input::get('name')) {
+        switch (request('name')) {
             case 'template':
                 $node = $model::find(Input::get('pk'));
                 $node->template = Input::get('value');
@@ -87,13 +87,13 @@ class TreeCatalogController
 
         $node = new $model();
 
-        $node->parent_id = Input::get('node', 1);
-        $node->title     = Input::get('title');
-        $node->template  = Input::get('template') ? : '';
+        $node->parent_id = request('node', 1);
+        $node->title     = request('title');
+        $node->template  = request('template') ? : '';
         $node->is_active = 1;
         $node->save();
 
-        $node->slug = Input::get('slug') ? : Input::get('title');
+        $node->slug = request('slug') ? : request('title');
         $node->save();
         $node->checkUnicUrl();
 
@@ -109,9 +109,9 @@ class TreeCatalogController
     public function doCloneRecord()
     {
         $model = $this->model;
-        $root = $model::find(Input::get('node', 1));
+        $root = $model::find(request('node', 1));
 
-        $id = Input::get('id');
+        $id = request('id');
 
         $this->cloneRecursively($id);
 

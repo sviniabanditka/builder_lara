@@ -247,37 +247,33 @@ class RequestHandler
     protected function handleImport()
     {
         $file   = Input::file('file');
-        $type   = Input::get('type');
+        $type   = request('type');
         $method = 'doImport'. ucfirst($type);
-        
-        $res = $this->controller->import->$method($file);
 
         return Response::json([
-            'status' => $res
+            'status' => $this->controller->import->$method($file)
         ]);
     }
     
     protected function handleExport()
     {
-        $type   = Input::get('type');
+        $type   = request('type');
         $method = 'doExport'. ucfirst($type);
-        $idents = array_keys(Input::get('b', array()));
+        $idents = array_keys(request('b', array()));
         
         $this->controller->export->$method($idents);
     }
 
     protected function handleSetPerPageAmountAction()
     {
-        $perPage = Input::get('per_page');
+        $perPage = request('per_page');
 
         $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         Session::put($sessionPath, $perPage);
-        
-        $response = array(
-            'url' => $this->controller->getOption('url')
-        );
 
-        return Response::json($response);
+        return Response::json([
+            'url' => $this->controller->getOption('url')
+        ]);
     }
     
     protected function handleChangeDirection()
@@ -331,7 +327,7 @@ class RequestHandler
     {
         $this->controller->query->clearCache();
 
-        $baseIdent = Input::get('baseIdent');
+        $baseIdent = request('baseIdent');
         $file  = Input::file('image');
 
         $field = $this->controller->getField($baseIdent);
@@ -340,7 +336,7 @@ class RequestHandler
             $res = $this->controller->getCustomHandler()->onPhotoUpload($field, $file);
             if ($res) return $res;
         }
-        
+
         $data = $field->doUpload($file);
 
         return Response::json($data);
@@ -407,12 +403,11 @@ class RequestHandler
         $this->checkEditPermission($idRow);
 
         $html = $this->controller->view->showEditForm($idRow);
-        $data = array(
+
+        return Response::json([
             'html' => $html,
             'status' => true
-        );
-
-        return Response::json($data);
+        ]);
     }
 
     protected function handleShowRevisionForm()
@@ -504,11 +499,9 @@ class RequestHandler
     {
         $this->prepareSearchFilters();
 
-        $response = [
+        return Response::json([
             'url' => $this->controller->getOption ('url') . '?catalog=' . request ('catalog')
-        ];
-
-        return Response::json($response);
+        ]);
     }
 
     private function prepareSearchFilters()

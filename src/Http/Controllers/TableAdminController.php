@@ -18,11 +18,11 @@ class TableAdminController extends Controller
         $controller = JarboeFacade::tree();
 
         return $controller->handle();
-    } // end showTree
+    }
 
     public function showTreeOther($nameTree)
     {
-        $model = Config::get('builder.' . $nameTree . '_tree.model');
+        $model = config('builder.' . $nameTree . '_tree.model');
         $nameTree = $nameTree . "_tree";
 
         $option = [
@@ -40,22 +40,26 @@ class TableAdminController extends Controller
         $controller = JarboeFacade::tree();
 
         return $controller->process();
-    } // end handleTree
+    }
 
     public function handleTreeOther($nameTree)
     {
-        $model = Config::get('builder.' . $nameTree . '_tree.model');
-        $option = [];
+        $model = config('builder.' . $nameTree . '_tree.model');
+        $nameTree = $nameTree . "_tree";
 
-        $controller = JarboeFacade::tree($model, $option, $nameTree . "_tree");
+        $option = [
+            'url' => '/admin/' . $nameTree,
+            'def_name' => $nameTree. '/node'
+        ];
+
+        $controller = JarboeFacade::tree($model, $option, $nameTree);
 
         return $controller->process();
-    } // end handleTree
-
+    }
 
     public function showTreeAll($nameTree)
     {
-        $model = Config::get('builder.' . $nameTree . '.model');
+        $model = config('builder.' . $nameTree . '.model');
         $actions = config('builder.' . $nameTree . '.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
@@ -64,7 +68,7 @@ class TableAdminController extends Controller
             $tree = $model::all()->toHierarchy();
         }
 
-        $idNode  = \Input::get('node', 1);
+        $idNode  = request('node', 1);
         $current = $model::find($idNode);
 
         $parentIDs = array();
@@ -72,7 +76,7 @@ class TableAdminController extends Controller
             $parentIDs[] = $anc->id;
         }
 
-        return View::make('admin::tree.tree', compact("tree", "parentIDs"));
+        return view('admin::tree.tree', compact("tree", "parentIDs"));
     }
 
     public function showPage($page)
@@ -84,7 +88,7 @@ class TableAdminController extends Controller
 
         $table = JarboeFacade::table($options)['showList'];
 
-        return View::make('admin::table', compact('table'));
+        return view('admin::table', compact('table'));
     }
 
     public function showPagePost($page)
@@ -122,9 +126,9 @@ class TableAdminController extends Controller
             $slug = "/";
         }
 
-        $_model = Config::get('builder.tree.model');
+        $_model = config('builder.tree.model');
         $nodes = $_model::where("slug", 'like', $slug)->get();
-        $templates = Config::get('builder.tree.templates');
+        $templates = config('builder.tree.templates');
     
         //check correctly url
         if (count($nodes)) {
@@ -139,7 +143,7 @@ class TableAdminController extends Controller
         }
 
         //check is active
-        if (!$node->is_active && Input::get('show') != 1) {
+        if (!$node->is_active && request('show') != 1) {
             App::abort(404);
         }
 
@@ -152,38 +156,27 @@ class TableAdminController extends Controller
             App::abort(404);
         }
 	    
-	if (empty($templates[$node->template]['action'])) {
+	    if (empty($templates[$node->template]['action'])) {
             App::abort(404);
         }
 
         $def = $templates[$node->template]['node_definition'];
 
-        $_model = Config::get("builder.tb-definitions.tree.$def.options.model");
+        $_model = config("builder.tb-definitions.tree.$def.options.model");
         $node = (new $_model)->setRawAttributes($node->getAttributes());
 
         list($controller, $method) = explode('@', $templates[$node->template]['action']);
 
-
-        if (LaravelLocalization::setLocale() == "") {
-            $pathUrl = "/" . Request::path();
-        } else {
-            $pathUrl = Request::path();
-        }
-
-        if ($pathUrl == LaravelLocalization::setLocale() . Request::path()) {
-            Session::put('currentNode', $node);
-        } else {
-            Session::put('currentNode', $node);
-        }
+        Session::put('currentNode', $node);
 
         return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
     }
 
     public function doChangeRelationField()
     {
-        $data = json_decode(htmlspecialchars_decode(Input::get('dataFieldJson')));
+        $data = json_decode(htmlspecialchars_decode(request('dataFieldJson')));
 
-        $selected = Input::get('selected');
+        $selected = request('selected');
 
         $db = DB::table($data->foreign_table)
             ->select($data->foreign_value_field)
