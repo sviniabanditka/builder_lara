@@ -90,9 +90,22 @@ class InstallCommand extends Command
     {
         $laravel = app();
 
+        copy($this->installPath . '/files/app/Providers/RouteServiceProvider.php',
+                                    app_path() . '/Providers/RouteServiceProvider.php');
+        $this->info('Created '.app_path() . '/Providers/RouteServiceProvider.php - OK');
 
-        copy($this->installPath . '/files/routes.php', base_path() . '/routes/web.php');
+        copy($this->installPath . '/files/app/Providers/AppServiceProvider.php',
+            app_path() . '/Providers/AppServiceProvider.php');
+        $this->info('Created '.app_path() . '/Providers/AppServiceProvider.php - OK');
+
+        copy($this->installPath . '/files/routes/front.php', base_path() . '/routes/front.php');
+        $this->info('Created '.base_path() . '/routes/front.php - OK');
+
+        copy($this->installPath . '/files/routes/web.php', base_path() . '/routes/web.php');
         $this->info('Created '.base_path() . '/routes/web.php - OK');
+
+        copy($this->installPath . '/files/routes/front.php', base_path() . '/routes/front.php');
+        $this->info('Created '.base_path() . '/routes/front.php - OK');
 
         copy($this->installPath . '/files/app.php', config_path() . '/app.php');
         $this->info('Replace app.php - OK');
@@ -104,10 +117,10 @@ class InstallCommand extends Command
         $this->info('Created app/Exceptions/Handler.php - OK');*/
 
 
-        copy($this->installPath . '/files/.htaccess', public_path() . '/.htaccess');
+        copy($this->installPath . '/files/public/.htaccess', public_path() . '/.htaccess');
         $this->info('Replace htaccess - OK');
 
-        copy($this->installPath . '/files/robots.txt', public_path() . '/robots.txt');
+        copy($this->installPath . '/files/public/robots.txt', public_path() . '/robots.txt');
         $this->info('Replace robots.txt - OK');
 
         if (!is_dir(app_path() . '/Models')) {
@@ -121,7 +134,6 @@ class InstallCommand extends Command
         copy($this->installPath . '/files/database.php', config_path() . '/database.php');
         $this->info('Replace database.php - OK');
 
-
         copy($this->installPath . '/files/BaseModel.php', app_path() . '/Models/BaseModel.php');
         $this->info('Created app/Models/BaseModel.php - OK');
 
@@ -130,9 +142,6 @@ class InstallCommand extends Command
 
         copy($this->installPath . '/files/Article.php', app_path() . '/Models/Article.php');
         $this->info('Created app/Models/Article.php - OK');
-
-        copy($this->installPath . '/files/News.php', app_path() . '/Models/News.php');
-        $this->info('Created app/Models/News.php - OK');
 
         copy($this->installPath . '/files/User.php', app_path() . '/Models/User.php');
         $this->info('Created app/Models/User.php - OK');
@@ -146,17 +155,14 @@ class InstallCommand extends Command
         copy($this->installPath . '/files/Breadcrumbs.php', app_path() . '/Models/Breadcrumbs.php');
         $this->info('Created app/Models/Breadcrumbs.php- OK');
 
-        copy($this->installPath . '/files/view_composers.php', app_path() . '/Http/view_composers.php');
-        $this->info('Created app/Http/view_composers.php- OK');
-
 
         if (!is_dir(base_path() . '/resources/views/layouts')) {
             File::makeDirectory(base_path() . '/resources/views/layouts', 0777, true);
             $this->info('Folder resources/views/layouts is created');
         }
-        if (!is_dir(base_path() . '/resources/views/pages')) {
-            File::makeDirectory(base_path() . '/resources/views/pages', 0777, true);
-            $this->info('Folder resources/views/pages is created');
+        if (!is_dir(base_path() . '/resources/views/home')) {
+            File::makeDirectory(base_path() . '/resources/views/home', 0777, true);
+            $this->info('Folder resources/views/home is created');
         }
         if (!is_dir(base_path() . '/resources/views/partials')) {
             File::makeDirectory(base_path() . '/resources/views/partials', 0777, true);
@@ -171,10 +177,14 @@ class InstallCommand extends Command
             $this->info('Folder resources/views/front is created');
         }
 
-        copy($this->installPath . '/files/default.blade.php', base_path() . '/resources/views/layouts/default.blade.php');
+        copy($this->installPath . '/files/resources/views/front/index.blade.php',
+                                    base_path() . '/resources/views/front/index.blade.php');
+        $this->info('Created front/index.blade.php- OK');
+
+        copy($this->installPath . '/files/resources/views/layouts/default.blade.php', base_path() . '/resources/views/layouts/default.blade.php');
         $this->info('Created default.blade.php- OK');
 
-        copy($this->installPath . '/files/index.blade.php', base_path() . '/resources/views/pages/index.blade.php');
+        copy($this->installPath . '/files/resources/views/home/index.blade.php', base_path() . '/resources/views/home/index.blade.php');
         $this->info('Created index.blade.php- OK');
 
         exec("composer dump-autoload");
