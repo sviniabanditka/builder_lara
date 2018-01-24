@@ -1,11 +1,19 @@
 <?php
 
+if (!function_exists('setting')) {
+    function setting($value)
+    {
+        return Vis\Builder\Setting::get($value);
+    }
+}
+
+
 if (!function_exists('dr')) {
     function dr($array)
     {
         echo '<pre>';
         die(print_r($array));
-    } // end dr
+    }
 }
 
 if (!function_exists('print_arr')) {
@@ -14,7 +22,7 @@ if (!function_exists('print_arr')) {
         echo '<pre>';
         print_r($array);
         echo "</pre>";
-    } // end dr
+    }
 }
 
 if (!function_exists('cartesian')) {
@@ -25,7 +33,7 @@ if (!function_exists('cartesian')) {
         $arrayCount = sizeof($arr);
 
         return cartesianRecurseIt($arr, $variant, -1, $result, $arrayCount, $isElementsDuplicated);
-    } // end cartesian
+    }
 }
 
 if (!function_exists('cartesianRecurseIt')) {
@@ -47,7 +55,7 @@ if (!function_exists('cartesianRecurseIt')) {
             }
         }
             return $result;
-    } // end cartesianRecurseIt
+    }
 }
 
 if (!function_exists('remove_bom')) {
@@ -57,7 +65,7 @@ if (!function_exists('remove_bom')) {
             $val = substr($val, 3);
         }
         return $val;
-    } // end remove_bom
+    }
 }
 
 if (!function_exists('glide')) {
@@ -85,8 +93,8 @@ if (!function_exists('filesize_format')) {
             $bytes = '0 bytes';
         }
 
-            return $bytes;
-    } // end filesize_format
+       return $bytes;
+    }
 }
 
 //return localization url
@@ -98,7 +106,7 @@ if (!function_exists('geturl')) {
         }
         
         return LaravelLocalization::getLocalizedURL($locale, $url, $attributes);
-    } // end geturl
+    }
 }
 
 /*

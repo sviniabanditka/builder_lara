@@ -3,8 +3,6 @@
 Route::pattern('id', '[0-9]+');
 Route::pattern('slug', '[a-z0-9-]+');
 
-include app_path('Http/view_composers.php');
-
 Route::group(
     ['prefix' => LaravelLocalization::setLocale()],
     function () {

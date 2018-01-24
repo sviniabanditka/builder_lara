@@ -166,6 +166,10 @@ class InstallCommand extends Command
             File::makeDirectory(base_path() . '/resources/views/popups', 0777, true);
             $this->info('Folder resources/views/popups is created');
         }
+        if (!is_dir(base_path() . '/resources/views/front')) {
+            File::makeDirectory(base_path() . '/resources/views/front', 0777, true);
+            $this->info('Folder resources/views/front is created');
+        }
 
         copy($this->installPath . '/files/default.blade.php', base_path() . '/resources/views/layouts/default.blade.php');
         $this->info('Created default.blade.php- OK');

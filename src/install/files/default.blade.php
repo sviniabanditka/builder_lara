@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="[lang]" prefix="og: http://ogp.me/ns#">
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

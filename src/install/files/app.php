@@ -168,7 +168,6 @@ return [
          * Package Service Providers...
          */
 
-        Vis\Builder\BuilderServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Devfactory\Minify\MinifyServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
@@ -242,10 +241,8 @@ return [
         'Minify'  => Devfactory\Minify\Facades\MinifyFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Jarboe'   => Vis\Builder\Facades\Jarboe::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
-        'Setting' => Vis\Builder\Setting::class,
     ],
 
 ];

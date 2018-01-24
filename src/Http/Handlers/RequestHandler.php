@@ -457,9 +457,7 @@ class RequestHandler
 
     private function getRowID()
     {
-        if (request('id')) {
-            return request('id');
-        }
+        if (request('id')) return request('id');
 
         throw new \RuntimeException("Undefined row id for action.");
     }
