@@ -11,29 +11,12 @@
                        <section>
                            <div style="position: relative;">
                                <label class="input">
-                                   <select {{isset($field['width']) ? "style='width:".$field['width']."px'" : ""}} class="dblclick-edit-input form-control input-small unselectable" name="filter[{{$field['name_field']}}]">
+                                   <select {{isset($field['width']) ? "style='width:".$field['width']."px'" : ""}} class="dblclick-edit-input form-control input-small unselectable" name="filter[{{$field['field']}}]">
                                        <option  value="">{{$field['caption']}}</option>
-                                       @if (isset($field['options']) && count($field['options']))
-                                            @foreach($field['options'] as $option)
-                                                 <option value="{{$option['value']}}"
-                                                 {!! Input::get("filter.".$field['name_field']) == $option['value'] ? "selected" : "" !!}>
-                                                 {!! $option['title'] !!}
-                                                 </option>
-                                            @endforeach
-                                       @elseif(isset($field['recursive']))
-                                           <?php
-                                           $optionResult = $field['recursive']();
-                                           ?>
-                                           @foreach($optionResult as $id => $option)
-                                                @if ($id == Input::get("filter.".$field['name_field']))
-                                                    {!! str_replace("<option", "<option selected", $option) !!}
-                                                @else
-                                                    {!! $option !!}
-                                                @endif
-                                           @endforeach
 
-                                       @endif
-
+                                       @foreach($field['options'] as $k => $value)
+                                           <option  value="{{$k}}">{{$value}}</option>
+                                       @endforeach
                                    </select>
                                </label>
                            </div>
@@ -47,7 +30,7 @@
     <script>
         $("form[name=filter] select").change(function(){
             var urlFilter = $("form[name=filter]").serialize();
-            doAjaxLoadContent(window.location.pathname + "?" +urlFilter);
+            doAjaxLoadContent(window.location.pathname);
         });
     </script>
  @endif

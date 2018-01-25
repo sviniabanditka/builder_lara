@@ -25,62 +25,16 @@ return array(
                 return true;
             }
         ),
-        array(
-            'title' => 'Новости',
-            'icon'  => 'list-alt',
-            'link'  => '/news',
-            'check' => function() {
-                return true;
-            },
-            'badge' => function() {
-                return News::all()->count();
-            }
-        ),
-        array(
-            'title' => 'Статьи',
-            'icon'  => 'building',
-            'link'  => '/articles',
-            'check' => function() {
-                return true;
-            }
-        ),
-       /* array(
-            'title' => 'Статьи',
-            'icon'  => 'building',
-            'link'  => '/articles',
-            'check' => function() {
-                return true;
-            }
-        ),
-        array(
-            'title' => 'Слайдер на главной',
-            'icon'  => 'columns',
-            'link'  => '/slider_main',
-            'check' => function() {
-                return true;
-            }
-        ),*/
-      /*  array(
-            'title' => 'Баннера',
-            'icon'  => 'crop',
-            'submenu' => array(
-                array(
-                    'title'   => 'Баннера',
-                    'link'    => '/banners/banners_all',
-                    'check' => function() {
-                        return true;
-                    }
-                ),
-                array(
-                    'title' => 'Баннерные площадки',
-                    'link'  => '/banners/area',
-                    'check' => function() {
-                        return true;
-                    }
-                ),
 
-            ),
-        ),*/
+        array(
+            'title' => 'Статьи',
+            'icon'  => 'building',
+            'link'  => '/articles',
+            'check' => function() {
+                return true;
+            }
+        ),
+
         array(
             'title' => 'Настройки',
             'icon'  => 'cog',
@@ -95,34 +49,34 @@ return array(
                                 return true;
                             }
                         ),
+                        /*  array(
+                             'title' => 'SEO',
+                             'link'  => '/settings/settings_all?group=seo',
+                             'check' => function() {
+                                 return true;
+                             }
+                         ),
                         array(
-                            'title' => 'SEO',
-                            'link'  => '/settings/settings_all?group=seo',
-                            'check' => function() {
-                                return true;
-                            }
-                        ),
-                        array(
-                            'title' => 'Изображения',
-                            'link'  => '/settings/settings_all?group=graphics',
-                            'check' => function() {
-                                return true;
-                            }
-                        ),
-                        array(
-                            'title' => 'Безопасность',
-                            'link'  => '/settings/settings_all?group=security',
-                            'check' => function() {
-                                return true;
-                            }
-                        ),
-                        array(
-                            'title' => 'Цены',
-                            'link'  => '/settings/settings_all?group=price',
-                            'check' => function() {
-                                return true;
-                            }
-                        ),
+                             'title' => 'Изображения',
+                             'link'  => '/settings/settings_all?group=graphics',
+                             'check' => function() {
+                                 return true;
+                             }
+                         ),
+                         array(
+                             'title' => 'Безопасность',
+                             'link'  => '/settings/settings_all?group=security',
+                             'check' => function() {
+                                 return true;
+                             }
+                         ),
+                         array(
+                             'title' => 'Цены',
+                             'link'  => '/settings/settings_all?group=price',
+                             'check' => function() {
+                                 return true;
+                             }
+                         ),*/
                     ),
                     'check' => function() {
                         return true;

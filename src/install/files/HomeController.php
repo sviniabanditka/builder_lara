@@ -13,6 +13,6 @@ class HomeController extends TreeController
 
         $page = $this->node;
 
-        return view('pages.index', compact("page"));
+        return view('home.index', compact("page"));
     }
 }

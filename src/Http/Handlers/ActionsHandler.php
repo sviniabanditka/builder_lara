@@ -1,6 +1,7 @@
 <?php namespace Vis\Builder\Handlers;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 
 class ActionsHandler
 {
@@ -12,7 +13,7 @@ class ActionsHandler
     {
         $this->def = $actionsDefinition;
         $this->controller = $controller;
-    } // end __construct
+    }
     
     public function fetch($type, $row = array(), $buttonDefinition = array())
     {
@@ -47,70 +48,50 @@ class ActionsHandler
             default:
                 throw new \RuntimeException('Not implemented row action');
         }
-    } // end fetch
+    }
     
     private function onCustomButton($row, $button)
     {
-        if (!$this->isAllowed('custom', $button)) {
-            return '';
-        }
-        
-        $action = View::make('admin::tb.action_custom');
+        $action = view('admin::tb.action_custom');
         $action->row = $row;
         $action->def = $button;
         $action->definition = $this->controller->getDefinition();
         
         return $action;
-    } // end onCustomButton
+    }
     
     private function onInsertButton()
     {
-        if (!$this->isAllowed('insert')) {
-            return '';
-        }
-
         if ($this->controller->hasCustomHandlerMethod('onInsertButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onInsertButtonFetch($this->def['insert']);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
-        $action = View::make('admin::tb.action_insert');
+        $action = view('admin::tb.action_insert');
         $action->def = $this->def['insert'];
         $action->definition = $this->controller->getDefinition();
         
         return $action;
-    } // end onInsertButton
+    }
     
     private function onUpdateButton($row)
     {
-        if (!$this->isAllowed('update')) {
-            return '';
-        }
-        
         if ($this->controller->hasCustomHandlerMethod('onUpdateButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onUpdateButtonFetch($this->def['update']);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
         
-        $action = View::make('admin::tb.action_update');
+        $action = view('admin::tb.action_update');
         $action->row = $row;
         $action->def = $this->def['update'];
         $action->definition = $this->controller->getDefinition();
         
         return $action;
-    } // end onUpdateButton
+    }
 
     private function onRevisionsButton($row)
     {
-        if (!$this->isAllowed('revisions')) {
-            return '';
-        }
-
-        $action = View::make('admin::tb.action_revisions');
+        $action = view('admin::tb.action_revisions');
         $action->row = $row;
         $action->def = $this->def['revisions'];
         $action->definition = $this->controller->getDefinition();
@@ -120,15 +101,9 @@ class ActionsHandler
 
     private function onСloneButton($row)
     {
-        if (!$this->isAllowed('clone')) {
-            return '';
-        }
-
         if ($this->controller->hasCustomHandlerMethod('onCloneButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onUpdateButtonFetch($this->def['clone']);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $action = View::make('admin::tb.action_clone');
@@ -141,10 +116,6 @@ class ActionsHandler
 
     private function onViewStatisticButton($row)
     {
-        if (!$this->isAllowed('views_statistic')) {
-            return '';
-        }
-
         $action = View::make('admin::tb.action_views_statistic');
         $action->row = $row;
         $action->def = $this->def['views_statistic'];
@@ -155,29 +126,16 @@ class ActionsHandler
 
     private function onPreviewButton($row)
     {
-        if (!$this->isAllowed('preview') || !$this->controller->getDefinition()['options']['model']) {
-            return '';
-        }
-
-        $action = View::make('admin::tb.action_preview');
+        $action = view('admin::tb.action_preview');
         $action->row = $row;
         $action->def = $this->def['preview'];
         $action->definition = $this->controller->getDefinition();
         $model = $action->definition['options']['model'];
         $action->model = $model;
-        $action->url = $model::find($row['id'])->getUrl();
 
-        if (isset($this->def['preview']['query']) && is_array($this->def['preview']['query'])) {
-            foreach ($this->def['preview']['query'] as $k => $val) {
-                if (isset($row[$val])) {
-                    $params[$k] = $row[$val] ;
-                } else {
-                    $params[$k] = $val;
-                }
-            }
-        } else {
-            $params['show'] = 1;
-        }
+        $action->url = $this->getUrl($action, $model, $row['id']);
+
+        $params['show'] = 1;
 
         $action->url .= '?' . http_build_query($params);
 
@@ -186,62 +144,41 @@ class ActionsHandler
 
     private function onConstructorButton($row)
     {
-        if (!$this->isAllowed('constructor') || !$this->controller->getDefinition()['options']['model']) {
-            return '';
-        }
-
-        $action = View::make('admin::tb.action_constructor');
+        $action = view('admin::tb.action_constructor');
         $action->row = $row;
         $action->def = $this->def['constructor'];
         $action->definition = $this->controller->getDefinition();
         $model = $action->definition['options']['model'];
         $action->model = $model;
-        $action->url = $model::find($row['id'])->getUrl()."?mode=construct";
+        $action->url =  $this->getUrl($action, $model, $row['id'])."?mode=construct";
 
         return $action;
     }
 
-    
+    private function getUrl($action, $model, $id)
+    {
+        if (isset($action->definition['cache']['tags'])) {
+            return Cache::tags($action->definition['cache']['tags'])
+                ->rememberForever('url'.$model.$id, function () use ($model, $id) {
+                    return $model::find($id)->getUrl();
+                });
+        }
+
+        return $model::find($id)->getUrl();
+    }
+
     private function onDeleteButton($row)
     {
-        if (!$this->isAllowed('delete')) {
-            return '';
-        }
-        
         if ($this->controller->hasCustomHandlerMethod('onDeleteButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onDeleteButtonFetch($this->def['delete']);
-            if ($res) {
-                return $res;
-            }
+            if ($res)  return $res;
         }
         
-        $action = View::make('admin::tb.action_delete');
+        $action = view('admin::tb.action_delete');
         $action->row = $row;
         $action->def = $this->def['delete'];
         $action->definition = $this->controller->getDefinition();
         
         return $action;
     } // end onDeleteButton
-    
-    public function isAllowed($type, $buttonDefinition = array())
-    {
-        if (count($this->def) == 0) {
-            return true;
-        }
-
-        $def = isset($this->def[$type]) ? $this->def[$type] : false;
-        if ($buttonDefinition) {
-            $def = $buttonDefinition;
-        }
-        
-        if ($def) {
-            if (array_key_exists('check', $def)) {
-                return $def['check']();
-            }
-            
-            return true;
-        }
-        
-        return false;
-    } // end isAllowed
 }

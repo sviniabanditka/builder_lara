@@ -13,13 +13,12 @@
                        @endforeach
                 @endif
 
-                {!! $actions->fetch('update', $row) !!}
-                {!! $actions->fetch('clone', $row) !!}
-                {!! $actions->fetch('revisions', $row) !!}
-                {!! $actions->fetch('preview', $row) !!}
-                {!! $actions->fetch('views_statistic', $row) !!}
-                {!! $actions->fetch('constructor', $row) !!}
-                {!! $actions->fetch('delete', $row) !!}
+                @foreach($def['actions'] as $actionName => $actionArray)
+                    @if ($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom' || !$actionArray['check']())
+                       @continue
+                    @endif
+                    {!! $actions->fetch($actionName, $row) !!}
+                @endforeach
 
             </ul>
         </div>
