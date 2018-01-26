@@ -14,7 +14,8 @@
                 @endif
 
                 @foreach($def['actions'] as $actionName => $actionArray)
-                    @if ($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom' || !$actionArray['check']())
+                    @if ($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom' ||
+                     (isset($actionArray['check']) && !$actionArray['check']()))
                        @continue
                     @endif
                     {!! $actions->fetch($actionName, $row) !!}
