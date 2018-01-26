@@ -46,7 +46,7 @@ class ActionsHandler
                 return $this->onCustomButton($row, $buttonDefinition);
 
             default:
-                throw new \RuntimeException('Not implemented row action');
+                return;
         }
     }
     
@@ -132,7 +132,6 @@ class ActionsHandler
         $action->definition = $this->controller->getDefinition();
         $model = $action->definition['options']['model'];
         $action->model = $model;
-
         $action->url = $this->getUrl($action, $model, $row['id']);
 
         $params['show'] = 1;
@@ -180,5 +179,5 @@ class ActionsHandler
         $action->definition = $this->controller->getDefinition();
         
         return $action;
-    } // end onDeleteButton
+    }
 }

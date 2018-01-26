@@ -9,23 +9,26 @@ class ButtonsHandler
     {
         $this->def = $exportDefinition;
         $this->controller = $controller;
-    } // end __construct
+    }
 
     public function fetch()
     {
         $buttons = $this->def;
+        
+        if (!count($buttons)) return;
 
         $buttonsHtml = "";
-        if (count($buttons)) {
-            foreach ($buttons as $button) {
-                if (!$button || !$button['check']()) {
-                    $buttonsHtml .= '';
-                } else {
-                    $buttonsHtml .= view('admin::tb.button', compact('button'));
-                }
-            }
+
+        foreach ($buttons as $button) {
+            $buttonsHtml .=  $this->checkShowButton($button) ? '' : view('admin::tb.button', compact('button'));
         }
 
         return $buttonsHtml;
     }
+
+    private function checkShowButton($button)
+    {
+        return !$button || !$button['check']();
+    }
+
 }

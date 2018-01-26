@@ -51,7 +51,9 @@
       "@php artisan clear-compiled",
       "@php artisan ide-helper:generate",
       "@php artisan optimize",
-      "@php artisan vendor:publish --tag=public --force"
+      "@php artisan vendor:publish --tag=public --force",
+      "@php artisan view:clear",
+      "@php artisan cache:clear"
     ]
   },
   "config": {
