@@ -4,7 +4,7 @@
 <div style="padding-top: 4px"><a onclick="deleteForeing{{$name}}()">Удалить</a></div>
 
 <script>
-    
+
     var $select2{{$name}} = $('.{{$name}}_foreign').select2({
         placeholder: "{{ $search['placeholder'] or 'Поиск' }}",
         minimumInputLength: {{ $search['minimum_length'] or '3' }},

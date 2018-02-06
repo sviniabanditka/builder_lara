@@ -287,12 +287,12 @@ var TableBuilder = {
 
     closeFastEdit: function(context, type, response)
     {
-        var $editElem = jQuery(context).parent().hide();
+        var $editElem = $(context).parent().hide();
     }, // end closeFastEdit
 
     saveFastEdit: function(context, rowId, rowIdent)
     {
-        var $context = jQuery(context).parent().parent();
+        var $context = $(context).parent().parent();
         var value = $context.find('.dblclick-edit-input').val();
         $("tr[id-row=" + rowId + "] .element_" + rowIdent).text(value);
         TableBuilder.closeFastEdit(context);
@@ -650,8 +650,10 @@ var TableBuilder = {
         });
     }, // end doDelete
 
-    doEdit: function(id, form, foreign_field_id, foreign_attributes)
+    doEdit: function(id, table, foreign_field_id, foreign_attributes)
     {
+        var form = '#edit_form_' + table;
+
         TableBuilder.edit_form = form;
         TableBuilder.action_url = $(form).attr('action');
 
@@ -659,9 +661,8 @@ var TableBuilder = {
         TableBuilder.showFormPreloader(TableBuilder.form_edit);
 
         $( '.fr-popup' ).remove();
-        /*  $(TableBuilder.edit_form + " .fr-link-insert-layer input").each(function( index ) {
-               $( this ).removeAttr("name")
-           });*/
+
+
 
         var values = $(TableBuilder.edit_form).serializeArray();
 
@@ -729,6 +730,7 @@ var TableBuilder = {
                     }
 
                     TableBuilder.clearParamsWithUrl();
+                    TableBuilder.doClosePopup(table);
 
                 } else {
 
@@ -1268,7 +1270,6 @@ var TableBuilder = {
         $.post(TableBuilder.getActionUrl(content), data,
             function(response){
 
-                // alert(section.find('tbody').html());
                 section.find('tbody').html(response.data);
                 section.find('tbody').attr('data-type', type);
             }, 'json');

@@ -18,7 +18,7 @@
         submitHandler: function(form) {
             {{ $is_tree ? 'Tree' : 'TableBuilder' }}.doEdit(
                     {{$row['id']}},
-                "#edit_form_{{$def['db']['table']}}",
+                "{{$def['db']['table']}}",
                 '{{request('foreign_field_id')}}',
                 '{!! request('foreign_attributes')!!}'
             );
