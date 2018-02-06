@@ -4,12 +4,13 @@
 <div style="padding-top: 4px"><a onclick="deleteForeing{{$name}}()">Удалить</a></div>
 
 <script>
-    var $select2{{$name}} = jQuery('.{{$name}}_foreign').select2({
+    
+    var $select2{{$name}} = $('.{{$name}}_foreign').select2({
         placeholder: "{{ $search['placeholder'] or 'Поиск' }}",
         minimumInputLength: {{ $search['minimum_length'] or '3' }},
         language: "ru",
         ajax: {
-            url: TableBuilder.options.action_url,
+            url: $('.{{$name}}_foreign').parents('form').attr('action'),
             dataType: 'json',
             type: 'POST',
             quietMillis: {{ $search['quiet_millis'] or '350' }},
