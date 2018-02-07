@@ -119,7 +119,9 @@ class ViewHandler
 
     public function deleteForeignDefinition()
     {
-        $params =  (array) json_decode (request('paramsJson'));
+        $this->controller->query->clearCache();
+
+        $params = (array) json_decode (request('paramsJson'));
         $model = config('builder.tb-definitions.' .  $params['definition']. '.options.model');
 
         $model::find(request('idDelete'))->delete();
@@ -129,6 +131,8 @@ class ViewHandler
 
     public function changePositionDefinition()
     {
+        $this->controller->query->clearCache();
+
         $params = (array) json_decode (request('paramsJson'));
 
         if (!isset($params['sortable'])) throw new \RuntimeException('Не определено поле для сортировки');

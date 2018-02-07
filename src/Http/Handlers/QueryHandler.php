@@ -410,13 +410,10 @@ class QueryHandler
     public function deleteRow($id)
     {
         $this->clearCache();
-        
 
         if ($this->controller->hasCustomHandlerMethod('handleDeleteRow')) {
             $res = $this->controller->getCustomHandler()->handleDeleteRow($id);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         foreach ($this->controller->getPatterns() as $pattern) {
@@ -710,7 +707,6 @@ class QueryHandler
     {
         if (isset($this->definition['cache'])) {
             $cache = $this->definition['cache'];
-
 
             if (isset($cache['tags'])) {
                 Cache::tags($cache['tags'])->flush();
