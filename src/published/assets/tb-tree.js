@@ -313,8 +313,10 @@ var Tree =
             });
         }, // end showEditForm
 
-        doEdit: function(id, form)
+        doEdit: function(id, table)
         {
+            var form = '#edit_form_' + table;
+
             TableBuilder.edit_form = form;
             TableBuilder.action_url = $(form).attr('action');
 
