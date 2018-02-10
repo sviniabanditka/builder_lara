@@ -80,8 +80,19 @@ class ViewHandler
         $table->controller = $this->controller;
         $table->per_page = Session::get('table_builder.' . $this->definitionName . '.per_page');
         $table->fieldsList = $this->controller->definitionClass->getFieldsList();
+        $table->filterView = $this->getViewFilter($table->def);
 
         return $table;
+    }
+
+    private function getViewFilter($def)
+    {
+        if ($this->controller->hasCustomHandlerMethod('onViewFilter')) {
+            $res = $this->controller->getCustomHandler()->onViewFilter();
+            if ($res) return $res;
+        }
+
+        return view('admin::tb.table_filter', ['def' => $def]);
     }
 
     public function showHtmlForeignDefinition()

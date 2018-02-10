@@ -95,6 +95,15 @@ class CustomClosureHandler
         }
     } // end onSearchFilter
 
+    public function onViewFilter()
+    {
+        $closure = $this->getClosure('onViewFilter');
+        if ($closure) {
+            $closure = $closure->bindTo($this);
+            return $closure();
+        }
+    } // end onSearchFilter
+
     public function onUpdateRowResponse(array &$response)
     {
         $closure = $this->getClosure('onUpdateRowResponse');

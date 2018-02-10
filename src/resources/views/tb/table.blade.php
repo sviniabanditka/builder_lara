@@ -17,21 +17,17 @@
                 data-widget-colorbutton="false"
                 data-widget-deletebutton="false"
                 data-widget-sortable="false">
-                @include('admin::tb.table_filter')
-
+                {!!  $filterView !!}
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>{{ __cms($def['options']['caption']) }}</h2>
-
                     {!! isset($def['buttons']) && $def['buttons'] ?  $controller->buttons->fetch() : '' !!}
                     {!! isset($def['import']) && $def['import']  ? $controller->import->fetch() : '' !!}
                     {!! isset($def['export']) && $def['export'] ? $controller->export->fetch() : '' !!}
-
                 </header>
                 <div>
                     <div class="jarviswidget-editbox"></div>
                     <div class="widget-body no-padding">
-
                         <form
                               action="{{$controller->getUrlAction()}}"
                               method="post"
