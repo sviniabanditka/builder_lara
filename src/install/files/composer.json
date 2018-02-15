@@ -50,7 +50,8 @@
       "@php artisan package:discover",
       "@php artisan clear-compiled",
       "@php artisan ide-helper:generate",
-      "@php artisan optimize",
+      "@php artisan ide-helper:models",
+      "@php artisan ide-helper:eloquent",
       "@php artisan vendor:publish --tag=public --force",
       "@php artisan view:clear",
       "@php artisan cache:clear"
