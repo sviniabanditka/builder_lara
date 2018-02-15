@@ -122,9 +122,7 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         return $this->getValue($row);
