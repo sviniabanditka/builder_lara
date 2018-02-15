@@ -17,7 +17,7 @@ return array(
     'options' => array(
         'caption' => 'Статьи',
         'is_sortable' => true,
-        'model' => 'Article',
+        'model' => 'App\Models\Article',
     ),
     'position' => array(
         'tabs' => array(

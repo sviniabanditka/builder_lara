@@ -2,7 +2,7 @@
 
 return array(
 
-    'model' => 'Tree',
+    'model' => 'App\Models\Tree',
     'cache' => array(
         'tags' => array('tree'),
     ),

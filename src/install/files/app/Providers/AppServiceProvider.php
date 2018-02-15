@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use View, Cache, Tree, Breadcrumbs;
+use View, Cache, App\Models\Tree, Breadcrumbs;
 
 class AppServiceProvider extends ServiceProvider
 {

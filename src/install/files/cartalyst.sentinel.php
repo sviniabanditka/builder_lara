@@ -53,7 +53,7 @@ return [
 
     'users' => [
 
-        'model' => 'User',
+        'model' => 'App\Models\User',
 
     ],
 
@@ -68,7 +68,7 @@ return [
 
     'roles' => [
 
-        'model' => 'Group',
+        'model' => 'App\Models\Group',
 
     ],
 

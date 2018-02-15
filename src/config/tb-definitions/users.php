@@ -14,7 +14,7 @@ return array(
     'options' => array(
         'caption' => 'Пользователи',
         'handler'    => 'Vis\Builder\Helpers\UsersHandler',
-        'model' => 'User',
+        'model' => 'App\Models\User',
     ),
     'position' => array(
         'tabs' => array(

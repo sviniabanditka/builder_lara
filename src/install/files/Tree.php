@@ -1,4 +1,4 @@
-<?php
+<?php namespace App\Models;
 
 class Tree extends Vis\Builder\Tree
 {

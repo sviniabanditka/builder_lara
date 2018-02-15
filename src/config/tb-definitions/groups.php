@@ -15,7 +15,7 @@ return array(
     'options' => array(
         'caption' => "Группы пользователей",
         'handler'    => 'Vis\Builder\Helpers\GroupsHandler',
-        'model' => 'Group',
+        'model' => 'App\Models\Group',
     ),
 
     'position' => array(

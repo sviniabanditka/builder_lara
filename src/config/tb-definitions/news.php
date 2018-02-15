@@ -17,7 +17,7 @@ return array(
     'options' => array(
         'caption' => 'Новости',
         'is_sortable' => true,
-        'model' => 'News',
+        'model' => 'App\Models\News',
     ),
     'position' => array(
         'tabs' => array(

@@ -13,7 +13,7 @@ return array(
     ),
     'options' => array(
         'caption' => '',
-        'model' => 'Tree',
+        'model' => 'App\Models\Tree',
     ),
     'position' => array(
         'tabs' => array(
