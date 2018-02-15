@@ -1,6 +1,8 @@
 <?php namespace App\Models;
 
-class User extends Vis\Builder\User
+use Vis\Builder\User as UserBuilder;
+
+class User extends UserBuilder
 {
 
 }

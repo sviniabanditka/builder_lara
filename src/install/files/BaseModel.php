@@ -1,6 +1,8 @@
 <?php namespace App\Models;
 
-class BaseModel extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class BaseModel extends Model
 {
     use \Vis\Builder\Helpers\Traits\TranslateTrait,
         \Vis\Builder\Helpers\Traits\SeoTrait,

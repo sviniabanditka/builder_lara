@@ -1,6 +1,9 @@
 <?php namespace App\Models;
 
-class Tree extends Vis\Builder\Tree
+use Vis\Builder\Tree as TreeBuilder;
+use Illuminate\Support\Facades\App;
+
+class Tree extends TreeBuilder
 {
     public static function getFirstDepthNodes()
     {
