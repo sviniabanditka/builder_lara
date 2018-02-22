@@ -44,7 +44,7 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
-            $this->sqlDumpLoad();
+            $this->createdDb();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
             $this->publishConfigs();
@@ -55,17 +55,11 @@ class InstallCommand extends Command
     }
 
     /*
-     * load table sql
+     * created database
      */
-    private function sqlDumpLoad()
+    private function createdDb()
     {
-        $dumpFiles = scandir($this->installPath . '/dump_sql_table/');
-        foreach ($dumpFiles as $file) {
-            if (preg_match('/\.(sql)/', $file)) {
-                DB::unprepared(file_get_contents($this->installPath . '/dump_sql_table/' . $file));
-                $this->info("Table created " . $file);
-            }
-        }
+
     }
 
     /*

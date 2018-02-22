@@ -23,12 +23,12 @@ return array(
                 'slug',
                 'picture',
                 'description',
-                'show_in_menu',
-                'show_in_footer_menu',
+                'is_show_in_menu',
+                'is_show_in_footer_menu',
                 'created_at',
                 'updated_at',
             ),
-            'SEO'    => array(
+            'SEO' => array(
                 'seo_title',
                 'seo_description',
                 'seo_keywords',
@@ -77,7 +77,7 @@ return array(
             'type' => 'datetime',
             'hide' => true,
         ),
-        'show_in_menu' => array(
+        'is_show_in_menu' => array(
             'caption' => 'Показывать в меню',
             'type' => 'checkbox',
             'options' => array(
@@ -86,7 +86,7 @@ return array(
             ),
             'field' => 'tinyInteger',
         ),
-        'show_in_footer_menu' => array(
+        'is_show_in_footer_menu' => array(
             'caption' => 'Показывать в футере меню ',
             'type' => 'checkbox',
             'options' => array(
@@ -132,7 +132,7 @@ return array(
             }
         ),
         'update' => array(
-            'caption' => 'Update',
+            'caption' => 'Редактировать',
             'check' => function() {
                 return true;
             }

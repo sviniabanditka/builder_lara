@@ -23,7 +23,7 @@ return array(
                 'slug',
                 'description',
                 'map',
-                'show_in_menu',
+                'is_show_in_menu',
                 'created_at',
                 'updated_at',
             ),
@@ -51,7 +51,7 @@ return array(
             'caption' => 'Текст',
             'type'    => 'wysiwyg',
         ),
-        'show_in_menu' => array(
+        'is_show_in_menu' => array(
             'caption' => 'Показывать в меню',
             'type' => 'checkbox',
             'options' => array(
@@ -59,10 +59,6 @@ return array(
                 0 => 'Нет',
             ),
             'field' => 'tinyInteger',
-        ),
-        'map' => array(
-            'caption' => 'Карта',
-            'type' => 'textarea',
         ),
         'created_at' => array(
             'caption' => 'Дата создания',
