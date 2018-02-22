@@ -3,18 +3,19 @@ $menuLinks = config('builder.admin.menu');
 
 if ($menuLinks) {
 
-    $all_links = array();
-    array_walk_recursive($menuLinks, function($item, $key) use (&$all_links) {
-        if($key == 'link'){
-            $all_links[] = $item;
+    $allLinks = array();
+    array_walk_recursive($menuLinks, function($item, $key) use (&$allLinks) {
+
+        if ($key == 'link') {
+            $allLinks[] = $item;
         }
     });
 
-    $all_links = array_flatten($all_links);
-    $all_links_str = implode("|", $all_links);
-    $all_links_str = str_replace("/", "", $all_links_str);
+    $allLinks = array_flatten($allLinks);
+    $allLinksStr = implode("|", $allLinks);
+    $allLinksStr = str_replace("/", "", $allLinksStr);
 
-    Route::pattern('page_admin', $all_links_str);
+    Route::pattern('page_admin', $allLinksStr);
     Route::pattern('tree_name', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
     Route::group(['middleware' => ['web']], function () {

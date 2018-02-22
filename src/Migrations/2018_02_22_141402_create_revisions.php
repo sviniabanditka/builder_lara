@@ -23,7 +23,7 @@ class CreateRevisions extends Migration
 
             $table->timestamps();
 
-            $table->primary(['revisionable_id', 'revisionable_type']);
+            $table->index(['revisionable_id', 'revisionable_type']);
         });
     }
 

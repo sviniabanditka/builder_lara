@@ -56,9 +56,9 @@
                                                                 class="badge bg-color-greenLight pull-right inbox-badge"
                                                                 style="@if(!$badgeValue) display: none @endif"
                                                         >
-                                        {{is_numeric($badgeValue) ? $badgeValue : ''}}
-                                    </span>
-                                                    @endif
+                                                        {{is_numeric($badgeValue) ? $badgeValue : ''}}
+                                                    </span>
+                                                   @endif
                                                 </a>
                                                 @if(isset($sub_menu['submenu']))
 
