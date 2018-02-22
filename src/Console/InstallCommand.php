@@ -72,13 +72,9 @@ class InstallCommand extends Command
 
     private function insertTranslateData()
     {
-       $dumpFiles = scandir($this->installPath . '/dump_sql_table/');
-          foreach ($dumpFiles as $file) {
-              if (preg_match('/\.(sql)/', $file)) {
-                   DB::unprepared(file_get_contents($this->installPath . '/dump_sql_table/' . $file));
-              }
-         }
-      }
+        DB::unprepared(file_get_contents($this->installPath . '/dump_sql_table/translations_phrases_cms.sql'));
+        DB::unprepared(file_get_contents($this->installPath . '/dump_sql_table/translations_cms.sql'));
+    }
 
     /*
      * create folder public/js/builds and public/css/builds

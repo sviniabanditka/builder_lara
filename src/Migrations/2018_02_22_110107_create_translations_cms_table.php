@@ -19,11 +19,6 @@ class CreateTranslationsCmsTable extends Migration
             $table->text('translate');
 
             $table->index('id_translations_phrase');
-
-            $table->foreign('id_translations_phrase')
-                ->references('id')->on('translations_phrases_cms')
-                ->onDelete('cascade');
-
         });
     }
 
