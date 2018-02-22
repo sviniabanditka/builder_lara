@@ -44,7 +44,7 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
-            $this->createdDb();
+            $this->createDb();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
             $this->publishConfigs();
@@ -57,10 +57,28 @@ class InstallCommand extends Command
     /*
      * created database
      */
-    private function createdDb()
+    private function createDb()
     {
+        \Artisan::call('migrate', [
+            '--path' => 'vendor/vis/builder_lara_5/src/Migrations',
+        ]);
 
+        \Artisan::call('db:seed', [
+            '--class' => 'Vis\\Builder\\AdminSeeder',
+        ]);
+
+        $this->insertTranslateData();
     }
+
+    private function insertTranslateData()
+    {
+       $dumpFiles = scandir($this->installPath . '/dump_sql_table/');
+          foreach ($dumpFiles as $file) {
+              if (preg_match('/\.(sql)/', $file)) {
+                   DB::unprepared(file_get_contents($this->installPath . '/dump_sql_table/' . $file));
+              }
+         }
+      }
 
     /*
      * create folder public/js/builds and public/css/builds

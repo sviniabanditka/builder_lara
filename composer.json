@@ -34,7 +34,8 @@
             "src/Http/Traits",
             "src/Http/Middleware",
             "src/Console",
-            "src/Migrations"
+            "src/Migrations",
+            "src/Seeds"
         ],
         "psr-4": {
             "Vis\\Builder\\": "src/"

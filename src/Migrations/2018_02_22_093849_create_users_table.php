@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->text('permissions');
             $table->dateTime('last_login');
             $table->timestamps();
+            
+            $table->index([DB::raw('email(191)')]);
         });
     }
 

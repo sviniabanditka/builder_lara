@@ -1,39 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.4.15.5
--- http://www.phpmyadmin.net
---
--- Хост: localhost
--- Время создания: Апр 11 2016 г., 10:22
--- Версия сервера: 10.1.0-MariaDB
--- Версия PHP: 5.5.33
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- База данных: `c1_lara5`
---
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `translations_phrases_cms`
---
-
-CREATE TABLE IF NOT EXISTS `translations_phrases_cms` (
-  `id` int(10) unsigned NOT NULL,
-  `phrase` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Дамп данных таблицы `translations_phrases_cms`
---
 
 INSERT INTO `translations_phrases_cms` (`id`, `phrase`) VALUES
 (8, 'Фраза'),
@@ -176,26 +140,3 @@ INSERT INTO `translations_phrases_cms` (`id`, `phrase`) VALUES
 (146, 'Ошибка при загрузке изображения'),
 (147, 'Ошибка при загрузке файла'),
 (148, 'Порядок следования изменен');
-
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `translations_phrases_cms`
---
-ALTER TABLE `translations_phrases_cms`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `translations_phrases_cms`
---
-ALTER TABLE `translations_phrases_cms`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=149;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

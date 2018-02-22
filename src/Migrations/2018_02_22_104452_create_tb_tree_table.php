@@ -14,7 +14,7 @@ class CreateTbTreeTable extends Migration
     {
         Schema::create('tb_tree', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_id');
+            $table->integer('parent_id')->nullable();
             $table->integer('lft');
             $table->integer('rgt');
             $table->integer('depth');
@@ -29,7 +29,7 @@ class CreateTbTreeTable extends Migration
             $table->string('seo_description');
             $table->string('seo_keywords');
             $table->tinyInteger('is_show_in_menu');
-            $table->tinyInteger('is_show_in_footer_menu	');
+            $table->tinyInteger('is_show_in_footer_menu');
             $table->timestamps();
 
             $table->index('parent_id');
