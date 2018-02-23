@@ -30,28 +30,42 @@ class ForeignField extends AbstractField
 
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
-            return '';
-        }
+        if (!$this->getAttribute('filter')) return;
+
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName ();
         $filter = Session::get($sessionPath, '');
         $type = $this->getAttribute('filter');
-        $input = View::make('admin::tb.filter_' . $type);
+        $input = view('admin::tb.filter_' . $type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
         $input->value = $filter;
-        if ($input->recursive) {
-            $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
-            $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
-            $this->selectOption = $input->selected;
-            $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
-            $input->options = $this->treeOptions;
-        } else {
-            $input->options  = $this->getForeignKeyOptions();
+        $input->definitionName = $definitionName;
+
+        if ($type == 'foreign') {
+            if ($input->recursive) {
+                $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
+                $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
+                $this->selectOption = $input->selected;
+                $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
+                $input->options = $this->treeOptions;
+            } else {
+                $input->options  = $this->getForeignKeyOptions();
+            }
         }
+
+        if ($type == 'autocomplete') {
+            $input->valueJson = $this->getSelectFilterTitle($filter);
+        }
+
         return $input->render();
+    }
+
+    private function getSelectFilterTitle($id)
+    {
+       return DB::table ($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
+            ->find($id);
     }
 
     public function onSearchFilter(&$db, $value)
@@ -61,12 +75,14 @@ class ForeignField extends AbstractField
             $foreignTable = $this->getAttribute('alias');
         }
         $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
-        if ($this->getAttribute('filter') == 'foreign') {
-            $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
-            $db->where($foreignValueField, $value);
+
+        if ($this->getAttribute('filter') == 'text') {
+            $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
             return;
         }
-        $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
+
+        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
+        $db->where($foreignValueField, $value);
     }
 
     public function onSelectValue(&$db)
@@ -75,14 +91,17 @@ class ForeignField extends AbstractField
             $res = $this->handler->onAddSelectField($this, $db);
             if ($res) return $res;
         }
+
         $internalSelect = $this->definition['db']['table'] .'.'. $this->getFieldName();
         $db->addSelect($internalSelect);
         $foreignTable = $this->getAttribute('foreign_table');
         $foreignTableName = $foreignTable;
+
         if ($this->getAttribute('alias')) {
             $foreignTableName .= ' as '. $this->getAttribute('alias');
             $foreignTable = $this->getAttribute('alias');
         }
+
         $foreignKeyField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
         $join = $this->getAttribute('is_null') ? 'leftJoin' : 'join';
         $db->$join(
@@ -373,7 +392,6 @@ class ForeignField extends AbstractField
 
         return array(
             'results' => $collection,
-            'more'    => $collection && !empty($collection),
             'message' => ''
         );
     }
