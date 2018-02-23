@@ -495,15 +495,6 @@ class RequestHandler
 
     protected function handleSearchAction()
     {
-        $this->prepareSearchFilters();
-
-        return Response::json([
-            'url' => $this->controller->getOption ('url') . '?catalog=' . request ('catalog')
-        ]);
-    }
-
-    private function prepareSearchFilters()
-    {
         $filters = request('filter', array());
 
         $newFilters = array();

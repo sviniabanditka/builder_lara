@@ -1737,14 +1737,12 @@ var TableBuilder = {
         });
     }, // end openImageStorageModal
 
-    closeImageStorageModal: function()
-    {
+    closeImageStorageModal: function() {
         $('.image_storage_wrapper').hide();
         $('.superbox-modal-hide').removeClass('superbox-modal-hide').show();
     }, // end closeImageStorageModal
 
-    openFileStorageModal: function(context)
-    {
+    openFileStorageModal: function(context) {
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(),
@@ -1776,8 +1774,7 @@ var TableBuilder = {
         //  alert(window.location.href);
     }, //end reLoadTable
 
-    addGroup : function(context)
-    {
+    addGroup : function(context) {
         var sectionGroup = $(context).parent().find(".section_group").first().clone();
         if ($(sectionGroup).find('input[data-multi=multi]').size() > 1) {
             $(sectionGroup).find('input[data-multi=multi]').not(":first").remove();
@@ -1793,17 +1790,7 @@ var TableBuilder = {
         TableBuilder.refreshMask();
     },
 
-    addMoreInput : function (context) {
-        var labelInput = $(context).parents('.div_input').find("label.input").first().clone();
-        var contentInput = $(context).parents('.div_input').find('.input_content');
-        labelInput.find("input").val("");
-        contentInput.append(labelInput);
-
-        TableBuilder.refreshMask();
-    },
-
-    deleteGroup : function(context)
-    {
+    deleteGroup : function(context) {
         var sizeGroup = $(context).parents('.group').find(".section_group").size();
         var sectionGroup = $(context).parents('.section_group');
         if (sizeGroup == 1) {
@@ -1814,9 +1801,7 @@ var TableBuilder = {
         }
     },
 
-    handleActionSelect : function()
-    {
-
+    handleActionSelect : function() {
         var selectAction = $("select.action");
         if (selectAction.size() != 0) {
             var value = selectAction.val();
@@ -1829,8 +1814,7 @@ var TableBuilder = {
         }
     },
 
-    checkActionSelect : function(value)
-    {
+    checkActionSelect : function(value) {
         $("section.section_field").hide();
         $("section.section_field." + value).show();
     },

@@ -8,21 +8,27 @@ class ReadonlyField extends AbstractField
     public function getEditInput($row = array())
     {
         return e($this->getValue($row));
-    } // end getEditInput
+    }
     
     public function isReadonly()
     {
         return true;
-    } // end isReadonly
+    }
 
     public function isEditable()
     {
         return false;
-    } // end isEditable
+    }
 
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
+
+        if ($this->getAttribute('filter') == 'integer') {
+            $db->where($table .'.'. $this->getFieldName(), $value);
+            return;
+        }
+
         $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'.$value.'%');
-    } // end onSearchFilter
+    }
 }

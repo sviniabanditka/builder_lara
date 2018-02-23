@@ -1,10 +1,7 @@
 <?php namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
-
 class TextField extends AbstractField
 {
-
     public function isEditable()
     {
         return true;
@@ -12,9 +9,7 @@ class TextField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-  
         $tabs = $this->getAttribute('tabs');
-
         $table = $this->getAttribute('extends_table') ? : $this->definition['db']['table'] ;
 
         if ($tabs) {
@@ -24,49 +19,32 @@ class TextField extends AbstractField
                     $query->orWhere($field . $tab['postfix'], 'LIKE', '%'.$value.'%');
                 }
             });
-        } else {
-            $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'.$value.'%');
+
+            return;
         }
-    } // end onSearchFilter
-    
-    public function getSubActions()
-    {
-        $def = $this->getAttribute('subactions');
-        if (!$def) {
-            return '';
+
+        if ($this->getAttribute('filter') == 'integer') {
+            $db->where($table .'.'. $this->getFieldName(), $value);
+            return;
         }
-        
-        $subactions = array();
-        foreach ($def as $options) {
-            $class = '\\Yaro\\Jarboe\\Fields\\Subactions\\'. ucfirst($options['type']);
-            $subactions[] = new $class($options);
-        }
-        
-        return View::make('admin::tb.subactions', compact('subactions'))->render();
-    } // end getSubActions
+
+        $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'.$value.'%');
+    }
 
     public function getEditInput($row = array())
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $type = $this->getAttribute('type');
-        $input = View::make('admin::tb.input_'. $type);
+        $input = view('admin::tb.input_'. $type);
         $input->value = $this->getValue($row);
         $input->name  = $this->getFieldName();
         $input->rows  = $this->getAttribute('rows');
         $input->mask  = $this->getAttribute('mask');
         $input->custom_type  = $this->getAttribute('custom_type');
-        $input->multi = $this->getAttribute('multi');
-
-        if ($input->multi) {
-            $input->name = $input->name . "[]";
-            $input->value = json_decode($input->value);
-        }
 
         if ( $input->name == request('foreign_field')) {
             $input->value = request('foreign_field_id');
@@ -80,15 +58,13 @@ class TextField extends AbstractField
         $input->transliteration = $this->getAttribute('transliteration');
 
         return $input->render();
-    } // end getEditInput
+    }
 
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         if ($this->getAttribute('fast_edit')) {
@@ -96,17 +72,6 @@ class TextField extends AbstractField
             return $html;
         }
 
-        if ($this->getAttribute('multi')) {
-
-           $arrayValue = json_decode($this->getValue($row));
-
-           if (is_array($arrayValue)) {
-              
-               return implode("<br>", $arrayValue);
-           }
-
-        }
-
         return $this->getValue($row);;
-    } // end getListValue
+    }
 }

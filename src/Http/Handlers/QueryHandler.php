@@ -138,9 +138,7 @@ class QueryHandler
 
     public function getPerPageAmount($info)
     {
-        if (!is_array($info)) {
-            return $info;
-        }
+        if (!is_array($info)) return $info;
 
         $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         $perPage = Session::get($sessionPath);
