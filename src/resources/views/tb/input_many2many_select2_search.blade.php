@@ -42,7 +42,7 @@
                 return item.name;
             },
             formatSelection: function(item) {
-                return item.name;
+                return item.name + '<span class="item_id" data-id="' + item.id + '"></span>';
             },
             formatNoMatches : function () {
                 return 'По результату поиска ничего не найдено';
@@ -91,8 +91,24 @@
                 TableBuilder.showErrorNotification(errorResult.message);
             }
         });
-
     }
+
+    $('.select2-choices').sortable(
+        {
+            items: "> li.select2-search-choice",
+            update: function (event, ui) {
+
+               var ids = $(this).parent().find('.item_id');
+                var arrIds = [];
+                ids.each(function(i, elem) {
+                    arrIds.push($(this).attr('data-id'));
+                });
+
+                $('[name={{$name}}]').val(arrIds.join(','));
+            }
+        }
+    );
+</script>
 
 
 </script>
