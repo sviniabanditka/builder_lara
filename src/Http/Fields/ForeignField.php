@@ -63,7 +63,7 @@ class ForeignField extends AbstractField
 
     private function getSelectFilterTitle($id)
     {
-       return DB::table ($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
+       return (array) DB::table ($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
             ->find($id);
     }
 
