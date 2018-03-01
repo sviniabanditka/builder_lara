@@ -6,7 +6,7 @@
     @endif
     
     @if ($controller->definitionClass->isMultiActions())
-        <th>
+        <th style="width: 1%; padding: 0;">
             <label class="checkbox multi-checkbox multi-main-checkbox" onclick="TableBuilder.doSelectAllMultiCheckboxes(this);">
                 <input type="checkbox" /><i></i>
             </label>
