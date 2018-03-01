@@ -2,6 +2,15 @@
 ```json
  composer require "vis/builder_lara_5":"1.*"
 ```
+Добавляем в файле app.php в блок providers
+```php
+  Vis\Builder\BuilderServiceProvider::class,
+```
+Добавляем в файле app.php в блок alias
+```php
+  'Jarboe' => Vis\Builder\Facades\Jarboe::class,
+```
+
 В корне проекта в файле .env заменяем подключение к БД на свои
 
 Инсталим админку

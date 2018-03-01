@@ -45,7 +45,7 @@ return array(
             'foreign_table'       => 'users',
             'foreign_key_field'   => 'id',
             'foreign_value_field' => 'first_name',
-            'result_show' => "<a href='/admin/tb/users/%user_id%' target='_blank'>%users_first_name%</a>",
+            'result_show' => "<a href='/admin/users?id=%user_id%' target='_blank'>%users_first_name%</a>",
         ),
         'revisionable_type' => array(
             'caption' => 'Модель',

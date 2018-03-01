@@ -6,7 +6,7 @@
         cursor: text
     }
 </style>
-<div class="filter_autocomplete" style="position: relative; width: 125px">
+<div class="filter_autocomplete" style="position: relative; min-width: 125px">
     <input class="select2-enabled filter_{{ $name }}" type="hidden" id="filter[{{ $name }}]" name="filter[{{$name}}]" style="width:100%;" value="{{$value}}">
     @if ($value)
         <button onclick="$(this).parent().find('input').val(''); setTimeout(function(){ TableBuilder.search(); }, 200); return false;" class="close" style="position: absolute; top: 8px; right: 6px;">

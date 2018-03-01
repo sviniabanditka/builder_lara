@@ -2,7 +2,6 @@
 namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
 
 class ForeignField extends AbstractField
 {
@@ -176,14 +175,20 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('is_readonly')) return $this->getValue($row);
 
         $input = $this->getAttribute('ajax_search') ?
-            View::make('admin::tb.input_foreign_ajax_search') :
-            View::make('admin::tb.input_foreign');
+            view('admin::tb.input_foreign_ajax_search') :
+            view('admin::tb.input_foreign');
 
         $input->selected = $this->getSelected($row);
 
-        $input->name     = $this->getFieldName();
-        $input->search     = $this->getAttribute('search');
-        $input->is_null  = $this->getAttribute('is_null');
+        // if show definition
+        if (request('foreign_field_id')) {
+            $input = view('admin::tb.input_foreign_only_read');
+            $input->selected = $this->getSelectedOnlyRead(request('foreign_field_id'));
+        }
+
+        $input->name = $this->getFieldName();
+        $input->search = $this->getAttribute('search');
+        $input->is_null = $this->getAttribute('is_null');
         $input->null_caption = $this->getAttribute('null_caption');
         $input->recursive = $this->getAttribute('recursive');
         $input->allow_foreign_add = $this->getAttribute('foreign_allow_add');
@@ -205,6 +210,13 @@ class ForeignField extends AbstractField
         return $input->render();
     }
 
+    private function getSelectedOnlyRead($id)
+    {
+        $result = $this->getSelectedById($id);
+
+        return implode (" ", $result);
+    }
+
     private function getSelected($row)
     {
         if ($this->getAttribute('ajax_search')) {
@@ -213,13 +225,7 @@ class ForeignField extends AbstractField
 
             if ($id) {
 
-                $foreignValueFields = $this->getForeignValueFields();
-
-                $result = DB::table($this->getAttribute('foreign_table'))
-                    ->select($foreignValueFields)
-                    ->where($this->getAttribute('foreign_key_field'), $id)->first();
-
-                $result = $this->replaceObjectToArray($result);
+                $result = $this->getSelectedById($id);
 
                 return [
                     'id' => $id,
@@ -229,6 +235,19 @@ class ForeignField extends AbstractField
         }
 
         return $this->getValueId($row);;
+    }
+
+    private function getSelectedById($id) {
+
+        $foreignValueFields = $this->getForeignValueFields();
+
+        $result = DB::table($this->getAttribute('foreign_table'))
+            ->select($foreignValueFields)
+            ->where($this->getAttribute('foreign_key_field'), $id)->first();
+
+        $result = $this->replaceObjectToArray($result);
+
+        return $result;
     }
 
     private function getCategory($id)
