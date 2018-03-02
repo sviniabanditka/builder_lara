@@ -90,7 +90,7 @@ class TreeCatalogController
         $node->parent_id = request('node', 1);
         $node->title     = request('title');
         $node->template  = request('template') ? : '';
-        $node->slug = request('slug');
+        $node->slug = request('slug') ? : request('title');
         $node->is_active = 1;
         $node->save();
 

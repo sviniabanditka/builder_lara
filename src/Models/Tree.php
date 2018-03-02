@@ -1,7 +1,6 @@
 <?php namespace Vis\Builder;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 use Request;
 
@@ -58,15 +57,10 @@ class Tree extends \Baum\Node
 
     public function setSlugAttribute($value)
     {
-        if ($this->id == 1) {
-            $slug = $value;
-        } else {
-            $slug = JarboeBuilder::urlify($value);
-        }
+        $slug = $this->id == 1 ? $value : JarboeBuilder::urlify($value);
         
         $this->attributes['slug'] = $slug;
     } // end setSlugAttribute
-
 
     public function checkUnicUrl()
     {
@@ -95,8 +89,8 @@ class Tree extends \Baum\Node
 
     public function hasTableDefinition()
     {
-        $templates = Config::get('builder.tree.templates');
-        $template = Config::get('builder.tree.default');
+        $templates = config('builder.tree.templates');
+        $template = config('builder.tree.default');
         if (isset($templates[$this->template])) {
             $template = $templates[$this->template];
         }
@@ -116,19 +110,13 @@ class Tree extends \Baum\Node
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
-        if (strpos($this->_nodeUrl, "http") !== false) {
-            return $this->_nodeUrl;
-        }
+        if (strpos($this->_nodeUrl, "http") !== false)  return $this->_nodeUrl;
 
-        if (Config::get('builder.' . $this->fileDefinition . '.basic_domain')) {
+        if (config('builder.' . $this->fileDefinition . '.basic_domain')) {
 
-            if (Request::secure()) {
-                $protocol = "https://";
-            } else {
-                $protocol = "http://";
-            }
+            $protocol = Request::secure() ? "https://" : "http://";
 
-            return $protocol.Config::get('builder.' . $this->fileDefinition . '.basic_domain'). "/"  . $this->_nodeUrl;
+            return $protocol.config('builder.' . $this->fileDefinition . '.basic_domain'). "/"  . $this->_nodeUrl;
         }
 
         return "/"  . $this->_nodeUrl;
@@ -137,7 +125,6 @@ class Tree extends \Baum\Node
     //return url without location
     public function getUrlNoLocation()
     {
-
         if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
@@ -148,41 +135,37 @@ class Tree extends \Baum\Node
     public function getGeneratedUrl()
     {
         $tags = $this->getCacheTags();
+
         if ($tags && $this->fileDefinition) {
             $url = Cache::tags($tags)->rememberForever($this->fileDefinition."_".$this->id, function () {
                 return $this->getGeneratedUrlInCache();
             });
 
             return $url;
-        } else {
-            return $this->getGeneratedUrlInCache();
         }
+
+        return $this->getGeneratedUrlInCache();
+
     } // end getGeneratedUrl
 
     private function getGeneratedUrlInCache()
     {
         $all = $this->getAncestorsAndSelf();
+        $slugs = [];
 
-        $slugs = array();
         foreach ($all as $node) {
-            if ($node->slug == '/') {
-                continue;
-            }
+            if ($node->slug == '/') continue;
+
             $slugs[] = $node->slug;
         }
 
-
-        if (Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
-            && Config::get('builder.' . $this->fileDefinition . '.basic_domain')
+        if (config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
+            && config('builder.' . $this->fileDefinition . '.basic_domain')
         ) {
-            $subDomain = Config::get('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain');
-            $basicDomain = Config::get('builder.' . $this->fileDefinition . '.basic_domain');
+            $subDomain = config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain');
+            $basicDomain = config('builder.' . $this->fileDefinition . '.basic_domain');
 
-            if (Request::secure()) {
-                $protocol = "https://";
-            } else {
-                $protocol = "http://";
-            }
+            $protocol = Request::secure() ? "https://" : "http://";
 
             return $protocol . $subDomain . '.' . $basicDomain . implode('/', $slugs);
         }
@@ -210,18 +193,14 @@ class Tree extends \Baum\Node
     {
         $tags = $this->getCacheTags();
 
-        if (count($tags)) {
-            Cache::tags($tags)->flush();
-        }
+        if (count($tags)) Cache::tags($tags)->flush();
     }
 
     private function getCacheTags()
     {
         if ($this->fileDefinition) {
-            $tags = Config::get("builder." . $this->fileDefinition . ".cache");
-            if (isset($tags['tags']) && is_array($tags['tags'])) {
-                return $tags['tags'];
-            }
+            $tags = config("builder." . $this->fileDefinition . ".cache");
+            if (isset($tags['tags']) && is_array($tags['tags'])) return $tags['tags'];
         }
 
         return false;
@@ -234,9 +213,11 @@ class Tree extends \Baum\Node
         $node = \Tree::find($id);
         $children = $node->descendants()->get(array("id", "title", "parent_id"))->toArray();
         $result = array();
+
         foreach ($children as $row) {
             $result[$row["parent_id"]][] = $row;
         }
+
         $this->treeMy = $result;
         $this->printCategories($id, 0);
 
@@ -247,13 +228,11 @@ class Tree extends \Baum\Node
     {
         if (isset($this->treeMy[$parent_id])) {
             foreach ($this->treeMy[$parent_id] as $value) {
-                if (isset($this->treeMy[$value["id"]]) && $this->recursiveOnlyLastLevel) {
-                    $disable = "disabled";
-                } else {
-                    $disable = "";
-                }
+
+                $disable = isset($this->treeMy[$value["id"]]) && $this->recursiveOnlyLastLevel ? 'disabled' : '';
 
                 $paddingLeft = "";
+
                 for ($i=0; $i<$level; $i++) {
                     $paddingLeft .= "--";
                 }
