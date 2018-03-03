@@ -156,7 +156,9 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $type = $this->getAttribute('type');
@@ -176,7 +178,9 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
             $res = $this->handler->onGetTabbedEditInput($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $type = $this->getAttribute('type');
@@ -223,7 +227,9 @@ abstract class AbstractField
 
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) return '';
+        if (! $this->getAttribute('filter')) {
+            return '';
+        }
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
@@ -260,7 +266,9 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $tabs = $this->getAttribute('tabs');
@@ -323,7 +331,9 @@ abstract class AbstractField
     {
         $validation = $this->getAttribute('validation');
 
-        if (! isset($validation['client'])) return;
+        if (! isset($validation['client'])) {
+            return;
+        }
 
         $validation = $validation['client'];
 
@@ -339,8 +349,10 @@ abstract class AbstractField
     public function getClientsideValidatorMessages()
     {
         $validation = $this->getAttribute('validation');
-        
-        if (! isset($validation['client']))  return;
+
+        if (! isset($validation['client'])) {
+            return;
+        }
 
         $validation = $validation['client'];
 
@@ -357,7 +369,9 @@ abstract class AbstractField
     {
         $validation = $this->getAttribute('validation');
 
-        if (! isset($validation['server'])) return;
+        if (! isset($validation['server'])) {
+            return;
+        }
 
         $rules = $validation['server']['rules'];
         $messages = isset($validation['server']['messages']) ? $validation['server']['messages'] : [];
