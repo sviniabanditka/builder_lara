@@ -1,5 +1,7 @@
 <?php
+
 namespace Vis\Builder\Fields;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -24,18 +26,21 @@ class ForeignField extends AbstractField
         }
         // cuz double quotes is escaping by more double quotes in csv
         $escapedValue = preg_replace('~"~', '""', $value);
+
         return $escapedValue;
     }
 
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) return;
+        if (! $this->getAttribute('filter')) {
+            return;
+        }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName ();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
         $type = $this->getAttribute('filter');
-        $input = view('admin::tb.filter_' . $type);
+        $input = view('admin::tb.filter_'.$type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
@@ -50,7 +55,7 @@ class ForeignField extends AbstractField
                 $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
                 $input->options = $this->treeOptions;
             } else {
-                $input->options  = $this->getForeignKeyOptions();
+                $input->options = $this->getForeignKeyOptions();
             }
         }
 
@@ -63,7 +68,7 @@ class ForeignField extends AbstractField
 
     private function getSelectFilterTitle($id)
     {
-       return (array) DB::table ($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
+        return (array) DB::table($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
             ->find($id);
     }
 
@@ -73,14 +78,15 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('alias')) {
             $foreignTable = $this->getAttribute('alias');
         }
-        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_value_field');
+        $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_value_field');
 
         if ($this->getAttribute('filter') == 'text') {
             $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
+
             return;
         }
 
-        $foreignValueField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
+        $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_key_field');
         $db->where($foreignValueField, $value);
     }
 
@@ -88,20 +94,22 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
-        $internalSelect = $this->definition['db']['table'] .'.'. $this->getFieldName();
+        $internalSelect = $this->definition['db']['table'].'.'.$this->getFieldName();
         $db->addSelect($internalSelect);
         $foreignTable = $this->getAttribute('foreign_table');
         $foreignTableName = $foreignTable;
 
         if ($this->getAttribute('alias')) {
-            $foreignTableName .= ' as '. $this->getAttribute('alias');
+            $foreignTableName .= ' as '.$this->getAttribute('alias');
             $foreignTable = $this->getAttribute('alias');
         }
 
-        $foreignKeyField = $foreignTable .'.'. $this->getAttribute('foreign_key_field');
+        $foreignKeyField = $foreignTable.'.'.$this->getAttribute('foreign_key_field');
         $join = $this->getAttribute('is_null') ? 'leftJoin' : 'join';
         $db->$join(
             $foreignTableName,
@@ -111,8 +119,8 @@ class ForeignField extends AbstractField
         $foreignValueFields = $this->getForeignValueFields();
 
         foreach ($foreignValueFields as $field) {
-            $fieldAlias = ' as '. $foreignTable.'_'.$field;
-            $db->addSelect($foreignTable .'.'. $field . $fieldAlias);
+            $fieldAlias = ' as '.$foreignTable.'_'.$field;
+            $db->addSelect($foreignTable.'.'.$field.$fieldAlias);
         }
     }
 
@@ -120,10 +128,11 @@ class ForeignField extends AbstractField
     {
         $fieldName = $this->getFieldName();
         $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
+
         return $value;
     }
 
-    public function getNewValueId($input='')
+    public function getNewValueId($input = '')
     {
         $new_id = null;
         if (strlen($input)) {
@@ -131,10 +140,11 @@ class ForeignField extends AbstractField
             $foreignValueField = $this->getAttribute('foreign_value_field');
 
             $first = DB::table($foreignTable)->where($foreignValueField, '=', $input)->first();
-            if (!$first) {
+            if (! $first) {
                 $new_id = DB::table($foreignTable)->insertGetId([$foreignValueField => $input]);
             }
         }
+
         return $new_id;
     }
 
@@ -142,7 +152,9 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
-            if ($res)  return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $foreignValueFields = $this->getForeignValueFields();
@@ -151,28 +163,32 @@ class ForeignField extends AbstractField
                                         ? $this->getAttribute('alias')
                                         : $this->getAttribute('foreign_table');
 
-        $resultArray = array_map(function($v) use ($foreignTableName) {
-            return $foreignTableName .'_'.$v;
+        $resultArray = array_map(function ($v) use ($foreignTableName) {
+            return $foreignTableName.'_'.$v;
         }, $foreignValueFields);
 
         $needsField = array_only($row, $resultArray);
 
-        $value = trim(implode (" ", $needsField));
-        if (!$value && $this->getAttribute('is_null')) {
+        $value = trim(implode(' ', $needsField));
+        if (! $value && $this->getAttribute('is_null')) {
             $value = $this->getAttribute('null_caption', '<i class="fa fa-minus"></i>');
         }
 
         return $value;
     }
 
-    public function getEditInput($row = array())
+    public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
-        if ($this->getAttribute('is_readonly')) return $this->getValue($row);
+        if ($this->getAttribute('is_readonly')) {
+            return $this->getValue($row);
+        }
 
         $input = $this->getAttribute('ajax_search') ?
             view('admin::tb.input_foreign_ajax_search') :
@@ -200,7 +216,7 @@ class ForeignField extends AbstractField
             $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
             $input->options = $this->treeOptions;
         } else {
-            $input->options  = $this->getForeignKeyOptions();
+            $input->options = $this->getForeignKeyOptions();
         }
 
         $input->readonly_for_edit = $this->getAttribute('readonly_for_edit');
@@ -214,31 +230,29 @@ class ForeignField extends AbstractField
     {
         $result = $this->getSelectedById($id);
 
-        return implode (" ", $result);
+        return implode(' ', $result);
     }
 
     private function getSelected($row)
     {
         if ($this->getAttribute('ajax_search')) {
-
             $id = $this->getValueId($row);
 
             if ($id) {
-
                 $result = $this->getSelectedById($id);
 
                 return [
                     'id' => $id,
-                    'name' => implode (" ", $result)
+                    'name' => implode(' ', $result),
                 ];
             }
         }
 
-        return $this->getValueId($row);;
+        return $this->getValueId($row);
     }
 
-    private function getSelectedById($id) {
-
+    private function getSelectedById($id)
+    {
         $foreignValueFields = $this->getForeignValueFields();
 
         $result = DB::table($this->getAttribute('foreign_table'))
@@ -267,12 +281,12 @@ class ForeignField extends AbstractField
                 }
             }
         }
-        
-        $children = $children->get(array("id", "title", "parent_id"))->toArray();
 
-        $result = array();
+        $children = $children->get(['id', 'title', 'parent_id'])->toArray();
+
+        $result = [];
         foreach ($children as $row) {
-            $result[$row["parent_id"]][] = $row;
+            $result[$row['parent_id']][] = $row;
         }
 
         return $result;
@@ -280,7 +294,7 @@ class ForeignField extends AbstractField
 
     private function getModelRecursive()
     {
-        return $this->getAttribute('recursiveUseModel') ? : 'Tree';
+        return $this->getAttribute('recursiveUseModel') ?: 'Tree';
     }
 
     private function printCategories($parent_id, $level)
@@ -288,19 +302,19 @@ class ForeignField extends AbstractField
         //Делаем переменную $category_arr видимой в функции
         if (isset($this->treeMy[$parent_id])) { //Если категория с таким parent_id существует
             foreach ($this->treeMy[$parent_id] as $value) { //Обходим
-                if (isset($this->treeMy[$value["id"]]) && $this->recursiveOnlyLastLevel) {
-                    $disable = "disabled";
+                if (isset($this->treeMy[$value['id']]) && $this->recursiveOnlyLastLevel) {
+                    $disable = 'disabled';
                 } else {
-                    $disable = "";
+                    $disable = '';
                 }
-                $selectOption = $this->selectOption == $value["id"] ? "selected" : "";
-                $paddingLeft = "";
-                for ($i=0; $i<$level; $i++) {
-                    $paddingLeft .= "--";
+                $selectOption = $this->selectOption == $value['id'] ? 'selected' : '';
+                $paddingLeft = '';
+                for ($i = 0; $i < $level; $i++) {
+                    $paddingLeft .= '--';
                 }
-                $this->treeOptions[] = "<option $selectOption $disable value ='" . $value["id"] . "'>". $paddingLeft . $value["title"] . "</option>";
+                $this->treeOptions[] = "<option $selectOption $disable value ='".$value['id']."'>".$paddingLeft.$value['title'].'</option>';
                 $level = $level + 1;
-                $this->printCategories($value["id"], $level);
+                $this->printCategories($value['id'], $level);
                 $level = $level - 1;
             }
         }
@@ -316,9 +330,9 @@ class ForeignField extends AbstractField
         $additionalWheres = $this->getAttribute('additional_where');
         if ($additionalWheres) {
             foreach ($additionalWheres as $key => $opt) {
-                if (trim($opt['sign']) == "in") {
+                if (trim($opt['sign']) == 'in') {
                     $db->whereIn($key, $opt['value']);
-                } elseif (trim($opt['sign']) == "not in") {
+                } elseif (trim($opt['sign']) == 'not in') {
                     $db->whereNotIn($key, $opt['value']);
                 } else {
                     $db->where($key, $opt['sign'], $opt['value']);
@@ -335,13 +349,13 @@ class ForeignField extends AbstractField
         }
         $res = $db->get();
 
-        $options = array();
+        $options = [];
         $foreignKey = $this->getAttribute('foreign_key_field');
 
         foreach ($res as $val) {
             $val = (array) $val;
             $resultValArray = array_only($val, $foreignValueField);
-            $options[$val[$foreignKey]] = implode (" ", $resultValArray);
+            $options[$val[$foreignKey]] = implode(' ', $resultValArray);
         }
 
         return $options;
@@ -351,38 +365,43 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res)  return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $nameField = $this->getFieldName();
 
-        if (!$row->$nameField) return $this->getAttribute('null_caption');
+        if (! $row->$nameField) {
+            return $this->getAttribute('null_caption');
+        }
 
         $result = (array) DB::table($this->getAttribute('foreign_table'))
             ->select($this->getForeignValueFields())
             ->where($this->getAttribute('foreign_key_field'), $row->$nameField)->first();
 
-        return implode (" ", $result);
+        return implode(' ', $result);
     }
 
     public function getAjaxSearchResult($query, $limit, $page)
     {
         if ($this->hasCustomHandlerMethod('onGetAjaxSearchResult')) {
             $res = $this->handler->onGetAjaxSearchResult($this, $query, $limit, $page);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $foreignValueFields = $this->getForeignValueFields();
 
-        $results =  DB::table($this->getAttribute('foreign_table'))
+        $results = DB::table($this->getAttribute('foreign_table'))
             ->select($foreignValueFields)
-            ->addSelect($this->getAttribute ('foreign_key_field'))
-            ->where(function ($queryRes) use ($foreignValueFields, $query)
-             {
+            ->addSelect($this->getAttribute('foreign_key_field'))
+            ->where(function ($queryRes) use ($foreignValueFields, $query) {
                 foreach ($foreignValueFields as $field) {
-                   $queryRes->orWhere($field, 'like', '%'. $query .'%');
+                    $queryRes->orWhere($field, 'like', '%'.$query.'%');
                 }
-             })
+            })
             ->take($limit)
             ->skip(($limit * $page) - $limit);
 
@@ -403,16 +422,16 @@ class ForeignField extends AbstractField
 
             $resultName = array_only($result, $foreignValueFields);
 
-            return array(
+            return [
                 'id'   => $result[$this->getAttribute('foreign_key_field')],
-                'name' => implode(" ", $resultName),
-            );
+                'name' => implode(' ', $resultName),
+            ];
         });
 
-        return array(
+        return [
             'results' => $collection,
-            'message' => ''
-        );
+            'message' => '',
+        ];
     }
 
     private function replaceObjectToArray($params)
@@ -422,7 +441,6 @@ class ForeignField extends AbstractField
 
     private function getForeignValueFields()
     {
-        return explode (" ", $this->getAttribute('foreign_value_field'));
+        return explode(' ', $this->getAttribute('foreign_value_field'));
     }
-
 }

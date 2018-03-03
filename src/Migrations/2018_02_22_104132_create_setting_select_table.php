@@ -20,13 +20,11 @@ class CreateSettingSelectTable extends Migration
             $table->string('value3');
             $table->integer('priority');
 
-
             $table->index('id_setting');
 
             $table->foreign('id_setting')
                 ->references('id')->on('settings')
                 ->onDelete('cascade');
-
         });
     }
 

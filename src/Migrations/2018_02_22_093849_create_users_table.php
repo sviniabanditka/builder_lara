@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->text('permissions');
             $table->dateTime('last_login');
             $table->timestamps();
-            
+
             $table->index([DB::raw('email(191)')]);
         });
     }

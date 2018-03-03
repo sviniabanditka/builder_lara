@@ -18,7 +18,7 @@ class CreateActivationsTable extends Migration
             $table->string('code');
             $table->tinyInteger('completed');
             $table->dateTime('completed_at');
-            
+
             $table->timestamps();
 
             $table->index('user_id');
