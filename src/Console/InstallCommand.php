@@ -96,8 +96,6 @@ class InstallCommand extends Command
      */
     private function loadFiles()
     {
-        $laravel = app();
-
         copy($this->installPath.'/files/app/Providers/RouteServiceProvider.php',
                                     app_path().'/Providers/RouteServiceProvider.php');
         $this->info('Created '.app_path().'/Providers/RouteServiceProvider.php - OK');
@@ -120,10 +118,7 @@ class InstallCommand extends Command
 
         copy($this->installPath.'/files/composer.json', base_path().'/composer.json');
         $this->info('Replace composer.json - OK');
-
-        /* copy($this->installPath . '/files/Handler_for_laravel54.php', app_path() . '/Exceptions/Handler.php');
-         $this->info('Created app/Exceptions/Handler.php - OK');*/
-
+        
         copy($this->installPath.'/files/public/.htaccess', public_path().'/.htaccess');
         $this->info('Replace htaccess - OK');
 

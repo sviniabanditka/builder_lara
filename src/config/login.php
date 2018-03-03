@@ -12,7 +12,7 @@ return [
 
     // callbacks
     'on_login' => function () {
-        //  return \Redirect::to('/admin/tree');
+        return \Redirect::to('/admin/tree');
     },
     'on_logout' => function () {
         return \Redirect::to('/');

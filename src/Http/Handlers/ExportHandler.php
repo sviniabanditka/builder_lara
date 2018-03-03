@@ -69,7 +69,7 @@ class ExportHandler
             }
         }
 
-        $rowsHandler = false;
+        $rowsHandler = [];
         if (isset($this->def['handle']['export']['rows'])) {
             $rowsHandler = $this->def['handle']['export']['rows'];
         }
@@ -86,9 +86,7 @@ class ExportHandler
         $csv = $csvRow;
 
         $between = $this->getBetweenValues();
-
-        print_arr($between);
-        exit();
+);
 
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
 

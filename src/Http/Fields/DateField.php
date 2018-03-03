@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 class DateField extends AbstractField
@@ -49,14 +48,10 @@ class DateField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
-        if (! $this->getValue($row)) {
-            return '';
-        }
+        if (! $this->getValue($row)) return '';
 
         return $this->getValue($row);
     }
@@ -65,14 +60,12 @@ class DateField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $value = $this->getValue($row);
 
-        $input = View::make('admin::tb.input_date');
+        $input = view('admin::tb.input_date');
         $input->value = $value;
         $input->name = $this->getFieldName();
         $input->months = $this->getAttribute('months');
@@ -84,19 +77,15 @@ class DateField extends AbstractField
 
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
-            return '';
-        }
+        if (! $this->getAttribute('filter'))  return '';
 
-        if ($this->getAttribute('is_range')) {
-            return $this->getFilterRangeInput();
-        }
+        if ($this->getAttribute('is_range')) return $this->getFilterRangeInput();
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = View::make('admin::tb.filter_date');
+        $input = view('admin::tb.filter_date');
         $input->name = $this->getFieldName();
         $input->value = $filter;
         $input->months = $this->getAttribute('months');
@@ -110,7 +99,7 @@ class DateField extends AbstractField
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, []);
 
-        $input = View::make('admin::tb.filter_date_range');
+        $input = view('admin::tb.filter_date_range');
         $input->name = $this->getFieldName();
         $input->valueFrom = isset($filter['from']) ? $filter['from'] : false;
         $input->valueTo = isset($filter['to']) ? $filter['to'] : false;

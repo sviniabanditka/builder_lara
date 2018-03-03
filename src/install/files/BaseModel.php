@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
+use Vis\Builder\Facades\Jarboe;
+use Illuminate\Support\Facades\Request;
 
 class BaseModel extends Model
 {
