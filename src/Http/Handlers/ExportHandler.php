@@ -86,7 +86,7 @@ class ExportHandler
         $csv = $csvRow;
 
         $between = $this->getBetweenValues();
-);
+
 
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
 
