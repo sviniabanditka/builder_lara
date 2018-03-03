@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/55775729/shield?branch=master)](https://styleci.io/repos/55775729)
+
 Подкючаем 
 ```json
  composer require "vis/builder_lara_5":"1.*"
