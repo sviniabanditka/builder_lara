@@ -3,7 +3,6 @@
 namespace Vis\Builder\Fields;
 
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
@@ -27,21 +26,15 @@ abstract class AbstractField
         $this->handler = &$handler;
     }
 
-    // end __construct
-
     public function isPattern()
     {
         return false;
     }
 
-    // end isPattern
-
     public function getFieldName()
     {
         return $this->fieldName;
     }
-
-    // end getFieldName
 
     public function getUrlAction()
     {
@@ -63,14 +56,10 @@ abstract class AbstractField
         return $this->options[$ident];
     }
 
-    // end getOption
-
     public function getAttribute($ident, $default = false)
     {
         return isset($this->attributes[$ident]) ? $this->attributes[$ident] : $default;
     }
-
-    // end getAttribute
 
     public function getRequiredAttribute($ident)
     {
@@ -81,14 +70,10 @@ abstract class AbstractField
         return $this->attributes[$ident];
     }
 
-    // end getAttribute
-
     public function isHidden()
     {
         return $this->getAttribute('hide');
     }
-
-    // end isHidden
 
     public function getValue($row, $postfix = '')
     {
@@ -116,8 +101,6 @@ abstract class AbstractField
         }
     }
 
-    // end getValue
-
     public function getExportValue($type, $row, $postfix = '')
     {
         if ($this->hasCustomHandlerMethod('onGetExportValue')) {
@@ -134,8 +117,6 @@ abstract class AbstractField
         return $escapedValue;
     }
 
-    // end getExportValue
-
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -147,8 +128,6 @@ abstract class AbstractField
 
         return $this->getValue($row);
     }
-
-    // end getListValue
 
     public function getListValueFastEdit($row, $ident)
     {
@@ -173,20 +152,16 @@ abstract class AbstractField
         }
     }
 
-    // end getListValue
-
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $type = $this->getAttribute('type');
 
-        $input = View::make('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_'.$type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -197,20 +172,16 @@ abstract class AbstractField
         return $input->render();
     }
 
-    // end getEditInput
-
     public function getTabbedEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
             $res = $this->handler->onGetTabbedEditInput($this, $row);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $type = $this->getAttribute('type');
 
-        $input = View::make('admin::tb.tab_input_'.$type);
+        $input = view('admin::tb.tab_input_'.$type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -225,8 +196,6 @@ abstract class AbstractField
 
         return $input->render();
     }
-
-    // end getTabbedEditInput
 
     protected function getPreparedTabs($row)
     {
@@ -252,13 +221,9 @@ abstract class AbstractField
         return $tabs;
     }
 
-    // end getPreparedTabs
-
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
-            return '';
-        }
+        if (! $this->getAttribute('filter')) return '';
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
@@ -266,14 +231,12 @@ abstract class AbstractField
 
         $type = $this->getAttribute('filter');
 
-        $input = View::make('admin::tb.filter_'.$type);
+        $input = view('admin::tb.filter_'.$type);
         $input->name = $this->getFieldName();
         $input->value = $filter;
 
         return $input->render();
     }
-
-    // end getFilterInput
 
     protected function hasCustomHandlerMethod($methodName)
     {
@@ -297,9 +260,7 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
-            if ($res) {
-                return $res;
-            }
+            if ($res) return $res;
         }
 
         $tabs = $this->getAttribute('tabs');
@@ -323,8 +284,6 @@ abstract class AbstractField
         }
     }
 
-    // end onSelectValue
-
     //autocreate fields in db
     protected function doCreateField($table_name, $field_name)
     {
@@ -334,7 +293,11 @@ abstract class AbstractField
             if ($field_bd && ! Schema::hasColumn($table_name, $field_name)) {
                 Session::push($table_name.'.'.$field_name, 'created');
 
-                @list($field, $param) = explode('|', $field_bd);
+                try {
+                    list($field, $param) = explode('|', $field_bd);
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
 
                 Schema::table(
                     $table_name,
@@ -356,14 +319,12 @@ abstract class AbstractField
         return false;
     }
 
-    // end isReadonly
-
     public function getClientsideValidatorRules()
     {
         $validation = $this->getAttribute('validation');
-        if (! isset($validation['client'])) {
-            return;
-        }
+
+        if (! isset($validation['client'])) return;
+
         $validation = $validation['client'];
 
         $rules = isset($validation['rules']) ? $validation['rules'] : [];
@@ -372,17 +333,15 @@ abstract class AbstractField
 
         $data = compact('rules', 'name', 'tabs');
 
-        return View::make('admin::tb.validator_rules', $data)->render();
+        return view('admin::tb.validator_rules', $data)->render();
     }
-
-    // end getClientsideValidatorRules
 
     public function getClientsideValidatorMessages()
     {
         $validation = $this->getAttribute('validation');
-        if (! isset($validation['client'])) {
-            return;
-        }
+        
+        if (! isset($validation['client']))  return;
+
         $validation = $validation['client'];
 
         $messages = isset($validation['messages']) ? $validation['messages'] : [];
@@ -391,17 +350,14 @@ abstract class AbstractField
 
         $data = compact('messages', 'name', 'tabs');
 
-        return View::make('admin::tb.validator_messages', $data)->render();
+        return view('admin::tb.validator_messages', $data)->render();
     }
-
-    // end getClientsideValidatorMessages
 
     public function doValidate($value)
     {
         $validation = $this->getAttribute('validation');
-        if (! isset($validation['server'])) {
-            return;
-        }
+
+        if (! isset($validation['server'])) return;
 
         $rules = $validation['server']['rules'];
         $messages = isset($validation['server']['messages']) ? $validation['server']['messages'] : [];
@@ -432,35 +388,25 @@ abstract class AbstractField
         }
     }
 
-    // end doValidate
-
     public function getSubActions()
     {
         return '';
     }
-
-    // end getSubActions
 
     public function getLabelClass()
     {
         return 'input';
     }
 
-    // end getLabelClass
-
     public function isEditable()
     {
         return true;
     }
 
-    // end isEditable
-
     public function getRowColor($row)
     {
         return '';
     }
-
-    // end getRowColor
 
     abstract public function onSearchFilter(&$db, $value);
 
