@@ -15,7 +15,7 @@ return [
         'caption' => '',
         'model' => 'App\Models\Tree',
     ],
-    "position" => [
+    'position' => [
         'tabs' => [
             'Общая'     => [
                 'id',
