@@ -36,9 +36,13 @@ class DatetimeField extends AbstractField
     public function prepareQueryValue($value)
     {
         if (! $value) {
-            if ($this->getAttribute('is_null')) return;
+            if ($this->getAttribute('is_null')) {
+                return;
+            }
 
-            if ($this->getFieldName() == 'created_at')  return date('Y-m-d H:i:s');
+            if ($this->getFieldName() == 'created_at') {
+                return date('Y-m-d H:i:s');
+            }
 
             return '0000-00-00 00:00:00';
         }
@@ -50,10 +54,14 @@ class DatetimeField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
-        if (! $this->getValue($row))  return '';
+        if (! $this->getValue($row)) {
+            return '';
+        }
 
         return $this->getValue($row);
     }
@@ -64,7 +72,9 @@ class DatetimeField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $value = $this->getValue($row);
