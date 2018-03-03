@@ -126,7 +126,7 @@ return [
             'caption' => 'Search',
         ],
         'insert' => [
-            'caption' => 'Create',
+            'caption' => 'Создать',
             'check' => function () {
                 return true;
             },
@@ -138,7 +138,7 @@ return [
             },
         ],
         'delete' => [
-            'caption' => 'Remove',
+            'caption' => 'Удалить',
             'check' => function () {
                 return true;
             },
