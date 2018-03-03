@@ -178,6 +178,19 @@ class InstallCommand extends Command
             $this->info('Folder resources/views/front is created');
         }
 
+        if (! is_dir(base_path().'/resources/lang/ru')) {
+            File::makeDirectory(base_path().'/resources/lang/ru', 0777, true);
+        }
+
+        if (! is_dir(base_path().'/resources/lang/ua')) {
+            File::makeDirectory(base_path().'/resources/lang/ua', 0777, true);
+        }
+
+        copy($this->installPath.'/files/resources/lang/ru/validation.php',
+            base_path().'/resources/lang/ru/validation.php');
+        copy($this->installPath.'/files/resources/lang/ua/validation.php',
+            base_path().'/resources/lang/ua/validation.php');
+        
         copy($this->installPath.'/files/resources/views/front/index.blade.php',
                                     base_path().'/resources/views/front/index.blade.php');
         $this->info('Created front/index.blade.php- OK');
