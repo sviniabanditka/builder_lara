@@ -24,7 +24,7 @@ trait ImagesTrait
 
     public function getImgLang($width = '', $height = '', $options = [])
     {
-        $img_res = $this->getImgPath($width, $height, $options,  true);
+        $img_res = $this->getImgPath($width, $height, $options, true);
 
         return  '<img src = "'.$img_res.'" title = "'.e($this->t('title')).'" alt = "'.e($this->t('title')).'">';
     }
