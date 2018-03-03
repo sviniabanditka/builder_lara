@@ -260,11 +260,7 @@ class RequestHandler
 
     protected function handleExport()
     {
-        $type = request('type');
-        $method = 'doExport'.ucfirst($type);
-        $idents = array_keys(request('b', []));
-
-        $this->controller->export->$method($idents);
+        $this->controller->export->doExport(request('type'));
     }
 
     protected function handleSetPerPageAmountAction()

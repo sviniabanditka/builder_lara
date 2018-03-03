@@ -1449,16 +1449,12 @@ var TableBuilder = {
 
     doExport: function(type, urlBasic)
     {
-        TableBuilder.showPreloader();
-
-        var $iframe = jQuery("#submiter");
-
-        var values = jQuery(TableBuilder.export_form).serializeArray();
+        var values = $(TableBuilder.export_form).serializeArray();
         values.push({ name: 'type', value: type });
         values.push({ name: 'query_type', value: "export" });
 
         var out = new Array();
-        jQuery.each(values, function(index, val) {
+        $.each(values, function(index, val) {
             out.push(val['name'] +'='+ val['value']);
         });
 
@@ -1472,9 +1468,8 @@ var TableBuilder = {
             var url = urlBasic +'?'+ out.join('&');
         }
 
-        $iframe.attr('src', url);
+        location.href = url;
 
-        TableBuilder.hidePreloader();
     }, // end doExport
 
     flushStorage: function()

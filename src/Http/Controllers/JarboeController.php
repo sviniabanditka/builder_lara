@@ -77,6 +77,16 @@ class JarboeController
         return $this->currentID;
     }
 
+    public function getModel()
+    {
+        return $this->definition['options']['model'];
+    }
+
+    public function getTable()
+    {
+        return $this->definition['db']['table'];
+    }
+
     private function doPrepareDefinition()
     {
         if (! isset($this->definition['export'])) {
