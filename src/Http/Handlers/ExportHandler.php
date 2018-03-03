@@ -87,7 +87,6 @@ class ExportHandler
 
         $between = $this->getBetweenValues();
 
-
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray(); // without pagination & with user filters & with all fields
 
         if (isset($this->def['handle']['export']['filter'])) {
