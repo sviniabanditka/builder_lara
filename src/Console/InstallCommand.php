@@ -190,7 +190,7 @@ class InstallCommand extends Command
             base_path().'/resources/lang/ru/validation.php');
         copy($this->installPath.'/files/resources/lang/ua/validation.php',
             base_path().'/resources/lang/ua/validation.php');
-        
+
         copy($this->installPath.'/files/resources/views/front/index.blade.php',
                                     base_path().'/resources/views/front/index.blade.php');
         $this->info('Created front/index.blade.php- OK');
