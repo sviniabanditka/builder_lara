@@ -13,7 +13,9 @@ class CheckboxField extends AbstractField
 
     public function prepareQueryValue($value)
     {
-        if (! $value && $this->getAttribute('is_null'))  return;
+        if (! $value && $this->getAttribute('is_null')) {
+            return;
+        }
 
         return $value ? '1' : '0';
     }
@@ -26,7 +28,9 @@ class CheckboxField extends AbstractField
 
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) return;
+        if (! $this->getAttribute('filter')) {
+            return;
+        }
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
@@ -44,7 +48,9 @@ class CheckboxField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $table = view('admin::tb.input_checkbox');
@@ -59,7 +65,9 @@ class CheckboxField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
-            if ($res)  return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         return view('admin::tb.input_checkbox_list')->with('is_checked', $this->getValue($row));
@@ -77,7 +85,9 @@ class CheckboxField extends AbstractField
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
 
-            if ($res) return $res;
+            if ($res) {
+                return $res;
+            }
         }
 
         $value = (
