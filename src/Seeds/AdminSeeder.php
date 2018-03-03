@@ -1,4 +1,6 @@
-<?php namespace Vis\Builder;
+<?php
+
+namespace Vis\Builder;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,64 +14,62 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('users')->insert([
-        
+        DB::table('users')->insert([
+
             'email' => 'admin@vis-design.com',
             'password' => bcrypt('secret'),
             'first_name' => 'admin',
             'last_name' => 'admin',
             'image' => '',
             'permissions' => '',
-            'last_login' => date("Y-m-d G:i:s"),
-            'created_at' => date("Y-m-d G:i:s"),
-            'updated_at' => date("Y-m-d G:i:s"), 
+            'last_login' => date('Y-m-d G:i:s'),
+            'created_at' => date('Y-m-d G:i:s'),
+            'updated_at' => date('Y-m-d G:i:s'),
         ]);
-        
-         DB::table('activations')->insert([
-        
+
+        DB::table('activations')->insert([
+
             'user_id' => 1,
             'code' => 'KAeedobpdF5ngq62xSPIzx1zdZkjjk2P',
             'completed' => 1,
-            'completed_at' => date("Y-m-d G:i:s"),
-            'created_at' => date("Y-m-d G:i:s"),
-            'updated_at' => date("Y-m-d G:i:s"),
+            'completed_at' => date('Y-m-d G:i:s'),
+            'created_at' => date('Y-m-d G:i:s'),
+            'updated_at' => date('Y-m-d G:i:s'),
         ]);
-        
+
         DB::table('roles')->insert([
-        
+
             'slug' => 'admin',
             'name' => 'Администратор',
             'permissions' => '{"admin.access":true}',
-            'created_at' => date("Y-m-d G:i:s"),
-            'updated_at' => date("Y-m-d G:i:s"),
+            'created_at' => date('Y-m-d G:i:s'),
+            'updated_at' => date('Y-m-d G:i:s'),
         ]);
-        
-         DB::table('roles')->insert([
+
+        DB::table('roles')->insert([
             'slug' => 'editor',
             'name' => 'Редактор',
             'permissions' => '{"admin.access":true}',
-            'created_at' => date("Y-m-d G:i:s"),
-            'updated_at' => date("Y-m-d G:i:s"),
-        
+            'created_at' => date('Y-m-d G:i:s'),
+            'updated_at' => date('Y-m-d G:i:s'),
+
         ]);
-        
-        
-         DB::table('role_users')->insert([
+
+        DB::table('role_users')->insert([
             'user_id' => '1',
-            'role_id' => '1',        
+            'role_id' => '1',
         ]);
-        
-        
-         DB::table('settings')->insert([
+
+        DB::table('settings')->insert([
             'type' => '0',
-            'title' => 'Email администратора',  
+            'title' => 'Email администратора',
             'slug' => 'email-administratora',
             'value' => 'arturishe@ukr.net',
-            'group_type' => 'general'    
+            'group_type' => 'general',
         ]);
-        
+
         DB::table('tb_tree')->insert([
-        
+
             'lft' => '1',
             'rgt' => '62',
             'depth' => '0',
@@ -81,16 +81,12 @@ class AdminSeeder extends Seeder
             'seo_title' => '',
             'seo_description' => '',
             'seo_keywords' => '',
-            'created_at' => date("Y-m-d G:i:s"),
-            'updated_at'=> date("Y-m-d G:i:s"),
+            'created_at' => date('Y-m-d G:i:s'),
+            'updated_at'=> date('Y-m-d G:i:s'),
             'picture' => '',
             'is_show_in_menu' => 0,
             'is_show_in_footer_menu' => 0,
-            'additional_pictures' => ''
+            'additional_pictures' => '',
         ]);
-       
-        
-        
-  
     }
 }

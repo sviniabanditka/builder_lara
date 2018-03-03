@@ -4,8 +4,7 @@ namespace Vis\Builder\Fields;
 
 class ReadonlyField extends AbstractField
 {
-
-    public function getEditInput($row = array())
+    public function getEditInput($row = [])
     {
         return e($this->getValue($row));
     }
@@ -25,11 +24,11 @@ class ReadonlyField extends AbstractField
         $table = $this->definition['db']['table'];
 
         if ($this->getAttribute('filter') == 'integer') {
-            $db->where($table .'.'. $this->getFieldName(), $value);
+            $db->where($table.'.'.$this->getFieldName(), $value);
+
             return;
         }
 
-        $db->where($table .'.'. $this->getFieldName(), 'LIKE', '%'.$value.'%');
+        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
-
 }

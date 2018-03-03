@@ -1,19 +1,25 @@
-<?php namespace App\Models;
+<?php
 
-use Vis\Builder\Tree as TreeBuilder;
+namespace App\Models;
+
 use Illuminate\Support\Facades\App;
+use Vis\Builder\Tree as TreeBuilder;
 
 class Tree extends TreeBuilder
 {
     public static function getFirstDepthNodes()
     {
         return self::where('depth', '1')->get();
-    } // end getFirstDepthNodes
+    }
+
+    // end getFirstDepthNodes
 
     public function scopeActive($query)
     {
         return $query->where('is_active', '1');
-    } // end scopeActive
+    }
+
+    // end scopeActive
 
     /*
      * show in head menu
@@ -22,8 +28,10 @@ class Tree extends TreeBuilder
      */
     public function scopeIsMenu($query)
     {
-        return $query->where("show_in_menu", 1)->where('is_active', '1')->orderBy('lft', 'asc');
-    } // end scopeActive
+        return $query->where('show_in_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
+    }
+
+    // end scopeActive
 
     /*
      * show in footer menu
@@ -32,18 +40,24 @@ class Tree extends TreeBuilder
      */
     public function scopeIsMenuFooter($query)
     {
-        return $query->where("show_in_footer_menu", 1)->where('is_active', '1')->orderBy('lft', 'asc');
-    } // end scopeActive
+        return $query->where('show_in_footer_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
+    }
+
+    // end scopeActive
 
     public function scopePriorityAsc($query)
     {
         return $query->orderBy('lft', 'asc');
-    } // end scopeMain
+    }
+
+    // end scopeMain
 
     public function getDate()
     {
         return Util::getDate($this->created_at);
-    } // end getDate
+    }
+
+    // end getDate
 
     //url page
     public function getUrl()
@@ -53,13 +67,13 @@ class Tree extends TreeBuilder
 
     public function checkActiveMenu()
     {
-        $pathUrl = str_replace(Request::root()."/", "", $this->getUrl());
+        $pathUrl = str_replace(Request::root().'/', '', $this->getUrl());
 
         //if main page
-        if ($this->id == 1 && $this->slug == "/") {
+        if ($this->id == 1 && $this->slug == '/') {
             return true;
         } else {
-            if (Request::is($pathUrl) ||  Request::is($pathUrl."/*")) {
+            if (Request::is($pathUrl) || Request::is($pathUrl.'/*')) {
                 return true;
             }
         }

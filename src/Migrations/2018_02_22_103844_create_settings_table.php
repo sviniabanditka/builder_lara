@@ -19,9 +19,9 @@ class CreateSettingsTable extends Migration
             $table->string('slug');
             $table->string('value');
             $table->enum('group_type', ['general', 'seo', 'graphics', 'price', 'security']);
-            
+
             $table->index([DB::raw('slug(191)')]);
-         });
+        });
     }
 
     /**
