@@ -13,8 +13,6 @@
   'Jarboe' => Vis\Builder\Facades\Jarboe::class,
 ```
 
-В корне проекта в файле .env заменяем подключение к БД на свои
-
 Инсталим админку
 ```json
    php artisan admin:install

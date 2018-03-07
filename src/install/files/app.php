@@ -167,7 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Vis\Builder\BuilderServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Devfactory\Minify\MinifyServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
