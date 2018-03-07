@@ -48,7 +48,6 @@ class InstallCommand extends Command
             $this->createEnvFile();
 
             $this->createDb();
-            $this->createDb();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
             $this->publishConfigs();
