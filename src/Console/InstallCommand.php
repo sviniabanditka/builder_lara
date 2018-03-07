@@ -44,7 +44,6 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
-
             $this->createEnvFile();
 
             $this->createDb();
@@ -65,7 +64,7 @@ class InstallCommand extends Command
             'DB_USERNAME' => $this->ask('Database user'),
             'DB_PASSWORD' => $this->ask('Database password'),
             'CACHE_DRIVER' => 'redis',
-            'MAIL_DRIVER' => 'sendmail'
+            'MAIL_DRIVER' => 'sendmail',
         ];
 
         $envFile = $this->laravel->environmentFilePath();
