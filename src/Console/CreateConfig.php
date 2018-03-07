@@ -39,5 +39,4 @@ class CreateConfig extends Command
     {
         echo 'test';
     }
-
 }
