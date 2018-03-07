@@ -6,8 +6,23 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreateActivationsTable' => $baseDir . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
+    'CreatePersistencesTable' => $baseDir . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
+    'CreateRemindersTable' => $baseDir . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
+    'CreateRevisions' => $baseDir . '/src/Migrations/2018_02_22_141402_create_revisions.php',
+    'CreateRoleUsersTable' => $baseDir . '/src/Migrations/2018_02_22_095823_create_role_users_table.php',
+    'CreateRolesTable' => $baseDir . '/src/Migrations/2018_02_22_094422_create_roles_table.php',
+    'CreateSettingSelectTable' => $baseDir . '/src/Migrations/2018_02_22_104132_create_setting_select_table.php',
+    'CreateSettingsTable' => $baseDir . '/src/Migrations/2018_02_22_103844_create_settings_table.php',
+    'CreateTbTreeTable' => $baseDir . '/src/Migrations/2018_02_22_104452_create_tb_tree_table.php',
+    'CreateThrottleTable' => $baseDir . '/src/Migrations/2018_02_22_105621_create_throttle_table.php',
+    'CreateTranslationsCmsTable' => $baseDir . '/src/Migrations/2018_02_22_110107_create_translations_cms_table.php',
+    'CreateTranslationsPhrasesCmsTable' => $baseDir . '/src/Migrations/2018_02_22_105933_create_translations_phrases_cms_table.php',
+    'CreateUsersTable' => $baseDir . '/src/Migrations/2018_02_22_093849_create_users_table.php',
+    'Vis\\Builder\\AdminSeeder' => $baseDir . '/src/Seeds/AdminSeeder.php',
     'Vis\\Builder\\Authenticate' => $baseDir . '/src/Http/Middleware/Authenticate.php',
     'Vis\\Builder\\AuthenticateFrontend' => $baseDir . '/src/Http/Middleware/AuthenticateFrontend.php',
+    'Vis\\Builder\\CreateConfig' => $baseDir . '/src/Console/CreateConfig.php',
     'Vis\\Builder\\DashboardController' => $baseDir . '/src/Http/Controllers/DashboardController.php',
     'Vis\\Builder\\EditorController' => $baseDir . '/src/Http/Controllers/EditorController.php',
     'Vis\\Builder\\Event' => $baseDir . '/src/Models/Event.php',

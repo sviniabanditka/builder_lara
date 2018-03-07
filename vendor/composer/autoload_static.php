@@ -21,8 +21,23 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
     );
 
     public static $classMap = array (
+        'CreateActivationsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
+        'CreatePersistencesTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
+        'CreateRemindersTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
+        'CreateRevisions' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_141402_create_revisions.php',
+        'CreateRoleUsersTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_095823_create_role_users_table.php',
+        'CreateRolesTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_094422_create_roles_table.php',
+        'CreateSettingSelectTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_104132_create_setting_select_table.php',
+        'CreateSettingsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103844_create_settings_table.php',
+        'CreateTbTreeTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_104452_create_tb_tree_table.php',
+        'CreateThrottleTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_105621_create_throttle_table.php',
+        'CreateTranslationsCmsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_110107_create_translations_cms_table.php',
+        'CreateTranslationsPhrasesCmsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_105933_create_translations_phrases_cms_table.php',
+        'CreateUsersTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_093849_create_users_table.php',
+        'Vis\\Builder\\AdminSeeder' => __DIR__ . '/../..' . '/src/Seeds/AdminSeeder.php',
         'Vis\\Builder\\Authenticate' => __DIR__ . '/../..' . '/src/Http/Middleware/Authenticate.php',
         'Vis\\Builder\\AuthenticateFrontend' => __DIR__ . '/../..' . '/src/Http/Middleware/AuthenticateFrontend.php',
+        'Vis\\Builder\\CreateConfig' => __DIR__ . '/../..' . '/src/Console/CreateConfig.php',
         'Vis\\Builder\\DashboardController' => __DIR__ . '/../..' . '/src/Http/Controllers/DashboardController.php',
         'Vis\\Builder\\EditorController' => __DIR__ . '/../..' . '/src/Http/Controllers/EditorController.php',
         'Vis\\Builder\\Event' => __DIR__ . '/../..' . '/src/Models/Event.php',

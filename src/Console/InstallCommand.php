@@ -44,6 +44,10 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
+
+            $this->createEnvFile();
+
+            $this->createDb();
             $this->createDb();
             $this->createFolderMinifyCssJs();
             $this->loadFiles();
@@ -54,11 +58,42 @@ class InstallCommand extends Command
         }
     }
 
+    private function createEnvFile()
+    {
+        $updatedValues = [
+            'DB_DATABASE' => $this->ask('Database name'),
+            'DB_USERNAME' => $this->ask('Database user'),
+            'DB_PASSWORD' => $this->ask('Database password'),
+            'CACHE_DRIVER' => 'redis',
+            'MAIL_DRIVER' => 'sendmail'
+        ];
+
+        $envFile = $this->laravel->environmentFilePath();
+        foreach ($updatedValues as $key => $value) {
+            file_put_contents($envFile, preg_replace(
+                "/{$key}=(.*)/",
+                "{$key}={$value}",
+                file_get_contents($envFile)
+            ));
+        }
+
+        foreach ($updatedValues as $key => $value) {
+            $configKey = strtolower(str_replace('DB_', '', $key));
+            if ($configKey === 'password' && $value == 'null') {
+                config(["database.connections.mysql.{$configKey}" => '']);
+                continue;
+            }
+            config(["database.connections.mysql.{$configKey}" => $value]);
+        }
+    }
+
     /*
      * created database
      */
     private function createDb()
     {
+        $this->info('start migration');
+
         \Artisan::call('migrate', [
             '--path' => 'vendor/vis/builder_lara_5/src/Migrations',
         ]);
@@ -68,6 +103,8 @@ class InstallCommand extends Command
         ]);
 
         $this->insertTranslateData();
+
+        $this->info('finish migration');
     }
 
     private function insertTranslateData()
@@ -97,7 +134,7 @@ class InstallCommand extends Command
     private function loadFiles()
     {
         copy($this->installPath.'/files/app/Providers/RouteServiceProvider.php',
-                                    app_path().'/Providers/RouteServiceProvider.php');
+            app_path().'/Providers/RouteServiceProvider.php');
         $this->info('Created '.app_path().'/Providers/RouteServiceProvider.php - OK');
 
         copy($this->installPath.'/files/app/Providers/AppServiceProvider.php',
@@ -192,7 +229,7 @@ class InstallCommand extends Command
             base_path().'/resources/lang/ua/validation.php');
 
         copy($this->installPath.'/files/resources/views/front/index.blade.php',
-                                    base_path().'/resources/views/front/index.blade.php');
+            base_path().'/resources/views/front/index.blade.php');
         $this->info('Created front/index.blade.php- OK');
 
         copy($this->installPath.'/files/resources/views/layouts/default.blade.php', base_path().'/resources/views/layouts/default.blade.php');

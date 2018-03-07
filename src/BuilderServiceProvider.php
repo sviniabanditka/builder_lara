@@ -87,8 +87,13 @@ class BuilderServiceProvider extends ServiceProvider
             return new GeneratePassword();
         });
 
+        $this->app->singleton('command.admin.createConfig', function ($app) {
+            return new CreateConfig();
+        });
+
         $this->commands('command.admin.install');
         $this->commands('command.admin.generatePassword');
+        $this->commands('command.admin.createConfig');
     }
 
     public function provides()
@@ -96,6 +101,7 @@ class BuilderServiceProvider extends ServiceProvider
         return [
             'command.admin.install',
             'command.admin.generatePassword',
+            'command.admin.createConfig',
         ];
     }
 }
