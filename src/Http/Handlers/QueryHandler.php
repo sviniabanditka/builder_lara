@@ -770,7 +770,10 @@ class QueryHandler
 
     private function getImagesWithDefaultPath()
     {
-        $files = collect(File::files(public_path('storage/editor/fotos')));
+        $files = collect(File::files(public_path('storage/editor/fotos')))->sortBy(function ($file) {
+            return filemtime($file);
+        })->reverse();
+
         $page = (int) request('page') ?: 1;
         $onPage = 24;
         $slice = $files->slice(($page - 1) * $onPage, $onPage);
