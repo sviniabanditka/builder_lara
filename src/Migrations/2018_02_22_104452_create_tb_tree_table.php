@@ -13,6 +13,10 @@ class CreateTbTreeTable extends Migration
     public function up()
     {
         Schema::create('tb_tree', function (Blueprint $table) {
+
+            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8';
+
             $table->increments('id');
             $table->integer('parent_id')->nullable();
             $table->integer('lft');

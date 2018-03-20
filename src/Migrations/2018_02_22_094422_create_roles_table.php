@@ -13,6 +13,9 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
+            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8';
+
             $table->increments('id');
             $table->string('slug', 50)->unique();
             $table->string('name');

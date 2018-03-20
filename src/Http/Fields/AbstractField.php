@@ -302,9 +302,9 @@ abstract class AbstractField
                 Session::push($tableName.'.'.$fieldName, 'created');
 
                 Schema::table(
-                    $fieldName,
-                    function ($table) use ($fieldName, $fieldBd) {
-                        $table->$fieldBd($fieldName);
+                    $tableName,
+                    function ($tableName) use ($fieldName, $fieldBd) {
+                        $tableName->$fieldBd($fieldName);
                     }
                 );
             } else {

@@ -13,6 +13,10 @@ class CreateRemindersTable extends Migration
     public function up()
     {
         Schema::create('reminders', function (Blueprint $table) {
+
+            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8';
+
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('code');

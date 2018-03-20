@@ -13,6 +13,10 @@ class CreateTranslationsCmsTable extends Migration
     public function up()
     {
         Schema::create('translations_cms', function (Blueprint $table) {
+
+            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8';
+
             $table->increments('id');
             $table->integer('id_translations_phrase')->unsigned();
             $table->string('lang', 2);

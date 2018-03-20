@@ -13,6 +13,10 @@ class CreateRevisions extends Migration
     public function up()
     {
         Schema::create('revisions', function (Blueprint $table) {
+
+            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8';
+
             $table->increments('id');
             $table->string('revisionable_type', 100);
             $table->integer('revisionable_id');
