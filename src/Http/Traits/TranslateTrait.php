@@ -1,4 +1,5 @@
 <?php
+
 namespace Vis\Builder\Helpers\Traits;
 
 use Illuminate\Support\Facades\App;
@@ -9,6 +10,7 @@ trait TranslateTrait
     public function t($ident)
     {
         $ident = $this->tField($ident);
+
         return $this->$ident;
     }
 
@@ -19,6 +21,7 @@ trait TranslateTrait
         if ($lang != $defaultLocale && $defaultLocale) {
             $ident = $ident.'_'.$lang;
         }
+
         return $ident;
     }
 }

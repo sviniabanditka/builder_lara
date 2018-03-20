@@ -13,7 +13,6 @@ class CreateThrottleTable extends Migration
     public function up()
     {
         Schema::create('throttle', function (Blueprint $table) {
-
             $table->collation = 'utf8_general_ci';
             $table->charset = 'utf8';
 
