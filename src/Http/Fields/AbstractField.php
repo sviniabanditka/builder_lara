@@ -293,31 +293,22 @@ abstract class AbstractField
     }
 
     //autocreate fields in db
-    protected function doCreateField($table_name, $field_name)
+    protected function doCreateField($tableName, $fieldName)
     {
-        $field_bd = $this->getAttribute('field');
+        $fieldBd = $this->getAttribute('field');
 
-        if (! Session::has($table_name.'.'.$field_name)) {
-            if ($field_bd && ! Schema::hasColumn($table_name, $field_name)) {
-                Session::push($table_name.'.'.$field_name, 'created');
-
-                try {
-                    list($field, $param) = explode('|', $field_bd);
-                } catch (Exception $e) {
-                    throw new Exception($e->getMessage());
-                }
+        if (! Session::has($tableName.'.'.$fieldName)) {
+            if ($fieldBd && ! Schema::hasColumn($tableName, $fieldName)) {
+                Session::push($tableName.'.'.$fieldName, 'created');
 
                 Schema::table(
-                    $table_name,
-                    function ($table) use ($field_name, $field, $param) {
-                        $field_add = $table->$field($field_name);
-                        if ($param) {
-                            $field_add->length($param);
-                        }
+                    $fieldName,
+                    function ($table) use ($fieldName, $fieldBd) {
+                        $table->$fieldBd($fieldName);
                     }
                 );
             } else {
-                Session::push($table_name.'.'.$field_name, 'created');
+                Session::push($tableName.'.'.$fieldName, 'created');
             }
         }
     }
