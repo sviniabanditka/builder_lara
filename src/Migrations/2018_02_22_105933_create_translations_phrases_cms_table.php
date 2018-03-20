@@ -13,7 +13,6 @@ class CreateTranslationsPhrasesCmsTable extends Migration
     public function up()
     {
         Schema::create('translations_phrases_cms', function (Blueprint $table) {
-
             $table->collation = 'utf8_general_ci';
             $table->charset = 'utf8';
 
