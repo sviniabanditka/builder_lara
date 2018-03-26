@@ -85,9 +85,7 @@ class CheckboxField extends AbstractField
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
 
-            if ($res) {
-                return $res;
-            }
+            return $res;
         }
 
         $value = (
