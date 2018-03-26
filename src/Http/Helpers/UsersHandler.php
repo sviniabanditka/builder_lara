@@ -40,15 +40,12 @@ class UsersHandler extends CustomHandler
     {
         if ($formField->getFieldName() == 'activated') {
             if (! isset($row['id'])) {
-                return '0';
+                return 0;
             }
+
             $activation = DB::table('activations')->where('user_id', $row['id'])->where('completed', 1)->count();
 
-            if ($activation == 0) {
-                return '0';
-            } else {
-                return '1';
-            }
+            return $activation == 0 ? 0 : 1;
         }
     }
 
