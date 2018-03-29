@@ -9,8 +9,6 @@ class TextareaField extends AbstractField
         return true;
     }
 
-    // end isEditable
-
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
@@ -27,12 +25,9 @@ class TextareaField extends AbstractField
         }
     }
 
-    // end onSearchFilter
-
     public function getLabelClass()
     {
         return 'textarea';
     }
 
-    // end getLabelClass
 }

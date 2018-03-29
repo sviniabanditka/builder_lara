@@ -184,6 +184,7 @@ abstract class AbstractField
         }
 
         $type = $this->getAttribute('type');
+        $tableName = $this->definition['db']['table'];
 
         $input = view('admin::tb.tab_input_'.$type);
         $input->value = $this->getValue($row);
@@ -194,8 +195,7 @@ abstract class AbstractField
         $input->placeholder = $this->getAttribute('placeholder');
         $input->caption = $this->getAttribute('caption');
         $input->tabs = $this->getPreparedTabs($row);
-        // HACK: for tabs right behaviour in edit-create modals
-        $input->pre = $row ? 'e' : 'c';
+        $input->pre = $row ? $tableName.'_e' : $tableName.'_c';
         $input->comment = $this->getAttribute('comment');
 
         return $input->render();

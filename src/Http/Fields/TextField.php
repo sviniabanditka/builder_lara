@@ -9,8 +9,6 @@ class TextField extends AbstractField
         return true;
     }
 
-    // end isEditable
-
     public function onSearchFilter(&$db, $value)
     {
         $tabs = $this->getAttribute('tabs');

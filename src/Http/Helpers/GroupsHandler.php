@@ -97,8 +97,10 @@ class GroupsHandler extends CustomHandler
 
     private function getPermissionsThis($id)
     {
+        $model = config('builder.tb-definitions.groups.options.model');
+
         if (isset($id)) {
-            $group = Group::find($id);
+            $group = $model::find($id);
             $groupPermissionsThis = $group->permissions;
         } else {
             $groupPermissionsThis = [];
@@ -139,7 +141,9 @@ class GroupsHandler extends CustomHandler
 
             $value['permissions'] = $permissionResult;
 
-            $group = new Group();
+            $model = config('builder.tb-definitions.groups.options.model');
+
+            $group = new $model();
 
             foreach ($value as $alias => $result) {
                 $group->$alias = $result;
