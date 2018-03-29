@@ -29,5 +29,4 @@ class TextareaField extends AbstractField
     {
         return 'textarea';
     }
-
 }
