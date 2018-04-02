@@ -56,7 +56,7 @@ class WysiwygField extends AbstractField
             }
         }
 
-        $tableName = $this->definition['db']['table'] . '_wysiwyg';
+        $tableName = $this->definition['db']['table'].'_wysiwyg';
 
         $input = view('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
