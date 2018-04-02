@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Helpers;
 
-use Group;
 use Illuminate\Support\Facades\View;
 use Vis\Builder\Handlers\CustomHandler;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
