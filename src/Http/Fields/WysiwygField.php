@@ -9,8 +9,6 @@ class WysiwygField extends AbstractField
         return true;
     }
 
-    // end isEditable
-
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -23,8 +21,6 @@ class WysiwygField extends AbstractField
         return mb_substr(strip_tags($this->getValue($row)), 0, 300).'...';
     }
 
-    // end getListValue
-
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -34,7 +30,7 @@ class WysiwygField extends AbstractField
             }
         }
 
-        $input = \View::make('admin::tb.input_wysiwyg_redactor');
+        $input = view('admin::tb.input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->toolbar = $this->getAttribute('toolbar');
@@ -51,8 +47,6 @@ class WysiwygField extends AbstractField
         return $input->render();
     }
 
-    // end getEditInput
-
     public function getTabbedEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
@@ -62,7 +56,9 @@ class WysiwygField extends AbstractField
             }
         }
 
-        $input = \View::make('admin::tb.tab_input_wysiwyg_redactor');
+        $tableName = $this->definition['db']['table'] . '_wysiwyg';
+
+        $input = view('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->toolbar = $this->getAttribute('toolbar');
@@ -77,12 +73,10 @@ class WysiwygField extends AbstractField
             $action = $this->definition['options']['action_url_tree'];
         }
         $input->action = $action;
-        $input->pre = $row ? 'e' : 'c';
+        $input->pre = $row ? $tableName.'e' : $tableName.'c';
 
         return $input->render();
     }
-
-    // end getTabbedEditInput
 
     public function onSearchFilter(&$db, $value)
     {
@@ -99,6 +93,4 @@ class WysiwygField extends AbstractField
             $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
         }
     }
-
-    // end onSearchFilter
 }
