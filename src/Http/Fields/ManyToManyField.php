@@ -3,7 +3,6 @@
 namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 
 class ManyToManyField extends AbstractField
 {
@@ -151,7 +150,7 @@ class ManyToManyField extends AbstractField
             return $this->getEditInputSelectWithAjaxSearch($row);
         }
 
-        $input = View::make('admin::tb.input_many2many_'.$showType);
+        $input = view('admin::tb.input_many2many_'.$showType);
         $input->selected = [];
         if ($row) {
             $input->selected = $this->getRelatedExternalFieldOptions($row);
@@ -177,7 +176,7 @@ class ManyToManyField extends AbstractField
 
     private function getEditInputSelectWithAjaxSearch($row)
     {
-        $input = View::make('admin::tb.input_many2many_select2_search');
+        $input = view('admin::tb.input_many2many_select2_search');
 
         $data = [];
         if ($row) {
@@ -206,7 +205,7 @@ class ManyToManyField extends AbstractField
 
     private function getEditInputWithExtra($row)
     {
-        $input = View::make('admin::tb.input_many2many_extra');
+        $input = view('admin::tb.input_many2many_extra');
 
         $input->selected = [];
         if ($row) {
@@ -254,12 +253,7 @@ class ManyToManyField extends AbstractField
 
         $options->join($externalTable, $keyField, '=', $externalForeignKey);
 
-        $additionalWheres = $this->getAttribute('additional_where');
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $key => $opt) {
-                $options->where($key, $opt['sign'], $opt['value']);
-            }
-        }
+        $this->additionalWhere($options);
 
         $options->where($this->getAttribute('mtm_key_field'), $row['id']);
 
@@ -315,12 +309,7 @@ class ManyToManyField extends AbstractField
             $options->select($externalForeignKey, $valueField);
         }
 
-        $additionalWheres = $this->getAttribute('additional_where');
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $key => $opt) {
-                $options->where($key, $opt['sign'], $opt['value']);
-            }
-        }
+        $this->additionalWhere($options);
 
         $this->externalTableOrder($options);
 
@@ -352,12 +341,8 @@ class ManyToManyField extends AbstractField
         $model = $params['model'];
         $options = $model::where('parent_id', $params['start_id_folder']);
 
-        $additionalWheres = $this->getAttribute('additional_where');
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $key => $opt) {
-                $options->where($key, $opt['sign'], $opt['value']);
-            }
-        }
+        $this->additionalWhere($options);
+
         $res = $options->orderBy('parent_id')->get();
 
         return $res;
@@ -378,11 +363,7 @@ class ManyToManyField extends AbstractField
             ->take($limit)
             ->skip(($limit * $page) - $limit);
 
-        if ($this->getAttribute('additional_where')) {
-            foreach ($this->getAttribute('additional_where') as $key => $opt) {
-                $results->where($key, $opt['sign'], $opt['value']);
-            }
-        }
+        $this->additionalWhere($results);
 
         $this->externalTableOrder($results);
 
@@ -413,6 +394,15 @@ class ManyToManyField extends AbstractField
         if ($this->getAttribute('mtm_external_table_order')) {
             foreach ($this->getAttribute('mtm_external_table_order') as $key => $opt) {
                 $options->orderBy($key, $opt);
+            }
+        }
+    }
+
+    private function additionalWhere(&$results)
+    {
+        if ($this->getAttribute('additional_where')) {
+            foreach ($this->getAttribute('additional_where') as $key => $opt) {
+                $results->where($key, $opt['sign'], $opt['value']);
             }
         }
     }
