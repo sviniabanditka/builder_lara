@@ -29,7 +29,7 @@ class Tree extends TreeBuilder
      */
     public function scopeIsMenu($query)
     {
-        return $query->where('show_in_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
+        return $query->where('is_show_in_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
     }
 
     // end scopeActive
@@ -41,7 +41,7 @@ class Tree extends TreeBuilder
      */
     public function scopeIsMenuFooter($query)
     {
-        return $query->where('show_in_footer_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
+        return $query->where('is_show_in_footer_menu', 1)->where('is_active', '1')->orderBy('lft', 'asc');
     }
 
     // end scopeActive

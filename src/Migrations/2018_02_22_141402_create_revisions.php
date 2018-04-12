@@ -21,7 +21,7 @@ class CreateRevisions extends Migration
             $table->integer('revisionable_id');
             $table->integer('user_id');
             $table->string('key');
-            $table->text('old_value');
+            $table->text('old_value')->nullable();
             $table->text('new_value');
 
             $table->timestamps();
