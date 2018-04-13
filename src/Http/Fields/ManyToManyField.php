@@ -402,7 +402,11 @@ class ManyToManyField extends AbstractField
     {
         if ($this->getAttribute('additional_where')) {
             foreach ($this->getAttribute('additional_where') as $key => $opt) {
-                $results->where($key, $opt['sign'], $opt['value']);
+                if ($opt['sign'] == 'in') {
+                    $results->whereIn($key, $opt['value']);
+                } else {
+                    $results->where($key, $opt['sign'], $opt['value']);
+                }
             }
         }
     }
