@@ -12,7 +12,6 @@
         Route::group(
             ['prefix' => 'admin', 'middleware' => 'auth.admin'],
             function () {
-
                 Route::get('logout', 'Vis\Builder\LoginController@doLogout')->name('logout');
 
                 Route::any(
@@ -84,10 +83,6 @@
                 Route::post('save_croped_img', 'Vis\Builder\TBController@doSaveCropImg');
 
                 Route::post('change-relation-field', 'Vis\Builder\TableAdminController@doChangeRelationField');
-
             }
         );
     });
-
-
-
