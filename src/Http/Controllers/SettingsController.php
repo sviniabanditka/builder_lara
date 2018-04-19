@@ -94,7 +94,7 @@ class SettingsController extends Controller
     /*
     * Удаление настройки
     */
-    public function doDeleteSetting()
+    public function doDelete()
     {
         Setting::doDelete(Input::get('id'));
 
