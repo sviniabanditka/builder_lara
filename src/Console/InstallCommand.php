@@ -135,6 +135,10 @@ class InstallCommand extends Command
             app_path().'/Providers/RouteServiceProvider.php');
         $this->info('Created '.app_path().'/Providers/RouteServiceProvider.php - OK');
 
+        copy($this->installPath.'/files/app/Exceptions/Handler.php',
+            app_path().'/Exceptions/Handler.php');
+        $this->info('Created '.app_path().'/Exceptions/Handler.php - OK');
+
         copy($this->installPath.'/files/app/Providers/AppServiceProvider.php',
             app_path().'/Providers/AppServiceProvider.php');
         $this->info('Created '.app_path().'/Providers/AppServiceProvider.php - OK');
