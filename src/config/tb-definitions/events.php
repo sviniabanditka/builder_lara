@@ -83,7 +83,7 @@ return [
             'type' => 'datetime',
             'is_sorting' => true,
             'months' => 2,
-            'field' => 'timestamp',
+            'field' => 'datetime',
         ],
         'updated_at' => [
             'caption' => 'Дата обновления',
@@ -91,7 +91,7 @@ return [
             'hide_list' => true,
             'is_sorting' => true,
             'hide'        => true,
-            'field' => 'timestamp',
+            'field' => 'datetime',
         ],
 
     ],

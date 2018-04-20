@@ -83,7 +83,7 @@ return [
             'type' => 'datetime',
             'is_sorting' => true,
             'months' => 2,
-            'field' => 'timestamp',
+            'field' => 'datetime',
         ],
 
     ],

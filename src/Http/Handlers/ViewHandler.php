@@ -3,7 +3,6 @@
 namespace Vis\Builder\Handlers;
 
 use Vis\Builder\JarboeController;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 class ViewHandler
@@ -37,11 +36,11 @@ class ViewHandler
         }
 
         if ($id) {
-            $form = View::make('admin::tb.form_edit');
-            $js = View::make('admin::tb.form_edit_validation');
+            $form = view('admin::tb.form_edit');
+            $js = view('admin::tb.form_edit_validation');
         } else {
-            $form = View::make('admin::tb.form_create');
-            $js = View::make('admin::tb.form_create_validation');
+            $form = view('admin::tb.form_create');
+            $js = view('admin::tb.form_create_validation');
         }
 
         $form->is_page = true;
@@ -169,7 +168,7 @@ class ViewHandler
 
     public function showEditForm($id = false, $isTree = false)
     {
-        $table = $id ? View::make('admin::tb.modal_form_edit') : View::make('admin::tb.modal_form');
+        $table = $id ? view('admin::tb.modal_form_edit') : view('admin::tb.modal_form');
 
         $table->is_tree = $isTree;
         $table->def = $this->definition;
@@ -188,7 +187,7 @@ class ViewHandler
 
     public function showRevisionForm($id = false, $isTree = false)
     {
-        $table = View::make('admin::tb.modal_revision');
+        $table = view('admin::tb.modal_revision');
         $model = $this->model;
         $objModel = $model::find($id);
 
@@ -202,7 +201,7 @@ class ViewHandler
 
     public function showViewsStatistic($id = false, $isTree = false)
     {
-        $table = View::make('admin::tb.modal_views_statistic');
+        $table = view('admin::tb.modal_views_statistic');
 
         $table->is_tree = $isTree;
         $table->def = $this->definition;
@@ -215,7 +214,7 @@ class ViewHandler
 
     public function getRowHtml($data)
     {
-        $row = View::make('admin::tb.single_row');
+        $row = view('admin::tb.single_row');
         $data['values'] = $this->controller->query->getRow($data['id']);
 
         $row->controller = $this->controller;
@@ -228,7 +227,7 @@ class ViewHandler
 
     public function fetchActions($row)
     {
-        $actions = View::make('admin::tb.single_row_actions');
+        $actions = view('admin::tb.single_row_actions');
 
         $actions->row = $row;
         $actions->def = $this->definition;

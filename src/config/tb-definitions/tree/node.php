@@ -71,11 +71,13 @@ return [
             'caption' => 'Дата создания',
             'type' => 'datetime',
             'hide' => true,
+            'field' => 'datetime',
         ],
         'updated_at' => [
             'caption' => 'Дата обновления',
             'type' => 'datetime',
             'hide' => true,
+            'field' => 'datetime',
         ],
         'is_show_in_menu' => [
             'caption' => 'Показывать в меню',
