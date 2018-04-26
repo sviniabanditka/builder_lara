@@ -73,12 +73,15 @@ class ExportHandler
     private function getFieldsBody()
     {
         $between = $this->getBetweenValues();
+        $fields = request('b');
 
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray();
         $resultArray = [];
 
-        foreach ($rows as $arr) {
-            $resultArray[] = array_only($arr, array_keys(request('b')));
+        foreach ($fields as $field => $value) {
+            foreach ($rows as $k => $arr) {
+                $resultArray[$k][$field] = isset($arr[$field]) ? $arr[$field] : '';
+            }
         }
 
         return $resultArray;
@@ -89,8 +92,10 @@ class ExportHandler
         $from = request('d.from') ? request('d.from').' 00:00:01' : '1900-01-01 00:00:01';
         $to = request('d.to') ? request('d.to').' 23:59:59' : date('Y-m-d 23:59:59');
 
+        $table = $this->controller->getDefinition()['db']['table'];
+
         return [
-            'field' => $this->getAttribute('date_range_field') ?: 'created_at',
+            'field' => $this->getAttribute('date_range_field') ?: $table . '.created_at',
             'values' => [
                 $from, $to,
             ],
