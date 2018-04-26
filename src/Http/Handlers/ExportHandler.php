@@ -95,7 +95,7 @@ class ExportHandler
         $table = $this->controller->getDefinition()['db']['table'];
 
         return [
-            'field' => $this->getAttribute('date_range_field') ?: $table . '.created_at',
+            'field' => $this->getAttribute('date_range_field') ?: $table.'.created_at',
             'values' => [
                 $from, $to,
             ],
