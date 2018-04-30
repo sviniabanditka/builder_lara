@@ -80,11 +80,45 @@ class ExportHandler
 
         foreach ($fields as $field => $value) {
             foreach ($rows as $k => $arr) {
-                $resultArray[$k][$field] = isset($arr[$field]) ? $arr[$field] : '';
+                $resultArray[$k][$field] = $this->getValueField($field, $arr);;
             }
         }
 
         return $resultArray;
+    }
+
+    private function getValueField($field, $arr)
+    {
+        if (isset($arr[$field])) {
+            return $arr[$field];
+        }
+
+        if ($this->checkManyToMany($field)) {
+            return $this->getValueManyToMantField($field, $arr['id']);
+        }
+    }
+
+    private function checkManyToMany($field)
+    {
+        return strpos($field, 'many2many') !== false
+            && isset( $this->controller->getDefinition()['fields'][$field]);
+    }
+
+    private function getValueManyToMantField($field, $id)
+    {
+        $manyField = $this->controller->getDefinition()['fields'][$field];
+
+        $res = (array) \DB::table ($manyField['mtm_table'])
+            ->leftJoin($manyField['mtm_external_table'],
+                "{$manyField['mtm_external_table']}.{$manyField['mtm_external_foreign_key_field']}",
+                "=",
+                "{$manyField['mtm_table']}.{$manyField['mtm_external_key_field']}"
+            )
+            ->select("{$manyField['mtm_external_table']}.{$manyField['mtm_external_value_field']}")
+            ->where("{$manyField['mtm_table']}.{$manyField['mtm_key_field']}", $id)
+            ->pluck("{$manyField['mtm_external_table']}.{$manyField['mtm_external_value_field']}");
+
+        return implode ('; ', $res);
     }
 
     private function getBetweenValues()
