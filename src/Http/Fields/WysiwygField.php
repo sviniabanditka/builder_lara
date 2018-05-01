@@ -67,6 +67,7 @@ class WysiwygField extends AbstractField
         $input->inlineStyles = $this->getAttribute('inlineStyles');
         $input->options = $this->getAttribute('options');
         $input->comment = $this->getAttribute('comment');
+        $input->className = $this->getAttribute('class_name');
 
         $action = $this->getUrlAction();
         if (isset($this->definition['options']['action_url_tree'])) {
