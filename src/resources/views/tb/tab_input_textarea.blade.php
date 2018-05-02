@@ -1,6 +1,4 @@
-
-
-<section>
+<section class="{{$className}}">
     <div class="tab-pane active">
 
         <ul class="nav nav-tabs tabs-pull-right">

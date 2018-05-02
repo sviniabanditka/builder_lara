@@ -197,6 +197,7 @@ abstract class AbstractField
         $input->tabs = $this->getPreparedTabs($row);
         $input->pre = $row ? $tableName.'_e' : $tableName.'_c';
         $input->comment = $this->getAttribute('comment');
+        $input->className = $this->getAttribute('class_name');
 
         return $input->render();
     }

@@ -32,7 +32,7 @@ class SelectField extends AbstractField
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $table = View::make('admin::tb.filter_select');
+        $table = view('admin::tb.filter_select');
         $table->filter = $filter;
         $table->name = $this->getFieldName();
         $table->options = $this->getAttribute('options');
@@ -51,7 +51,7 @@ class SelectField extends AbstractField
             }
         }
 
-        $table = View::make('admin::tb.input_select');
+        $table = view('admin::tb.input_select');
         $table->selected = $this->getValue($row);
         $table->name = $this->getFieldName();
         $options = $this->getAttribute('options');
