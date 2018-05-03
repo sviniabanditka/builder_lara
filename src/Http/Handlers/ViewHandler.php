@@ -76,8 +76,14 @@ class ViewHandler
     {
         $table = view('admin::tb.table_builder');
 
+        if ($this->controller->hasCustomHandlerMethod('onShowList')) {
+            $res = $this->controller->getCustomHandler()->onShowList();
+            $table->rows = $res;
+        } else {
+            $table->rows = $this->controller->query->getRows();
+        }
+
         $table->def = $this->definition;
-        $table->rows = $this->controller->query->getRows();
         $table->controller = $this->controller;
         $table->per_page = Session::get('table_builder.'.$this->definitionName.'.per_page');
         $table->fieldsList = $this->controller->definitionClass->getFieldsList();

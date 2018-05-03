@@ -111,15 +111,12 @@ class QueryHandler
             $this->db->whereBetween($betweenField, $betweenValues);
         }
 
-        if ($this->hasOptionDB('pagination') && $isPagination) {
-            $pagination = $this->getOptionDB('pagination');
-            $perPage = $this->getPerPageAmount($pagination['per_page']);
-            $paginator = $this->db->paginate($perPage);
+        $pagination = $this->getOptionDB('pagination');
+        $perPage = $this->getPerPageAmount($pagination['per_page']);
+        $paginator = $this->db->paginate($perPage);
 
-            return $paginator;
-        }
+        return $paginator;
 
-        return $this->db->get();
     }
 
     private function dofilter()
