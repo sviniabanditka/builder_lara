@@ -116,7 +116,6 @@ class QueryHandler
         $paginator = $this->db->paginate($perPage);
 
         return $paginator;
-
     }
 
     private function dofilter()
