@@ -78,8 +78,13 @@ class ViewHandler
 
         if ($this->controller->hasCustomHandlerMethod('onShowList')) {
             $res = $this->controller->getCustomHandler()->onShowList();
-            $table->rows = $res;
-        } else {
+
+            if ($res) {
+                $table->rows = $res;
+            }
+        }
+
+        if (!$table->rows) {
             $table->rows = $this->controller->query->getRows();
         }
 
