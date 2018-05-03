@@ -52,4 +52,17 @@ class DefinitionHandler
 
         return true;
     }
+
+    public function isFilterPresent()
+    {
+        $fieldsList = $this->getFieldsList();
+
+        foreach ($fieldsList as $field) {
+            if ($field->getAttribute('filter')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

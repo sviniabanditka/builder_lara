@@ -14,24 +14,24 @@
     @endif
 
     @foreach ($fieldsList as $field)
-            @if ($field->getAttribute('is_sorting'))
-                    <th
-                            style="position: relative"
-                            class="sorting
-                    {!! $field->isOrder($controller) !!}
-                    "
-                        onclick="TableBuilder.doChangeSortingDirection('{{$field->getFieldName()}}', this);"
-                            {!! $field->getWidth() !!}
-                    >
-                        @if ($field->isOrder($controller))
-                            <button onclick="TableBuilder.doClearOrder();" class="close" style="position: absolute; top: 12px; left: 13px;">×</button>
-                        @endif
+        @if ($field->getAttribute('is_sorting'))
+                <th
+                        style="position: relative"
+                        class="sorting
+                {!! $field->isOrder($controller) !!}
+                "
+                    onclick="TableBuilder.doChangeSortingDirection('{{$field->getFieldName()}}', this);"
+                        {!! $field->getWidth() !!}
+                >
+                    @if ($field->isOrder($controller))
+                        <button onclick="TableBuilder.doClearOrder();" class="close" style="position: absolute; top: 12px; left: 13px;">×</button>
+                    @endif
 
-                        {{ __cms($field->getAttribute('caption')) }}
-                    </th>
-            @else
-                <th {!! $field->getWidth() !!}>{{ __cms($field->getAttribute('caption')) }}</th>
-            @endif
+                    {{ __cms($field->getAttribute('caption')) }}
+                </th>
+        @else
+            <th {!! $field->getWidth() !!}>{{ __cms($field->getAttribute('caption')) }}</th>
+        @endif
     @endforeach
 
     @if ($controller->definitionClass->isShowInsert())
@@ -42,25 +42,26 @@
         <th></th>
     @endif
 </tr>
+@if ($controller->definitionClass->isFilterPresent())
+    <tr class="filters-row">
+        @if ($controller->definitionClass->isSortable())
+            <th></th>
+        @endif
 
-<tr class="filters-row">
-    @if ($controller->definitionClass->isSortable())
-        <th></th>
-    @endif
+        @if ($controller->definitionClass->isMultiActions())
+            <th></th>
+        @endif
 
-    @if ($controller->definitionClass->isMultiActions())
-        <th></th>
-    @endif
+        @foreach ($fieldsList as $field)
+                <td>{!! $field->getFilterInput() !!}</td>
+        @endforeach
 
-    @foreach ($fieldsList as $field)
-            <td>{!! $field->getFilterInput() !!}</td>
-    @endforeach
-
-    <td style="width:1%">
-        <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 66px;"
-                type="button"
-                onclick="TableBuilder.search();">
-                {{ __cms('Поиск')}}
-        </button>
-    </td>
-</tr>
+        <td style="width:1%">
+            <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 66px;"
+                    type="button"
+                    onclick="TableBuilder.search();">
+                    {{ __cms('Поиск')}}
+            </button>
+        </td>
+    </tr>
+@endif
