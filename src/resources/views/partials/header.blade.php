@@ -4,7 +4,7 @@
 
         <span id="logo" style="margin-top: 10px;">
             @if (config('builder.admin.link_to_logo'))
-                <a href="{{config('builder.admin.link_to_logo')}}"><img src="{{$logo}}"></a>
+                <a href="{{config('builder.admin.link_to_logo')}}" target="_blank"><img src="{{$logo}}"></a>
             @else
                 <img src="{{$logo}}">
             @endif

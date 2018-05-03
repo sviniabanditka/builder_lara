@@ -3,7 +3,7 @@
     <div class="login-info">
         <span>
             <a>
-                <img src="/packages/vis/builder/img/no_photo_user.jpg" class="online">
+                <img src="{{$user->getAvatar(['w' => 35, 'h' => 35])}}" class="online">
                 <span>
                     {{$user->getFullName()}}
                 </span>

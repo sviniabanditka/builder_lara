@@ -18,6 +18,8 @@ class User extends EloquentUser
     {
         if ($this->image) {
             $image = $this->image;
+        } else if ($this->picture) {
+            $image = $this->picture;
         } else {
             $image = '/packages/vis/builder/img/blank_avatar.gif';
         }
