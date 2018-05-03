@@ -84,7 +84,7 @@ class ViewHandler
             }
         }
 
-        if (!$table->rows) {
+        if (! $table->rows) {
             $table->rows = $this->controller->query->getRows();
         }
 
