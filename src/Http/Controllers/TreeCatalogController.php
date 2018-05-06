@@ -104,7 +104,7 @@ class TreeCatalogController
         $node->save();
 
         $node->checkUnicUrl();
-        $node->makeChildOf($root);
+        $node->makeFirstChildOf($root);
 
         $root->clearCache();
 
