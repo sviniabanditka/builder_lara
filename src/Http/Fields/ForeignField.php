@@ -197,7 +197,7 @@ class ForeignField extends AbstractField
         $input->selected = $this->getSelected($row);
 
         // if show definition
-        if (request('foreign_field_id')) {
+        if (request('foreign_field_id') && $this->getFieldName() == request('foreign_field')) {
             $input = view('admin::tb.input_foreign_only_read');
             $input->selected = $this->getSelectedOnlyRead(request('foreign_field_id'));
         }
