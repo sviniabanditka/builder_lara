@@ -143,6 +143,10 @@ class InstallCommand extends Command
             app_path().'/Providers/AppServiceProvider.php');
         $this->info('Created '.app_path().'/Providers/AppServiceProvider.php - OK');
 
+        copy($this->installPath.'/files/app/Providers/ComposerServiceProvider.php',
+            app_path().'/Providers/ComposerServiceProvider.php');
+        $this->info('Created '.app_path().'/Providers/ComposerServiceProvider.php - OK');
+
         copy($this->installPath.'/files/routes/front.php', base_path().'/routes/front.php');
         $this->info('Created '.base_path().'/routes/front.php - OK');
 
@@ -168,6 +172,20 @@ class InstallCommand extends Command
             File::makeDirectory(app_path().'/Models', 0777, true);
             $this->info('Folder app/Models is created');
         }
+
+        if (! is_dir(app_path().'/Http/ViewComposers')) {
+            File::makeDirectory(app_path().'/Http/ViewComposers', 0777, true);
+            $this->info('Folder Http/ViewComposers is created');
+        }
+
+        copy($this->installPath.'/files/app/Http/ViewComposers/BreadcrumbsComposer.php', app_path().'/Http/ViewComposers/BreadcrumbsComposer.php');
+        $this->info('Created app/Http/ViewComposers/BreadcrumbsComposer.php- OK');
+
+        copy($this->installPath.'/files/app/Http/ViewComposers/FooterComposer.php', app_path().'/Http/ViewComposers/FooterComposer.php');
+        $this->info('Created app/Http/ViewComposers/FooterComposer.php- OK');
+
+        copy($this->installPath.'/files/app/Http/ViewComposers/HeaderComposer.php', app_path().'/Http/ViewComposers/HeaderComposer.php');
+        $this->info('Created app/Http/ViewComposers/HeaderComposer.php- OK');
 
         copy($this->installPath.'/files/cache.php', config_path().'/cache.php');
         $this->info('Replace cache.php - OK');
