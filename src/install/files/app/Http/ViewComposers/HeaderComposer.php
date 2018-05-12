@@ -20,5 +20,4 @@ class HeaderComposer
 
         $view->with(compact('menu'));
     }
-
 }
