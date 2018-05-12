@@ -29,5 +29,4 @@ class BreadcrumbsComposer
 
         $view->with(compact('breadcrumbs'));
     }
-
 }
