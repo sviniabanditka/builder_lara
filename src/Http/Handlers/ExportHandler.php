@@ -80,6 +80,7 @@ class ExportHandler
 
         foreach ($fields as $field => $value) {
             foreach ($rows as $k => $arr) {
+
                 $resultArray[$k][$field] = $this->getValueField($field, $arr);
             }
         }
@@ -93,7 +94,8 @@ class ExportHandler
             return $arr[$field];
         }
 
-        if ($this->checkManyToMany($field)) {
+        if ($this->checkManyToMany($field) && isset($arr['id'])) {
+
             return $this->getValueManyToMantField($field, $arr['id']);
         }
     }
@@ -128,8 +130,12 @@ class ExportHandler
 
         $table = $this->controller->getDefinition()['db']['table'];
 
+        $field = $this->getAttribute('date_range_field') ?
+              $table. '.'.$this->getAttribute('date_range_field')
+            : $table.'.created_at';
+
         return [
-            'field' => $this->getAttribute('date_range_field') ?: $table.'.created_at',
+            'field' => $field,
             'values' => [
                 $from, $to,
             ],
