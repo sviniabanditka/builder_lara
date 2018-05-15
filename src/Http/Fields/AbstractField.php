@@ -425,14 +425,15 @@ abstract class AbstractField
         }
 
         if ($this->getAttribute('filter') == 'date_range') {
+            if (! isset($value['to'])) {
+                $db->where($table.'.'.$this->getFieldName(), '>', $value['from']);
 
-            if (!isset($value['to'])) {
-                $db->where($table.'.'.$this->getFieldName(), '>' , $value['from']);
                 return;
             }
 
-            if (!isset($value['from'])) {
-                $db->where($table.'.'.$this->getFieldName(), '<' , $value['to']);
+            if (! isset($value['from'])) {
+                $db->where($table.'.'.$this->getFieldName(), '<', $value['to']);
+
                 return;
             }
 
@@ -443,28 +444,29 @@ abstract class AbstractField
 
         $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
-/*
-    public function onSearchFilterDate(&$db, $value)
-    {
-        $table = $this->definition['db']['table'];
 
-        if ($this->getAttribute('filter') == 'date_range') {
-
-            if (!isset($value['to'])) {
-                $db->where($table.'.'.$this->getFieldName(), '>' , $value['from']);
+    /*
+        public function onSearchFilterDate(&$db, $value)
+        {
+            $table = $this->definition['db']['table'];
+    
+            if ($this->getAttribute('filter') == 'date_range') {
+    
+                if (!isset($value['to'])) {
+                    $db->where($table.'.'.$this->getFieldName(), '>' , $value['from']);
+                    return;
+                }
+    
+                if (!isset($value['from'])) {
+                    $db->where($table.'.'.$this->getFieldName(), '<' , $value['to']);
+                    return;
+                }
+    
+                $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
+    
                 return;
             }
-
-            if (!isset($value['from'])) {
-                $db->where($table.'.'.$this->getFieldName(), '<' , $value['to']);
-                return;
-            }
-
-            $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
-
-            return;
-        }
-    }*/
+        }*/
 
     public function getListValueDefinitionPopup($row)
     {

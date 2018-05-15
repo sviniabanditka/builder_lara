@@ -66,12 +66,11 @@ class DateField extends AbstractField
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = view('admin::tb.filter_' . $this->getAttribute('filter'));
+        $input = view('admin::tb.filter_'.$this->getAttribute('filter'));
         $input->name = $this->getFieldName();
         $input->value = $filter;
         $input->months = $this->getAttribute('months');
 
         return $input->render();
     }
-
 }
