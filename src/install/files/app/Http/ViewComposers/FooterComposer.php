@@ -20,5 +20,4 @@ class FooterComposer
 
         $view->with(compact('menu'));
     }
-
 }
