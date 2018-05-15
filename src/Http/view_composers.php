@@ -34,7 +34,7 @@ View::composer(['admin::tree.create_modal', 'admin::tree.content'], function (Vi
         if (isset($info->template)) {
             $accessTemplateShow = config('builder.'.$view->treeName.'.templates.'.$info->template.'.show_templates');
 
-            if (is_array ($accessTemplateShow) && count($accessTemplateShow)) {
+            if (is_array($accessTemplateShow) && count($accessTemplateShow)) {
                 $accessTemplateShow = array_flip($accessTemplateShow);
 
                 $templates = array_intersect_key($templates, $accessTemplateShow);
