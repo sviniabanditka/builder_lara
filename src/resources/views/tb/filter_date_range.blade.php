@@ -1,5 +1,5 @@
-<div style="white-space: nowrap">
-    <table>
+<div style="text-align: center">
+    <table style="margin: 0 auto">
         <tr>
             <td>
                 <div style="position: relative">

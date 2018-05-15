@@ -647,3 +647,8 @@ body.mobile-view-activated .pagination-bottom-wrapper {
 .screenshot img {
     max-width: 50px;
 }
+.datepicker_range {
+    width: 120px;
+    position: relative;
+    float:left;
+}
