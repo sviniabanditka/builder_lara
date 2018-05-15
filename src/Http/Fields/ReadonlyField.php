@@ -18,17 +18,4 @@ class ReadonlyField extends AbstractField
     {
         return false;
     }
-
-    public function onSearchFilter(&$db, $value)
-    {
-        $table = $this->definition['db']['table'];
-
-        if ($this->getAttribute('filter') == 'integer') {
-            $db->where($table.'.'.$this->getFieldName(), $value);
-
-            return;
-        }
-
-        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
-    }
 }

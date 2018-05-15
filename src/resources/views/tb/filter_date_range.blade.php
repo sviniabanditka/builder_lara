@@ -1,55 +1,79 @@
+<div style="white-space: nowrap">
+    <table>
+        <tr>
+            <td>
+                <div style="position: relative">
+                    <input type="text"
+                           id="f-from-{{$name}}"
+                           value="{{$value['from'] or ''}}"
+                           name="filter[{{ $name }}][from]"
+                           class="form-control input-small datepicker datepicker_range" >
 
-<div style="position: relative; width: 45%; float:left;">
-    <input type="text"
-           id="f-from-{{$name}}"
-           @if ($valueFrom)
-            value="{{$valueFrom}}"
-           @endif
-           name="filter[{{ $name }}][from]"
-           class="form-control input-small datepicker" >
+                    <span class="input-group-addon form-input-icon form-input-filter-icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+            </td>
+            <td style="padding: 0 5px">
+                <div><i class="fa fa-minus"></i></div>
+            </td>
+            <td>
+                <div style="position: relative">
+                    <input type="text"
+                           id="f-to-{{$name}}"
+                           value="{{$value['to'] or ''}}"
+                           name="filter[{{ $name }}][to]"
+                           class="form-control input-small datepicker datepicker_range" >
 
-    <span class="input-group-addon form-input-icon form-input-filter-icon">
-        <i class="fa fa-calendar"></i>
-    </span>
+                    <span class="input-group-addon form-input-icon form-input-filter-icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
 </div>
-
-<div style="margin: 10px 20px; float:left;"><i class="fa fa-minus"></i></div>
-
-<div style="position: relative; width: 45%; float:left;">
-    <input type="text"
-           id="f-to-{{$name}}"
-           @if ($valueTo)
-            value="{{$valueTo}}"
-           @endif
-           name="filter[{{ $name }}][to]"
-           class="form-control input-small datepicker" >
-
-    <span class="input-group-addon form-input-icon form-input-filter-icon">
-        <i class="fa fa-calendar"></i>
-    </span>
-</div>
-
 
 <script>
-jQuery(document).ready(function() {
-    jQuery("#f-from-{{$name}}").datepicker({
-        changeMonth: true,
-        prevText: '<i class="fa fa-chevron-left"></i>',
-        nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        //showButtonPanel: true,
-        regional: ["ru"],
-        onClose: function (selectedDate) {}
-    });
-    
-    jQuery("#f-to-{{$name}}").datepicker({
-        changeMonth: true,
-        prevText: '<i class="fa fa-chevron-left"></i>',
-        nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        //showButtonPanel: true,
-        regional: ["ru"],
-        onClose: function (selectedDate) {}
-    });
-});
+
+    $( function() {
+        var dateFormat = "yy-mm-dd",
+            from = $( "#f-from-{{$name}}" )
+                .datepicker({
+                    defaultDate: "+1w",
+                    prevText: '<i class="fa fa-chevron-left"></i>',
+                    nextText: '<i class="fa fa-chevron-right"></i>',
+                    changeMonth: true,
+                    numberOfMonths: 2,
+                    dateFormat: dateFormat,
+                })
+                .on( "change", function() {
+                    to.datepicker( "option", "minDate", getDate( this ) );
+                }),
+            to = $( "#f-to-{{$name}}" ).datepicker({
+                defaultDate: "+1w",
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                changeMonth: true,
+                numberOfMonths: 2,
+                dateFormat: dateFormat,
+            })
+            .on( "change", function() {
+                from.datepicker( "option", "maxDate", getDate( this ) );
+            });
+
+        function getDate( element ) {
+            var date;
+            try {
+
+                date = $.datepicker.parseDate( dateFormat, element.value );
+            } catch( error ) {
+                date = null;
+            }
+
+            return date;
+        }
+    } );
+
 </script>

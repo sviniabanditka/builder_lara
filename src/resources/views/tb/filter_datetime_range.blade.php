@@ -1,57 +1,60 @@
+<div style="white-space: nowrap">
+   <table>
+       <tr>
+           <td>
+               <div style="position: relative">
+                   <input type="text"
+                                  id="f-from-{{$name}}"
+                                  value="{{$valueFrom or ''}}"
+                                  name="filter[{{ $name }}][from]"
+                                  class="form-control input-small datepicker datepicker_range" >
 
-<div style="position: relative; width: 45%; float:left;">
-<input type="text" 
-       id="f-from-{{$name}}"
-       @if ($valueFrom)
-        value="{{$valueFrom}}" 
-       @endif
-       name="filter[{{ $name }}][from]" 
-       class="form-control input-small datepicker" >
-       
-<span class="input-group-addon form-input-icon form-input-filter-icon">
-    <i class="fa fa-calendar"></i>
-</span>
+                           <span class="input-group-addon form-input-icon form-input-filter-icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+               </div>
+           </td>
+           <td>
+               <div><i class="fa fa-minus"></i></div>
+           </td>
+           <td>
+               <div style="position: relative">
+                   <input type="text"
+                          id="f-to-{{$name}}"
+                          value="{{$valueTo or ''}}"
+                          name="filter[{{ $name }}][to]"
+                          class="form-control input-small datepicker datepicker_range" >
+
+                           <span class="input-group-addon form-input-icon form-input-filter-icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+               </div>
+           </td>
+       </tr>
+   </table>
+
 </div>
-
-<div style="margin: 10px 20px; float:left;"><i class="fa fa-minus"></i></div>
-
-<div style="position: relative; width: 45%; float:left;">
-<input type="text" 
-       id="f-to-{{$name}}"
-       @if ($valueTo)
-        value="{{$valueTo}}" 
-       @endif
-       name="filter[{{ $name }}][to]" 
-       class="form-control input-small datepicker" >
-       
-<span class="input-group-addon form-input-icon form-input-filter-icon">
-    <i class="fa fa-calendar"></i>
-</span>
-</div>
-
 
 <script>
-jQuery(document).ready(function() {
-    jQuery("#f-from-{{$name}}").datetimepicker({
+
+    jQuery("#f-from-{{$name}}").datepicker({
         changeMonth: true,
         prevText: '<i class="fa fa-chevron-left"></i>',
         nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        timeFormat: 'HH:mm:ss',
+        dateFormat: "yy-mm-dd",
         //showButtonPanel: true,
         regional: ["ru"],
         onClose: function (selectedDate) {}
     });
     
-    jQuery("#f-to-{{$name}}").datetimepicker({
+    jQuery("#f-to-{{$name}}").datepicker({
         changeMonth: true,
         prevText: '<i class="fa fa-chevron-left"></i>',
         nextText: '<i class="fa fa-chevron-right"></i>',
-        dateFormat: "dd/mm/yy",
-        timeFormat: 'HH:mm:ss',
+        dateFormat: "yy-mm-dd",
         //showButtonPanel: true,
         regional: ["ru"],
         onClose: function (selectedDate) {}
     });
-});
+
 </script>

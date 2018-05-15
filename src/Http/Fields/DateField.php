@@ -6,31 +6,6 @@ use Illuminate\Support\Facades\Session;
 
 class DateField extends AbstractField
 {
-    public function onSearchFilter(&$db, $value)
-    {
-        $table = $this->definition['db']['table'];
-        if ($this->getAttribute('is_range')) {
-            if (! isset($value['from']) && ! isset($value['to'])) {
-                return;
-            }
-
-            $dateFrom = isset($value['from']) ? $value['from'] : '28800';
-            $dateTo = isset($value['to']) ? $value['to'] : '2146939932';
-            $db->whereBetween(
-                $table.'.'.$this->getFieldName(),
-                [
-                    date('Y-m-d', $dateFrom),
-                    date('Y-m-d', $dateTo),
-                ]
-            );
-        } else {
-            $db->where(
-                $table.'.'.$this->getFieldName(),
-                $value
-            );
-        }
-    }
-
     public function prepareQueryValue($value)
     {
         if (! $value) {
@@ -87,15 +62,11 @@ class DateField extends AbstractField
             return '';
         }
 
-        if ($this->getAttribute('is_range')) {
-            return $this->getFilterRangeInput();
-        }
-
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = view('admin::tb.filter_date');
+        $input = view('admin::tb.filter_' . $this->getAttribute('filter'));
         $input->name = $this->getFieldName();
         $input->value = $filter;
         $input->months = $this->getAttribute('months');
@@ -103,18 +74,4 @@ class DateField extends AbstractField
         return $input->render();
     }
 
-    private function getFilterRangeInput()
-    {
-        $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
-        $filter = Session::get($sessionPath, []);
-
-        $input = view('admin::tb.filter_date_range');
-        $input->name = $this->getFieldName();
-        $input->valueFrom = isset($filter['from']) ? $filter['from'] : false;
-        $input->valueTo = isset($filter['to']) ? $filter['to'] : false;
-        $input->months = $this->getAttribute('months');
-
-        return $input->render();
-    }
 }
