@@ -449,21 +449,21 @@ abstract class AbstractField
         public function onSearchFilterDate(&$db, $value)
         {
             $table = $this->definition['db']['table'];
-    
+
             if ($this->getAttribute('filter') == 'date_range') {
-    
+
                 if (!isset($value['to'])) {
                     $db->where($table.'.'.$this->getFieldName(), '>' , $value['from']);
                     return;
                 }
-    
+
                 if (!isset($value['from'])) {
                     $db->where($table.'.'.$this->getFieldName(), '<' , $value['to']);
                     return;
                 }
-    
+
                 $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
-    
+
                 return;
             }
         }*/
