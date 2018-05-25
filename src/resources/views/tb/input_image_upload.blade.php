@@ -8,7 +8,7 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this), '{{$baseName}}')"> Выбрать из загруженных </span>
+                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
                     <input type="file" multiple accept="image/*" class="image_{{$name}}"
@@ -22,7 +22,7 @@
                 @if ($source)
                     <ul class="dop_foto">
                         @foreach ($source as $key => $value)
-                           @include('admin::tb.html_image')
+                            @include('admin::tb.html_image')
                         @endforeach
                     </ul>
                 @else
@@ -55,14 +55,14 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this), '{{$baseName}}')"> Выбрать из загруженных </span>
+                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> Выбрать из загруженных </span>
                 @endif
                 <span class="button">
                     <input type="file" accept="image/*" onchange="TableBuilder.uploadImage(this, '{{$name}}', '{{$baseName}}');">
                     {{__cms('Загрузить')}}
                 </span>
                 <input type="text" id="{{ $name }}" placeholder="{{__cms('Выберите изображение для загрузки')}}"
-                           readonly="readonly"> <input type="hidden" value="{{$value}}" name="{{ $name }}">
+                       readonly="readonly"> <input type="hidden" value="{{$value}}" name="{{ $name }}">
             </div>
             <div class="tb-uploaded-image-container image-container_{{ $name }}">
                 @if (isset($value) && $value)

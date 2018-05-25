@@ -1275,7 +1275,7 @@ var TableBuilder = {
             }, 'json');
     },
 
-    selectWithUploadedImages : function (name, type, thisFileElement, baseName) {
+    selectWithUploadedImages : function (name, type, thisFileElement, baseName, pageId) {
 
         TableBuilder.thisPictureElementInGroup = thisFileElement;
 
@@ -1286,7 +1286,8 @@ var TableBuilder = {
         var data = {
             query_type: "select_with_uploaded_images",
             ident : name,
-            baseName : baseName
+            baseName : baseName,
+            page_id : pageId
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(TableBuilder.getActionUrl(thisFileElement), data,

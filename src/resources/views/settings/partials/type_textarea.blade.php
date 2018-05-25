@@ -1,5 +1,5 @@
 <div class='type_1 types' {!!  isset($info->type) && $info->type==1 ? 'style="display: block"' : "" !!}>
-    @if (count(config('builder.settings.langs')))
+    @if ( is_array(config('builder.settings.langs')))
         <ul class="nav nav-tabs tabs-pull-right">
             <label class="label pull-left" style="line-height: 32px;">{{__cms('Значение')}}</label>
             @foreach(config('builder.settings.langs') as $prefix => $name)

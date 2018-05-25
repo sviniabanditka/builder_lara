@@ -14,8 +14,7 @@ class Setting extends Eloquent
 {
     use \Venturecraft\Revisionable\RevisionableTrait;
 
-    protected $fillable
-        = [
+    protected $fillable = [
             'type',
             'title',
             'slug',
@@ -24,17 +23,13 @@ class Setting extends Eloquent
         ];
     protected $table = 'settings';
 
-    public static $rules
-        = [
+    public static $rules = [
             'title' => 'required',
             'slug' => 'required|max:256|unique:settings,slug,',
         ];
 
     public $timestamps = false;
 
-    /*
-     * return value setting
-     */
     public static function get($slug, $default = '')
     {
         if (Cache::tags('settings')->has($slug)) {
@@ -55,8 +50,6 @@ class Setting extends Eloquent
             }
         }
     }
-
-    // end get
 
     public static function getWithLang($slug, $default = '')
     {
@@ -98,8 +91,6 @@ class Setting extends Eloquent
         return SettingSelect::find($ids);
     }
 
-    //end getItem
-
     public static function doSaveSetting($data, $file)
     {
         if ($data['id'] == 0) {
@@ -132,7 +123,7 @@ class Setting extends Eloquent
             $settings->value = $full_path_img;
         }
 
-        if (count(config('builder.settings.langs')) && ($data['type'] < 2 || $data['type'] == 6)) {
+        if (is_array(config('builder.settings.langs')) && ($data['type'] < 2 || $data['type'] == 6)) {
             foreach (config('builder.settings.langs') as $prefix => $value) {
                 $field = 'value'.$prefix;
 
