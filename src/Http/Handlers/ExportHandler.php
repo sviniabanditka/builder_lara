@@ -95,7 +95,7 @@ class ExportHandler
 
         $fieldModel = $this->controller->getField($field);
 
-        return strip_tags($fieldModel->getListValue($collection), "<a><span><img><br>");
+        return strip_tags($fieldModel->getListValue($collection), '<a><span><img><br>');
     }
 
     private function checkManyToMany($field)
