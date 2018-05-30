@@ -87,15 +87,15 @@ class ExportHandler
         return $resultArray;
     }
 
-    private function getValueField($field, $arr)
+    private function getValueField($field, $collection)
     {
-        if (isset($arr[$field])) {
-            return $arr[$field];
+        if ($this->checkManyToMany($field) && isset($arr['id'])) {
+            return $this->getValueManyToMantField($field, $collection['id']);
         }
 
-        if ($this->checkManyToMany($field) && isset($arr['id'])) {
-            return $this->getValueManyToMantField($field, $arr['id']);
-        }
+        $fieldModel = $this->controller->getField($field);
+
+        return strip_tags($fieldModel->getListValue($collection), "<a><span><img><br>");
     }
 
     private function checkManyToMany($field)
