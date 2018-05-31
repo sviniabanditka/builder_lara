@@ -160,8 +160,8 @@ class ForeignField extends AbstractField
         $foreignValueFields = $this->getForeignValueFields();
 
         $foreignTableName = $this->getAttribute('alias')
-                                        ? $this->getAttribute('alias')
-                                        : $this->getAttribute('foreign_table');
+            ? $this->getAttribute('alias')
+            : $this->getAttribute('foreign_table');
 
         $resultArray = array_map(function ($v) use ($foreignTableName) {
             return $foreignTableName.'_'.$v;
@@ -270,17 +270,8 @@ class ForeignField extends AbstractField
 
         $node = $model::find($id);
         $children = $node->descendants();
-        $additionalWhere = $this->getAttribute('additional_where');
 
-        if ($additionalWhere) {
-            foreach ($additionalWhere as $field => $where) {
-                if ($where['sign'] == 'in') {
-                    $children = $children->whereIn($field, $where['value']);
-                } else {
-                    $children = $children->where($field, $where['sign'], $where['value']);
-                }
-            }
-        }
+        $this->additionalWhereSearch($children);
 
         $children = $children->get(['id', 'title', 'parent_id'])->toArray();
 
@@ -327,18 +318,9 @@ class ForeignField extends AbstractField
         $db = DB::table($this->getAttribute('foreign_table'))
             ->select($foreignValueField)
             ->addSelect($this->getAttribute('foreign_key_field'));
-        $additionalWheres = $this->getAttribute('additional_where');
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $key => $opt) {
-                if (trim($opt['sign']) == 'in') {
-                    $db->whereIn($key, $opt['value']);
-                } elseif (trim($opt['sign']) == 'not in') {
-                    $db->whereNotIn($key, $opt['value']);
-                } else {
-                    $db->where($key, $opt['sign'], $opt['value']);
-                }
-            }
-        }
+
+        $this->additionalWhereSearch($db);
+
         $orderBy = $this->getAttribute('orderBy');
         if ($orderBy && is_array($orderBy)) {
             foreach ($orderBy as $order) {
@@ -405,15 +387,7 @@ class ForeignField extends AbstractField
             ->take($limit)
             ->skip(($limit * $page) - $limit);
 
-        $additionalWheres = $this->getAttribute('additional_where');
-
-        if ($additionalWheres) {
-            foreach ($additionalWheres as $field => $where) {
-                $results = $where['sign'] == 'in'
-                    ? $results->whereIn($field, $where['value'])
-                    : $results->where($field, $where['sign'], $where['value']);
-            }
-        }
+        $this->additionalWhereSearch($results);
 
         $results = $this->replaceObjectToArray($results->get());
 
@@ -432,6 +406,23 @@ class ForeignField extends AbstractField
             'results' => $collection,
             'message' => '',
         ];
+    }
+
+    private function additionalWhereSearch(&$results)
+    {
+        $additionalWheres = $this->getAttribute('additional_where');
+
+        if (is_array($additionalWheres)) {
+            foreach ($additionalWheres as $field => $where) {
+                $results = $where['sign'] == 'in'
+                    ? $results->whereIn($field, $where['value'])
+                    : $results->where($field, $where['sign'], $where['value']);
+            }
+        }
+
+        if (is_object($additionalWheres)) {
+            $additionalWheres($results);
+        }
     }
 
     private function replaceObjectToArray($params)
