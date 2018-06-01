@@ -3,6 +3,8 @@
     Route::pattern('tree_name', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
 
+
+
     Route::group(['middleware' => ['web']], function () {
         Route::get('login', 'Vis\Builder\LoginController@showLogin')->name('login_show');
         Route::post('login', 'Vis\Builder\LoginController@postLogin')->name('login');
@@ -37,18 +39,6 @@
                     'Vis\Builder\TableAdminController@showTreeAll'
                 );
 
-                //router for pages builder
-                Route::get(
-                    '/{page_admin}',
-                    'Vis\Builder\TableAdminController@showPage'
-                );
-                if (Request::ajax()) {
-                    Route::get(
-                        '/{page_admin}',
-                        'Vis\Builder\TableAdminController@showPagePost'
-                    );
-                }
-
                 Route::post(
                     '/handle/{page_admin}',
                     'Vis\Builder\TableAdminController@handlePage'
@@ -72,17 +62,25 @@
                 Route::get('load_image', 'Vis\Builder\EditorController@loadImages');
                 Route::post('delete_image', 'Vis\Builder\EditorController@deleteImages');
                 Route::post('quick_edit', 'Vis\Builder\EditorController@doQuickEdit');
-
                 Route::post('change_skin', 'Vis\Builder\TBController@doChangeSkin');
-
-                Route::get('change_lang', 'Vis\Builder\TBController@doChangeLangAdmin')
-                        ->name('change_lang');
-
+                Route::get('change_lang', 'Vis\Builder\TBController@doChangeLangAdmin')->name('change_lang');
                 Route::post('upload_image', 'Vis\Builder\EditorController@uploadFoto');
-
                 Route::post('save_croped_img', 'Vis\Builder\TBController@doSaveCropImg');
 
                 Route::post('change-relation-field', 'Vis\Builder\TableAdminController@doChangeRelationField');
+
+                //router for pages builder
+                Route::get(
+                    '/{page_admin}',
+                    'Vis\Builder\TableAdminController@showPage'
+                );
+                if (Request::ajax()) {
+                    Route::get(
+                        '/{page_admin}',
+                        'Vis\Builder\TableAdminController@showPagePost'
+                    );
+                }
+
             }
         );
     });
