@@ -1,9 +1,9 @@
 <?php
 
 if (! function_exists('setting')) {
-    function setting($value)
+    function setting($value, $default = '')
     {
-        return Vis\Builder\Setting::get($value);
+        return Vis\Builder\Setting::get($value, $default);
     }
 }
 
@@ -21,40 +21,6 @@ if (! function_exists('print_arr')) {
         echo '<pre>';
         print_r($array);
         echo '</pre>';
-    }
-}
-
-if (! function_exists('cartesian')) {
-    function cartesian($arr, $isElementsDuplicated = false)
-    {
-        $variant = [];
-        $result = [];
-        $arrayCount = count($arr);
-
-        return cartesianRecurseIt($arr, $variant, -1, $result, $arrayCount, $isElementsDuplicated);
-    }
-}
-
-if (! function_exists('cartesianRecurseIt')) {
-    function cartesianRecurseIt($arr, $variant, $level, $result, $arrayCount, $isElementsDuplicated)
-    {
-        $level++;
-        if ($level < $arrayCount) {
-            foreach ($arr[$level] as $val) {
-                $variant[$level] = $val;
-                $result = cartesianRecurseIt($arr, $variant, $level, $result, $arrayCount, $isElementsDuplicated);
-            }
-        } else {
-            if (! $isElementsDuplicated) {
-                $result[] = $variant;
-            } else {
-                if (count(array_flip(array_flip($variant))) == $arrayCount) {
-                    $result[] = $variant;
-                }
-            }
-        }
-
-        return $result;
     }
 }
 
