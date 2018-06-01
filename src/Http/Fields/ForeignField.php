@@ -104,7 +104,6 @@ class ForeignField extends AbstractField
         } else {
             $db->where($foreignValueField, $value);
         }
-
     }
 
     public function onSelectValue(&$db)
