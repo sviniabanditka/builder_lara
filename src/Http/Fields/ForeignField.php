@@ -2,6 +2,7 @@
 
 namespace Vis\Builder\Fields;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -38,7 +39,7 @@ class ForeignField extends AbstractField
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
-        $filter = Session::get($sessionPath, '');
+        $filter = session($sessionPath, '');
         $type = $this->getAttribute('filter');
         $input = view('admin::tb.filter_'.$type);
         $input->name = $this->getFieldName();
@@ -46,18 +47,9 @@ class ForeignField extends AbstractField
         $input->recursive = $this->getAttribute('recursive');
         $input->value = $filter;
         $input->definitionName = $definitionName;
-
-        if ($type == 'foreign') {
-            if ($input->recursive) {
-                $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
-                $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
-                $this->selectOption = $input->selected;
-                $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
-                $input->options = $this->treeOptions;
-            } else {
-                $input->options = $this->getForeignKeyOptions();
-            }
-        }
+        $input->options = $this->getOptions($filter);
+        $input->isNull = $this->getAttribute('is_null');
+        $input->nullCaption = $this->getAttribute('null_caption');
 
         if ($type == 'autocomplete') {
             $input->valueJson = $this->getSelectFilterTitle($filter);
@@ -66,10 +58,29 @@ class ForeignField extends AbstractField
         return $input->render();
     }
 
+    private function getOptions($filter)
+    {
+        if ($this->getAttribute('recursive')) {
+            $this->treeMy = $this->getCategory($this->getAttribute('recursiveIdCatalog'));
+            $this->recursiveOnlyLastLevel = $this->getAttribute('recursiveOnlyLastLevel');
+            $this->selectOption = $filter;
+            $this->printCategories($this->getAttribute('recursiveIdCatalog'), 0);
+
+            $options = $this->treeOptions;
+        } else {
+            $options = $this->getForeignKeyOptions();
+        }
+
+        if ($this->getAttribute('is_null')) {
+            $options = Arr::prepend($options, $this->getAttribute('null_caption'), 'null');
+        }
+
+        return $options;
+    }
+
     private function getSelectFilterTitle($id)
     {
-        return (array) DB::table($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())
-            ->find($id);
+        return (array) DB::table($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())->find($id);
     }
 
     public function onSearchFilter(&$db, $value)
@@ -87,7 +98,13 @@ class ForeignField extends AbstractField
         }
 
         $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_key_field');
-        $db->where($foreignValueField, $value);
+
+        if ($value == 'null') {
+            $db->whereNull($foreignValueField);
+        } else {
+            $db->where($foreignValueField, $value);
+        }
+
     }
 
     public function onSelectValue(&$db)
