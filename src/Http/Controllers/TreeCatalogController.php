@@ -104,7 +104,12 @@ class TreeCatalogController
         $node->save();
 
         $node->checkUnicUrl();
-        $node->makeFirstChildOf($root);
+
+        if ($root->children()->count() == 1) {
+           $node->makeChildOf($root);
+        } else {
+           $node->makeFirstChildOf($root);
+        }
 
         $root->clearCache();
 
