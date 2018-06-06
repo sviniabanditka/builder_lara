@@ -7,6 +7,13 @@ if (! function_exists('setting')) {
     }
 }
 
+if (! function_exists('settingWithLang')) {
+    function settingWithLang($value, $default = '')
+    {
+        return Vis\Builder\Setting::getWithLang($value, $default);
+    }
+}
+
 if (! function_exists('dr')) {
     function dr($array)
     {
