@@ -400,7 +400,9 @@ class ManyToManyField extends AbstractField
 
     private function additionalWhere(&$results)
     {
-        if ($this->getAttribute('additional_where')) {
+        $additionalWheres = $this->getAttribute('additional_where');
+
+        if (is_array($additionalWheres)) {
             foreach ($this->getAttribute('additional_where') as $key => $opt) {
                 if ($opt['sign'] == 'in') {
                     $results->whereIn($key, $opt['value']);
@@ -408,6 +410,10 @@ class ManyToManyField extends AbstractField
                     $results->where($key, $opt['sign'], $opt['value']);
                 }
             }
+        }
+
+        if (is_object($additionalWheres)) {
+            $additionalWheres($results);
         }
     }
 }
