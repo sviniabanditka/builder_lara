@@ -85,7 +85,21 @@
    }
 
    window.addEventListener('popstate', function (e) {
-       doAjaxLoadContent(window.location.pathname);;
+       $(".load_page").show();
+
+       $.get( window.location.pathname, { })
+           .done(function( data ) {
+               $("#content_admin").html(data);
+               $(".load_page").hide();
+
+               $(window).scrollTop(50);
+               TableBuilder.afterLoadPage();
+
+           }).fail(function(xhr, ajaxOptions, thrownError) {
+               var errorResult = jQuery.parseJSON(xhr.responseText);
+               TableBuilder.showErrorNotification(errorResult.message);
+               TableBuilder.hidePreloader();
+           });
    });
 
     $(document).on('click', 'nav a', function (e) {
