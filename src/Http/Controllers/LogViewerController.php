@@ -1,27 +1,32 @@
 <?php
+
 namespace Vis\Builder;
+
 use Illuminate\Support\Facades\Crypt;
 use Vis\Builder\Libs\LaravelLogViewer;
 use Illuminate\Support\Facades\Request;
 
-if (class_exists("\\Illuminate\\Routing\\Controller")) {
-    class BaseController extends \Illuminate\Routing\Controller {}
-} else if (class_exists("Laravel\\Lumen\\Routing\\Controller")) {
-    class BaseController extends \Laravel\Lumen\Routing\Controller {}
+if (class_exists('\\Illuminate\\Routing\\Controller')) {
+    class BaseController extends \Illuminate\Routing\Controller
+    {
+    }
+} elseif (class_exists('Laravel\\Lumen\\Routing\\Controller')) {
+    class BaseController extends \Laravel\Lumen\Routing\Controller
+    {
+    }
 }
 
 class LogViewerController extends BaseController
 {
     protected $request;
 
-    public function __construct ()
+    public function __construct()
     {
         $this->request = app('request');
     }
 
     public function index()
     {
-
         if ($this->request->input('l')) {
             LaravelLogViewer::setFile(Crypt::decrypt($this->request->input('l')));
         }
@@ -30,18 +35,20 @@ class LogViewerController extends BaseController
             return $this->download(LaravelLogViewer::pathToLogFile(Crypt::decrypt($this->request->input('dl'))));
         } elseif ($this->request->has('del')) {
             app('files')->delete(LaravelLogViewer::pathToLogFile(Crypt::decrypt($this->request->input('del'))));
+
             return $this->redirect($this->request->url());
         } elseif ($this->request->has('delall')) {
-            foreach(LaravelLogViewer::getFiles(true) as $file){
+            foreach (LaravelLogViewer::getFiles(true) as $file) {
                 app('files')->delete(LaravelLogViewer::pathToLogFile($file));
             }
+
             return $this->redirect($this->request->url());
         }
 
         $data = [
             'logs' => LaravelLogViewer::all(),
             'files' => LaravelLogViewer::getFiles(true),
-            'current_file' => LaravelLogViewer::getFileName()
+            'current_file' => LaravelLogViewer::getFileName(),
         ];
 
         if ($this->request->wantsJson()) {
