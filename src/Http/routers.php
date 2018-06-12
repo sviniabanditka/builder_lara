@@ -16,7 +16,6 @@
 
                 Route::get('/logs', 'Vis\Builder\LogViewerController@index');
 
-
                 Route::any(
                     '/tree',
                     'Vis\Builder\TableAdminController@showTree'
