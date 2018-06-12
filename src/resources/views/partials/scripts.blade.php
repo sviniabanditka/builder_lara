@@ -117,8 +117,7 @@
     });
 
     $(document).on('click', '.pagination a', function (e) {
-
-        if (!$(this).parents('div').hasClass('paginator_pictures')) {
+        if (!$(this).parents('div').hasClass('paginator_pictures') && $(this).parents('div').hasClass('paging_bootstrap_full')) {
             var href = $(this).attr('href');
             doAjaxLoadContent(href);
             e.preventDefault();

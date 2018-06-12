@@ -87,6 +87,12 @@
             @endforeach
         @endif
 
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
         <div id="modal_wrapper" class="modal_popup_first"></div>
