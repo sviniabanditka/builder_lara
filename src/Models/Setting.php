@@ -120,7 +120,7 @@ class Setting extends Eloquent
 
             $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), '.'.$ext));
 
-            $nameFile = $nameFile . '.' . $ext;
+            $nameFile = $nameFile.'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
             $file->move($destinationPath, $nameFile);
             $settings->value = $fullPathImg;
