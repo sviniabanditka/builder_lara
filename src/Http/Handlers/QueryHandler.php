@@ -571,13 +571,13 @@ class QueryHandler
                     }
                 }
             } catch (\Exception $e) {
-                $errors = array_merge($errors, explode('|', $e->getMessage()));
+                $errors[] = 'Поле "'. $field->getAttribute('caption'). '" '. $e->getMessage();
                 continue;
             }
         }
 
         if ($errors) {
-            $errors = implode('|', $errors);
+            $errors = implode('<br>', $errors);
 
             throw new \RuntimeException($errors);
         }
