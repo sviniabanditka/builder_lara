@@ -117,10 +117,13 @@ class Setting extends Eloquent
         if ($data['type'] == 4 && $file) {
             $destinationPath = 'storage/settings';
             $ext = $file->getClientOriginalExtension();
-            $hashname = md5(time()).'.'.$ext;
-            $full_path_img = '/'.$destinationPath.'/'.$hashname;
-            $file->move($destinationPath, $hashname);
-            $settings->value = $full_path_img;
+
+            $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), '.'.$ext));
+
+            $nameFile = $nameFile . '.' . $ext;
+            $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
+            $file->move($destinationPath, $nameFile);
+            $settings->value = $fullPathImg;
         }
 
         if (is_array(config('builder.settings.langs')) && ($data['type'] < 2 || $data['type'] == 6)) {
