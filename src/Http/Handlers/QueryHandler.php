@@ -571,7 +571,7 @@ class QueryHandler
                     }
                 }
             } catch (\Exception $e) {
-                $errors[] = 'Поле "'. $field->getAttribute('caption'). '" '. $e->getMessage();
+                $errors[] = 'Поле "'.$field->getAttribute('caption').'" '.$e->getMessage();
                 continue;
             }
         }
