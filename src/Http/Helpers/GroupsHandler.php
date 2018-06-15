@@ -46,7 +46,6 @@ class GroupsHandler extends CustomHandler
 
                 $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
-
                 if (count($actions)) {
                     $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                     foreach ($actions as $slugAction => $action) {
@@ -67,7 +66,6 @@ class GroupsHandler extends CustomHandler
                     } else {
                         $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                     }
-                    
                 }
             } else {
                 if (isset($permission['submenu'])) {
