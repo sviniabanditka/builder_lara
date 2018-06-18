@@ -36,7 +36,18 @@
 
     @forelse($list as $img)
         <div class="one_img_uploaded" onclick="TableBuilder.selectImgInStorage($(this))">
-            <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}" data-path = '{{trim($img->file_folder.$img->file_source, '/')}}'>
+            <?php
+            try {
+                $imgParam = getimagesize(public_path($img->file_folder . $img->file_source));
+            } catch (Exception $e) {
+                $imgParam = ['', ''];
+            }
+
+            ?>
+
+            <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
+                 title="{{$imgParam[0].'x'.$imgParam[1]}}"
+                 data-path = '{{trim($img->file_folder.$img->file_source, '/')}}'>
         </div>
     @empty
         <div style="text-align: center; padding: 50px">Нет изображений</div>
