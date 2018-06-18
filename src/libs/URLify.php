@@ -231,7 +231,7 @@ class URLify
         $text = strip_tags($text);
         $text = self::downcode($text, $language);
 
-     //   $text = preg_replace('/\b('.implode('|', self::$remove_list).')\b/i', '', $text);
+        //   $text = preg_replace('/\b('.implode('|', self::$remove_list).')\b/i', '', $text);
 
         // if downcode doesn't hit, the char will be stripped here
         $remove_pattern = ($file_name) ? '/[^_\-.\-a-zA-Z0-9\s]/u' : '/[^\s_\-a-zA-Z0-9]/u';
