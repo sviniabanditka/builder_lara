@@ -118,7 +118,7 @@ class Setting extends Eloquent
             $destinationPath = 'storage/settings';
             $ext = $file->getClientOriginalExtension();
 
-            $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), '.'.$ext));
+            $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), $ext));
 
             $nameFile = $nameFile.'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
