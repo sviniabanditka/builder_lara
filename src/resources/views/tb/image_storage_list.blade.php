@@ -40,14 +40,22 @@
             try {
                 $imgParam = getimagesize(public_path($img->file_folder . $img->file_source));
             } catch (Exception $e) {
-                $imgParam = ['', ''];
+                $imgParam = [];
             }
 
             ?>
 
-            <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
-                 title="{{$imgParam[0].'x'.$imgParam[1]}}"
-                 data-path = '{{trim($img->file_folder.$img->file_source, '/')}}'>
+                <div class="one_img_uploaded is_wrapper" onclick="TableBuilder.selectImgInStorage($(this))">
+                    <div class="one_img_uploaded_content">
+                        <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
+                          >
+                    </div>
+                    <div class="one_img_uploaded_label">
+                        @if (isset($imgParam[0]) && $imgParam[1])
+                            {{$imgParam[0].'x'.$imgParam[1]}}
+                        @endif
+                    </div>
+                </div>
         </div>
     @empty
         <div style="text-align: center; padding: 50px">Нет изображений</div>
@@ -55,6 +63,26 @@
     <div style="text-align: center" class="paginator_pictures">
         {{ $list->appends(Input::all())->links() }}
     </div>
+
+
+    <style>
+        .one_img_uploaded.is_wrapper {
+            width: 100px;
+            height: 125px;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .one_img_uploaded_content {
+            width: 100px;
+            height: 100px;
+        }
+        .one_img_uploaded_label {
+            padding: 5px 0px;
+            font-size: 14px;
+            line-height: 1;
+        }
+    </style>
 
     <script>
         $(".paginator_pictures a").click(function(e) {
