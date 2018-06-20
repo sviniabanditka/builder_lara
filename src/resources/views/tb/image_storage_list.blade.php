@@ -35,7 +35,7 @@
 </div>
 
     @forelse($list as $img)
-        <div class="one_img_uploaded" onclick="TableBuilder.selectImgInStorage($(this))">
+
             <?php
             try {
                 $imgParam = getimagesize(public_path($img->file_folder . $img->file_source));
@@ -45,18 +45,18 @@
 
             ?>
 
-                <div class="one_img_uploaded is_wrapper" onclick="TableBuilder.selectImgInStorage($(this))">
-                    <div class="one_img_uploaded_content">
-                        <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
-                          >
-                    </div>
-                    <div class="one_img_uploaded_label">
-                        @if (isset($imgParam[0]) && $imgParam[1])
-                            {{$imgParam[0].'x'.$imgParam[1]}}
-                        @endif
-                    </div>
+            <div class="one_img_uploaded is_wrapper" onclick="TableBuilder.selectImgInStorage($(this))">
+                <div class="one_img_uploaded_content">
+                    <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
+                      >
                 </div>
-        </div>
+                <div class="one_img_uploaded_label">
+                    @if (isset($imgParam[0]) && $imgParam[1])
+                        {{$imgParam[0].'x'.$imgParam[1]}}
+                    @endif
+                </div>
+            </div>
+
     @empty
         <div style="text-align: center; padding: 50px">Нет изображений</div>
     @endforelse
@@ -66,6 +66,11 @@
 
 
     <style>
+
+        .one_img_uploaded img {
+            width: auto;
+            height: auto;
+        }
         .one_img_uploaded.is_wrapper {
             width: 100px;
             height: 125px;
@@ -76,6 +81,9 @@
         .one_img_uploaded_content {
             width: 100px;
             height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .one_img_uploaded_label {
             padding: 5px 0px;

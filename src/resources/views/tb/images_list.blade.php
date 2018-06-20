@@ -24,6 +24,11 @@
 
 
     <style>
+
+        .one_img_uploaded img {
+            width: auto;
+            height: auto;
+        }
         .one_img_uploaded.is_wrapper {
             width: 100px;
             height: 125px;
@@ -34,6 +39,9 @@
         .one_img_uploaded_content {
             width: 100px;
             height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .one_img_uploaded_label {
             padding: 5px 0px;
