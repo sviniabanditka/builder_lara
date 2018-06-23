@@ -7,22 +7,22 @@
         <meta name="author" content="VIS-A-VIS">
         <meta name="HandheldFriendly" content="True">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <meta name="MobileOptimized" content="320">
+        <meta name="MobileOptimized" content="320">iz
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="shortcut icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ mix('/packages/vis/builder/css/all.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ assert('/packages/vis/builder/css/all.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
         <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-lightness/jquery-ui.css" />
 
-        <script src="{{ mix('/packages/vis/builder/js/all_header1.js') }}"></script>
+        <script src="{{ assert('/packages/vis/builder/js/all_header1.js') }}"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
         @yield('styles')
         @yield('scripts_header')
 
-        <script src="{{ mix('/packages/vis/builder/js/all_header2.js') }}"></script>
+        <script src="{{ assert('/packages/vis/builder/js/all_header2.js') }}"></script>
 
         @if (isset($customJs) && count($customJs))
             @foreach($customJs as $jsFile)

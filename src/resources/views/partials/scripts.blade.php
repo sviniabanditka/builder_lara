@@ -1,4 +1,4 @@
-<script src="{{ mix('/packages/vis/builder/js/footer_all.js') }}"></script>
+<script src="{{ assert('/packages/vis/builder/js/footer_all.js') }}"></script>
 <script src='/packages/vis/builder/js/plugin/editor_floala/js/languages/{{$thisLang}}.js'></script>
 
 <script type="text/javascript">
