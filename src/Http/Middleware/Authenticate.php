@@ -21,7 +21,6 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-
         try {
             if (! Sentinel::check()) {
                 if (Request::ajax()) {

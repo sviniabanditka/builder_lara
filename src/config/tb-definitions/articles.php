@@ -59,7 +59,7 @@ return [
             'is_remote' => false,
             'hide_list' => true,
             'field' => 'string',
-            'is_multiple' => true
+            'is_multiple' => true,
         ],
         'title' => [
             'caption' => 'Название',
