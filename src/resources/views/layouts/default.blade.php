@@ -22,7 +22,7 @@
         @yield('styles')
         @yield('scripts_header')
 
-        <script src="/packages/vis/builder/js/all_header2.js'"></script>
+        <script src="/packages/vis/builder/js/all_header2.js"></script>
 
         @if (isset($customJs) && count($customJs))
             @foreach($customJs as $jsFile)
