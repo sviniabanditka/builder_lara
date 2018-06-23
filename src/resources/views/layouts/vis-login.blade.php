@@ -13,7 +13,7 @@
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" type="text/css" href="{{ assert('/packages/vis/builder/css/all_login.css') }}">
+        <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/all_login.css">
 
 
         <link rel="shortcut icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
@@ -23,7 +23,7 @@
     </head>
     <body id="login" class="animated fadeInDown">
         @yield('main')
-        <script src="{{ assert('/packages/vis/builder/js/all_login.js') }}"></script>
+        <script src="/packages/vis/builder/js/all_login.js"></script>
     </body>
 
 </html>
