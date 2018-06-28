@@ -12,11 +12,7 @@
                      <span class="glyphicon glyphicon-floppy-disk"></span>
                     {{__cms('Сохранить')}}
                 </button>
-                @if ($def['options']['caption'])
-                    <h4 class="modal-title" id="modal_form_edit_label">{{$def['options']['caption']}}: {{__cms('редактирование')}}</h4>
-                @else
-                    <h4 class="modal-title" id="modal_form_edit_label">{{__cms('Редактирование')}}</h4>
-                @endif
+                <h4 class="modal-title" id="modal_form_edit_label">{{$def['options']['caption']}} : {{__cms('Редактирование')}}</h4>
             </div>
             
             @include('admin::tb.form_edit')
@@ -24,5 +20,5 @@
         </div>
     </div>
 </div>
-
+@include('admin::tb.form_js')
 @include('admin::tb.form_edit_validation')

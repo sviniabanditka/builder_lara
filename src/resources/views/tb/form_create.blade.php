@@ -46,3 +46,4 @@
        {{__cms('Отмена')}}
     </button>
 </div>
+@include('admin::tb.form_js')
