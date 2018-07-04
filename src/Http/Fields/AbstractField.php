@@ -296,6 +296,10 @@ abstract class AbstractField
     //autocreate fields in db
     protected function doCreateField($tableName, $fieldName)
     {
+        if (config('builder.admin.auto_create_fields') === false) {
+            return;
+        }
+
         $fieldBd = $this->getAttribute('field');
 
         if (! Session::has($tableName.'.'.$fieldName)) {

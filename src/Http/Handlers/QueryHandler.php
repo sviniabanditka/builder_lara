@@ -183,15 +183,17 @@ class QueryHandler
         $this->db = $this->db->select($this->dbName.'.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-            if (! Schema::hasColumn($this->dbName, 'priority')) {
-                Schema::table(
-                    $this->dbName,
-                    function ($table) {
-                        $table->integer('priority');
-                    }
-                );
+            if (config('builder.admin.auto_create_fields') !== false) {
+                if (! Schema::hasColumn($this->dbName, 'priority')) {
+                    Schema::table(
+                        $this->dbName,
+                        function ($table) {
+                            $table->integer('priority');
+                        }
+                    );
+                }
             }
-
+            
             $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
 
@@ -221,6 +223,10 @@ class QueryHandler
 
     private function checkExistTable()
     {
+        if (config('builder.admin.auto_create_fields') === false) {
+            return;
+        }
+
         if (! Session::has($this->dbName.'_exist')) {
             if (! Schema::hasTable($this->dbName)) {
                 Schema::create($this->dbName, function ($table) {
