@@ -193,7 +193,7 @@ class QueryHandler
                     );
                 }
             }
-            
+
             $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
 
