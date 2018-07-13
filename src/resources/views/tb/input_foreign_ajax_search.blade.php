@@ -20,6 +20,7 @@
                     limit: {{ $search['per_page'] or '20' }},
                     page: page,
                     ident: '{!! $name !!}',
+                    template: '{{ $search['template'] or '%[q]%' }}',
                     query_type: 'foreign_ajax_search',
                 };
             },

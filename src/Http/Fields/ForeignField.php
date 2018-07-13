@@ -390,14 +390,16 @@ class ForeignField extends AbstractField
             }
         }
 
+        $template = request('template');
+        $likeQuery = str_replace('[q]', $query, $template);
         $foreignValueFields = $this->getForeignValueFields();
 
         $results = DB::table($this->getAttribute('foreign_table'))
             ->select($foreignValueFields)
             ->addSelect($this->getAttribute('foreign_key_field'))
-            ->where(function ($queryRes) use ($foreignValueFields, $query) {
+            ->where(function ($queryRes) use ($foreignValueFields, $query, $likeQuery) {
                 foreach ($foreignValueFields as $field) {
-                    $queryRes->orWhere($field, 'like', '%'.$query.'%');
+                    $queryRes->orWhere($field, 'like', $likeQuery);
                 }
             })
             ->take($limit)
