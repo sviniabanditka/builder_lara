@@ -11,7 +11,6 @@
     "require": {
         "cartalyst/sentinel" : "2.0.*",
         "devfactory/minify": "1.0.*",
-        "barryvdh/laravel-debugbar" : "2.*",
         "baum/baum": "~1.1",
         "venturecraft/revisionable": "1.*",
         "radic/blade-extensions": "~6.2",
