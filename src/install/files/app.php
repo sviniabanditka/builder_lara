@@ -170,7 +170,6 @@ return [
         Vis\Builder\BuilderServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Devfactory\Minify\MinifyServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
         Baum\Providers\BaumServiceProvider::class,
         Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
