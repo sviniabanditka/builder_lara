@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('last_login');
             $table->timestamps();
 
-           // $table->index([DB::raw('email(191)')]);
+            // $table->index([DB::raw('email(191)')]);
         });
     }
 
