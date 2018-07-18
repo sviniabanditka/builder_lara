@@ -6,8 +6,8 @@
             <tr>
                 <th style="width: 10px"></th>
                 <th>{{__cms('Название')}}</th>
-                @if(Config::get('builder.'.$treeName.'.list_fields'))
-                    @foreach(Config::get('builder.'.$treeName.'.list_fields') as $nameBDField => $field)
+                @if(config('builder.'.$treeName.'.list_fields'))
+                    @foreach(config('builder.'.$treeName.'.list_fields') as $nameBDField => $field)
                         <th>
                            {{$field['name'] or ""}}
                         </th>
@@ -57,6 +57,10 @@
             <div class="col-sm-8 text-right">
                 <div class="dataTables_paginate paging_bootstrap_full">
                     {{$children->appends(Input::all())->links()}}
+
+                    @if (is_array(config('builder.'.$treeName.'.pagination.per_page')))
+                        @include('admin::tree.partials.pagination_show_amount')
+                    @endif
                 </div>
             </div>
         </div>

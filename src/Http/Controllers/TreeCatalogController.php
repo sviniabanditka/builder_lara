@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
 class TreeCatalogController
 {
@@ -289,6 +290,8 @@ class TreeCatalogController
         $treeName = $this->nameTree;
         $controller = $this->controller;
 
+        $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
+
         $idNode = Input::get('node', 1);
         $current = $model::find($idNode);
 
@@ -313,7 +316,7 @@ class TreeCatalogController
         }
         //filter ids end
 
-        $children = $children->paginate(20);
+        $children = $children->paginate($perPage);
 
         $templates = config('builder.'.$treeName.'.templates');
         $template = config('builder.'.$treeName.'.default');
@@ -322,10 +325,10 @@ class TreeCatalogController
             $template = $templates[$current->template];
         }
 
-        $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller'));
+        $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller', 'perPage'));
         $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
 
-        return view('admin::'.$treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller'));
+        return view('admin::'.$treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
     }
 
     public function getEditModalForm()
