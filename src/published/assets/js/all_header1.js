@@ -1659,7 +1659,7 @@ var TableBuilder = {
         var $posting = jQuery.post(TableBuilder.getActionUrl(), data);
 
         $posting.done(function(response) {
-            doAjaxLoadContent(location.pathname);
+            doAjaxLoadContent(location.href);
         });
     }, // end setPerPageAmount
 
