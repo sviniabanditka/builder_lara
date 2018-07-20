@@ -391,7 +391,7 @@ class ForeignField extends AbstractField
             }
         }
 
-        $template = request('template') ? : '%[q]%';
+        $template = request('template') ?: '%[q]%';
         $likeQuery = str_replace('[q]', $query, $template);
         $foreignValueFields = $this->getForeignValueFields();
 
