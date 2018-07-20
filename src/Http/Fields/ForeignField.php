@@ -50,6 +50,7 @@ class ForeignField extends AbstractField
         $input->options = $this->getOptions($filter);
         $input->isNull = $this->getAttribute('is_null');
         $input->nullCaption = $this->getAttribute('null_caption');
+        $input->search = $this->getAttribute('search');
 
         if ($type == 'autocomplete') {
             $input->valueJson = $this->getSelectFilterTitle($filter);
@@ -390,7 +391,7 @@ class ForeignField extends AbstractField
             }
         }
 
-        $template = request('template');
+        $template = request('template') ? : '%[q]%';
         $likeQuery = str_replace('[q]', $query, $template);
         $foreignValueFields = $this->getForeignValueFields();
 

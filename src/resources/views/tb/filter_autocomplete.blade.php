@@ -26,12 +26,13 @@
                 dataType: 'json',
                 type: 'POST',
                 quietMillis: 200,
-                data: function (term, page) { // page is the one-based page number tracked by Select2
+                data: function (term, page) {
                     return {
                         q: term,
                         limit: 20,
                         ident: '{!! $name !!}',
                         query_type: 'foreign_ajax_search',
+                        template: '{{ $search['template'] or '%[q]%' }}',
                     };
                 },
                 results: function (data, page) {
