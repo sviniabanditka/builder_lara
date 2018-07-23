@@ -652,3 +652,6 @@ body.mobile-view-activated .pagination-bottom-wrapper {
     position: relative;
     float:left;
 }
+.jarviswidget-ctrls {
+    display: none;
+}

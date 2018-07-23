@@ -23,12 +23,7 @@
 
                         @if (Session::has('login_not_found'))
                             <div class="alert alert-danger fade in">
-                                <button class="close" data-dismiss="alert">
-                                    ×
-                                </button>
-                                <i class="fa-fw fa fa-times"></i>
                                 {{Session::get('login_not_found')}}
-
                             </div>
                         @endif
 

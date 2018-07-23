@@ -8,6 +8,7 @@
         <li>{{__cms($def['options']['caption']) }}</li>
    </ol>
 @stop
+
 <section id="widget-grid" class="">
     <div class="row" style="padding-right: 13px; padding-left: 13px;">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px; padding-left: 0px;">
