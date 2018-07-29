@@ -61,6 +61,11 @@ class CheckboxField extends AbstractField
         return $table->render();
     }
 
+    public function getValueExport($row)
+    {
+       return $this->getValue($row) ? 'Да' : 'Нет';
+    }
+
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {

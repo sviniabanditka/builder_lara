@@ -95,6 +95,10 @@ class ExportHandler
 
         $fieldModel = $this->controller->getField($field);
 
+        if ($fieldModel->getAttribute('type') == 'checkbox') {
+            return $fieldModel->getValueExport($collection);
+        }
+
         return strip_tags($fieldModel->getListValue($collection), '<a><span><img><br>');
     }
 
