@@ -10,6 +10,7 @@
     @endif
 </div>
 <script>
+
     jQuery(document).ready(function() {
 
          $select2{{$name}}{{$postfix}} = jQuery('#{{$name}}{{$postfix}}').select2({
@@ -18,7 +19,7 @@
             multiple: true,
             language: "ru",
             ajax: {
-                url: TableBuilder.options.action_url,
+                url: jQuery('#{{$name}}{{$postfix}}').parents('form').attr('action'),
                 dataType: 'json',
                 type: 'POST',
                 quietMillis: {{ $search['quiet_millis'] or '350' }},
@@ -108,7 +109,4 @@
             }
         }
     );
-</script>
-
-
 </script>
