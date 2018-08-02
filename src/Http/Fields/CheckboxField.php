@@ -63,7 +63,7 @@ class CheckboxField extends AbstractField
 
     public function getValueExport($row)
     {
-       return $this->getValue($row) ? 'Да' : 'Нет';
+        return $this->getValue($row) ? 'Да' : 'Нет';
     }
 
     public function getListValue($row)
