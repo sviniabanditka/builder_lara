@@ -48,6 +48,7 @@ class AdminGenerateConfig extends Command
             die();
         }
 
+
         $path = base_path() . '/config/builder/tb-definitions/' . $name . '.php';
 
         if (file_exists($path)) {
@@ -59,7 +60,7 @@ class AdminGenerateConfig extends Command
 
         $ignore = [
             'created_at',
-            'updated_at'
+            'updated_at',
         ];
 
         foreach ($fields as $item) {
@@ -70,7 +71,7 @@ class AdminGenerateConfig extends Command
                     'class' => 'col-id',
                     'width' => '1%',
                     'hide' => true,
-                    'is_sorting' => false
+                    'is_sorting' => false,
                 ];
                 continue;
             }
@@ -81,7 +82,7 @@ class AdminGenerateConfig extends Command
                     'filter' => 'text',
                     'is_sorting' => true,
                     'field' => 'string',
-                    'tabs' => config('translations.config.languages')
+                    'tabs' => config('translations.config.languages'),
                 ];
 
                 $ignore[] = 'title_ua';
@@ -98,20 +99,18 @@ class AdminGenerateConfig extends Command
                 'caption' => $item,
                 'type' => 'text',
                 'filter' => 'text',
-                'is_sorting' => false
+                'is_sorting' => false,
             ];
 
-            if (in_array($item . '_ua', $fields) || in_array($item . '_ru', $fields)) {
-                $ignore[] = $item . '_ua';
-                $ignore[] = $item . '_en';
+            if (in_array($item.'_ua', $fields) || in_array($item.'_ru', $fields)) {
+                $ignore[] = $item.'_ua';
+                $ignore[] = $item.'_en';
 
                 $fields_config[$item]['tabs'] = config('translations.config.languages');
-
             }
         }
 
-
-        $default_path = base_path() . '/config/builder/default.php';
+        $default_path = base_path().'/config/builder/default.php';
 
         $content = file_get_contents($default_path);
 
@@ -119,7 +118,7 @@ class AdminGenerateConfig extends Command
             $name,
             $name,
             $name,
-            $model
+            $model,
         ], $content);
 
         $content = str_replace_first("'fields_default'", var_export($fields_config, true), $content);

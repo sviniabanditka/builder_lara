@@ -28,31 +28,31 @@ return [
             'caption' => 'Добавить',
             'check' => function () {
                 return true;
-            }
+            },
         ],
         'update' => [
             'caption' => 'Редактировать',
             'check' => function () {
                 return true;
-            }
+            },
         ],
         'clone' => [
             'caption' => 'Клонировать',
             'check' => function () {
                 return true;
-            }
+            },
         ],
         'revisions' => [
             'caption' => 'Версии',
             'check' => function () {
                 return true;
-            }
+            },
         ],
         'delete' => [
             'caption' => 'Удалить',
             'check' => function () {
                 return true;
-            }
+            },
         ],
     ],
 ];
