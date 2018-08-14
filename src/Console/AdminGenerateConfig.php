@@ -3,7 +3,6 @@
 namespace Vis\Builder;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 
 class AdminGenerateConfig extends Command
 {
@@ -49,8 +48,10 @@ class AdminGenerateConfig extends Command
             die();
         }
 
-        $path = base_path().'/config/builder/tb-definitions/'.$name.'.php';
-        if (File::exists($path)) {
+
+        $path = base_path() . '/config/builder/tb-definitions/' . $name . '.php';
+
+        if (file_exists($path)) {
             $this->error('File exists');
             die();
         }
