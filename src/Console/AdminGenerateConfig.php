@@ -48,8 +48,7 @@ class AdminGenerateConfig extends Command
             die();
         }
 
-
-        $path = base_path() . '/config/builder/tb-definitions/' . $name . '.php';
+        $path = base_path().'/config/builder/tb-definitions/'.$name.'.php';
 
         if (file_exists($path)) {
             $this->error('File exists');
