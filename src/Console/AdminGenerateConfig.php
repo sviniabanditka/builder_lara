@@ -3,6 +3,7 @@
 namespace Vis\Builder;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class AdminGenerateConfig extends Command
 {
