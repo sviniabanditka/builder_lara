@@ -1910,7 +1910,7 @@ var TableBuilder = {
 };
 
 $(window).load(function() {
-    TableBuilder.initFroalaEditor();
+    //TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();
     TableBuilder.initSearchOnEnterPressed();
 
