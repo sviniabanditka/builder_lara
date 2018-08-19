@@ -345,7 +345,10 @@ class QueryHandler
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
-            return \Vis\Translations\Trans::generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
+            
+            $translateText = \Vis\Translations\Trans::generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
+
+            return $translateText ? : '';
         }
 
         return '';
