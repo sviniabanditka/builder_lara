@@ -284,8 +284,7 @@ class QueryHandler
         }
 
         foreach ($updateData as $field => $data) {
-
-            if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+            if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
                 $updateDataRes[$field] = $this->getData($data);
             } else {
                 $this->getDataTabs($updateDataRes, $updateData, $field);
@@ -512,7 +511,7 @@ class QueryHandler
 
         if (! $id) {
             foreach ($insertData as $field => $data) {
-                if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+                if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
                     $insertDataRes[$field] = $this->getData($data);
                 } else {
                     $this->getDataTabs($insertDataRes, $insertData, $field);
