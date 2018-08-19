@@ -267,6 +267,7 @@ class QueryHandler
         }
 
         $updateData = $this->getRowQueryValues($values);
+        $updateDataRes = [];
 
         $model = $this->model;
         $this->checkFields($updateData);
@@ -282,23 +283,12 @@ class QueryHandler
             $modelObj->setFillable(array_keys($updateData));
         }
 
-        foreach ($updateData as $fild => $data) {
-            if (is_array($data)) {
-                if (isset($def['fields'][$fild]['multi']) && $def['fields'][$fild]['multi']) {
-                    foreach ($data as $k => $dataElement) {
-                        if (! $dataElement) {
-                            unset($data[$k]);
-                        }
-                    }
+        foreach ($updateData as $field => $data) {
 
-                    if (count($data) == 0) {
-                        $data = [''];
-                    }
-                }
-
-                $updateDataRes[$fild] = json_encode($data);
+            if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+                $updateDataRes[$field] = $this->getData($data);
             } else {
-                $updateDataRes[$fild] = $data;
+                $this->getDataTabs($updateDataRes, $updateData, $field);
             }
         }
 
@@ -328,6 +318,37 @@ class QueryHandler
         }
 
         return $res;
+    }
+
+    private function getData($data)
+    {
+        if (is_array($data)) {
+            return json_encode($data);
+        }
+
+        return $data;
+    }
+
+    private function getDataTabs(&$updateDataRes, $updateData, $field)
+    {
+        if (isset($this->definition['fields'][$field]['tabs'])) {
+            foreach ($this->definition['fields'][$field]['tabs'] as $tab) {
+                $updateDataRes[$field.$tab['postfix']] = $this->getTabsDataField($updateData, $field, $tab);
+            }
+        }
+    }
+
+    private function getTabsDataField($updateData, $field, $tab)
+    {
+        if ($updateData[$field.$tab['postfix']]) {
+            return $updateData[$field.$tab['postfix']];
+        }
+
+        if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
+            return \Vis\Translations\Trans::generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
+        }
+
+        return '';
     }
 
     private function updateGroupIfUseTable($field, $id)
@@ -467,6 +488,7 @@ class QueryHandler
     public function insertRow($values)
     {
         $this->clearCache();
+        $insertDataRes = [];
 
         if ($this->controller->hasCustomHandlerMethod('handleInsertRow')) {
             $res = $this->controller->getCustomHandler()->handleInsertRow($values);
@@ -486,23 +508,11 @@ class QueryHandler
         }
 
         if (! $id) {
-            foreach ($insertData as $fild => $data) {
-                if (is_array($data)) {
-                    if (isset($this->definition['fields'][$fild]['multi']) && $this->definition['fields'][$fild]['multi']) {
-                        foreach ($data as $k => $dataElement) {
-                            if (! $dataElement) {
-                                unset($data[$k]);
-                            }
-                        }
-
-                        if (count($data) == 0) {
-                            $data = [''];
-                        }
-                    }
-
-                    $insertDataRes[$fild] = json_encode($data);
+            foreach ($insertData as $field => $data) {
+                if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+                    $insertDataRes[$field] = $this->getData($data);
                 } else {
-                    $insertDataRes[$fild] = $data;
+                    $this->getDataTabs($insertDataRes, $insertData, $field);
                 }
             }
 
