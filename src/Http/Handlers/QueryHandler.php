@@ -347,7 +347,7 @@ class QueryHandler
             
             $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
-            return $translateText ? : '';
+            return $translateText ?: '';
         }
 
         return '';
