@@ -344,7 +344,6 @@ class QueryHandler
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
-            
             $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
             return $translateText ?: '';
@@ -367,9 +366,7 @@ class QueryHandler
             if (isset($translation->getResult()[0])) {
                 return $translation->getResult()[0];
             }
-
         } catch (\Yandex\Translate\Exception $e) {
-
         }
     }
 
