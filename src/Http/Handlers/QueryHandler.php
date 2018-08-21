@@ -345,12 +345,32 @@ class QueryHandler
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
             
-            $translateText = \Vis\Translations\Trans::generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
+            $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
             return $translateText ? : '';
         }
 
         return '';
+    }
+
+    private function generateTranslation($phrase, $thisLang)
+    {
+        try {
+            $langsDef = config('translations.config.def_locale');
+
+            $lang = str_replace('ua', 'uk', $thisLang);
+            $langsDef = str_replace('ua', 'uk', $langsDef);
+
+            $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
+            $translation = $translator->translate($phrase, $langsDef.'-'.$lang);
+
+            if (isset($translation->getResult()[0])) {
+                return $translation->getResult()[0];
+            }
+
+        } catch (\Yandex\Translate\Exception $e) {
+
+        }
     }
 
     private function updateGroupIfUseTable($field, $id)
