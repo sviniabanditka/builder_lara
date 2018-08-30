@@ -66,7 +66,6 @@ class QueryHandler
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
     {
-        $this->checkExistTable();
 
         $modelName = $this->model;
         $this->db = new $modelName();
@@ -183,16 +182,6 @@ class QueryHandler
         $this->db = $this->db->select($this->dbName.'.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-            if (config('builder.admin.auto_create_fields') !== false) {
-                if (! Schema::hasColumn($this->dbName, 'priority')) {
-                    Schema::table(
-                        $this->dbName,
-                        function ($table) {
-                            $table->integer('priority');
-                        }
-                    );
-                }
-            }
 
             $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
@@ -219,23 +208,6 @@ class QueryHandler
         $this->db->where($this->dbName.'.id', $id);
 
         return $this->db->first();
-    }
-
-    private function checkExistTable()
-    {
-        if (config('builder.admin.auto_create_fields') === false) {
-            return;
-        }
-
-        if (! Session::has($this->dbName.'_exist')) {
-            if (! Schema::hasTable($this->dbName)) {
-                Schema::create($this->dbName, function ($table) {
-                    $table->increments('id');
-                });
-            }
-        }
-
-        Session::push($this->dbName.'_exist', 'created');
     }
 
     protected function onSearchFilterQuery()
@@ -344,7 +316,7 @@ class QueryHandler
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
-            
+
             $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
             return $translateText ?: '';

@@ -284,37 +284,10 @@ abstract class AbstractField
         if ($tabs) {
             foreach ($tabs as $tab) {
                 $name = $tableName.'.'.$this->getFieldName().$tab['postfix'];
-                $this->doCreateField($tableName, $this->getFieldName().$tab['postfix']);
                 $db->addSelect($name);
             }
         } else {
-            $this->doCreateField($tableName, $fieldName);
             $db->addSelect($tableName.'.'.$fieldName);
-        }
-    }
-
-    //autocreate fields in db
-    protected function doCreateField($tableName, $fieldName)
-    {
-        if (config('builder.admin.auto_create_fields') === false) {
-            return;
-        }
-
-        $fieldBd = $this->getAttribute('field');
-
-        if (! Session::has($tableName.'.'.$fieldName)) {
-            if ($fieldBd && ! Schema::hasColumn($tableName, $fieldName)) {
-                Session::push($tableName.'.'.$fieldName, 'created');
-
-                Schema::table(
-                    $tableName,
-                    function ($tableName) use ($fieldName, $fieldBd) {
-                        $tableName->$fieldBd($fieldName);
-                    }
-                );
-            } else {
-                Session::push($tableName.'.'.$fieldName, 'created');
-            }
         }
     }
 
