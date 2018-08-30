@@ -339,9 +339,7 @@ class QueryHandler
             if (isset($translation->getResult()[0])) {
                 return $translation->getResult()[0];
             }
-
         } catch (\Yandex\Translate\Exception $e) {
-
         }
     }
 
