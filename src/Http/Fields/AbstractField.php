@@ -4,7 +4,6 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
