@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 
 class QueryHandler
@@ -66,7 +65,6 @@ class QueryHandler
 
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
     {
-
         $modelName = $this->model;
         $this->db = new $modelName();
 
@@ -182,7 +180,6 @@ class QueryHandler
         $this->db = $this->db->select($this->dbName.'.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-
             $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
 
@@ -316,7 +313,6 @@ class QueryHandler
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
-
             $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
             return $translateText ?: '';
