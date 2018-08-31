@@ -1563,3 +1563,6 @@ body.mobile-view-activated .pagination-bottom-wrapper {
 .jarviswidget-ctrls {
     display: none;
 }
+.fr-quick-insert{
+    display: none;
+}
