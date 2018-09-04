@@ -146,11 +146,11 @@ var TableBuilder = {
 
             $(this).froalaEditor(option);
 
+
         });
 
         $('.text_block').on('froalaEditor.initialized', function (e, editor) {
             $(this).parent().removeClass('no_active_froala');
-          /*  $('a[href="https://www.froala.com/wysiwyg-editor?k=u"]').hide();*/
         });
 
         $('.group').on('keyup, blur', '[data-multi=multi]', function(){
@@ -1921,6 +1921,8 @@ $(window).load(function() {
         doAjaxLoadContent(href);
         e.preventDefault();
     });
+
+
 
 });
 $.ajaxSetup({
