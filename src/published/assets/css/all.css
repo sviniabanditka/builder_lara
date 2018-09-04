@@ -1566,3 +1566,6 @@ body.mobile-view-activated .pagination-bottom-wrapper {
 .fr-quick-insert{
     display: none;
 }
+.fr-wrapper > div:first-child a {
+    display: none !important;
+}
