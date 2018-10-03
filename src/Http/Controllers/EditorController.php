@@ -21,8 +21,12 @@ class EditorController extends Controller
         ];
 
         $validator = Validator::make(Input::all(), $rules);
+
         if ($validator->fails()) {
-            return Response::json(['status' => 'error', 'errors_messages'=>$validator->messages()]);
+            return Response::json([
+                'status' => 'error',
+                'errors_messages' => $validator->messages()
+            ]);
         }
 
         $destinationPath = 'storage/editor/fotos';
@@ -52,21 +56,28 @@ class EditorController extends Controller
         ];
 
         $validator = Validator::make(Input::all(), $rules);
+
         if ($validator->fails()) {
-            return Response::json(['status' => 'error', 'errors_messages'=>$validator->messages()]);
+            return Response::json(['status' => 'error', 'errors_messages' => $validator->messages()]);
         }
 
         $destinationPath = 'storage/editor/files';
 
         $ext = $file->getClientOriginalExtension();  // Get real extension according to mime type
-        $fullname = $file->getClientOriginalName(); // Client file name, including the extension of the client
-        $hashname = md5(date('H.i.s').'_'.$fullname).'.'.$ext; // Hash processed file name, including the real extension
+        $fullname = $file->getClientOriginalName();
+        $fullname = str_replace(".".$ext, '', $fullname);
 
-        $full_path_img = '/'.$destinationPath.'/'.$hashname;
+        $hashname = str_slug($fullname).'.'.$ext; 
+        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+
+        if (file_exists(public_path(). $fullPathImg)) {
+            $hashname = str_slug($fullname).'_'.time().'.'.$ext;
+            $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+        }
 
         Input::file('file')->move($destinationPath, $hashname);
 
-        return Response::json(['link' => $full_path_img]);
+        return Response::json(['link' => $fullPathImg]);
     }
 
     //end uploadFile
