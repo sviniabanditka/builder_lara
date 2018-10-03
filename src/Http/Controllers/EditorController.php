@@ -25,7 +25,7 @@ class EditorController extends Controller
         if ($validator->fails()) {
             return Response::json([
                 'status' => 'error',
-                'errors_messages' => $validator->messages()
+                'errors_messages' => $validator->messages(),
             ]);
         }
 
@@ -65,12 +65,12 @@ class EditorController extends Controller
 
         $ext = $file->getClientOriginalExtension();  // Get real extension according to mime type
         $fullname = $file->getClientOriginalName();
-        $fullname = str_replace(".".$ext, '', $fullname);
+        $fullname = str_replace('.'.$ext, '', $fullname);
 
-        $hashname = str_slug($fullname).'.'.$ext; 
+        $hashname = str_slug($fullname).'.'.$ext;
         $fullPathImg = '/'.$destinationPath.'/'.$hashname;
 
-        if (file_exists(public_path(). $fullPathImg)) {
+        if (file_exists(public_path().$fullPathImg)) {
             $hashname = str_slug($fullname).'_'.time().'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$hashname;
         }
