@@ -107,6 +107,8 @@ var TableBuilder = {
 
         $( ".text_block" ).each(function( index ) {
 
+            $(this).froalaEditor('destroy');
+
             var csrfToken = $("meta[name=csrf-token]").attr("content");
 
             var option =  {
@@ -457,14 +459,14 @@ var TableBuilder = {
 
     getEditForm: function(id, context)
     {
-        $(TableBuilder.form_edit).remove()
-        $(TableBuilder.form).remove();
+     //   $(TableBuilder.form_edit).remove()
+    //    $(TableBuilder.form).remove();
 
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
         TableBuilder.showPreloader();
-        TableBuilder.flushStorage();
+       // TableBuilder.flushStorage();
         jQuery('#wid-id-1').find('tr[data-editing="true"]').removeAttr('data-editing');
 
         var data = [
@@ -483,9 +485,9 @@ var TableBuilder = {
                     $(TableBuilder.form_wrapper).html(response.html);
                     $(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
                     TableBuilder.initFroalaEditor();
-                    TableBuilder.refreshMask();
+                 //   TableBuilder.refreshMask();
                     TableBuilder.handleActionSelect();
-                    $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
+                  //  $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
                 } else {
                     TableBuilder.showErrorNotification("Что-то пошло не так, попробуйте позже");
                 }
@@ -706,6 +708,8 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form_edit);
 
                 if (response.id) {
+
+                    TableBuilder.destroyFroala();
 
                     if (foreign_field_id != '' && foreign_attributes != '') {
 
@@ -1890,7 +1894,15 @@ var TableBuilder = {
             TableBuilder.hideBackgroundForm();
         }
 
+        TableBuilder.destroyFroala();
+
         $('.modal_form_' + table).remove();
+    },
+
+    destroyFroala : function() {
+        $( ".text_block" ).each(function( index ) {
+            $(this).froalaEditor('destroy');
+        });
     },
 
     hideBackgroundForm : function() {
