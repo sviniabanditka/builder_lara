@@ -373,6 +373,7 @@ var Tree =
                 success: function(response) {
 
                     TableBuilder.hideFormPreloader(TableBuilder.form_edit);
+                    TableBuilder.destroyFroala();
 
                     if (response.id) {
                         TableBuilder.showSuccessNotification(phrase['Сохранено']);
