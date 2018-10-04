@@ -46,7 +46,7 @@ if (! function_exists('glide')) {
     function glide($source, $options = [])
     {
         if (env('APP_ENV') == 'local') {
-            return '//via.placeholder.com/' . $options['w'] . 'x' . @$options['h'] ?: $options['w'];
+            return '//via.placeholder.com/'.$options['w'].'x'.@$options['h'] ?: $options['w'];
         }
 
         $img = new Vis\Builder\Img();

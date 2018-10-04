@@ -4,7 +4,8 @@ namespace Vis\Builder;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TreeObserver {
+class TreeObserver
+{
     public function saving(Model $model)
     {
         $model->clearCache();
