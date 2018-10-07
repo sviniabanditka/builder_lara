@@ -137,7 +137,7 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/routes/web.php', base_path().'/routes/web.php');
         $this->info('Created '.base_path().'/routes/web.php - OK');
 
-       copy($this->installPath.'/files/app.php', config_path().'/app.php');
+        copy($this->installPath.'/files/app.php', config_path().'/app.php');
         $this->info('Replace app.php - OK');
 
         copy($this->installPath.'/files/composer.json', base_path().'/composer.json');
