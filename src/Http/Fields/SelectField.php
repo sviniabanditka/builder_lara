@@ -60,6 +60,7 @@ class SelectField extends AbstractField
         } else {
             $table->options = $this->getAttribute('options');
         }
+        $table->disabled = $this->getAttribute('disabled');
 
         $table->action = $this->getAttribute('action');
         $table->readonly_for_edit = $this->getAttribute('readonly_for_edit');

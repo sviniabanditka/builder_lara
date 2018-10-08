@@ -169,6 +169,7 @@ abstract class AbstractField
         $input->mask = $this->getAttribute('mask');
         $input->placeholder = $this->getAttribute('placeholder');
         $input->comment = $this->getAttribute('comment');
+        $input->disabled = $this->getAttribute('disabled');
 
         return $input->render();
     }
