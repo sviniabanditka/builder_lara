@@ -47,7 +47,6 @@ class InstallCommand extends Command
             $this->createEnvFile();
 
             $this->createDb();
-            $this->createFolderMinifyCssJs();
             $this->loadFiles();
             $this->publishConfigs();
             $this->loadFilesAfterPublishConfigs();
@@ -112,21 +111,6 @@ class InstallCommand extends Command
     }
 
     /*
-     * create folder public/js/builds and public/css/builds
-     */
-    private function createFolderMinifyCssJs()
-    {
-        if (! is_dir(public_path().'/css/builds')) {
-            File::makeDirectory(public_path().'/css/builds', 0777, true);
-            $this->info('Folder /css/builds is created');
-        }
-        if (! is_dir(public_path().'/js/builds')) {
-            File::makeDirectory(public_path().'/js/builds', 0777, true);
-            $this->info('Folder /js/builds is created');
-        }
-    }
-
-    /*
      * load and replace basic files
      */
     private function loadFiles()
@@ -153,9 +137,6 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/routes/web.php', base_path().'/routes/web.php');
         $this->info('Created '.base_path().'/routes/web.php - OK');
 
-        copy($this->installPath.'/files/routes/front.php', base_path().'/routes/front.php');
-        $this->info('Created '.base_path().'/routes/front.php - OK');
-
         copy($this->installPath.'/files/app.php', config_path().'/app.php');
         $this->info('Replace app.php - OK');
 
@@ -171,6 +152,11 @@ class InstallCommand extends Command
         if (! is_dir(app_path().'/Models')) {
             File::makeDirectory(app_path().'/Models', 0777, true);
             $this->info('Folder app/Models is created');
+        }
+
+        if (! is_dir(app_path().'/Services')) {
+            File::makeDirectory(app_path().'/Services', 0777, true);
+            $this->info('Folder app/Models is Services');
         }
 
         if (! is_dir(app_path().'/Http/ViewComposers')) {
@@ -211,7 +197,7 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/HomeController.php', app_path().'/Http/Controllers/HomeController.php');
         $this->info('Created app/Http/Controllers/HomeController.php- OK');
 
-        copy($this->installPath.'/files/Breadcrumbs.php', app_path().'/Models/Breadcrumbs.php');
+        copy($this->installPath.'/files/Breadcrumbs.php', app_path().'/Services/Breadcrumbs.php');
         $this->info('Created app/Models/Breadcrumbs.php- OK');
 
         if (! is_dir(base_path().'/resources/views/layouts')) {
@@ -305,6 +291,5 @@ class InstallCommand extends Command
 
         $this->call('cache:clear');
         $this->call('clear-compiled');
-        $this->call('optimize');
     }
 }
