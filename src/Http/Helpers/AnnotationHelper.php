@@ -24,15 +24,16 @@ class AnnotationHelper
             try {
                 $view = $this->annotation->render();
             } catch (Throwable $e) {
-                $view = '';
+                $view = $e->getMessage();
             }
             return $view;
         } elseif (is_string($this->annotation)) {
             return $this->annotation;
         } elseif (is_callable($this->annotation)) {
             try {
-                $test = '';
-                //todo call to property as func
+                $annotation = $this->annotation;
+                $this->annotation = $annotation();
+                return $this->handle();
             } catch (Throwable $e) {
                 return $e->getMessage();
             }
