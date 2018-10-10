@@ -3,6 +3,11 @@
            id="{{ $prefix . $name }}"
            value="{{$value}}"
            name="{{$name}}"
+
+           @if ($disabled)
+               disabled="disabled"
+           @endif
+
            class="form-control datepicker" >
 
     <span class="input-group-addon form-input-icon">

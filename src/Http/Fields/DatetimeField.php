@@ -58,6 +58,7 @@ class DatetimeField extends AbstractField
         $input->months = $this->getAttribute('months');
         $input->prefix = $row ? 'e-' : 'c-';
         $input->comment = $this->getAttribute('comment');
+        $input->disabled = $this->getAttribute('disabled');
 
         return $input->render();
     }

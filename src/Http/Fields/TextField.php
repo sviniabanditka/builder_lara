@@ -50,6 +50,7 @@ class TextField extends AbstractField
         $input->rows = $this->getAttribute('rows');
         $input->mask = $this->getAttribute('mask');
         $input->custom_type = $this->getAttribute('custom_type');
+        $input->disabled = $this->getAttribute('disabled');
 
         if ($input->name == request('foreign_field')) {
             $input->value = request('foreign_field_id');

@@ -57,6 +57,7 @@ class CheckboxField extends AbstractField
         $table->value = $this->getValue($row);
         $table->name = $this->getFieldName();
         $table->caption = $this->getAttribute('caption');
+        $table->disabled = $this->getAttribute('disabled');
 
         return $table->render();
     }

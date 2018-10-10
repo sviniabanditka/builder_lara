@@ -2,6 +2,11 @@
     <div class="input_content">
         <label class="input">
             <input
+
+                    @if ($disabled)
+                        disabled="disabled"
+                    @endif
+
                     @if ($is_password)
                         type="password"
                         @if ((isset($value) && $value))
