@@ -82,7 +82,7 @@ var ForeignDefinition  = {
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
         var attributesJson = jQuery.parseJSON(foreignAttributes);
         // TableBuilder.showSuccessNotification(phrase['Сохранено']);
-        TableBuilder.doClosePopup(attributesJson.table);
+       // TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
         jQuery.ajax({
@@ -209,7 +209,7 @@ var ForeignDefinition  = {
         $('.foreign_popups .fade').addClass('in').show();
         $('.modal_form_' + table).css('top', $(window).scrollTop() + 50);
         $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
-        TableBuilder.initFroalaEditor();
+        TableBuilder.initFroalaEditor(table);
     },
 
     changePosition : function (context, attributesJson) {

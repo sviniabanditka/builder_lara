@@ -278,51 +278,14 @@ var TableBuilder = {
 
     },
 
-    initFroalaEditor: function () {
+    initFroalaEditor: function (table) {
 
         var langEditor = "en";
+        var textBlock = table == undefined ? '.text_block' : '.modal_form_' + table + ' .text_block';
 
         langEditor =  langCms == "ua" ? 'uk' : langCms;
 
-        //TODO need fix crops in froala
-        /*$.FroalaEditor.DefineIcon('crop', {NAME: 'crop'});
-         $.FroalaEditor.RegisterCommand('crop', {
-         title: 'Image Crop',
-         focus: false,
-         undo: false,
-         refreshAfterCallback: false,
-         callback: function () {
-
-         var imgThis = this.image.get();
-         $('#modal_crop_img').modal("show");
-
-         var srcImg = imgThis.attr('src');
-         TableBuilder.tableEditorImg = imgThis;
-
-         $("#modal_crop_img #image").attr("src", "");
-         $("#modal_crop_img #image").attr("src", srcImg);
-         $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
-
-         var $image = $('#image');
-         $image.cropper('destroy');
-         var result = $image.cropper({
-
-         crop: function (data) {
-         $(".width_crop").text(Math.round(data.width));
-         $(".height_crop").text(Math.round(data.height));
-
-         },
-         built: function () {
-
-         },
-         });
-         setTimeout('$("#modal_crop_img #image").attr("src", "' + srcImg + '")', 1000);
-         }
-         });*/
-
-        $( ".text_block" ).each(function( index ) {
-
-            $(this).froalaEditor('destroy');
+        $( textBlock ).each(function( index ) {
 
             var csrfToken = $("meta[name=csrf-token]").attr("content");
 
@@ -362,8 +325,6 @@ var TableBuilder = {
             }
 
             $(this).froalaEditor(option);
-
-
         });
 
         $('.text_block').on('froalaEditor.initialized', function (e, editor) {
@@ -674,14 +635,11 @@ var TableBuilder = {
 
     getEditForm: function(id, context)
     {
-     //   $(TableBuilder.form_edit).remove()
-    //    $(TableBuilder.form).remove();
-
         var urlPage = "?id=" + id;
         window.history.pushState(urlPage, '', urlPage);
 
         TableBuilder.showPreloader();
-       // TableBuilder.flushStorage();
+
         jQuery('#wid-id-1').find('tr[data-editing="true"]').removeAttr('data-editing');
 
         var data = [
@@ -697,12 +655,14 @@ var TableBuilder = {
             dataType: 'json',
             success: function(response) {
                 if (response.status) {
+
                     $(TableBuilder.form_wrapper).html(response.html);
                     $(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
+
                     TableBuilder.initFroalaEditor();
-                 //   TableBuilder.refreshMask();
+
                     TableBuilder.handleActionSelect();
-                  //  $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
+
                 } else {
                     TableBuilder.showErrorNotification("Что-то пошло не так, попробуйте позже");
                 }
@@ -717,7 +677,6 @@ var TableBuilder = {
             }
         });
     }, // end getEditForm
-
 
     getViewsStatistic : function (id, context)
     {
@@ -881,8 +840,6 @@ var TableBuilder = {
 
         $( '.fr-popup' ).remove();
 
-
-
         var values = $(TableBuilder.edit_form).serializeArray();
 
         values.push({ name: 'id', value: id });
@@ -924,11 +881,10 @@ var TableBuilder = {
 
                 if (response.id) {
 
-                    TableBuilder.destroyFroala();
-
                     if (foreign_field_id != '' && foreign_attributes != '') {
 
                         ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
+                        TableBuilder.doClosePopup(table);
                         return;
                     }
 
@@ -938,6 +894,7 @@ var TableBuilder = {
 
                     if (TableBuilder.options.is_page_form) {
                         window.history.back();
+                        TableBuilder.doClosePopup(table);
                         return;
                     }
 
@@ -2109,13 +2066,16 @@ var TableBuilder = {
             TableBuilder.hideBackgroundForm();
         }
 
-        TableBuilder.destroyFroala();
+        TableBuilder.destroyFroala(table);
 
         $('.modal_form_' + table).remove();
     },
 
-    destroyFroala : function() {
-        $( ".text_block" ).each(function( index ) {
+    destroyFroala : function(table) {
+        var textBlocks = ".modal_form_" + table + " .text_block";
+        alert(textBlocks);
+
+        $( textBlocks ).each(function( index ) {
             $(this).froalaEditor('destroy');
         });
     },
@@ -2242,7 +2202,7 @@ var ForeignDefinition  = {
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
         var attributesJson = jQuery.parseJSON(foreignAttributes);
         // TableBuilder.showSuccessNotification(phrase['Сохранено']);
-        TableBuilder.doClosePopup(attributesJson.table);
+       // TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
         jQuery.ajax({
@@ -2369,7 +2329,7 @@ var ForeignDefinition  = {
         $('.foreign_popups .fade').addClass('in').show();
         $('.modal_form_' + table).css('top', $(window).scrollTop() + 50);
         $( ".modal-dialog" ).draggable({ handle: ".modal-header" });
-        TableBuilder.initFroalaEditor();
+        TableBuilder.initFroalaEditor(table);
     },
 
     changePosition : function (context, attributesJson) {
