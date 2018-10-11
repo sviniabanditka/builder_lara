@@ -1858,7 +1858,6 @@ var TableBuilder = {
 
     destroyFroala : function(table) {
         var textBlocks = ".modal_form_" + table + " .text_block";
-        alert(textBlocks);
 
         $( textBlocks ).each(function( index ) {
             $(this).froalaEditor('destroy');
