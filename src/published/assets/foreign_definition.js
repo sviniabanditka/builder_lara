@@ -82,7 +82,7 @@ var ForeignDefinition  = {
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
         var attributesJson = jQuery.parseJSON(foreignAttributes);
         // TableBuilder.showSuccessNotification(phrase['Сохранено']);
-       // TableBuilder.doClosePopup(attributesJson.table);
+        TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
         jQuery.ajax({

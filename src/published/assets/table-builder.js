@@ -1850,8 +1850,11 @@ var TableBuilder = {
         if ($('.modal_form_' + table).parent().hasClass('modal_popup_first')) {
             TableBuilder.hideBackgroundForm();
         }
-
-        TableBuilder.destroyFroala(table);
+        try {
+            TableBuilder.destroyFroala(table);
+        } catch (err) {
+           
+        }
 
         $('.modal_form_' + table).remove();
     },

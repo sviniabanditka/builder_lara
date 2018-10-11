@@ -2065,8 +2065,11 @@ var TableBuilder = {
         if ($('.modal_form_' + table).parent().hasClass('modal_popup_first')) {
             TableBuilder.hideBackgroundForm();
         }
-
-        TableBuilder.destroyFroala(table);
+        try {
+            TableBuilder.destroyFroala(table);
+        } catch (err) {
+           
+        }
 
         $('.modal_form_' + table).remove();
     },
@@ -2201,7 +2204,7 @@ var ForeignDefinition  = {
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
         var attributesJson = jQuery.parseJSON(foreignAttributes);
         // TableBuilder.showSuccessNotification(phrase['Сохранено']);
-       // TableBuilder.doClosePopup(attributesJson.table);
+        TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
         jQuery.ajax({
