@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
- * Class LoginController
- * @package Vis\Builder
+ * Class LoginController.
  */
 class LoginController extends Controller
 {
@@ -101,12 +100,9 @@ class LoginController extends Controller
 
         $validator = Validator::make(Input::all(), $rules);
 
-        return !$validator->fails();
+        return ! $validator->fails();
     }
 
-    /**
-     *
-     */
     private function clearSessionsAdmin()
     {
         Session::forget('table_builder');

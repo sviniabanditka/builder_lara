@@ -5,7 +5,6 @@ namespace Vis\Builder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -54,7 +53,7 @@ class Setting extends Eloquent
     public static function getWithLang($slug, $default = '')
     {
         $prefixLang = self::getPrefixLang();
-        $key = $slug . $prefixLang;
+        $key = $slug.$prefixLang;
 
         if (Cache::tags('settings')->has($key)) {
             return Cache::tags('settings')->get($key);
@@ -62,7 +61,7 @@ class Setting extends Eloquent
             $setting = self::where('slug', 'like', $slug)->first();
 
             if (isset($setting->id)) {
-                $field = 'value' . $prefixLang;
+                $field = 'value'.$prefixLang;
                 $value = $setting->$field ?: $default;
 
                 Cache::tags('settings')->forever($key, $value);
@@ -78,7 +77,7 @@ class Setting extends Eloquent
         $defaultLocale = config('translations.config.def_locale');
 
         if ($lang != $defaultLocale) {
-            return '_' . $lang;
+            return '_'.$lang;
         }
     }
 
@@ -105,7 +104,7 @@ class Setting extends Eloquent
         $settings->group_type = $data['group'];
 
         if ($data['type'] < 2 || $data['type'] == 6) {
-            $settings->value = $data['value' . $data['type']];
+            $settings->value = $data['value'.$data['type']];
         }
 
         //yes/no
@@ -120,18 +119,18 @@ class Setting extends Eloquent
 
             $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), $ext));
 
-            $nameFile = $nameFile . '.' . $ext;
-            $fullPathImg = '/' . $destinationPath . '/' . $nameFile;
+            $nameFile = $nameFile.'.'.$ext;
+            $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
             $file->move($destinationPath, $nameFile);
             $settings->value = $fullPathImg;
         }
 
         if (is_array(config('builder.settings.langs')) && ($data['type'] < 2 || $data['type'] == 6)) {
             foreach (config('builder.settings.langs') as $prefix => $value) {
-                $field = 'value' . $prefix;
+                $field = 'value'.$prefix;
 
-                if (isset($data['value' . $data['type'] . $prefix])) {
-                    $settings->$field = $data['value' . $data['type'] . $prefix];
+                if (isset($data['value'.$data['type'].$prefix])) {
+                    $settings->$field = $data['value'.$data['type'].$prefix];
                 }
             }
         }

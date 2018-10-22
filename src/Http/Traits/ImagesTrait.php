@@ -17,7 +17,7 @@ trait ImagesTrait
     {
         $img_res = $this->getImgPath($width, $height, $options);
 
-        return  '<img src = "' . $img_res . '" title = "' . e($this->title) . '" alt = "' . e($this->title) . '">';
+        return  '<img src = "'.$img_res.'" title = "'.e($this->title).'" alt = "'.e($this->title).'">';
     }
 
     // end getImg
@@ -26,7 +26,7 @@ trait ImagesTrait
     {
         $img_res = $this->getImgPath($width, $height, $options, true);
 
-        return  '<img src = "' . $img_res . '" title = "' . e($this->t('title')) . '" alt = "' . e($this->t('title')) . '">';
+        return  '<img src = "'.$img_res.'" title = "'.e($this->t('title')).'" alt = "'.e($this->t('title')).'">';
     }
 
     // end getImg
@@ -76,7 +76,7 @@ trait ImagesTrait
             if ($paramImg) {
                 $imagesRes[] = glide($imgOne, $paramImg);
             } else {
-                $imagesRes[] = '/' . $imgOne;
+                $imagesRes[] = '/'.$imgOne;
             }
         }
 
@@ -95,12 +95,12 @@ trait ImagesTrait
         foreach ($images as $imgOne) {
             if ($paramImg) {
                 if (config('builder.watermark.active') && $imgOne) {
-                    $imagesRes[] = '/img/watermark/' . ltrim($imgOne, '/');
+                    $imagesRes[] = '/img/watermark/'.ltrim($imgOne, '/');
                 } else {
                     $imagesRes[] = glide($imgOne, $paramImg);
                 }
             } else {
-                $imagesRes[] = '/' . $imgOne;
+                $imagesRes[] = '/'.$imgOne;
             }
         }
 
@@ -124,9 +124,9 @@ trait ImagesTrait
         $imagesRes = [];
         foreach ($images as $imgOne) {
             if ($paramImg) {
-                $imagesRes['/' . $imgOne] = glide($imgOne, $paramImg);
+                $imagesRes['/'.$imgOne] = glide($imgOne, $paramImg);
             } else {
-                $imagesRes[] = '/' . $imgOne;
+                $imagesRes[] = '/'.$imgOne;
             }
         }
 
@@ -136,7 +136,7 @@ trait ImagesTrait
     public function getWatermark($width = '', $height = '', $options = [])
     {
         if (config('builder.watermark.active') && $this->picture) {
-            return '/img/watermark/' . ltrim($this->picture, '/');
+            return '/img/watermark/'.ltrim($this->picture, '/');
         } else {
             return $this->getImgPath($width, $height, $options);
         }

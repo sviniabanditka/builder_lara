@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 
 /**
- * Class Tree
- * @package Vis\Builder
+ * Class Tree.
  */
 class Tree extends \Baum\Node
 {
@@ -76,9 +75,6 @@ class Tree extends \Baum\Node
         $this->fillable = $params;
     }
 
-    /**
-     *
-     */
     public static function boot()
     {
         parent::boot();
@@ -121,9 +117,6 @@ class Tree extends \Baum\Node
 
     // end setSlugAttribute
 
-    /**
-     *
-     */
     public function checkUnicUrl()
     {
         $slug = $this->slug;
@@ -133,7 +126,7 @@ class Tree extends \Baum\Node
                 ->where('id', '!=', $this->id)->count();
 
             if ($slugCheck) {
-                $slug = $this->slug . '_' . $this->id;
+                $slug = $this->slug.'_'.$this->id;
             }
 
             $slugCheckId = $this->where('slug', 'like', $slug)
@@ -141,7 +134,7 @@ class Tree extends \Baum\Node
                 ->where('id', '!=', $this->id)->count();
 
             if ($slugCheckId) {
-                $slug = $slug . '_' . time();
+                $slug = $slug.'_'.time();
             }
 
             $this->slug = $slug;
@@ -188,20 +181,21 @@ class Tree extends \Baum\Node
             return $this->_nodeUrl;
         }
 
-        $basicDomain = config('builder.' . $this->fileDefinition . '.basic_domain');
+        $basicDomain = config('builder.'.$this->fileDefinition.'.basic_domain');
 
         if ($basicDomain) {
             $protocol = Request::secure() ? 'https://' : 'http://';
 
-            return $protocol . $basicDomain . '/' . $this->_nodeUrl;
+            return $protocol.$basicDomain.'/'.$this->_nodeUrl;
         }
 
-        return '/' . $this->_nodeUrl;
+        return '/'.$this->_nodeUrl;
     }
 
     // end getUrl
 
     //return url without location
+
     /**
      * @return string
      */
@@ -211,7 +205,7 @@ class Tree extends \Baum\Node
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
-        return '/' . $this->_nodeUrl;
+        return '/'.$this->_nodeUrl;
     }
 
     /**
@@ -222,7 +216,7 @@ class Tree extends \Baum\Node
         $tags = $this->getCacheTags();
 
         if ($tags && $this->fileDefinition) {
-            return Cache::tags($tags)->rememberForever($this->fileDefinition . '_' . $this->id, function () {
+            return Cache::tags($tags)->rememberForever($this->fileDefinition.'_'.$this->id, function () {
                 return $this->getGeneratedUrlInCache();
             });
         }
@@ -248,15 +242,15 @@ class Tree extends \Baum\Node
             $slugs[] = $node->slug;
         }
 
-        if (config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
-            && config('builder.' . $this->fileDefinition . '.basic_domain')
+        if (config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain')
+            && config('builder.'.$this->fileDefinition.'.basic_domain')
         ) {
-            $subDomain = config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain');
-            $basicDomain = config('builder.' . $this->fileDefinition . '.basic_domain');
+            $subDomain = config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain');
+            $basicDomain = config('builder.'.$this->fileDefinition.'.basic_domain');
 
             $protocol = Request::secure() ? 'https://' : 'http://';
 
-            return $protocol . $subDomain . '.' . $basicDomain . implode('/', $slugs);
+            return $protocol.$subDomain.'.'.$basicDomain.implode('/', $slugs);
         }
 
         return implode('/', $slugs);
@@ -270,7 +264,7 @@ class Tree extends \Baum\Node
         $tags = $this->getCacheTags();
 
         if ($tags) {
-            return Cache::tags($tags)->rememberForever('count_' . $this->fileDefinition . $this->id, function () {
+            return Cache::tags($tags)->rememberForever('count_'.$this->fileDefinition.$this->id, function () {
                 return $this->children()->count();
             });
         }
@@ -278,9 +272,6 @@ class Tree extends \Baum\Node
         return $this->children()->count();
     }
 
-    /**
-     *
-     */
     public function clearCache()
     {
         $tags = $this->getCacheTags();
@@ -296,7 +287,7 @@ class Tree extends \Baum\Node
     private function getCacheTags()
     {
         if ($this->fileDefinition) {
-            $tags = config('builder.' . $this->fileDefinition . '.cache');
+            $tags = config('builder.'.$this->fileDefinition.'.cache');
             if (isset($tags['tags']) && is_array($tags['tags'])) {
                 return $tags['tags'];
             }
@@ -343,7 +334,7 @@ class Tree extends \Baum\Node
                     $paddingLeft .= '--';
                 }
 
-                $this->treeOptions[$value['id']] = "<option $disable value ='" . $value['id'] . "'>" . $paddingLeft . $value['title'] . '</option>';
+                $this->treeOptions[$value['id']] = "<option $disable value ='".$value['id']."'>".$paddingLeft.$value['title'].'</option>';
                 $level = $level + 1;
                 $this->printCategories($value['id'], $level);
                 $level = $level - 1;

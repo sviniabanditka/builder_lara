@@ -13,8 +13,7 @@ use Vis\Builder\Handlers\DefinitionHandler;
 use Vis\Builder\Handlers\CustomClosureHandler;
 
 /**
- * Class JarboeController
- * @package Vis\Builder
+ * Class JarboeController.
  */
 class JarboeController
 {
@@ -158,9 +157,6 @@ class JarboeController
         return $this->definition['db']['table'];
     }
 
-    /**
-     *
-     */
     private function doPrepareDefinition()
     {
         if (! isset($this->definition['export'])) {
@@ -213,7 +209,7 @@ class JarboeController
      */
     protected function getPreparedOptions($optionsParam)
     {
-        $optionsParam['def_path'] = app_path() . $optionsParam['def_path'];
+        $optionsParam['def_path'] = app_path().$optionsParam['def_path'];
 
         return $optionsParam;
     }
@@ -224,7 +220,7 @@ class JarboeController
     protected function createCustomHandlerInstance()
     {
         if (isset($this->definition['options']['handler'])) {
-            $handlerCustom = '\\' . $this->definition['options']['handler'];
+            $handlerCustom = '\\'.$this->definition['options']['handler'];
 
             return new $handlerCustom($this);
         }
@@ -308,7 +304,7 @@ class JarboeController
      */
     public function getUrlAction()
     {
-        return '/admin/handle/' . $this->getDefinitionName();
+        return '/admin/handle/'.$this->getDefinitionName();
     }
 
     /**
@@ -418,7 +414,7 @@ class JarboeController
      */
     protected function createFieldInstance($name, $info)
     {
-        $className = 'Vis\\Builder\\Fields\\' . ucfirst(camel_case($info['type'])) . 'Field';
+        $className = 'Vis\\Builder\\Fields\\'.ucfirst(camel_case($info['type'])).'Field';
 
         return new $className(
             $name,
@@ -436,7 +432,7 @@ class JarboeController
     protected function getTableDefinition($table)
     {
         $table = preg_replace('~\.~', '/', $table);
-        $path = config_path() . '/builder/tb-definitions/' . $table . '.php';
+        $path = config_path().'/builder/tb-definitions/'.$table.'.php';
 
         if (! file_exists($path)) {
             throw new \RuntimeException("Definition \n[{$path}]\n does not exist.");
@@ -479,7 +475,7 @@ class JarboeController
     {
         $defName = $this->getOption('def_name');
 
-        return session('table_builder.' . $defName . '.filters', []);
+        return session('table_builder.'.$defName.'.filters', []);
     }
 
     /**
@@ -489,6 +485,6 @@ class JarboeController
     {
         $defName = $this->getOption('def_name');
 
-        return session('table_builder.' . $defName . '.order', []);
+        return session('table_builder.'.$defName.'.order', []);
     }
 }

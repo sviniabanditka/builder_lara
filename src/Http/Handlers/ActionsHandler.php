@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Class ActionsHandler
- * @package Vis\Builder\Handlers
+ * Class ActionsHandler.
  */
 class ActionsHandler
 {
@@ -192,7 +191,7 @@ class ActionsHandler
 
         $params['show'] = 1;
 
-        $action->url .= '?' . http_build_query($params);
+        $action->url .= '?'.http_build_query($params);
 
         return $action;
     }
@@ -209,7 +208,7 @@ class ActionsHandler
         $action->definition = $this->controller->getDefinition();
         $model = $action->definition['options']['model'];
         $action->model = $model;
-        $action->url = $this->getUrl($action, $model, $row['id']) . '?mode=construct';
+        $action->url = $this->getUrl($action, $model, $row['id']).'?mode=construct';
 
         return $action;
     }
@@ -224,7 +223,7 @@ class ActionsHandler
     {
         if (isset($action->definition['cache']['tags'])) {
             return Cache::tags($action->definition['cache']['tags'])
-                ->rememberForever('url' . $model . $id, function () use ($model, $id) {
+                ->rememberForever('url'.$model.$id, function () use ($model, $id) {
                     return $model::find($id)->getUrl();
                 });
         }

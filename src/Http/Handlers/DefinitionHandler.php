@@ -3,8 +3,7 @@
 namespace Vis\Builder\Handlers;
 
 /**
- * Class DefinitionHandler
- * @package Vis\Builder\Handlers
+ * Class DefinitionHandler.
  */
 class DefinitionHandler
 {

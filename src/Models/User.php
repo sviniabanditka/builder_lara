@@ -6,8 +6,7 @@ use DB;
 use Cartalyst\Sentinel\Users\EloquentUser;
 
 /**
- * Class User
- * @package Vis\Builder
+ * Class User.
  */
 class User extends EloquentUser
 {
@@ -40,7 +39,7 @@ class User extends EloquentUser
      */
     public function getFullName()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
 
     /**

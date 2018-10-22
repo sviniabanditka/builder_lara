@@ -6,8 +6,7 @@ use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class ViewHandler
- * @package Vis\Builder\Handlers
+ * Class ViewHandler.
  */
 class ViewHandler
 {
@@ -56,7 +55,7 @@ class ViewHandler
                 throw new \RuntimeException('Update action is not permitted');
             }
             if (! $this->controller->isAllowedID($id)) {
-                throw new \RuntimeException('Not allowed to edit row #' . $id);
+                throw new \RuntimeException('Not allowed to edit row #'.$id);
             }
         }
 
@@ -93,7 +92,7 @@ class ViewHandler
         $templatePostfix = $id ? 'edit' : 'create';
 
         return view(
-            'admin::table_page_' . $templatePostfix,
+            'admin::table_page_'.$templatePostfix,
             compact('form', 'js', 'definition', 'id')
         )
                 ->render();
@@ -120,7 +119,7 @@ class ViewHandler
 
         $table->def = $this->definition;
         $table->controller = $this->controller;
-        $table->per_page = Session::get('table_builder.' . $this->definitionName . '.per_page');
+        $table->per_page = Session::get('table_builder.'.$this->definitionName.'.per_page');
         $table->fieldsList = $this->controller->definitionClass->getFieldsList();
         $table->filterView = $this->getViewFilter($table->def);
 
@@ -154,11 +153,11 @@ class ViewHandler
 
         foreach ($params['show'] as $field) {
             $arrayDefinitionFields[$field] =
-                config('builder.tb-definitions.' . $params['definition'] . '.fields.' . $field);
+                config('builder.tb-definitions.'.$params['definition'].'.fields.'.$field);
         }
 
         if (request('id')) {
-            $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
+            $modelThis = config('builder.tb-definitions.'.$params['definition'].'.options.model');
             $result = $modelThis::where($params['foreign_field'], request('id'));
 
             $result = isset($params['sortable'])
@@ -190,7 +189,7 @@ class ViewHandler
         $this->controller->query->clearCache();
 
         $params = (array) json_decode(request('paramsJson'));
-        $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
+        $modelThis = config('builder.tb-definitions.'.$params['definition'].'.options.model');
 
         $modelThis::find(request('idDelete'))->delete();
 
@@ -210,11 +209,11 @@ class ViewHandler
             throw new \RuntimeException('Не определено поле для сортировки');
         }
         $idsPositionUpdate = (array) json_decode(request('idsPosition'));
-        $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
+        $modelThis = config('builder.tb-definitions.'.$params['definition'].'.options.model');
         $sortField = $params['sortable'];
 
         $records = $modelThis::whereIn('id', $idsPositionUpdate)
-            ->orderByRaw('FIELD(id, ' . implode(',', $idsPositionUpdate) . ')')->get();
+            ->orderByRaw('FIELD(id, '.implode(',', $idsPositionUpdate).')')->get();
 
         foreach ($records as $k => $record) {
             $record->$sortField = $k;

@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Class SettingsController
- * @package Vis\Builder
+ * Class SettingsController.
  */
 class SettingsController extends Controller
 {
@@ -29,15 +28,15 @@ class SettingsController extends Controller
         //filter group
         if (request('group')) {
             $data = $data->where('group_type', request('group'));
-            $title .= ' / ' . $groupsSettings[request('group')];
+            $title .= ' / '.$groupsSettings[request('group')];
         }
 
         $data = $data->paginate(20);
         $groups = config('builder.settings.groups');
 
-        $view = Request::ajax() ?  'settings.part.settings_center' : 'settings.settings_all';
+        $view = Request::ajax() ? 'settings.part.settings_center' : 'settings.settings_all';
 
-        return view('admin::' . $view, compact('title', 'breadcrumb', 'data', 'groups'));
+        return view('admin::'.$view, compact('title', 'breadcrumb', 'data', 'groups'));
     }
 
     /**
@@ -130,7 +129,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * quick edit in list
+     * quick edit in list.
      */
     public function doFastSave()
     {

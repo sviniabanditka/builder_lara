@@ -43,7 +43,7 @@ class ImageStorageField extends AbstractField
         $input->type = $this->getRequiredAttribute('storage_type');
 
         if ($row) {
-            $model = '\\' . \config('builder::images.models.image');
+            $model = '\\'.\config('builder::images.models.image');
             $input->entity = $model::find($this->getValue($row));
         }
 

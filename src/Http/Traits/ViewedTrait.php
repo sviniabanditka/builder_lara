@@ -12,7 +12,7 @@ trait ViewedTrait
         $nameClass = strtolower(get_class($this));
         if (isset($this->id) && $this->id) {
             $idPage = $this->id;
-            $nameCookie = md5($nameClass . '_viewed');
+            $nameCookie = md5($nameClass.'_viewed');
             $cookies = unserialize(Cookie::get($nameCookie));
 
             if (is_array($cookies)) {
@@ -30,7 +30,7 @@ trait ViewedTrait
     public function getView()
     {
         $nameClass = strtolower(get_class($this));
-        $nameCookie = md5($nameClass . '_viewed');
+        $nameCookie = md5($nameClass.'_viewed');
 
         $cookies = unserialize(Request::cookie($nameCookie));
 

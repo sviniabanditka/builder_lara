@@ -5,8 +5,7 @@ namespace Vis\Builder\Handlers;
 use Vis\Builder\JarboeController;
 
 /**
- * Class CustomHandler
- * @package Vis\Builder\Handlers
+ * Class CustomHandler.
  */
 abstract class CustomHandler
 {
@@ -33,9 +32,6 @@ abstract class CustomHandler
         return $this->controller->getOption($ident);
     }
 
-    /**
-     *
-     */
     public function handle()
     {
     }

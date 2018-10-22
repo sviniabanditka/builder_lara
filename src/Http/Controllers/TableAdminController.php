@@ -6,7 +6,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -14,8 +13,7 @@ use Vis\Builder\Facades\Jarboe as JarboeFacade;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
- * Class TableAdminController
- * @package Vis\Builder
+ * Class TableAdminController.
  */
 class TableAdminController extends Controller
 {
@@ -37,12 +35,12 @@ class TableAdminController extends Controller
      */
     public function showTreeOther($nameTree)
     {
-        $model = config('builder.' . $nameTree . '_tree.model');
-        $nameTree = $nameTree . '_tree';
+        $model = config('builder.'.$nameTree.'_tree.model');
+        $nameTree = $nameTree.'_tree';
 
         $option = [
-            'url' => $this->urlAdmin . $nameTree,
-            'def_name' => $nameTree . '/node',
+            'url' => $this->urlAdmin.$nameTree,
+            'def_name' => $nameTree.'/node',
         ];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree);
@@ -66,12 +64,12 @@ class TableAdminController extends Controller
      */
     public function handleTreeOther($nameTree)
     {
-        $model = config('builder.' . $nameTree . '_tree.model');
-        $nameTree = $nameTree . '_tree';
+        $model = config('builder.'.$nameTree.'_tree.model');
+        $nameTree = $nameTree.'_tree';
 
         $option = [
-            'url' => $this->urlAdmin . $nameTree,
-            'def_name' => $nameTree . '/node',
+            'url' => $this->urlAdmin.$nameTree,
+            'def_name' => $nameTree.'/node',
         ];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree);
@@ -85,8 +83,8 @@ class TableAdminController extends Controller
      */
     public function showTreeAll($nameTree)
     {
-        $model = config('builder.' . $nameTree . '.model');
-        $actions = config('builder.' . $nameTree . '.actions.show');
+        $model = config('builder.'.$nameTree.'.model');
+        $actions = config('builder.'.$nameTree.'.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
             $tree = $model::whereIn('id', $actions['check']())->get()->toHierarchy();
@@ -112,7 +110,7 @@ class TableAdminController extends Controller
     public function showPage($page)
     {
         $options = [
-            'url'      => $this->urlAdmin . $page,
+            'url'      => $this->urlAdmin.$page,
             'def_name' => $page,
         ];
 
@@ -128,7 +126,7 @@ class TableAdminController extends Controller
     public function showPagePost($page)
     {
         $options = [
-            'url'      => $this->urlAdmin . $page,
+            'url'      => $this->urlAdmin.$page,
             'def_name' => $page,
         ];
 
@@ -142,7 +140,7 @@ class TableAdminController extends Controller
     public function handlePage($page)
     {
         $options = [
-            'url'      => $this->urlAdmin . $page,
+            'url'      => $this->urlAdmin.$page,
             'def_name' => $page,
         ];
 
@@ -212,7 +210,7 @@ class TableAdminController extends Controller
 
         Session::put('currentNode', $node);
 
-        return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
+        return app('App\\Http\\Controllers\\'.$controller)->init($node, $method);
     }
 
     /**

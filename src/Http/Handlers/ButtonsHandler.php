@@ -3,8 +3,7 @@
 namespace Vis\Builder\Handlers;
 
 /**
- * Class ButtonsHandler
- * @package Vis\Builder\Handlers
+ * Class ButtonsHandler.
  */
 class ButtonsHandler
 {

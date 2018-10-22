@@ -5,8 +5,7 @@ namespace Vis\Builder;
 use Illuminate\Routing\Controller;
 
 /**
- * Class DashboardController
- * @package Vis\Builder
+ * Class DashboardController.
  */
 class DashboardController extends Controller
 {

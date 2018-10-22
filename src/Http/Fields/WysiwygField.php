@@ -3,8 +3,7 @@
 namespace Vis\Builder\Fields;
 
 /**
- * Class WysiwygField
- * @package Vis\Builder\Fields
+ * Class WysiwygField.
  */
 class WysiwygField extends AbstractField
 {
@@ -29,7 +28,7 @@ class WysiwygField extends AbstractField
             }
         }
 
-        return mb_substr(strip_tags($this->getValue($row)), 0, 300) . '...';
+        return mb_substr(strip_tags($this->getValue($row)), 0, 300).'...';
     }
 
     /**
@@ -77,7 +76,7 @@ class WysiwygField extends AbstractField
             }
         }
 
-        $tableName = $this->definition['db']['table'] . '_wysiwyg';
+        $tableName = $this->definition['db']['table'].'_wysiwyg';
 
         $input = view('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
@@ -95,7 +94,7 @@ class WysiwygField extends AbstractField
             $action = $this->definition['options']['action_url_tree'];
         }
         $input->action = $action;
-        $input->pre = $row ? $tableName . 'e' : $tableName . 'c';
+        $input->pre = $row ? $tableName.'e' : $tableName.'c';
 
         return $input->render();
     }
@@ -109,14 +108,14 @@ class WysiwygField extends AbstractField
         $table = $this->definition['db']['table'];
         $tabs = $this->getAttribute('tabs');
         if ($tabs) {
-            $field = $table . '.' . $this->getFieldName();
+            $field = $table.'.'.$this->getFieldName();
             $db->where(function ($query) use ($field, $value, $tabs) {
                 foreach ($tabs as $tab) {
-                    $query->orWhere($field . $tab['postfix'], 'LIKE', '%' . $value . '%');
+                    $query->orWhere($field.$tab['postfix'], 'LIKE', '%'.$value.'%');
                 }
             });
         } else {
-            $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
+            $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
         }
     }
 }

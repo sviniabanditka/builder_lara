@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\View;
 
 /**
- * Class DefinitionField
- * @package Vis\Builder\Fields
+ * Class DefinitionField.
  */
 class DefinitionField extends AbstractField
 {
@@ -17,7 +16,7 @@ class DefinitionField extends AbstractField
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
+        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
     /**
@@ -70,7 +69,7 @@ class DefinitionField extends AbstractField
         }
 
         $this->attributes['name'] = $this->getFieldName();
-        $this->attributes['table'] = config('builder.tb-definitions.' . $this->getAttribute('definition') . '.db.table');
+        $this->attributes['table'] = config('builder.tb-definitions.'.$this->getAttribute('definition').'.db.table');
 
         $input = view('admin::tb.input_definition');
         $input->nameDefinition = $this->getAttribute('definition');

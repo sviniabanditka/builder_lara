@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class TimestampField
- * @package Vis\Builder\Fields
+ * Class TimestampField.
  */
 class TimestampField extends AbstractField
 {
@@ -25,7 +24,7 @@ class TimestampField extends AbstractField
             $dateFrom = isset($value['from']) ? $this->getTimestamp($value['from']) : '28800';
             $dateTo = isset($value['to']) ? $this->getTimestamp($value['to']) : '2146939932';
             $db->whereBetween(
-                $table . '.' . $this->getFieldName(),
+                $table.'.'.$this->getFieldName(),
                 [
                     date('Y-m-d H:i:s', $dateFrom),
                     date('Y-m-d H:i:s', $dateTo),
@@ -33,7 +32,7 @@ class TimestampField extends AbstractField
             );
         } else {
             $db->where(
-                $table . '.' . $this->getFieldName(),
+                $table.'.'.$this->getFieldName(),
                 date('Y-m-d H:i:s', $this->getTimestamp($value))
             );
         }
@@ -51,7 +50,7 @@ class TimestampField extends AbstractField
             }
         }
 
-        return date('Y-m-d H:i:s', $this->getTimestamp($value)) . '.000000';
+        return date('Y-m-d H:i:s', $this->getTimestamp($value)).'.000000';
     }
 
     /**
@@ -124,7 +123,7 @@ class TimestampField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $input = view('admin::tb.filter_datetime');
@@ -141,7 +140,7 @@ class TimestampField extends AbstractField
     private function getFilterRangeInput()
     {
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, []);
 
         $input = view('admin::tb.filter_timestamp_range');

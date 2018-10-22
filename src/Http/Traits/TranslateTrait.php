@@ -19,7 +19,7 @@ trait TranslateTrait
         $lang = App::getLocale();
         $defaultLocale = config('translations.config.def_locale');
         if ($lang != $defaultLocale && $defaultLocale) {
-            $ident = $ident . '_' . $lang;
+            $ident = $ident.'_'.$lang;
         }
 
         return $ident;

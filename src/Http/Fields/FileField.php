@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\URL;
 
 /**
- * Class FileField
- * @package Vis\Builder\Fields
+ * Class FileField.
  */
 class FileField extends AbstractField
 {
@@ -24,7 +23,7 @@ class FileField extends AbstractField
      */
     public function onSearchFilter(&$db, $value)
     {
-        $db->where($this->getFieldName(), 'LIKE', '%' . $value . '%');
+        $db->where($this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
     /**
@@ -48,7 +47,7 @@ class FileField extends AbstractField
             $filesArray = json_decode($valueJson);
         }
 
-        $input = view('admin::tb.input_' . $type);
+        $input = view('admin::tb.input_'.$type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -96,6 +95,6 @@ class FileField extends AbstractField
 
         $src = URL::to($this->getValue($row));
 
-        return '<a href="' . $src . '" target="_blank">' . $src . '</a>';
+        return '<a href="'.$src.'" target="_blank">'.$src.'</a>';
     }
 }

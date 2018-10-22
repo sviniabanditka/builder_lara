@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Class TBController
- * @package Vis\Builder
+ * Class TBController.
  */
 class TBController extends Controller
 {
@@ -31,7 +30,7 @@ class TBController extends Controller
     // end showDashboard
 
     /**
-     * change skin
+     * change skin.
      */
     public function doChangeSkin()
     {
@@ -41,7 +40,7 @@ class TBController extends Controller
     }
 
     /**
-     * change lang
+     * change lang.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -100,15 +99,15 @@ class TBController extends Controller
     {
         $data = Input::all();
         $infoImg = pathinfo($data['originalImg']);
-        $fileCrop = '/' . $infoImg['dirname'] . '/' . md5($infoImg['filename']) . time() . '_crop.' . $infoImg['extension'];
-        $ifp = fopen(public_path() . $fileCrop, 'wb');
+        $fileCrop = '/'.$infoImg['dirname'].'/'.md5($infoImg['filename']).time().'_crop.'.$infoImg['extension'];
+        $ifp = fopen(public_path().$fileCrop, 'wb');
         $dataFile = explode(',', $data['data']);
 
         fwrite($ifp, base64_decode($dataFile[1]));
         fclose($ifp);
 
         $smallImg = isset($data['width']) || isset($data['height']) ?
-            glide($fileCrop, ['w' => $data['width'], 'h' => $data['height']]) . '?time=' . time() :
+            glide($fileCrop, ['w' => $data['width'], 'h' => $data['height']]).'?time='.time() :
             $fileCrop;
 
         return Response::json(

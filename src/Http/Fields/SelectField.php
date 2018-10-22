@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class SelectField
- * @package Vis\Builder\Fields
+ * Class SelectField.
  */
 class SelectField extends AbstractField
 {
@@ -28,7 +27,7 @@ class SelectField extends AbstractField
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table . '.' . $this->getFieldName(), '=', $value);
+        $db->where($table.'.'.$this->getFieldName(), '=', $value);
     }
 
     // end onSearchFilter
@@ -44,7 +43,7 @@ class SelectField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $table = view('admin::tb.filter_select');

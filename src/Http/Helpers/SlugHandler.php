@@ -6,8 +6,7 @@ use Vis\Builder\Facades\Jarboe;
 use Vis\Builder\Handlers\CustomHandler;
 
 /**
- * Class SlugHandler
- * @package Vis\Builder\Helpers
+ * Class SlugHandler.
  */
 class SlugHandler extends CustomHandler
 {
@@ -24,7 +23,7 @@ class SlugHandler extends CustomHandler
 
         while ($slugCheck === false) {
             $slugCheckQuery = $model::where('slug', 'like', $slug)->where('id', '!=', $response['id'])->first();
-            $slugCheckQuery ? $slug = $slug . '-1' : $slugCheck = true;
+            $slugCheckQuery ? $slug = $slug.'-1' : $slugCheck = true;
         }
 
         return $slug;

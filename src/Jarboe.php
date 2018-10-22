@@ -6,8 +6,7 @@ use Vis\Builder\Helpers\URLify;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Class Jarboe
- * @package Vis\Builder
+ * Class Jarboe.
  */
 class Jarboe
 {
@@ -22,9 +21,6 @@ class Jarboe
         $this->controller = new JarboeController($options);
     }
 
-    /**
-     *
-     */
     protected function onFinish()
     {
         Config::set('view.pagination', $this->default['pagination']);

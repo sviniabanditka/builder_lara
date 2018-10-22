@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class DatetimeField
- * @package Vis\Builder\Fields
+ * Class DatetimeField.
  */
 class DatetimeField extends AbstractField
 {
@@ -93,10 +92,10 @@ class DatetimeField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = view('admin::tb.filter_' . $this->getAttribute('filter'));
+        $input = view('admin::tb.filter_'.$this->getAttribute('filter'));
         $input->name = $this->getFieldName();
         $input->value = $filter;
         $input->months = $this->getAttribute('months');

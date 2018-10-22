@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class TimeField
- * @package Vis\Builder\Fields
+ * Class TimeField.
  */
 class TimeField extends AbstractField
 {
@@ -26,12 +25,12 @@ class TimeField extends AbstractField
             $valueFrom = isset($value['from']) ? $value['from'] : '00:00';
             $valueTo = isset($value['to']) ? $value['from'] : '23:59';
             $db->whereBetween(
-                $table . '.' . $this->getFieldName(),
+                $table.'.'.$this->getFieldName(),
                 [$valueFrom, $valueTo]
             );
         } else {
             $db->where(
-                $table . '.' . $this->getFieldName(),
+                $table.'.'.$this->getFieldName(),
                 $value
             );
         }
@@ -100,7 +99,7 @@ class TimeField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $input = view('admin::tb.filter_time');
@@ -117,7 +116,7 @@ class TimeField extends AbstractField
     private function getFilterRangeInput()
     {
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, []);
 
         $input = view('admin::tb.filter_time_range');
