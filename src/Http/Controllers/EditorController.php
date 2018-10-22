@@ -7,11 +7,15 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class EditorController
+ * @package Vis\Builder
+ */
 class EditorController extends Controller
 {
-    /*
-   * Loading photos from froala Editor
-   */
+    /**
+    * Loading photos from froala Editor
+    */
     public function uploadFoto()
     {
         $photo = Input::file('file');
@@ -33,18 +37,16 @@ class EditorController extends Controller
 
         $ext = $photo->getClientOriginalExtension();  // Get real extension according to mime type
         $fullname = $photo->getClientOriginalName(); // Client file name, including the extension of the client
-        $hashname = md5(date('H.i.s').'_'.$fullname).'.'.$ext; // Hash processed file name, including the real extension
+        $hashname = md5(date('H.i.s') . '_' . $fullname) . '.' . $ext;
 
-        $full_path_img = '/'.$destinationPath.'/'.$hashname;
+        $fullPathImg = '/' . $destinationPath . '/' . $hashname;
 
         Input::file('file')->move($destinationPath, $hashname);
 
-        return Response::json(['link' => $full_path_img]);
+        return Response::json(['link' => $fullPathImg]);
     }
 
-    //end uploadFoto
-
-    /*
+    /**
      * Loading files from froala Editor
      */
     public function uploadFile()
@@ -65,14 +67,14 @@ class EditorController extends Controller
 
         $ext = $file->getClientOriginalExtension();  // Get real extension according to mime type
         $fullname = $file->getClientOriginalName();
-        $fullname = str_replace('.'.$ext, '', $fullname);
+        $fullname = str_replace('.' . $ext, '', $fullname);
 
-        $hashname = str_slug($fullname).'.'.$ext;
-        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+        $hashname = str_slug($fullname) . '.' . $ext;
+        $fullPathImg = '/' . $destinationPath . '/' . $hashname;
 
-        if (file_exists(public_path().$fullPathImg)) {
-            $hashname = str_slug($fullname).'_'.time().'.'.$ext;
-            $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+        if (file_exists(public_path() . $fullPathImg)) {
+            $hashname = str_slug($fullname) . '_' . time() . '.' . $ext;
+            $fullPathImg = '/' . $destinationPath . '/' . $hashname;
         }
 
         Input::file('file')->move($destinationPath, $hashname);
@@ -82,22 +84,23 @@ class EditorController extends Controller
 
     //end uploadFile
 
-    /*
+    /**
      * load img manager
      */
     public function loadImages()
     {
-        $imgs = scandir(public_path().'/storage/editor/fotos');
+        $imgs = scandir(public_path() . '/storage/editor/fotos');
 
         unset($imgs[0]);
         unset($imgs[1]);
 
         $imgRes = [];
         $k = 0;
+        $pathToImg = '/storage/editor/fotos/';
         foreach ($imgs as $img) {
-            if (is_file(public_path().'/storage/editor/fotos/'.$img)) {
-                $imgRes[$k]['url'] = '/storage/editor/fotos/'.$img;
-                $imgRes[$k]['thumb'] = '/storage/editor/fotos/'.$img;
+            if (is_file(public_path() . $pathToImg . $img)) {
+                $imgRes[$k]['url'] = $pathToImg . $img;
+                $imgRes[$k]['thumb'] = $pathToImg . $img;
                 $k++;
             }
         }
@@ -105,20 +108,23 @@ class EditorController extends Controller
         return Response::json($imgRes);
     }
 
-    /*
-     * delete img in folder
+    /**
+     * delete img
      */
     public function deleteImages()
     {
-        unlink(public_path().Input::get('src'));
+        unlink(public_path() . request('src'));
     }
 
+    /**
+     * Quick edit in list
+     */
     public function doQuickEdit()
     {
-        $model = Input::get('model');
-        $id = Input::get('id');
-        $field = Input::get('field');
-        $text = Input::get('text');
+        $model = request('model');
+        $id = request('id');
+        $field = request('field');
+        $text = request('text');
 
         $page = $model::find($id);
         $page->$field = $text;

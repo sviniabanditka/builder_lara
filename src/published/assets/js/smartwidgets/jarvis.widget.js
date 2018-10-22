@@ -31,7 +31,8 @@
 
     var pluginName = 'jarvisWidgets';
 
-    function Plugin(element, options) {
+    function Plugin(element, options)
+    {
         /**
          * Variables.
          **/
@@ -70,7 +71,8 @@
                     result = localStorage.getItem(uid) == uid;
                     localStorage.removeItem(uid);
                     return result;
-                } catch (e) {}
+                } catch (e) {
+}
             }() && localStorage;
 
             //*****************************************************************//
@@ -81,7 +83,6 @@
 
 
             if (storage && self.o.localStorage) {
-
                 if (self.o.ajaxnav === true) {
                     widget_url = location.hash.replace(/^#/, '')
 
@@ -93,18 +94,14 @@
 
                     //console.log("from jarvis widget " + widget_url);
                     //console.log(self.o.ajaxnav + " if")
-
                 } else {
-
                     keySettings = 'jarvisWidgets_settings_' + location.pathname + '_' + self.objId;
                     getKeySettings = localStorage.getItem(keySettings);
 
                     keyPosition = 'jarvisWidgets_position_' + location.pathname + '_' + self.objId;
                     getKeyPosition = localStorage.getItem(keyPosition);
                     //console.log(self.o.ajaxnav + " else")
-
                 } // end else
-
             } // end if
 
 
@@ -231,7 +228,6 @@
                         var aPalceholder = awidget.find(self.o.timestampPlaceholder);
 
                         if (aPalceholder.length) {
-
                             aPalceholder.html(self._getPastTimestamp(new Date()));
                         }
 
@@ -400,7 +396,6 @@
              * Run if data is present.
              **/
             if (storage && self.o.localStorage && getKeyPosition) {
-
                 var jsonPosition = JSON.parse(getKeyPosition);
 
                 /**
@@ -413,7 +408,6 @@
                         changeOrder.append($('#' + jsonPosition.grid[key].section[key2].id));
                     }
                 }
-
             }
 
             //*****************************************************************//
@@ -424,7 +418,6 @@
              * Run if data is present.
              **/
             if (storage && self.o.localStorage && getKeySettings) {
-
                 var jsonSettings = JSON.parse(getKeySettings);
 
                 /**
@@ -500,7 +493,6 @@
                      * Hide the widget if the dataset 'widget-hidden' is set to true.
                      **/
                     if (tWidget.data('widget-hidden') === true) {
-
                         tWidget.hide();
                     }
 
@@ -579,7 +571,6 @@
                         var widgetcolorBtn =
                             '<a data-toggle="dropdown" class="dropdown-toggle color-box selector" href="javascript:void(0);"></a><ul class="dropdown-menu arrow-box-up-right color-select pull-right"><li><span class="bg-color-green" data-widget-setstyle="jarviswidget-color-green" rel="tooltip" data-placement="left" data-original-title="Green Grass"></span></li><li><span class="bg-color-greenDark" data-widget-setstyle="jarviswidget-color-greenDark" rel="tooltip" data-placement="top" data-original-title="Dark Green"></span></li><li><span class="bg-color-greenLight" data-widget-setstyle="jarviswidget-color-greenLight" rel="tooltip" data-placement="top" data-original-title="Light Green"></span></li><li><span class="bg-color-purple" data-widget-setstyle="jarviswidget-color-purple" rel="tooltip" data-placement="top" data-original-title="Purple"></span></li><li><span class="bg-color-magenta" data-widget-setstyle="jarviswidget-color-magenta" rel="tooltip" data-placement="top" data-original-title="Magenta"></span></li><li><span class="bg-color-pink" data-widget-setstyle="jarviswidget-color-pink" rel="tooltip" data-placement="right" data-original-title="Pink"></span></li><li><span class="bg-color-pinkDark" data-widget-setstyle="jarviswidget-color-pinkDark" rel="tooltip" data-placement="left" data-original-title="Fade Pink"></span></li><li><span class="bg-color-blueLight" data-widget-setstyle="jarviswidget-color-blueLight" rel="tooltip" data-placement="top" data-original-title="Light Blue"></span></li><li><span class="bg-color-teal" data-widget-setstyle="jarviswidget-color-teal" rel="tooltip" data-placement="top" data-original-title="Teal"></span></li><li><span class="bg-color-blue" data-widget-setstyle="jarviswidget-color-blue" rel="tooltip" data-placement="top" data-original-title="Ocean Blue"></span></li><li><span class="bg-color-blueDark" data-widget-setstyle="jarviswidget-color-blueDark" rel="tooltip" data-placement="top" data-original-title="Night Sky"></span></li><li><span class="bg-color-darken" data-widget-setstyle="jarviswidget-color-darken" rel="tooltip" data-placement="right" data-original-title="Night"></span></li><li><span class="bg-color-yellow" data-widget-setstyle="jarviswidget-color-yellow" rel="tooltip" data-placement="left" data-original-title="Day Light"></span></li><li><span class="bg-color-orange" data-widget-setstyle="jarviswidget-color-orange" rel="tooltip" data-placement="bottom" data-original-title="Orange"></span></li><li><span class="bg-color-orangeDark" data-widget-setstyle="jarviswidget-color-orangeDark" rel="tooltip" data-placement="bottom" data-original-title="Dark Orange"></span></li><li><span class="bg-color-red" data-widget-setstyle="jarviswidget-color-red" rel="tooltip" data-placement="bottom" data-original-title="Red Rose"></span></li><li><span class="bg-color-redLight" data-widget-setstyle="jarviswidget-color-redLight" rel="tooltip" data-placement="bottom" data-original-title="Light Red"></span></li><li><span class="bg-color-white" data-widget-setstyle="jarviswidget-color-white" rel="tooltip" data-placement="right" data-original-title="Purity"></span></li><li><a href="javascript:void(0);" class="jarviswidget-remove-colors" data-widget-setstyle="" rel="tooltip" data-placement="bottom" data-original-title="Reset widget color to default">Remove</a></li></ul>';
                         thisHeader.prepend('<div class="widget-toolbar">' + widgetcolorBtn + '</div>');
-
                     } else {
                         widgetcolorBtn = '';
                     }
@@ -590,7 +581,8 @@
                     if (self.o.toggleButton === true && tWidget.data('widget-togglebutton') ===
                         undefined) {
                         if (tWidget.data('widget-collapsed') === true || tWidget.hasClass(
-                            'jarviswidget-collapsed')) {
+                            'jarviswidget-collapsed'
+                        )) {
                             var toggleSettings = self.toggleClass[1];
                         } else {
                             toggleSettings = self.toggleClass[0];
@@ -738,7 +730,6 @@
                              * Load the content just once.
                              **/
                             self._loadAjaxFile(thisItem, pathToFile, thisItemHeader);
-
                         }
                     }
                 });
@@ -946,7 +937,8 @@
             /**
              * Set fullscreen height function.
              **/
-            function heightFullscreen() {
+            function heightFullscreen()
+            {
                 if ($('#jarviswidget-fullscreen-mode')
                     .length) {
 
@@ -1019,7 +1011,6 @@
                         thisWidgetContent.hide()
                             .removeClass('jarviswidget-visible');
                     }
-
                 } else {
 
                     /**

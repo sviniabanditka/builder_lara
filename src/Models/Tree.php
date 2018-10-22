@@ -6,6 +6,10 @@ use Request;
 use Illuminate\Support\Facades\Cache;
 use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 
+/**
+ * Class Tree
+ * @package Vis\Builder
+ */
 class Tree extends \Baum\Node
 {
     use \Vis\Builder\Helpers\Traits\Rememberable,
@@ -15,7 +19,13 @@ class Tree extends \Baum\Node
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
         \Venturecraft\Revisionable\RevisionableTrait;
 
+    /**
+     * @var array
+     */
     protected $fillable = [];
+    /**
+     * @var array
+     */
     protected $revisionFormattedFieldNames = [
         'title'  => 'Название',
         'description'  => 'Описание',
@@ -24,39 +34,84 @@ class Tree extends \Baum\Node
         'short_description' => 'Короткий текст',
         'created_at' => 'Дата создания',
     ];
+    /**
+     * @var array
+     */
     protected $revisionFormattedFields = [
         '1'  => 'string:<strong>%s</strong>',
         'public' => 'boolean:No|Yes',
         'deleted_at' => 'isEmpty:Active|Deleted',
     ];
+    /**
+     * @var bool
+     */
     protected $revisionEnabled = true;
+    /**
+     * @var bool
+     */
     protected $revisionCleanup = true;
+    /**
+     * @var int
+     */
     protected $historyLimit = 500;
 
+    /**
+     * @var string
+     */
     protected $fileDefinition = 'tree';
 
+    /**
+     * @return array
+     */
     public function getFillable()
     {
         return $this->fillable;
     }
 
+    /**
+     * @param array $params
+     */
     public function setFillable(array $params)
     {
         $this->fillable = $params;
     }
 
+    /**
+     *
+     */
     public static function boot()
     {
         parent::boot();
     }
 
+    /**
+     * @var string
+     */
     protected $table = 'tb_tree';
+    /**
+     * @var string
+     */
     protected $parentColumn = 'parent_id';
+    /**
+     * @var
+     */
     protected $_nodeUrl;
+    /**
+     * @var
+     */
     private $treeMy;
+    /**
+     * @var
+     */
     private $treeOptions;
+    /**
+     * @var
+     */
     private $recursiveOnlyLastLevel;
 
+    /**
+     * @param $value
+     */
     public function setSlugAttribute($value)
     {
         $slug = $this->id == 1 ? $value : JarboeBuilder::urlify($value);
@@ -66,6 +121,9 @@ class Tree extends \Baum\Node
 
     // end setSlugAttribute
 
+    /**
+     *
+     */
     public function checkUnicUrl()
     {
         $slug = $this->slug;
@@ -75,7 +133,7 @@ class Tree extends \Baum\Node
                 ->where('id', '!=', $this->id)->count();
 
             if ($slugCheck) {
-                $slug = $this->slug.'_'.$this->id;
+                $slug = $this->slug . '_' . $this->id;
             }
 
             $slugCheckId = $this->where('slug', 'like', $slug)
@@ -83,7 +141,7 @@ class Tree extends \Baum\Node
                 ->where('id', '!=', $this->id)->count();
 
             if ($slugCheckId) {
-                $slug = $slug.'_'.time();
+                $slug = $slug . '_' . time();
             }
 
             $this->slug = $slug;
@@ -91,6 +149,9 @@ class Tree extends \Baum\Node
         }
     }
 
+    /**
+     * @return bool
+     */
     public function hasTableDefinition()
     {
         $templates = config('builder.tree.templates');
@@ -104,6 +165,9 @@ class Tree extends \Baum\Node
 
     // end hasTableDefinition
 
+    /**
+     * @param $url
+     */
     public function setUrl($url)
     {
         $this->_nodeUrl = $url;
@@ -111,6 +175,9 @@ class Tree extends \Baum\Node
 
     // end setUrl
 
+    /**
+     * @return mixed|string
+     */
     public function getUrl()
     {
         if (! $this->_nodeUrl) {
@@ -121,37 +188,43 @@ class Tree extends \Baum\Node
             return $this->_nodeUrl;
         }
 
-        if (config('builder.'.$this->fileDefinition.'.basic_domain')) {
+        $basicDomain = config('builder.' . $this->fileDefinition . '.basic_domain');
+
+        if ($basicDomain) {
             $protocol = Request::secure() ? 'https://' : 'http://';
 
-            return $protocol.config('builder.'.$this->fileDefinition.'.basic_domain').'/'.$this->_nodeUrl;
+            return $protocol . $basicDomain . '/' . $this->_nodeUrl;
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/' . $this->_nodeUrl;
     }
 
     // end getUrl
 
     //return url without location
+    /**
+     * @return string
+     */
     public function getUrlNoLocation()
     {
         if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/' . $this->_nodeUrl;
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getGeneratedUrl()
     {
         $tags = $this->getCacheTags();
 
         if ($tags && $this->fileDefinition) {
-            $url = Cache::tags($tags)->rememberForever($this->fileDefinition.'_'.$this->id, function () {
+            return Cache::tags($tags)->rememberForever($this->fileDefinition . '_' . $this->id, function () {
                 return $this->getGeneratedUrlInCache();
             });
-
-            return $url;
         }
 
         return $this->getGeneratedUrlInCache();
@@ -159,6 +232,9 @@ class Tree extends \Baum\Node
 
     // end getGeneratedUrl
 
+    /**
+     * @return string
+     */
     private function getGeneratedUrlInCache()
     {
         $all = $this->getAncestorsAndSelf();
@@ -172,35 +248,39 @@ class Tree extends \Baum\Node
             $slugs[] = $node->slug;
         }
 
-        if (config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain')
-            && config('builder.'.$this->fileDefinition.'.basic_domain')
+        if (config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain')
+            && config('builder.' . $this->fileDefinition . '.basic_domain')
         ) {
-            $subDomain = config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain');
-            $basicDomain = config('builder.'.$this->fileDefinition.'.basic_domain');
+            $subDomain = config('builder.' . $this->fileDefinition . '.templates.' . $this->template . '.subdomain');
+            $basicDomain = config('builder.' . $this->fileDefinition . '.basic_domain');
 
             $protocol = Request::secure() ? 'https://' : 'http://';
 
-            return $protocol.$subDomain.'.'.$basicDomain.implode('/', $slugs);
+            return $protocol . $subDomain . '.' . $basicDomain . implode('/', $slugs);
         }
 
         return implode('/', $slugs);
     }
 
+    /**
+     * @return int|mixed
+     */
     public function isHasChilder()
     {
         $tags = $this->getCacheTags();
 
         if ($tags) {
-            $countPages = Cache::tags($tags)->rememberForever('count_'.$this->fileDefinition.$this->id, function () {
+            return Cache::tags($tags)->rememberForever('count_' . $this->fileDefinition . $this->id, function () {
                 return $this->children()->count();
             });
-
-            return $countPages;
         }
 
         return $this->children()->count();
     }
 
+    /**
+     *
+     */
     public function clearCache()
     {
         $tags = $this->getCacheTags();
@@ -210,10 +290,13 @@ class Tree extends \Baum\Node
         }
     }
 
+    /**
+     * @return bool|mixed
+     */
     private function getCacheTags()
     {
         if ($this->fileDefinition) {
-            $tags = config('builder.'.$this->fileDefinition.'.cache');
+            $tags = config('builder.' . $this->fileDefinition . '.cache');
             if (isset($tags['tags']) && is_array($tags['tags'])) {
                 return $tags['tags'];
             }
@@ -222,6 +305,11 @@ class Tree extends \Baum\Node
         return false;
     }
 
+    /**
+     * @param $id
+     * @param bool $recursiveOnlyLastLevel
+     * @return mixed
+     */
     public function getCategory($id, $recursiveOnlyLastLevel = false)
     {
         $this->recursiveOnlyLastLevel = $recursiveOnlyLastLevel;
@@ -239,6 +327,10 @@ class Tree extends \Baum\Node
         return $this->treeOptions;
     }
 
+    /**
+     * @param $parent_id
+     * @param $level
+     */
     private function printCategories($parent_id, $level)
     {
         if (isset($this->treeMy[$parent_id])) {
@@ -251,7 +343,7 @@ class Tree extends \Baum\Node
                     $paddingLeft .= '--';
                 }
 
-                $this->treeOptions[$value['id']] = "<option $disable value ='".$value['id']."'>".$paddingLeft.$value['title'].'</option>';
+                $this->treeOptions[$value['id']] = "<option $disable value ='" . $value['id'] . "'>" . $paddingLeft . $value['title'] . '</option>';
                 $level = $level + 1;
                 $this->printCategories($value['id'], $level);
                 $level = $level - 1;

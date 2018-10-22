@@ -2,23 +2,34 @@
 
 namespace Vis\Builder\Fields;
 
+/**
+ * Class TextField
+ * for text field
+ */
 class TextField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $tabs = $this->getAttribute('tabs');
         $table = $this->getAttribute('extends_table') ?: $this->definition['db']['table'];
 
         if ($tabs) {
-            $field = $table.'.'.$this->getFieldName();
+            $field = $table . '.' . $this->getFieldName();
             $db->where(function ($query) use ($field, $value, $tabs) {
                 foreach ($tabs as $tab) {
-                    $query->orWhere($field.$tab['postfix'], 'LIKE', '%'.$value.'%');
+                    $query->orWhere($field . $tab['postfix'], 'LIKE', '%' . $value . '%');
                 }
             });
 
@@ -26,14 +37,19 @@ class TextField extends AbstractField
         }
 
         if ($this->getAttribute('filter') == 'integer') {
-            $db->where($table.'.'.$this->getFieldName(), $value);
+            $db->where($table . '.' . $this->getFieldName(), $value);
 
             return;
         }
 
-        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
+        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -44,7 +60,7 @@ class TextField extends AbstractField
         }
 
         $type = $this->getAttribute('type');
-        $input = view('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_' . $type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -66,6 +82,10 @@ class TextField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -76,9 +96,7 @@ class TextField extends AbstractField
         }
 
         if ($this->getAttribute('fast_edit')) {
-            $html = '<p>'.parent::getListValue($row).'</p>';
-
-            return $html;
+            return  '<p>' . parent::getListValue($row) . '</p>';
         }
 
         return $this->getValue($row);

@@ -3,24 +3,35 @@
 namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\View;
 
+/**
+ * Class FileField
+ * @package Vis\Builder\Fields
+ */
 class FileField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
-    // end isEditable
-
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
-        $db->where($this->getFieldName(), 'LIKE', '%'.$value.'%');
+        $db->where($this->getFieldName(), 'LIKE', '%' . $value . '%');
     }
 
-    // end onSearchFilter
-
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -37,7 +48,7 @@ class FileField extends AbstractField
             $filesArray = json_decode($valueJson);
         }
 
-        $input = View::make('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_' . $type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -55,8 +66,10 @@ class FileField extends AbstractField
         return $input->render();
     }
 
-    // end getEditInput
-
+    /**
+     * @param $string
+     * @return bool
+     */
     private function isJson($string)
     {
         json_decode($string);
@@ -64,6 +77,10 @@ class FileField extends AbstractField
         return json_last_error() == JSON_ERROR_NONE;
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -78,10 +95,7 @@ class FileField extends AbstractField
         }
 
         $src = URL::to($this->getValue($row));
-        $html = '<a href="'.$src.'" target="_blank">'.$src.'</a>';
 
-        return $html;
+        return '<a href="' . $src . '" target="_blank">' . $src . '</a>';
     }
-
-    // end getListValue
 }

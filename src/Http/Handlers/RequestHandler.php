@@ -9,12 +9,29 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class RequestHandler
+ * @package Vis\Builder\Handlers
+ */
 class RequestHandler
 {
+    /**
+     * @var JarboeController
+     */
     protected $controller;
+    /**
+     * @var mixed
+     */
     protected $definitionName;
+    /**
+     * @var mixed
+     */
     protected $definition;
 
+    /**
+     * RequestHandler constructor.
+     * @param JarboeController $controller
+     */
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
@@ -22,6 +39,9 @@ class RequestHandler
         $this->definition = $controller->getDefinition();
     }
 
+    /**
+     * @return array|\Illuminate\Http\JsonResponse
+     */
     public function handle()
     {
         switch (request('query_type')) {
@@ -89,7 +109,7 @@ class RequestHandler
                 return $this->handleFileUpload();
 
             case 'many_to_many_ajax_search':
-                return $this->handleManyToManyAjaxSearch();
+                return $this->handleForeignAjaxSearch();
 
             case 'select_with_uploaded':
                 return $this->handleSelectWithUploaded();
@@ -117,6 +137,10 @@ class RequestHandler
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
     protected function handleSelectWithUploaded()
     {
         $result = $this->controller->query->getUploadedFiles();
@@ -124,6 +148,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleSelectWithUploadedImages()
     {
         $field = $this->controller->getField(request('baseName'));
@@ -133,15 +160,9 @@ class RequestHandler
         return Response::json($result);
     }
 
-    protected function handleManyToManyAjaxSearch()
-    {
-        $field = $this->controller->getField(request('ident'));
-
-        $data = $field->getAjaxSearchResult(request('q'), request('limit'), request('page'));
-
-        return Response::json($data);
-    }
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleForeignAjaxSearch()
     {
         $field = $this->controller->getField(request('ident'));
@@ -151,6 +172,9 @@ class RequestHandler
         return Response::json($data);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleChangeOrderAction()
     {
         $this->controller->query->clearCache();
@@ -181,6 +205,9 @@ class RequestHandler
         return Response::json(['status' => true]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     protected function handleMultiAction()
     {
         $type = request('type');
@@ -195,7 +222,7 @@ class RequestHandler
         $isAllowed = $action['check'];
 
         if (! $isAllowed()) {
-            throw new \RuntimeException('Multi action not allowed: '.$type);
+            throw new \RuntimeException('Multi action not allowed: ' . $type);
         }
 
         $handlerClosure = $action['handle'];
@@ -214,18 +241,21 @@ class RequestHandler
         return Response::json($data);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleMultiActionWithOption()
     {
-        $type = Input::get('type');
-        $option = Input::get('option');
+        $type = request('type');
+        $option = request('option');
         $action = $this->definition['multi_actions'][$type];
 
         $isAllowed = $action['check'];
         if (! $isAllowed()) {
-            throw new \RuntimeException('Multi action not allowed: '.$type);
+            throw new \RuntimeException('Multi action not allowed: ' . $type);
         }
 
-        $ids = Input::get('multi_ids', []);
+        $ids = request('multi_ids', []);
         $handlerClosure = $action['handle'];
         $data = $handlerClosure($ids, $option);
 
@@ -239,35 +269,47 @@ class RequestHandler
         return Response::json($data);
     }
 
+    /**
+     *
+     */
     protected function handleImportTemplateDownload()
     {
-        $type = Input::get('type');
-        $method = 'do'.ucfirst($type).'TemplateDownload';
+        $type = request('type');
+        $method = 'do' . ucfirst($type) . 'TemplateDownload';
 
         $this->controller->import->$method();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleImport()
     {
         $file = Input::file('file');
         $type = request('type');
-        $method = 'doImport'.ucfirst($type);
+        $method = 'doImport' . ucfirst($type);
 
         return Response::json([
             'status' => $this->controller->import->$method($file),
         ]);
     }
 
+    /**
+     *
+     */
     protected function handleExport()
     {
         $this->controller->export->doExport(request('type'));
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleSetPerPageAmountAction()
     {
         $perPage = request('per_page');
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         Session::put($sessionPath, $perPage);
 
         return Response::json([
@@ -275,14 +317,17 @@ class RequestHandler
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleChangeDirection()
     {
         $order = [
-            'direction' => Input::get('direction'),
-            'field' => Input::get('field'),
+            'direction' => request('direction'),
+            'field' => request('field'),
         ];
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         Session::put($sessionPath, $order);
 
         return Response::json([
@@ -290,6 +335,9 @@ class RequestHandler
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     protected function handleFileUpload()
     {
         $file = Input::file('file');
@@ -304,10 +352,10 @@ class RequestHandler
 
         $extension = $file->getClientOriginalExtension();
         $nameFile = explode('.', $file->getClientOriginalName());
-        $fileName = \Jarboe::urlify($nameFile[0]).'.'.$extension;
+        $fileName = \Jarboe::urlify($nameFile[0]) . '.' . $extension;
 
-        if (file_exists(public_path().'/'.$prefixPath.$fileName)) {
-            $fileName = \Jarboe::urlify($nameFile[0]).'_'.time().'.'.$extension;
+        if (file_exists(public_path() . '/' . $prefixPath . $fileName)) {
+            $fileName = \Jarboe::urlify($nameFile[0]) . '_' . time() . '.' . $extension;
         }
 
         $destinationPath = $prefixPath;
@@ -316,14 +364,17 @@ class RequestHandler
 
         $data = [
             'status' => true,
-            'link'   => URL::to($destinationPath.$fileName),
+            'link'   => URL::to($destinationPath . $fileName),
             'short_link' => $fileName,
-            'long_link' =>  '/'.$destinationPath.$fileName,
+            'long_link' =>  '/' . $destinationPath . $fileName,
         ];
 
         return Response::json($data);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     protected function handlePhotoUpload()
     {
         $this->controller->query->clearCache();
@@ -345,6 +396,9 @@ class RequestHandler
         return Response::json($data);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleDeleteAction()
     {
         $idRow = $this->getRowID();
@@ -355,6 +409,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleFastSaveAction()
     {
         $result = $this->controller->query->fastSave(Input::all());
@@ -363,6 +420,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleCloneAction()
     {
         $idRow = $this->getRowID();
@@ -374,6 +434,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleShowAddFormAction()
     {
         $result = $this->controller->view->showEditForm();
@@ -381,6 +444,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleSaveAddFormAction()
     {
         $result = $this->controller->query->insertRow(Input::all());
@@ -389,6 +455,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleSaveEditFormAction()
     {
         $idRow = $this->getRowID();
@@ -400,6 +469,9 @@ class RequestHandler
         return Response::json($result);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleShowEditFormAction()
     {
         $idRow = $this->getRowID();
@@ -413,6 +485,9 @@ class RequestHandler
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleShowRevisionForm()
     {
         $idRow = $this->getRowID();
@@ -426,6 +501,9 @@ class RequestHandler
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleShowViewsStatisic()
     {
         $idRow = $this->getRowID();
@@ -439,6 +517,9 @@ class RequestHandler
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function handleReturnRevisions()
     {
         $idRevision = request('id');
@@ -453,10 +534,16 @@ class RequestHandler
         return Response::json(['status' => true]);
     }
 
+    /**
+     * @param $id
+     */
     protected function checkEditPermission($id)
     {
     }
 
+    /**
+     * @return array|\Illuminate\Http\Request|string
+     */
     private function getRowID()
     {
         if (request('id')) {
@@ -466,6 +553,9 @@ class RequestHandler
         throw new \RuntimeException('Undefined row id for action.');
     }
 
+    /**
+     * @return array
+     */
     protected function handleShowList()
     {
         return [
@@ -473,16 +563,25 @@ class RequestHandler
         ];
     }
 
+    /**
+     * @return array
+     */
     protected function handleShowHtmlForeignDefinition()
     {
         return $this->controller->view->showHtmlForeignDefinition();
     }
 
+    /**
+     * @return array
+     */
     protected function handleDeleteForeignDefinition()
     {
         return $this->controller->view->deleteForeignDefinition();
     }
 
+    /**
+     * @return array
+     */
     protected function handleChangePositionDefinition()
     {
         return [
@@ -490,6 +589,9 @@ class RequestHandler
         ];
     }
 
+    /**
+     * @return array
+     */
     protected function handleClearOrderBy()
     {
         return [
@@ -497,6 +599,9 @@ class RequestHandler
         ];
     }
 
+    /**
+     *
+     */
     protected function handleSearchAction()
     {
         $filters = request('filter', []);
@@ -521,7 +626,7 @@ class RequestHandler
             $this->controller->getCustomHandler()->onPrepareSearchFilters($newFilters);
         }
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.filters';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
         Session::put($sessionPath, $newFilters);
     }
 }

@@ -38,10 +38,10 @@ class ForeignField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
         $filter = session($sessionPath, '');
         $type = $this->getAttribute('filter');
-        $input = view('admin::tb.filter_'.$type);
+        $input = view('admin::tb.filter_' . $type);
         $input->name = $this->getFieldName();
         $input->selected = $filter;
         $input->recursive = $this->getAttribute('recursive');
@@ -90,15 +90,15 @@ class ForeignField extends AbstractField
         if ($this->getAttribute('alias')) {
             $foreignTable = $this->getAttribute('alias');
         }
-        $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_value_field');
+        $foreignValueField = $foreignTable . '.' . $this->getAttribute('foreign_value_field');
 
         if ($this->getAttribute('filter') == 'text') {
-            $db->where($foreignValueField, 'LIKE', '%'.$value.'%');
+            $db->where($foreignValueField, 'LIKE', '%' . $value . '%');
 
             return;
         }
 
-        $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_key_field');
+        $foreignValueField = $foreignTable . '.' . $this->getAttribute('foreign_key_field');
 
         if ($value == 'null') {
             $db->whereNull($foreignValueField);
@@ -116,28 +116,30 @@ class ForeignField extends AbstractField
             }
         }
 
-        $internalSelect = $this->definition['db']['table'].'.'.$this->getFieldName();
+        $internalSelect = $this->definition['db']['table'] . '.' . $this->getFieldName();
         $db->addSelect($internalSelect);
         $foreignTable = $this->getAttribute('foreign_table');
         $foreignTableName = $foreignTable;
 
         if ($this->getAttribute('alias')) {
-            $foreignTableName .= ' as '.$this->getAttribute('alias');
+            $foreignTableName .= ' as ' . $this->getAttribute('alias');
             $foreignTable = $this->getAttribute('alias');
         }
 
-        $foreignKeyField = $foreignTable.'.'.$this->getAttribute('foreign_key_field');
+        $foreignKeyField = $foreignTable . '.' . $this->getAttribute('foreign_key_field');
         $join = $this->getAttribute('is_null') ? 'leftJoin' : 'join';
         $db->$join(
             $foreignTableName,
-            $foreignKeyField, '=', $internalSelect
+            $foreignKeyField,
+            '=',
+            $internalSelect
         );
 
         $foreignValueFields = $this->getForeignValueFields();
 
         foreach ($foreignValueFields as $field) {
-            $fieldAlias = ' as '.$foreignTable.'_'.$field;
-            $db->addSelect($foreignTable.'.'.$field.$fieldAlias);
+            $fieldAlias = ' as ' . $foreignTable . '_' . $field;
+            $db->addSelect($foreignTable . '.' . $field . $fieldAlias);
         }
     }
 
@@ -181,7 +183,7 @@ class ForeignField extends AbstractField
             : $this->getAttribute('foreign_table');
 
         $resultArray = array_map(function ($v) use ($foreignTableName) {
-            return $foreignTableName.'_'.$v;
+            return $foreignTableName . '_' . $v;
         }, $foreignValueFields);
 
         $needsField = array_only($row, $resultArray);
@@ -320,7 +322,7 @@ class ForeignField extends AbstractField
                 for ($i = 0; $i < $level; $i++) {
                     $paddingLeft .= '--';
                 }
-                $this->treeOptions[] = "<option $selectOption $disable value ='".$value['id']."'>".$paddingLeft.$value['title'].'</option>';
+                $this->treeOptions[] = "<option $selectOption $disable value ='" . $value['id'] . "'>" . $paddingLeft . $value['title'] . '</option>';
                 $level = $level + 1;
                 $this->printCategories($value['id'], $level);
                 $level = $level - 1;

@@ -17,9 +17,9 @@ trait TranslateTrait
     private function tField($ident)
     {
         $lang = App::getLocale();
-        $defaultLocale = Config::get('translations.config.def_locale');
+        $defaultLocale = config('translations.config.def_locale');
         if ($lang != $defaultLocale && $defaultLocale) {
-            $ident = $ident.'_'.$lang;
+            $ident = $ident . '_' . $lang;
         }
 
         return $ident;

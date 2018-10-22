@@ -54,7 +54,7 @@ class Setting extends Eloquent
     public static function getWithLang($slug, $default = '')
     {
         $prefixLang = self::getPrefixLang();
-        $key = $slug.$prefixLang;
+        $key = $slug . $prefixLang;
 
         if (Cache::tags('settings')->has($key)) {
             return Cache::tags('settings')->get($key);
@@ -62,7 +62,7 @@ class Setting extends Eloquent
             $setting = self::where('slug', 'like', $slug)->first();
 
             if (isset($setting->id)) {
-                $field = 'value'.$prefixLang;
+                $field = 'value' . $prefixLang;
                 $value = $setting->$field ?: $default;
 
                 Cache::tags('settings')->forever($key, $value);
@@ -78,7 +78,7 @@ class Setting extends Eloquent
         $defaultLocale = config('translations.config.def_locale');
 
         if ($lang != $defaultLocale) {
-            return '_'.$lang;
+            return '_' . $lang;
         }
     }
 
@@ -94,7 +94,7 @@ class Setting extends Eloquent
     public static function doSaveSetting($data, $file)
     {
         if ($data['id'] == 0) {
-            $settings = new self;
+            $settings = new self();
         } else {
             $settings = self::find($data['id']);
         }
@@ -105,7 +105,7 @@ class Setting extends Eloquent
         $settings->group_type = $data['group'];
 
         if ($data['type'] < 2 || $data['type'] == 6) {
-            $settings->value = $data['value'.$data['type']];
+            $settings->value = $data['value' . $data['type']];
         }
 
         //yes/no
@@ -120,18 +120,18 @@ class Setting extends Eloquent
 
             $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), $ext));
 
-            $nameFile = $nameFile.'.'.$ext;
-            $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
+            $nameFile = $nameFile . '.' . $ext;
+            $fullPathImg = '/' . $destinationPath . '/' . $nameFile;
             $file->move($destinationPath, $nameFile);
             $settings->value = $fullPathImg;
         }
 
         if (is_array(config('builder.settings.langs')) && ($data['type'] < 2 || $data['type'] == 6)) {
             foreach (config('builder.settings.langs') as $prefix => $value) {
-                $field = 'value'.$prefix;
+                $field = 'value' . $prefix;
 
-                if (isset($data['value'.$data['type'].$prefix])) {
-                    $settings->$field = $data['value'.$data['type'].$prefix];
+                if (isset($data['value' . $data['type'] . $prefix])) {
+                    $settings->$field = $data['value' . $data['type'] . $prefix];
                 }
             }
         }
@@ -157,7 +157,7 @@ class Setting extends Eloquent
                         foreach ($data['select']['new'] as $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->priority = $i;
@@ -190,7 +190,7 @@ class Setting extends Eloquent
                         foreach ($data['select21']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->value2
@@ -226,7 +226,7 @@ class Setting extends Eloquent
                         foreach ($data['select31']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->value2
@@ -264,7 +264,7 @@ class Setting extends Eloquent
     public static function doDelete($id)
     {
         if (is_numeric($id)) {
-            $id_page = Input::get('id');
+            $id_page = request('id');
             $page = self::find($id_page);
 
             Event::fire('setting.delete', [$page]);

@@ -1,6 +1,11 @@
 <?php
 
 if (! function_exists('setting')) {
+    /**
+     * @param string $value
+     * @param string $default
+     * @return mixed|string
+     */
     function setting($value, $default = '')
     {
         return Vis\Builder\Setting::get($value, $default);
@@ -8,6 +13,11 @@ if (! function_exists('setting')) {
 }
 
 if (! function_exists('settingWithLang')) {
+    /**
+     * @param string $value
+     * @param string $default
+     * @return mixed|string
+     */
     function settingWithLang($value, $default = '')
     {
         return Vis\Builder\Setting::getWithLang($value, $default);
@@ -15,6 +25,9 @@ if (! function_exists('settingWithLang')) {
 }
 
 if (! function_exists('dr')) {
+    /**
+     * @param $array
+     */
     function dr($array)
     {
         echo '<pre>';
@@ -23,6 +36,9 @@ if (! function_exists('dr')) {
 }
 
 if (! function_exists('print_arr')) {
+    /**
+     * @param $array
+     */
     function print_arr($array)
     {
         echo '<pre>';
@@ -32,6 +48,10 @@ if (! function_exists('print_arr')) {
 }
 
 if (! function_exists('remove_bom')) {
+    /**
+     * @param $val
+     * @return bool|string
+     */
     function remove_bom($val)
     {
         if (substr($val, 0, 3) == pack('CCC', 0xef, 0xbb, 0xbf)) {
@@ -43,10 +63,15 @@ if (! function_exists('remove_bom')) {
 }
 
 if (! function_exists('glide')) {
+    /**
+     * @param $source
+     * @param array $options
+     * @return mixed|string
+     */
     function glide($source, $options = [])
     {
         if (env('APP_ENV') == 'local') {
-            return '//via.placeholder.com/'.$options['w'].'x'.@$options['h'] ?: $options['w'];
+            return '//via.placeholder.com/' . $options['w'] . 'x' . @$options['h'] ?: $options['w'];
         }
 
         $img = new Vis\Builder\Img();
@@ -56,18 +81,22 @@ if (! function_exists('glide')) {
 }
 
 if (! function_exists('filesize_format')) {
+    /**
+     * @param $bytes
+     * @return string
+     */
     function filesize_format($bytes)
     {
         if ($bytes >= 1073741824) {
-            $bytes = number_format($bytes / 1073741824, 1, '.', '').' Gb';
+            $bytes = number_format($bytes / 1073741824, 1, '.', '') . ' Gb';
         } elseif ($bytes >= 1048576) {
-            $bytes = number_format($bytes / 1048576, 1, '.', '').' Mb';
+            $bytes = number_format($bytes / 1048576, 1, '.', '') . ' Mb';
         } elseif ($bytes >= 1024) {
-            $bytes = number_format($bytes / 1024, 1, '.', '').' Kb';
+            $bytes = number_format($bytes / 1024, 1, '.', '') . ' Kb';
         } elseif ($bytes > 1) {
-            $bytes = $bytes.' bytes';
+            $bytes = $bytes . ' bytes';
         } elseif ($bytes == 1) {
-            $bytes = $bytes.' byte';
+            $bytes = $bytes . ' byte';
         } else {
             $bytes = '0 bytes';
         }
@@ -76,7 +105,12 @@ if (! function_exists('filesize_format')) {
     }
 }
 
-//return localization url
+/**
+ * @param $url
+ * @param bool $locale
+ * @param array $attributes
+ * @return false|string
+ */
 if (! function_exists('geturl')) {
     function geturl($url, $locale = false, $attributes = [])
     {
@@ -88,28 +122,23 @@ if (! function_exists('geturl')) {
     }
 }
 
-/*
- * translate phrase cms
- * @param string $phrase
- *
- * @return string
+/**
+ * @param $phrase
+ * @return mixed
  */
 if (! function_exists('__cms')) {
+
     function __cms($phrase)
     {
-        $this_lang = Cookie::get('lang_admin');
+        $thisLang = Cookie::get('lang_admin');
 
-        $array_translate = Vis\TranslationsCMS\Trans::fillCacheTrans();
+        $arrayTranslate = Vis\TranslationsCMS\Trans::fillCacheTrans();
 
-        if (isset($array_translate[$phrase][$this_lang])) {
-            return $array_translate[$phrase][$this_lang];
-        } else {
-            return $phrase;
-        }
+        return $arrayTranslate[$phrase][$thisLang] ?? $phrase;
     }
 }
 
-/*
+/**
  * get realy ip user
  *
  * @return string
@@ -129,11 +158,14 @@ if (! function_exists('getIp')) {
     }
 }
 
-/*
- *  recurse create url for tree
- *  @return string
+/**
+ * @param $tree
+ * @param $node
+ * @param array $slugs
+ * @return string
  */
 if (! function_exists('recurseMyTree')) {
+
     function recurseMyTree($tree, $node, &$slugs = [])
     {
         if (! $node['parent_id']) {
@@ -151,7 +183,7 @@ if (! function_exists('recurseMyTree')) {
     }
 }
 
-/*
+/**
  * Returns entire string with current locale postfix, ex. string_ua
  *
  * @param  string
@@ -162,6 +194,6 @@ if (! function_exists('getWithLocalePostfix')) {
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
 
-        return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string.'_'.$currentLocale;
+        return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string . '_' . $currentLocale;
     }
 }

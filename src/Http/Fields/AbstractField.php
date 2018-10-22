@@ -37,7 +37,7 @@ abstract class AbstractField
 
     public function getUrlAction()
     {
-        return '/admin/handle/'.$this->options['def_name'];
+        return '/admin/handle/' . $this->options['def_name'];
     }
 
     private function prepareAttributes($attributes)
@@ -63,7 +63,7 @@ abstract class AbstractField
     public function getRequiredAttribute($ident)
     {
         if (! array_key_exists($ident, $this->attributes)) {
-            throw new \RuntimeException('Image storage field requires ['.$ident.'] attribute');
+            throw new \RuntimeException('Image storage field requires [' . $ident . '] attribute');
         }
 
         return $this->attributes[$ident];
@@ -83,12 +83,12 @@ abstract class AbstractField
             }
         }
 
-        $fieldName = $this->getFieldName().$postfix;
+        $fieldName = $this->getFieldName() . $postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
         if ($this->getAttribute('tabs') && ! $postfix) {
             $tabs = $this->getAttribute('tabs');
-            $fieldName = $fieldName.$tabs[0]['postfix'];
+            $fieldName = $fieldName . $tabs[0]['postfix'];
         }
 
         if (isset($row[$fieldName])) {
@@ -162,7 +162,7 @@ abstract class AbstractField
 
         $type = $this->getAttribute('type');
 
-        $input = view('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_' . $type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -186,7 +186,7 @@ abstract class AbstractField
         $type = $this->getAttribute('type');
         $tableName = $this->definition['db']['table'];
 
-        $input = view('admin::tb.tab_input_'.$type);
+        $input = view('admin::tb.tab_input_' . $type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -195,7 +195,7 @@ abstract class AbstractField
         $input->placeholder = $this->getAttribute('placeholder');
         $input->caption = $this->getAttribute('caption');
         $input->tabs = $this->getPreparedTabs($row);
-        $input->pre = $row ? $tableName.'_e' : $tableName.'_c';
+        $input->pre = $row ? $tableName . '_e' : $tableName . '_c';
         $input->comment = $this->getAttribute('comment');
         $input->className = $this->getAttribute('class_name');
 
@@ -233,12 +233,12 @@ abstract class AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $type = $this->getAttribute('filter');
 
-        $input = view('admin::tb.filter_'.$type);
+        $input = view('admin::tb.filter_' . $type);
         $input->name = $this->getFieldName();
         $input->value = $filter;
 
@@ -283,11 +283,11 @@ abstract class AbstractField
 
         if ($tabs) {
             foreach ($tabs as $tab) {
-                $name = $tableName.'.'.$this->getFieldName().$tab['postfix'];
+                $name = $tableName . '.' . $this->getFieldName() . $tab['postfix'];
                 $db->addSelect($name);
             }
         } else {
-            $db->addSelect($tableName.'.'.$fieldName);
+            $db->addSelect($tableName . '.' . $fieldName);
         }
     }
 
@@ -349,9 +349,9 @@ abstract class AbstractField
         if (isset($validation['server']['ignore_this_id']) && $validation['server']['ignore_this_id']) {
             if (class_exists('Illuminate\Validation\Rule')) {
                 $rules = explode('|', $rules);
-                $rules[] = Rule::unique($this->definition['db']['table'])->ignore(Input::get('id'));
+                $rules[] = Rule::unique($this->definition['db']['table'])->ignore(request('id'));
             } else {
-                $rules .= ','.Input::get('id');
+                $rules .= ',' . request('id');
             }
         }
 
@@ -396,30 +396,30 @@ abstract class AbstractField
         $table = $this->definition['db']['table'];
 
         if ($this->getAttribute('filter') == 'integer') {
-            $db->where($table.'.'.$this->getFieldName(), $value);
+            $db->where($table . '.' . $this->getFieldName(), $value);
 
             return;
         }
 
         if ($this->getAttribute('filter') == 'date_range') {
             if (! isset($value['to'])) {
-                $db->where($table.'.'.$this->getFieldName(), '>', $value['from']);
+                $db->where($table . '.' . $this->getFieldName(), '>', $value['from']);
 
                 return;
             }
 
             if (! isset($value['from'])) {
-                $db->where($table.'.'.$this->getFieldName(), '<', $value['to']);
+                $db->where($table . '.' . $this->getFieldName(), '<', $value['to']);
 
                 return;
             }
 
-            $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
+            $db->whereBetween($table . '.' . $this->getFieldName(), [$value['from'], $value['to']]);
 
             return;
         }
 
-        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
+        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
     }
 
     /*
@@ -452,13 +452,13 @@ abstract class AbstractField
 
     public function getWidth()
     {
-        return $this->getAttribute('width') ? 'style="width:'.$this->getAttribute('width').'"' : '';
+        return $this->getAttribute('width') ? 'style="width:' . $this->getAttribute('width') . '"' : '';
     }
 
     public function isOrder($controller)
     {
         $order = $controller->getOrderDefinition();
 
-        return $order && $order['field'] == $this->getFieldName() ? 'sorting_'.$order['direction'] : '';
+        return $order && $order['field'] == $this->getFieldName() ? 'sorting_' . $order['direction'] : '';
     }
 }

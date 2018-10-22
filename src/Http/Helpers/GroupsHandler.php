@@ -6,15 +6,29 @@ use Illuminate\Support\Facades\View;
 use Vis\Builder\Handlers\CustomHandler;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
+/**
+ * Class GroupsHandler
+ * @package Vis\Builder\Helpers
+ */
 class GroupsHandler extends CustomHandler
 {
+    /**
+     * @param $formField
+     * @param array $row
+     * @return \Illuminate\Contracts\View\View|void
+     */
     public function onGetListValue($formField, array &$row)
     {
         if ($formField->getFieldName() == 'permissions') {
-            return View::make('admin::tb.group_access_list');
+            return view('admin::tb.group_access_list');
         }
     }
 
+    /**
+     * @param $formField
+     * @param array $row
+     * @return \Illuminate\Contracts\View\View|void
+     */
     public function onGetEditInput($formField, array &$row)
     {
         if ($formField->getFieldName() == 'permissions') {
@@ -22,18 +36,18 @@ class GroupsHandler extends CustomHandler
 
             if (isset($permissions['generatePermissions']) && $permissions['generatePermissions']) {
                 return $this->generatePermissions($row);
-            } else {
-                if (isset($row['id'])) {
-                    $groupPermissionsThis = $this->getPermissionsThis($row['id']);
-                } else {
-                    $groupPermissionsThis = [];
-                }
-
-                return View::make('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
             }
+
+            $groupPermissionsThis = isset($row['id']) ? $this->getPermissionsThis($row['id']) : [];
+
+            return view('admin::tb.group_access_list', compact('permissions', 'groupPermissionsThis'));
         }
     }
 
+    /**
+     * @param array $row
+     * @return \Illuminate\Contracts\View\View
+     */
     private function generatePermissions(array &$row)
     {
         $permissions = config('builder.tb-definitions.groups.fields.permissions.permissions');
@@ -44,27 +58,27 @@ class GroupsHandler extends CustomHandler
             if (isset($permission['link']) && isset($permission['title'])) {
                 $slug = str_replace('/', '', $permission['link']);
 
-                $actions = config('builder.tb-definitions.'.$slug.'.actions');
+                $actions = config('builder.tb-definitions.' . $slug . '.actions');
 
                 if (count($actions)) {
-                    $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
+                    $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
                     foreach ($actions as $slugAction => $action) {
                         if (isset($action['caption'])) {
-                            $permissions[$permission['title']][$slug.'.'.$slugAction] = $action['caption'];
+                            $permissions[$permission['title']][$slug . '.' . $slugAction] = $action['caption'];
                         }
                     }
                 } else {
-                    $actions = config('builder.'.$slug.'.actions');
+                    $actions = config('builder.' . $slug . '.actions');
 
                     if (count($actions)) {
-                        $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
+                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
                         foreach ($actions as $slugAction => $action) {
                             if (isset($action['caption'])) {
-                                $permissions[$permission['title']][$slug.'.'.$slugAction] = $action['caption'];
+                                $permissions[$permission['title']][$slug . '.' . $slugAction] = $action['caption'];
                             }
                         }
                     } else {
-                        $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
+                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
                     }
                 }
             } else {
@@ -72,14 +86,14 @@ class GroupsHandler extends CustomHandler
                     foreach ($permission['submenu'] as $subMenu) {
                         if (isset($subMenu['link'])) {
                             $slug = str_replace('/', '', $subMenu['link']);
-                            $actions = config('builder.tb-definitions.'.$slug.'.actions');
+                            $actions = config('builder.tb-definitions.' . $slug . '.actions');
 
                             if (isset($subMenu['link']) && isset($subMenu['title'])) {
-                                $permissions[$permission['title']][$subMenu['title']][$slug.'.view'] = 'Просмотр';
+                                $permissions[$permission['title']][$subMenu['title']][$slug . '.view'] = 'Просмотр';
 
                                 if (count($actions)) {
                                     foreach ($actions as $slugAction => $action) {
-                                        $permissions[$permission['title']][$subMenu['title']][$slug.'.'.$slugAction]
+                                        $permissions[$permission['title']][$subMenu['title']][$slug . '.' . $slugAction]
                                             = $action['caption'];
                                     }
                                 }
@@ -92,9 +106,13 @@ class GroupsHandler extends CustomHandler
 
         $groupPermissionsThis = isset($row['id']) ? $this->getPermissionsThis($row['id']) : [];
 
-        return View::make('admin::tb.group_access_list_auto', compact('permissions', 'groupPermissionsThis'));
+        return view('admin::tb.group_access_list_auto', compact('permissions', 'groupPermissionsThis'));
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
     private function getPermissionsThis($id)
     {
         $model = config('builder.tb-definitions.groups.options.model');
@@ -109,6 +127,11 @@ class GroupsHandler extends CustomHandler
         return $groupPermissionsThis;
     }
 
+    /**
+     * @param $field
+     * @param $db
+     * @return bool
+     */
     public function onAddSelectField($field, $db)
     {
         if ($field->getFieldName() == 'permissions') {
@@ -116,6 +139,10 @@ class GroupsHandler extends CustomHandler
         }
     }
 
+    /**
+     * @param array $value
+     * @param $row
+     */
     public function onUpdateRowData(array &$value, $row)
     {
         if (isset($row['permissions'])) {
@@ -132,6 +159,10 @@ class GroupsHandler extends CustomHandler
         }
     }
 
+    /**
+     * @param array $value
+     * @return int
+     */
     public function onInsertRowData(array &$value)
     {
         if (isset($value['permissions'])) {

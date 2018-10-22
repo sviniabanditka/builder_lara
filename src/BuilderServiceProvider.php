@@ -5,8 +5,16 @@ namespace Vis\Builder;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class BuilderServiceProvider
+ * @package Vis\Builder
+ */
 class BuilderServiceProvider extends ServiceProvider
 {
+    private $commandAdminInstall = 'command.admin.install';
+    private $commandAdminGeneratePass = 'command.admin.generatePassword';
+    private $commandAdminCreateConfig = 'command.admin.createConfig';
+
     /**
      * Bootstrap the application services.
      *
@@ -17,27 +25,27 @@ class BuilderServiceProvider extends ServiceProvider
         $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
         $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
 
-        require __DIR__.'/../vendor/autoload.php';
-        require __DIR__.'/Http/helpers.php';
-        require __DIR__.'/Http/view_composers.php';
+        require __DIR__ . '/../vendor/autoload.php';
+        require __DIR__ . '/Http/helpers.php';
+        require __DIR__ . '/Http/view_composers.php';
 
         $this->setupRoutes($this->app->router);
 
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'admin');
+        $this->loadViewsFrom(realpath(__DIR__ . '/resources/views'), 'admin');
 
         $this->publishes([
             __DIR__
-            .'/published/assets' => public_path('packages/vis/builder'),
-            __DIR__.'/config' => config_path('builder/'),
+            . '/published/assets' => public_path('packages/vis/builder'),
+            __DIR__ . '/config' => config_path('builder/'),
         ], 'builder');
 
         $this->publishes([
             __DIR__
-            .'/published/assets' => public_path('packages/vis/builder'),
+            . '/published/assets' => public_path('packages/vis/builder'),
         ], 'public');
 
         $this->publishes([
-            realpath(__DIR__.'/Migrations') => $this->app->databasePath().'/migrations',
+            realpath(__DIR__ . '/Migrations') => $this->app->databasePath() . '/migrations',
         ]);
     }
 
@@ -50,10 +58,10 @@ class BuilderServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
-        require __DIR__.'/Http/route_frontend.php';
-        require __DIR__.'/Http/route_translation.php';
-        require __DIR__.'/Http/route_settings.php';
-        require __DIR__.'/Http/routers.php';
+        require __DIR__ . '/Http/route_frontend.php';
+        require __DIR__ . '/Http/route_translation.php';
+        require __DIR__ . '/Http/route_settings.php';
+        require __DIR__ . '/Http/routers.php';
     }
 
     /**
@@ -66,8 +74,10 @@ class BuilderServiceProvider extends ServiceProvider
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
 
         if (method_exists(\Illuminate\Routing\Router::class, 'aliasMiddleware')) {
-            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
-            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+            $this->app[\Illuminate\Routing\Router::class]
+                ->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
+            $this->app[\Illuminate\Routing\Router::class]
+                ->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
         }
 
         $this->app->singleton('jarboe', function () {
@@ -77,37 +87,37 @@ class BuilderServiceProvider extends ServiceProvider
         $this->registerCommands();
     }
 
+    /**
+     *
+     */
     private function registerCommands()
     {
-        $this->app->singleton('command.admin.install', function ($app) {
+        $this->app->singleton($this->commandAdminInstall, function () {
             return new InstallCommand();
         });
 
-        $this->app->singleton('command.admin.generatePassword', function ($app) {
+        $this->app->singleton($this->commandAdminGeneratePass, function () {
             return new GeneratePassword();
         });
 
-        $this->app->singleton('command.admin.createConfig', function ($app) {
+        $this->app->singleton($this->commandAdminCreateConfig, function () {
             return new CreateConfig();
         });
 
-        $this->app->singleton('command.admin.generateConfig', function ($app) {
-            return new AdminGenerateConfig();
-        });
-
-        $this->commands('command.admin.install');
-        $this->commands('command.admin.generatePassword');
-        $this->commands('command.admin.createConfig');
-        $this->commands('command.admin.generateConfig');
+        $this->commands($this->commandAdminInstall);
+        $this->commands($this->commandAdminGeneratePass);
+        $this->commands($this->commandAdminCreateConfig);
     }
 
+    /**
+     * @return array
+     */
     public function provides()
     {
         return [
-            'command.admin.install',
-            'command.admin.generatePassword',
-            'command.admin.createConfig',
-            'command.admin.generateConfig',
+            $this->commandAdminInstall,
+            $this->commandAdminGeneratePass,
+            $this->commandAdminCreateConfig,
         ];
     }
 }

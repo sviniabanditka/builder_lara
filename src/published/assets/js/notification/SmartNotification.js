@@ -11,7 +11,8 @@ $(document).ready(function () {
 });
 
 //Closing Rutine for Loadings
-function SmartUnLoading() {
+function SmartUnLoading()
+{
 
     $(".divMessageBox").fadeOut(300, function () {
         $(this).remove();
@@ -81,8 +82,8 @@ var ExistMsg = 0,
 			
             switch (settings.input) {
             case "text":
-                InputType = "<input class='form-control' type='" + settings.input + "' id='txt" + 
-                	SmartMSGboxCount + "' placeholder='" + settings.placeholder + "' value='" + settings.inputValue + "'/><br/><br/>";     
+                InputType = "<input class='form-control' type='" + settings.input + "' id='txt" +
+                	SmartMSGboxCount + "' placeholder='" + settings.placeholder + "' value='" + settings.inputValue + "'/><br/><br/>";
                 	               
                 break;
             case "password":
@@ -115,7 +116,6 @@ var ExistMsg = 0,
             default:
                 alert("That type of input is not handled yet");
             }
-
         }
 
         Content = "<div class='MessageBoxContainer animated fadeIn fast' id='Msg" + SmartMSGboxCount +
@@ -144,7 +144,6 @@ var ExistMsg = 0,
         }
 
         for (var i = 0; i <= settings.buttons.length - 1; i++) {
-
             if (settings.buttons[i] == "[") {
                 Name = "";
             } else {
@@ -199,13 +198,15 @@ var ExistMsg = 0,
                 if (typeof callback == "function") {
                     var IDNumber = MsgBoxID.replace("Msg", "");
                     var Value = $("#txt" + IDNumber).val();
-                    if (callback)
+                    if (callback) {
                         callback(Press, Value);
+                    }
                 }
             } else {
                 if (typeof callback == "function") {
-                    if (callback)
+                    if (callback) {
                         callback(Press);
+                    }
                 }
             }
 
@@ -246,10 +247,11 @@ var BigBoxes = 0;
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
-                if (navigator.userAgent.match('Firefox/'))
+                if (navigator.userAgent.match('Firefox/')) {
                     audioElement.setAttribute('src', $.sound_path + 'bigbox.ogg');
-                else
-                    audioElement.setAttribute('src', $.sound_path + 'bigbox.mp3');
+                } else {
+audioElement.setAttribute('src', $.sound_path + 'bigbox.mp3');
+                }
 
                 $.get();
                 audioElement.addEventListener("load", function () {
@@ -358,8 +360,9 @@ var BigBoxes = 0;
         ThisBigBoxCloseCross.bind('click', function () {
             clearInterval(ColorTimeInterval);
             if (typeof callback == "function") {
-                if (callback)
+                if (callback) {
                     callback();
+                }
             }
 
             var FrontBox = $(this).attr('id');
@@ -429,10 +432,11 @@ var SmallBoxes = 0,
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
-                if (navigator.userAgent.match('Firefox/'))
+                if (navigator.userAgent.match('Firefox/')) {
                     audioElement.setAttribute('src', $.sound_path + 'smallbox.ogg');
-                else
-                    audioElement.setAttribute('src', $.sound_path + 'smallbox.mp3');
+                } else {
+audioElement.setAttribute('src', $.sound_path + 'smallbox.mp3');
+                }
 
                 $.get();
                 audioElement.addEventListener("load", function () {
@@ -494,7 +498,6 @@ var SmallBoxes = 0,
                     }
 
                 });
-
             }
         }
 
@@ -534,7 +537,6 @@ var SmallBoxes = 0,
         }
 
         if (settings.timeout != undefined) {
-
             setTimeout(function () {
                 clearInterval(ColorTimeInterval);
                 var ThisHeight = $(this).height() + 20;
@@ -550,8 +552,9 @@ var SmallBoxes = 0,
                         SmallBoxesAnchos = SmallBoxesAnchos - ThisHeight;
                         $("#" + CurrentIDSmallbox).remove();
                         if (typeof callback == "function") {
-                            if (callback)
+                            if (callback) {
                                 callback();
+                            }
                         }
 
                         var Primero = 1;
@@ -581,8 +584,9 @@ var SmallBoxes = 0,
                     SmallBoxesAnchos = SmallBoxesAnchos - ThisHeight;
 
                     if (typeof callback == "function") {
-                        if (callback)
+                        if (callback) {
                             callback();
+                        }
                     }
 
                     $("#" + CurrentIDSmallbox).removeClass().addClass("SmallBox").animate({
@@ -622,8 +626,9 @@ var SmallBoxes = 0,
         $("#smallbox" + SmallBoxes).bind('click', function () {
             clearInterval(ColorTimeInterval);
             if (typeof callback == "function") {
-                if (callback)
+                if (callback) {
                     callback();
+                }
             }
 
             var ThisHeight = $(this).height() + 20;
@@ -667,41 +672,49 @@ var SmallBoxes = 0,
 
 // Sounds
 
-function getInternetExplorerVersion() {
+function getInternetExplorerVersion()
+{
     var rv = -1;
     // Return value assumes failure.
     if (navigator.appName == 'Microsoft Internet Explorer') {
         var ua = navigator.userAgent;
         var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-        if (re.exec(ua) != null)
+        if (re.exec(ua) != null) {
             rv = parseFloat(RegExp.$1);
+        }
     }
     return rv;
 }
 
-function checkVersion() {
+function checkVersion()
+{
 
     var msg = "You're not using Windows Internet Explorer.";
     var ver = getInternetExplorerVersion();
     if (ver > -1) {
-        if (ver >= 8.0)
+        if (ver >= 8.0) {
             msg = "You're using a recent copy of Windows Internet Explorer."
-        else
-            msg = "You should upgrade your copy of Windows Internet Explorer.";
+        else {
+msg = "You should upgrade your copy of Windows Internet Explorer.";
+        }
+        }
     }
     alert(msg);
 
 }
 
-function isIE8orlower() {
+function isIE8orlower()
+{
 
     var msg = "0";
     var ver = getInternetExplorerVersion();
     if (ver > -1) {
-        if (ver >= 9.0)
+        if (ver >= 9.0) {
             msg = 0
-        else
-            msg = 1;
+        else {
+msg = 1;
+        }
+        }
     }
     return msg;
     // alert(msg);

@@ -10,19 +10,57 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class QueryHandler
+ * @package Vis\Builder\Handlers
+ */
 class QueryHandler
 {
+    /**
+     * @var JarboeController
+     */
     protected $controller;
+    /**
+     * @var
+     */
     protected $dbName;
+    /**
+     * @var
+     */
     protected $dbOptions;
+    /**
+     * @var
+     */
     protected $model;
+    /**
+     * @var mixed
+     */
     protected $definition;
+    /**
+     * @var mixed
+     */
     protected $definitionName;
+    /**
+     * @var
+     */
     protected $db;
+    /**
+     * @var
+     */
     protected $extendsTable;
+    /**
+     * @var
+     */
     protected $extendsTableId;
+    /**
+     * @var array
+     */
     protected $extendsFields = [];
 
+    /**
+     * QueryHandler constructor.
+     * @param JarboeController $controller
+     */
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
@@ -47,22 +85,37 @@ class QueryHandler
                 if (isset($extend['id'])) {
                     $this->extendsTableId[$table] = $extend['id'];
                 } else {
-                    $this->extendsTableId[$table] = $this->dbName.'_id';
+                    $this->extendsTableId[$table] = $this->dbName . '_id';
                 }
             }
         }
     }
 
+    /**
+     * @param $ident
+     * @return mixed
+     */
     protected function getOptionDB($ident)
     {
         return $this->dbOptions[$ident];
     }
 
+    /**
+     * @param $ident
+     * @return bool
+     */
     protected function hasOptionDB($ident)
     {
         return isset($this->dbOptions[$ident]);
     }
 
+    /**
+     * @param bool $isPagination
+     * @param bool $isUserFilters
+     * @param array $betweenWhere
+     * @param bool $isSelectAll
+     * @return mixed
+     */
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
     {
         $modelName = $this->model;
@@ -71,7 +124,7 @@ class QueryHandler
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $this->db->addSelect($this->dbName.'.*');
+            $this->db->addSelect($this->dbName . '.*');
         }
 
         $this->prepareFilterValues();
@@ -88,16 +141,16 @@ class QueryHandler
 
         $this->dofilter();
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         $order = Session::get($sessionPath, []);
 
         if ($order && $isUserFilters) {
-            $this->db->orderBy($this->dbName.'.'.$order['field'], $order['direction']);
+            $this->db->orderBy($this->dbName . '.' . $order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->dbName.'.'.$field, $direction);
+                $this->db->orderBy($this->dbName . '.' . $field, $direction);
             }
         }
 
@@ -111,18 +164,20 @@ class QueryHandler
         if ($this->hasOptionDB('pagination') && $isPagination) {
             $pagination = $this->getOptionDB('pagination');
             $perPage = $this->getPerPageAmount($pagination['per_page']);
-            $paginator = $this->db->paginate($perPage);
 
-            return $paginator;
+            return $this->db->paginate($perPage);
         }
 
         return $this->db->get();
     }
 
+    /**
+     *
+     */
     private function dofilter()
     {
         if (Input::has('filter')) {
-            $filters = Input::get('filter');
+            $filters = request('filter');
 
             foreach ($filters as $nameField => $valueField) {
                 if ($valueField) {
@@ -132,13 +187,17 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $info
+     * @return mixed
+     */
     public function getPerPageAmount($info)
     {
         if (! is_array($info)) {
             return $info;
         }
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
         $perPage = Session::get($sessionPath);
 
         if (! $perPage) {
@@ -149,6 +208,9 @@ class QueryHandler
         return $perPage;
     }
 
+    /**
+     *
+     */
     protected function prepareFilterValues()
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
@@ -163,6 +225,9 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $values
+     */
     protected function doPrependFilterValues(&$values)
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
@@ -175,21 +240,28 @@ class QueryHandler
         }
     }
 
+    /**
+     *
+     */
     protected function prepareSelectValues()
     {
-        $this->db = $this->db->select($this->dbName.'.id');
+        $this->db = $this->db->select($this->dbName . '.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-            $this->db = $this->db->addSelect($this->dbName.'.priority');
+            $this->db = $this->db->addSelect($this->dbName . '.priority');
         }
 
         $fields = $this->controller->getFields();
 
-        foreach ($fields as $name => $field) {
+        foreach ($fields as $field) {
             $field->onSelectValue($this->db);
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
+     */
     public function getRow($id)
     {
         $this->db = DB::table($this->dbName);
@@ -202,14 +274,17 @@ class QueryHandler
 
         $this->prepareSelectValues();
 
-        $this->db->where($this->dbName.'.id', $id);
+        $this->db->where($this->dbName . '.id', $id);
 
         return $this->db->first();
     }
 
+    /**
+     *
+     */
     protected function onSearchFilterQuery()
     {
-        $sessionPath = 'table_builder.'.$this->definitionName.'.filters';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
 
         $filters = Session::get($sessionPath, []);
         foreach ($filters as $name => $value) {
@@ -224,6 +299,10 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $values
+     * @return array|mixed
+     */
     public function updateRow($values)
     {
         $this->clearCache();
@@ -288,6 +367,10 @@ class QueryHandler
         return $res;
     }
 
+    /**
+     * @param $data
+     * @return false|string
+     */
     private function getData($data)
     {
         if (is_array($data)) {
@@ -297,19 +380,30 @@ class QueryHandler
         return $data;
     }
 
+    /**
+     * @param $updateDataRes
+     * @param $updateData
+     * @param $field
+     */
     private function getDataTabs(&$updateDataRes, $updateData, $field)
     {
         if (isset($this->definition['fields'][$field]['tabs'])) {
             foreach ($this->definition['fields'][$field]['tabs'] as $tab) {
-                $updateDataRes[$field.$tab['postfix']] = $this->getTabsDataField($updateData, $field, $tab);
+                $updateDataRes[$field . $tab['postfix']] = $this->getTabsDataField($updateData, $field, $tab);
             }
         }
     }
 
+    /**
+     * @param $updateData
+     * @param $field
+     * @param $tab
+     * @return string
+     */
     private function getTabsDataField($updateData, $field, $tab)
     {
-        if ($updateData[$field.$tab['postfix']]) {
-            return $updateData[$field.$tab['postfix']];
+        if ($updateData[$field . $tab['postfix']]) {
+            return $updateData[$field . $tab['postfix']];
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
@@ -321,6 +415,11 @@ class QueryHandler
         return '';
     }
 
+    /**
+     * @param $phrase
+     * @param $thisLang
+     * @return mixed
+     */
     private function generateTranslation($phrase, $thisLang)
     {
         try {
@@ -330,7 +429,7 @@ class QueryHandler
             $langsDef = str_replace('ua', 'uk', $langsDef);
 
             $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
-            $translation = $translator->translate($phrase, $langsDef.'-'.$lang);
+            $translation = $translator->translate($phrase, $langsDef . '-' . $lang);
 
             if (isset($translation->getResult()[0])) {
                 return $translation->getResult()[0];
@@ -339,11 +438,15 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $field
+     * @param $id
+     */
     private function updateGroupIfUseTable($field, $id)
     {
         if ($field->getAttribute('use_table') && $field->getAttribute('type') == 'group') {
             $nameField = $field->getFieldName();
-            $group = Input::get($nameField);
+            $group = request($nameField);
             $tableUse = $field->getAttribute('use_table')['table'];
             $fieldForeign = $field->getAttribute('use_table')['id'];
             DB::table($tableUse)->where($fieldForeign, $id)->delete();
@@ -361,6 +464,9 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $id
+     */
     public function updateExtendsTable($id)
     {
         if (count($this->extendsFields)) {
@@ -378,6 +484,10 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function cloneRow($id)
     {
         $this->clearCache();
@@ -404,6 +514,10 @@ class QueryHandler
         ];
     }
 
+    /**
+     * @param $id
+     * @param $newId
+     */
     private function cloneExtendsTables($id, $newId)
     {
         if (isset($this->extendsTable) && count($this->extendsTable)) {
@@ -416,6 +530,10 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $id
+     * @return array|mixed
+     */
     public function deleteRow($id)
     {
         $this->clearCache();
@@ -431,10 +549,7 @@ class QueryHandler
             $pattern->delete($id);
         }
 
-        $model = $this->model;
-        $res = $model::find($id)->delete();
-
-        Event::fire('table.delete', [$this->dbName, $id]);
+        $res = $this->model::find($id)->delete();
 
         $res = [
             'id'     => $id,
@@ -450,6 +565,9 @@ class QueryHandler
         return $res;
     }
 
+    /**
+     * @param $id
+     */
     private function deleteExtendsTables($id)
     {
         if (isset($this->extendsTable) && count($this->extendsTable)) {
@@ -459,6 +577,9 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $input
+     */
     public function fastSave($input)
     {
         $this->clearCache();
@@ -466,13 +587,16 @@ class QueryHandler
         $nameField = $input['name'];
         $valueField = $input['value'];
 
-        $model = $this->model;
-        $modelObj = $model::find($input['id']);
+        $modelObj = $this->model::find($input['id']);
         $modelObj->$nameField = $valueField;
 
         $modelObj->save();
     }
 
+    /**
+     * @param $values
+     * @return array|mixed
+     */
     public function insertRow($values)
     {
         $this->clearCache();
@@ -504,9 +628,9 @@ class QueryHandler
                 }
             }
 
-            $model = $this->model;
+            $modelThis = $this->model;
 
-            $objectModel = new $model;
+            $objectModel = new $modelThis();
 
             foreach ($insertDataRes as $key => $value) {
                 $objectModel->$key = $value;
@@ -542,6 +666,11 @@ class QueryHandler
         return $res;
     }
 
+    /**
+     * @param $ident
+     * @param $values
+     * @param $id
+     */
     private function onManyToManyValues($ident, $values, $id)
     {
         $field = $this->controller->getField($ident);
@@ -549,6 +678,9 @@ class QueryHandler
         $field->onPrepareRowValues($vals, $id);
     }
 
+    /**
+     * @param $values
+     */
     private function doValidate($values)
     {
         $errors = [];
@@ -565,7 +697,7 @@ class QueryHandler
                 if ($tabs) {
                     if (! $field->getAttribute('extends_table')) {
                         foreach ($tabs as $tab) {
-                            $fieldName = $ident.$tab['postfix'];
+                            $fieldName = $ident . $tab['postfix'];
                             $field->doValidate($values[$fieldName]);
                         }
                     }
@@ -575,7 +707,7 @@ class QueryHandler
                     }
                 }
             } catch (\Exception $e) {
-                $errors[] = 'Поле "'.$field->getAttribute('caption').'" '.$e->getMessage();
+                $errors[] = 'Поле "' . $field->getAttribute('caption') . '" ' . $e->getMessage();
                 continue;
             }
         }
@@ -587,6 +719,10 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $values
+     * @return mixed
+     */
     private function getRowQueryValues($values)
     {
         $values = $this->unsetFutileFields($values);
@@ -603,7 +739,7 @@ class QueryHandler
             $tabs = $field->getAttribute('tabs');
             if ($tabs) {
                 foreach ($tabs as $tab) {
-                    $fieldName = $ident.$tab['postfix'];
+                    $fieldName = $ident . $tab['postfix'];
                     $values[$fieldName] = $field->prepareQueryValue($values[$fieldName]);
 
                     if ($field->getAttribute('extends_table') && array_key_exists($fieldName, $values)) {
@@ -632,6 +768,10 @@ class QueryHandler
         return $values;
     }
 
+    /**
+     * @param $values
+     * @return mixed
+     */
     private function unsetFutileFields($values)
     {
         unset($values['id']);
@@ -653,6 +793,9 @@ class QueryHandler
         return $values;
     }
 
+    /**
+     * @param $values
+     */
     private function checkFields(&$values)
     {
         $fields = $this->definition['fields'];
@@ -660,11 +803,11 @@ class QueryHandler
         foreach ($fields as $ident => $options) {
             $field = $this->controller->getField($ident);
 
-            if (method_exists($field, 'getNewValueId') && isset($values[$ident.'_new_foreign'])) {
-                if ($new_id = $field->getNewValueId($values[$ident.'_new_foreign'])) {
+            if (method_exists($field, 'getNewValueId') && isset($values[$ident . '_new_foreign'])) {
+                if ($new_id = $field->getNewValueId($values[$ident . '_new_foreign'])) {
                     $values[$ident] = $new_id;
                 }
-                unset($values[$ident.'_new_foreign']);
+                unset($values[$ident . '_new_foreign']);
             }
 
             if ($field->isPattern()) {
@@ -685,6 +828,11 @@ class QueryHandler
         }
     }
 
+    /**
+     * @param $values
+     * @param $ident
+     * @param $field
+     */
     private function checkField($values, $ident, $field)
     {
         if (! $field->isEditable()) {
@@ -692,14 +840,20 @@ class QueryHandler
         }
     }
 
+    /**
+     * @return bool
+     */
     public function clearOrderBy()
     {
-        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
+        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
         Session::forget($sessionPath);
 
         return true;
     }
 
+    /**
+     *
+     */
     public function clearCache()
     {
         if (isset($this->definition['cache'])) {
@@ -715,42 +869,52 @@ class QueryHandler
         }
     }
 
+    /**
+     * @return array
+     * @throws \Throwable
+     */
     public function getUploadedFiles()
     {
-        $list = File::files(public_path().'/storage/files');
+        $list = File::files(public_path() . '/storage/files');
 
-        $data = [
+        return [
             'status' => 'success',
             'data'   => view('admin::tb.files_list', compact('list'))->render(),
         ];
-
-        return $data;
     }
 
+    /**
+     * @param $field
+     * @return array
+     */
     public function getUploadedImages($field)
     {
         if ($field->getAttribute('use_image_storage')) {
             return $this->getImagesWithImageStorage();
-        } else {
-            return $this->getImagesWithDefaultPath();
         }
+
+        return $this->getImagesWithDefaultPath();
     }
 
+    /**
+     * @return array
+     * @throws \Throwable
+     */
     private function getImagesWithImageStorage()
     {
         if (class_exists('\Vis\ImageStorage\Image')) {
             $list = \Vis\ImageStorage\Image::orderBy('created_at', 'desc');
 
-            if (Input::get('tag')) {
-                $list->leftJoin('vis_tags2entities', 'id_entity', '=', 'vis_images.id')->where('entity_type', 'Vis\ImageStorage\Image')->where('id_tag', Input::get('tag'));
+            if (request('tag')) {
+                $list->leftJoin('vis_tags2entities', 'id_entity', '=', 'vis_images.id')->where('entity_type', 'Vis\ImageStorage\Image')->where('id_tag', request('tag'));
             }
 
-            if (Input::get('gallary')) {
-                $list->leftJoin('vis_images2galleries', 'id_image', '=', 'vis_images.id')->where('id_gallery', Input::get('gallary'));
+            if (request('gallary')) {
+                $list->leftJoin('vis_images2galleries', 'id_image', '=', 'vis_images.id')->where('id_gallery', request('gallary'));
             }
 
-            if (Input::get('q')) {
-                $list->where('vis_images.title', 'like', Input::get('q').'%');
+            if (request('q')) {
+                $list->where('vis_images.title', 'like', request('q') . '%');
             }
 
             $list = $list->groupBy('vis_images.id')->paginate(18);
@@ -772,6 +936,10 @@ class QueryHandler
         return $data;
     }
 
+    /**
+     * @return array
+     * @throws \Throwable
+     */
     private function getImagesWithDefaultPath()
     {
         $files = collect(File::files(public_path('storage/editor/fotos')))->sortBy(function ($file) {
@@ -785,11 +953,9 @@ class QueryHandler
         $list = new \Illuminate\Pagination\LengthAwarePaginator($slice, $files->count(), $onPage);
         $list->setPath(url()->current());
 
-        $data = [
+        return [
             'status' => 'success',
             'data'   => view('admin::tb.images_list', compact('list'))->render(),
         ];
-
-        return $data;
     }
 }

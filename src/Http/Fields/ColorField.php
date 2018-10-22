@@ -4,16 +4,26 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\View;
 
+/**
+ * Class ColorField
+ * @package Vis\Builder\Fields
+ */
 class ColorField extends AbstractField
 {
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
+        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
     }
 
-    // end onSearchFilter
-
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -23,11 +33,14 @@ class ColorField extends AbstractField
             }
         }
 
-        return '<span style="height: 20px; width:20px; display:inline-block; background-color: '.$this->getValue($row).';"></spans>';
+        return '<span style="height: 20px; width:20px; display:inline-block; background-color: ' . $this->getValue($row) . ';"></spans>';
     }
 
-    // end getListValue
-
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -37,7 +50,7 @@ class ColorField extends AbstractField
             }
         }
 
-        $input = View::make('admin::tb.input_color');
+        $input = view('admin::tb.input_color');
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->type = $this->getAttribute('color_type', 'hex');
@@ -46,6 +59,4 @@ class ColorField extends AbstractField
 
         return $input->render();
     }
-
-    // end getEditInput
 }

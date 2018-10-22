@@ -1,7 +1,7 @@
 
  <div id="table-preloader" class="smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
 
-  @if(Config::get('builder.'.$treeName.'.tree_menu') != "hide")
+  @if(config('builder.'.$treeName.'.tree_menu') != "hide")
     <p><a class="show_hide_tree">{{__cms('Показать дерево')}}</a></p>
   @endif
 
@@ -53,7 +53,7 @@
     });
 
  $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{__cms('Структура сайта')}}</li>");
- $("title").text("{{__cms('Структура сайта')}} - {{{ __cms(Config::get('builder.admin.caption')) }}}");
+ $("title").text("{{__cms('Структура сайта')}} - {{{ __cms(config('builder.admin.caption')) }}}");
 
   try {
         Tree.sortTable();

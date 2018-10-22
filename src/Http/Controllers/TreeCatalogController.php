@@ -10,13 +10,35 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class TreeCatalogController
+ * @package Vis\Builder
+ */
 class TreeCatalogController
 {
+    /**
+     * @var
+     */
     protected $model;
+    /**
+     * @var array
+     */
     protected $options;
+    /**
+     * @var
+     */
     protected $nameTree;
+    /**
+     * @var JarboeController
+     */
     protected $controller;
 
+    /**
+     * TreeCatalogController constructor.
+     * @param $model
+     * @param array $options
+     * @param $nameTree
+     */
     public function __construct($model, array $options, $nameTree)
     {
         $this->model = $model;
@@ -26,8 +48,9 @@ class TreeCatalogController
         $this->controller = new JarboeController($options);
     }
 
-    // end __construct
-
+    /**
+     * @param array $options
+     */
     public function setOptions(array $options = [])
     {
         $this->options = $options;
@@ -35,9 +58,12 @@ class TreeCatalogController
 
     // end setOptions
 
+    /**
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View|void
+     */
     public function handle()
     {
-        switch (Input::get('query_type')) {
+        switch (request('query_type')) {
             case 'do_create_node':
                 return $this->doCreateNode();
 
@@ -69,31 +95,26 @@ class TreeCatalogController
 
     // end handle
 
+    /**
+     *
+     */
     public function doUpdateNode()
     {
-        $model = $this->model;
+        $node = $this->model::find(request('pk'));
+        $node->template = request('value');
+        $node->save();
 
-        switch (request('name')) {
-            case 'template':
-                $node = $model::find(Input::get('pk'));
-                $node->template = Input::get('value');
-                $node->save();
-
-                $node->clearCache();
-                break;
-
-            default:
-                throw new \RuntimeException('someone tries to hack me :c');
-        }
+        $node->clearCache();
     }
 
-    // end doUpdateNode
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doCreateNode()
     {
         $model = $this->model;
 
-        $root = $model::find(Input::get('node', 1));
+        $root = $model::find(request('node', 1));
 
         $node = new $model();
 
@@ -106,11 +127,7 @@ class TreeCatalogController
 
         $node->checkUnicUrl();
 
-        if ($root->children()->count() == 1) {
-            $node->makeChildOf($root);
-        } else {
-            $node->makeFirstChildOf($root);
-        }
+        $root->children()->count() == 1 ? $node->makeChildOf($root) : $node->makeFirstChildOf($root);
 
         $root->clearCache();
 
@@ -119,26 +136,28 @@ class TreeCatalogController
         ]);
     }
 
-    // end doCreateNode
-
+    /**
+     * @return array
+     */
     public function doCloneRecord()
     {
         $model = $this->model;
         $root = $model::find(request('node', 1));
-
         $id = request('id');
 
         $this->cloneRecursively($id);
 
         $root->clearCache();
 
-        $res = [
-            'id'     => $id,
+        return [
+            'id' => $id,
         ];
-
-        return $res;
     }
 
+    /**
+     * @param $id
+     * @param string $parentId
+     */
     private function cloneRecursively($id, $parentId = '')
     {
         $model = $this->model;
@@ -153,14 +172,14 @@ class TreeCatalogController
         if ($page['parent_id']) {
             $root = $model::find($page['parent_id']);
 
-            $rec = new $model;
+            $rec = new $model();
+            $countPages = $model::where('parent_id', $page['parent_id'])->where('slug', $page['slug'])->count();
 
-            if ($model::where('parent_id', $page['parent_id'])->where('slug', $page['slug'])->count()) {
-                if ($parentId) {
-                    $page['slug'] = $page['slug'].'_'.$page['parent_id'];
-                } else {
-                    $page['slug'] = $page['slug'].'_'.time();
-                }
+            if ($countPages) {
+
+                $page['slug'] = $parentId ?
+                                        $page['slug'] . '_' . $page['parent_id'] :
+                                        $page['slug'] . '_' . time();
             }
 
             foreach ($page as $k => $val) {
@@ -181,11 +200,13 @@ class TreeCatalogController
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doChangeActiveStatus()
     {
-        $model = $this->model;
-        $node = $model::find(Input::get('id'));
-        $node->is_active = Input::get('is_active') ? '1' : '0';
+        $node = $this->model::find(request('id'));
+        $node->is_active = request('is_active') ? '1' : '0';
 
         $node->save();
 
@@ -196,37 +217,35 @@ class TreeCatalogController
         ]);
     }
 
-    // end doChangeActiveStatus
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doChangePosition()
     {
-        $model = $this->model;
+        $id = request('id');
+        $idParent = request('parent_id', 1);
+        $idLeftSibling = request('left_sibling_id');
+        $idRightSibling = request('right_sibling_id');
 
-        $id = Input::get('id');
-        $idParent = Input::get('parent_id', 1);
-        $idLeftSibling = Input::get('left_sibling_id');
-        $idRightSibling = Input::get('right_sibling_id');
-
-        $item = $model::find($id);
-        $root = $model::find($idParent);
+        $item = $this->model::find($id);
+        $root = $this->model::find($idParent);
 
         $prevParentID = $item->parent_id;
         $item->makeChildOf($root);
 
-        $item->slug = $item->slug;
         $item->save();
 
         if ($prevParentID == $idParent) {
             if ($idLeftSibling) {
-                $item->moveToRightOf($model::find($idLeftSibling));
+                $item->moveToRightOf($this->model::find($idLeftSibling));
             } elseif ($idRightSibling) {
-                $item->moveToLeftOf($model::find($idRightSibling));
+                $item->moveToLeftOf($this->model::find($idRightSibling));
             }
         }
 
         $root->clearCache();
 
-        $item = $model::find($item->id);
+        $item = $this->model::find($item->id);
         $item->checkUnicUrl();
 
         $data = [
@@ -238,42 +257,38 @@ class TreeCatalogController
         return Response::json($data);
     }
 
-    // end doChangePosition
-
+    /**
+     * @return mixed
+     */
     public function process()
     {
-        $model = $this->model;
+        $idNode = request('page_id', request('node', 1));
+        $current = $this->model::find($idNode);
 
-        $idNode = Input::get('page_id', Input::get('node', 1));
-        $current = $model::find($idNode);
-
-        $templates = Config::get('builder.'.$this->nameTree.'.templates');
-        $template = Config::get('builder.'.$this->nameTree.'.default');
+        $templates = config('builder.' . $this->nameTree . '.templates');
+        $template = config('builder.' . $this->nameTree . '.default');
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
 
-        $options = [
+        return \Jarboe::table([
             'url'      => URL::current(),
-            'def_name' => $this->nameTree.'.'.$template['node_definition'],
+            'def_name' => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
             ],
-        ];
-
-        return \Jarboe::table($options);
+        ]);
     }
 
-    // end process
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doDeleteNode()
     {
-        $model = $this->model;
+        $this->model::destroy(request('id'));
 
-        $model::destroy(Input::get('id'));
-
-        $modelObj = $model::find('1');
+        $modelObj = $this->model::find('1');
         $modelObj->clearCache();
 
         return Response::json([
@@ -281,19 +296,18 @@ class TreeCatalogController
         ]);
     }
 
-    // end doDeleteNode
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     private function handleShowCatalog()
     {
         $parentIDs = [];
-        $model = $this->model;
         $treeName = $this->nameTree;
-        $controller = $this->controller;
 
-        $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
+        $perPage = Session::get('table_builder.' . $treeName . '.node.per_page', 20);
 
-        $idNode = Input::get('node', 1);
-        $current = $model::find($idNode);
+        $idNode = request('node', 1);
+        $current = $this->model::find($idNode);
 
         foreach ($current->getAncestors() as $anc) {
             $parentIDs[] = $anc->id;
@@ -302,13 +316,13 @@ class TreeCatalogController
         $children = $current->children();
 
         //filter ids
-        $actions = config('builder.'.$treeName.'.actions.show');
+        $actions = config('builder.' . $treeName . '.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
             $arrIdsShow = $actions['check']();
 
             foreach ($actions['check']() as $id) {
-                $arrIdsShow[] = $model::find($id)->getDescendants()->pluck('id')->toArray();
+                $arrIdsShow[] = $this->model::find($id)->getDescendants()->pluck('id')->toArray();
             }
 
             $arrIdsShow = array_flatten($arrIdsShow);
@@ -318,8 +332,8 @@ class TreeCatalogController
 
         $children = $children->paginate($perPage);
 
-        $templates = config('builder.'.$treeName.'.templates');
-        $template = config('builder.'.$treeName.'.default');
+        $templates = config('builder.' . $treeName . '.templates');
+        $template = config('builder.' . $treeName . '.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
@@ -328,34 +342,34 @@ class TreeCatalogController
         $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller', 'perPage'));
         $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
 
-        return view('admin::'.$treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
+        return view('admin::' . $treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getEditModalForm()
     {
-        $model = $this->model;
+        $idNode = request('id');
+        $current = $this->model::find($idNode);
 
-        $idNode = Input::get('id');
-        $current = $model::find($idNode);
-
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
+        $templates = config('builder.' . $this->nameTree . '.templates');
+        $template = config('builder.' . $this->nameTree . '.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
 
-        $options = [
+        $jarboeController = new JarboeController([
             'url'      => URL::current(),
-            'def_name' => $this->nameTree.'.'.$template['node_definition'],
+            'def_name' => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
             ],
-        ];
-        $controller = new JarboeController($options);
+        ]);
 
-        $html = $controller->view->showEditForm($idNode, true);
+        $html = $jarboeController->view->showEditForm($idNode, true);
 
         return Response::json([
             'status' => true,
@@ -363,35 +377,34 @@ class TreeCatalogController
         ]);
     }
 
-    // end getEditModalForm
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
     public function doEditNode()
     {
-        $model = $this->model;
+        $idNode = request('id');
+        $current = $this->model::find($idNode);
 
-        $idNode = Input::get('id');
-        $current = $model::find($idNode);
-
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
+        $templates = config('builder.' . $this->nameTree . '.templates');
+        $template = config('builder.' . $this->nameTree . '.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
 
-        $options = [
+        $jarboeController = new JarboeController([
             'url'        => URL::current(),
-            'def_name'   => $this->nameTree.'.'.$template['node_definition'],
+            'def_name'   => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
             ],
-        ];
-        $controller = new JarboeController($options);
+        ]);
 
-        $result = $controller->query->updateRow(Input::all());
+        $result = $jarboeController->query->updateRow(Input::all());
 
-        $item = $model::find($idNode);
+        $item = $this->model::find($idNode);
         $item->clearCache();
         $item->checkUnicUrl();
         $treeName = $this->nameTree;
@@ -399,6 +412,4 @@ class TreeCatalogController
 
         return Response::json($result);
     }
-
-    // end doEditNode
 }

@@ -6,16 +6,6 @@ use Illuminate\Support\Facades\Crypt;
 use Vis\Builder\Libs\LaravelLogViewer;
 use Illuminate\Support\Facades\Request;
 
-if (class_exists('\\Illuminate\\Routing\\Controller')) {
-    class BaseController extends \Illuminate\Routing\Controller
-    {
-    }
-} elseif (class_exists('Laravel\\Lumen\\Routing\\Controller')) {
-    class BaseController extends \Laravel\Lumen\Routing\Controller
-    {
-    }
-}
-
 class LogViewerController extends BaseController
 {
     protected $request;

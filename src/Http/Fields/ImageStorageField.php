@@ -34,7 +34,7 @@ class ImageStorageField extends AbstractField
             }
         }
 
-        $input = View::make('admin::tb.storage.image.input');
+        $input = view('admin::tb.storage.image.input');
         $input->value = $this->getValue($row);
         $input->row = $row;
         $input->name = $this->getFieldName();
@@ -43,7 +43,7 @@ class ImageStorageField extends AbstractField
         $input->type = $this->getRequiredAttribute('storage_type');
 
         if ($row) {
-            $model = '\\'.\Config::get('builder::images.models.image');
+            $model = '\\' . \config('builder::images.models.image');
             $input->entity = $model::find($this->getValue($row));
         }
 

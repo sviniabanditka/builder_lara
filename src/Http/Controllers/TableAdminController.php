@@ -13,8 +13,17 @@ use Illuminate\Support\Facades\Session;
 use Vis\Builder\Facades\Jarboe as JarboeFacade;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
+/**
+ * Class TableAdminController
+ * @package Vis\Builder
+ */
 class TableAdminController extends Controller
 {
+    private $urlAdmin = '/admin/';
+
+    /**
+     * @return mixed
+     */
     public function showTree()
     {
         $controller = JarboeFacade::tree();
@@ -22,14 +31,18 @@ class TableAdminController extends Controller
         return $controller->handle();
     }
 
+    /**
+     * @param $nameTree
+     * @return mixed
+     */
     public function showTreeOther($nameTree)
     {
-        $model = config('builder.'.$nameTree.'_tree.model');
-        $nameTree = $nameTree.'_tree';
+        $model = config('builder.' . $nameTree . '_tree.model');
+        $nameTree = $nameTree . '_tree';
 
         $option = [
-            'url' => '/admin/'.$nameTree,
-            'def_name' => $nameTree.'/node',
+            'url' => $this->urlAdmin . $nameTree,
+            'def_name' => $nameTree . '/node',
         ];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree);
@@ -37,6 +50,9 @@ class TableAdminController extends Controller
         return $controller->handle();
     }
 
+    /**
+     * @return mixed
+     */
     public function handleTree()
     {
         $controller = JarboeFacade::tree();
@@ -44,14 +60,18 @@ class TableAdminController extends Controller
         return $controller->process();
     }
 
+    /**
+     * @param $nameTree
+     * @return mixed
+     */
     public function handleTreeOther($nameTree)
     {
-        $model = config('builder.'.$nameTree.'_tree.model');
-        $nameTree = $nameTree.'_tree';
+        $model = config('builder.' . $nameTree . '_tree.model');
+        $nameTree = $nameTree . '_tree';
 
         $option = [
-            'url' => '/admin/'.$nameTree,
-            'def_name' => $nameTree.'/node',
+            'url' => $this->urlAdmin . $nameTree,
+            'def_name' => $nameTree . '/node',
         ];
 
         $controller = JarboeFacade::tree($model, $option, $nameTree);
@@ -59,10 +79,14 @@ class TableAdminController extends Controller
         return $controller->process();
     }
 
+    /**
+     * @param string $nameTree
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showTreeAll($nameTree)
     {
-        $model = config('builder.'.$nameTree.'.model');
-        $actions = config('builder.'.$nameTree.'.actions.show');
+        $model = config('builder.' . $nameTree . '.model');
+        $actions = config('builder.' . $nameTree . '.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
             $tree = $model::whereIn('id', $actions['check']())->get()->toHierarchy();
@@ -81,10 +105,14 @@ class TableAdminController extends Controller
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
     }
 
+    /**
+     * @param string $page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showPage($page)
     {
         $options = [
-            'url'      => '/admin/'.$page,
+            'url'      => $this->urlAdmin . $page,
             'def_name' => $page,
         ];
 
@@ -93,31 +121,46 @@ class TableAdminController extends Controller
         return view('admin::table', compact('table'));
     }
 
+    /**
+     * @param $page
+     * @return mixed
+     */
     public function showPagePost($page)
     {
         $options = [
-            'url'      => '/admin/'.$page,
+            'url'      => $this->urlAdmin . $page,
             'def_name' => $page,
         ];
 
         return JarboeFacade::table($options)['showList'];
     }
 
+    /**
+     * @param $page
+     * @return mixed
+     */
     public function handlePage($page)
     {
         $options = [
-            'url'      => '/admin/'.$page,
+            'url'      => $this->urlAdmin . $page,
             'def_name' => $page,
         ];
 
         return JarboeFacade::table($options);
     }
 
+    /**
+     * @param $table
+     */
     public function fastEditText($table)
     {
         DB::table($table)->where('id', request('pk'))->update([request('name') => request('value')]);
     }
 
+    /**
+     * @param string $slug
+     * @return mixed
+     */
     public function showPageUrlTree($slug = '')
     {
         $arrSegments = explode('/', $slug);
@@ -163,15 +206,19 @@ class TableAdminController extends Controller
         $def = $templates[$node->template]['node_definition'];
 
         $_model = config("builder.tb-definitions.tree.$def.options.model");
-        $node = (new $_model)->setRawAttributes($node->getAttributes());
+        $node = (new $_model())->setRawAttributes($node->getAttributes());
 
         list($controller, $method) = explode('@', $templates[$node->template]['action']);
 
         Session::put('currentNode', $node);
 
-        return app('App\\Http\\Controllers\\'.$controller)->init($node, $method);
+        return app('App\\Http\\Controllers\\' . $controller)->init($node, $method);
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function doChangeRelationField()
     {
         $data = json_decode(htmlspecialchars_decode(request('dataFieldJson')));
@@ -194,8 +241,8 @@ class TableAdminController extends Controller
             }
         }
 
-        if (isset($data->relation->foreign_field_filter) && Input::get('id')) {
-            $db->where($data->relation->foreign_field_filter, Input::get('id'));
+        if (isset($data->relation->foreign_field_filter) && request('id')) {
+            $db->where($data->relation->foreign_field_filter, request('id'));
         }
 
         if (isset($data->orderBy)) {
@@ -217,24 +264,26 @@ class TableAdminController extends Controller
             $options[$val[$foreignKey]] = $val[$foreignValue];
         }
 
-        return View::make('admin::tb.foreign_options', compact('options', 'selected'))->render();
+        return view('admin::tb.foreign_options', compact('options', 'selected'))->render();
     }
 
+    /**
+     * @return int|mixed
+     */
     public function insertRecordForManyToMany()
     {
         $title = request('title');
         $params = (array) json_decode(request('paramsJson'));
 
-        $record = (array) DB::table($params['mtm_external_table'])->where($params['mtm_external_value_field'], $title)->first();
+        $record = (array) DB::table($params['mtm_external_table'])
+                            ->where($params['mtm_external_value_field'], $title)->first();
 
         if ($record) {
             return $record['id'];
         }
 
-        $id = DB::table($params['mtm_external_table'])->insertGetId([
+        return DB::table($params['mtm_external_table'])->insertGetId([
             $params['mtm_external_value_field'] => $title,
         ]);
-
-        return $id;
     }
 }

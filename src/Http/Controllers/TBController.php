@@ -8,12 +8,21 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class TBController
+ * @package Vis\Builder
+ */
 class TBController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function showDashboard()
     {
-        if (config('builder.login.on_login') && config('builder.login.on_login')()) {
-            return config('builder.login.on_login')();
+        $onLoginFunction = 'builder.login.on_login';
+
+        if (config($onLoginFunction) && config($onLoginFunction)()) {
+            return config($onLoginFunction)();
         }
 
         return Redirect::to('/admin/tree');
@@ -21,30 +30,40 @@ class TBController extends Controller
 
     // end showDashboard
 
+    /**
+     * change skin
+     */
     public function doChangeSkin()
     {
-        $skin = Input::get('skin');
+        $skin = request('skin');
 
         Cookie::queue('skin', $skin, '100000');
     }
 
+    /**
+     * change lang
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function doChangeLangAdmin()
     {
-        $lang = Input::get('lang');
+        $lang = request('lang');
         Cookie::queue('lang_admin', $lang, '100000000');
 
         return Redirect::back();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doSaveMenuPreference()
     {
-        $option = Input::get('option');
+        $option = request('option');
         $cookie = Cookie::forever('tb-misc-body_class', $option);
 
-        $data = [
+        $response = Response::json([
             'status' => true,
-        ];
-        $response = Response::json($data);
+        ]);
         $response->headers->setCookie($cookie);
 
         return $response;
@@ -52,6 +71,11 @@ class TBController extends Controller
 
     // end doSaveMenuPreference
 
+    /**
+     * @param $exception
+     * @param $code
+     * @return \Illuminate\Http\JsonResponse
+     */
     public static function returnError($exception, $code)
     {
         $message = $exception->getMessage();
@@ -69,22 +93,23 @@ class TBController extends Controller
         return Response::json($data, $code);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doSaveCropImg()
     {
         $data = Input::all();
         $infoImg = pathinfo($data['originalImg']);
-        $fileCrop = '/'.$infoImg['dirname'].'/'.md5($infoImg['filename']).time().'_crop.'.$infoImg['extension'];
-        $ifp = fopen(public_path().$fileCrop, 'wb');
+        $fileCrop = '/' . $infoImg['dirname'] . '/' . md5($infoImg['filename']) . time() . '_crop.' . $infoImg['extension'];
+        $ifp = fopen(public_path() . $fileCrop, 'wb');
         $dataFile = explode(',', $data['data']);
 
         fwrite($ifp, base64_decode($dataFile[1]));
         fclose($ifp);
 
-        if (isset($data['width']) || isset($data['height'])) {
-            $smallImg = glide($fileCrop, ['w' => $data['width'], 'h' => $data['height']]).'?time='.time();
-        } else {
-            $smallImg = $fileCrop;
-        }
+        $smallImg = isset($data['width']) || isset($data['height']) ?
+            glide($fileCrop, ['w' => $data['width'], 'h' => $data['height']]) . '?time=' . time() :
+            $fileCrop;
 
         return Response::json(
             [

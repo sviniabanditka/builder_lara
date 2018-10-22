@@ -2,13 +2,24 @@
 
 namespace Vis\Builder\Fields;
 
+/**
+ * Class WysiwygField
+ * @package Vis\Builder\Fields
+ */
 class WysiwygField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -18,9 +29,14 @@ class WysiwygField extends AbstractField
             }
         }
 
-        return mb_substr(strip_tags($this->getValue($row)), 0, 300).'...';
+        return mb_substr(strip_tags($this->getValue($row)), 0, 300) . '...';
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -47,6 +63,11 @@ class WysiwygField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getTabbedEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
@@ -56,7 +77,7 @@ class WysiwygField extends AbstractField
             }
         }
 
-        $tableName = $this->definition['db']['table'].'_wysiwyg';
+        $tableName = $this->definition['db']['table'] . '_wysiwyg';
 
         $input = view('admin::tb.tab_input_wysiwyg_redactor');
         $input->value = $this->getValue($row);
@@ -74,24 +95,28 @@ class WysiwygField extends AbstractField
             $action = $this->definition['options']['action_url_tree'];
         }
         $input->action = $action;
-        $input->pre = $row ? $tableName.'e' : $tableName.'c';
+        $input->pre = $row ? $tableName . 'e' : $tableName . 'c';
 
         return $input->render();
     }
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
         $tabs = $this->getAttribute('tabs');
         if ($tabs) {
-            $field = $table.'.'.$this->getFieldName();
+            $field = $table . '.' . $this->getFieldName();
             $db->where(function ($query) use ($field, $value, $tabs) {
                 foreach ($tabs as $tab) {
-                    $query->orWhere($field.$tab['postfix'], 'LIKE', '%'.$value.'%');
+                    $query->orWhere($field . $tab['postfix'], 'LIKE', '%' . $value . '%');
                 }
             });
         } else {
-            $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
+            $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
         }
     }
 }

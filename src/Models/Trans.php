@@ -6,24 +6,43 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Trans
+ * @package Vis\TranslationsCMS
+ */
 class Trans extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'translations_phrases_cms';
 
+    /**
+     * @var array
+     */
     public static $rules = [
         'phrase' => 'required|unique:translations_phrases_cms',
     ];
 
+    /**
+     * @var array
+     */
     protected $fillable = ['phrase'];
 
+    /**
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * @return mixed
+     */
     public function getTrans()
     {
         $res = $this->hasMany('Vis\TranslationsCMS\Translate', 'id_translations_phrase')->get()->toArray();
 
         if ($res) {
-            foreach ($res as $k => $el) {
+            foreach ($res as $el) {
                 $trans[$el['lang']] = $el['translate'];
             }
 
@@ -31,7 +50,9 @@ class Trans extends Model
         }
     }
 
-    //заполниения масива кеша с переводами
+    /**
+     * @return array|mixed
+     */
     public static function fillCacheTrans()
     {
         if (Cache::tags('translations')->has('translations_cms')) {
@@ -56,7 +77,9 @@ class Trans extends Model
         return $arrayTranslate;
     }
 
-    //перезапись кеша переводов
+    /**
+     *
+     */
     public static function reCacheTrans()
     {
         Cache::tags('translations')->flush();

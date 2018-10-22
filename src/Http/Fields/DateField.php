@@ -4,8 +4,16 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class DateField
+ * @package Vis\Builder\Fields
+ */
 class DateField extends AbstractField
 {
+    /**
+     * @param $value
+     * @return false|string|void
+     */
     public function prepareQueryValue($value)
     {
         if (! $value) {
@@ -19,6 +27,10 @@ class DateField extends AbstractField
         return $value;
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -35,6 +47,11 @@ class DateField extends AbstractField
         return $this->getValue($row);
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -57,6 +74,10 @@ class DateField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {
@@ -64,10 +85,10 @@ class DateField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = view('admin::tb.filter_'.$this->getAttribute('filter'));
+        $input = view('admin::tb.filter_' . $this->getAttribute('filter'));
         $input->name = $this->getFieldName();
         $input->value = $filter;
         $input->months = $this->getAttribute('months');

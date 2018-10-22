@@ -5,13 +5,33 @@ namespace Vis\Builder\Handlers;
 use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class ViewHandler
+ * @package Vis\Builder\Handlers
+ */
 class ViewHandler
 {
+    /**
+     * @var JarboeController
+     */
     protected $controller;
+    /**
+     * @var mixed
+     */
     protected $definition;
+    /**
+     * @var mixed
+     */
     protected $definitionName;
+    /**
+     * @var
+     */
     protected $model;
 
+    /**
+     * ViewHandler constructor.
+     * @param JarboeController $controller
+     */
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
@@ -20,6 +40,11 @@ class ViewHandler
         $this->model = $this->definition['options']['model'];
     }
 
+    /**
+     * @param $id
+     * @return string
+     * @throws \Throwable
+     */
     public function showEditFormPage($id)
     {
         if ($id === false) {
@@ -31,7 +56,7 @@ class ViewHandler
                 throw new \RuntimeException('Update action is not permitted');
             }
             if (! $this->controller->isAllowedID($id)) {
-                throw new \RuntimeException('Not allowed to edit row #'.$id);
+                throw new \RuntimeException('Not allowed to edit row #' . $id);
             }
         }
 
@@ -67,11 +92,16 @@ class ViewHandler
         $definition = $this->definition;
         $templatePostfix = $id ? 'edit' : 'create';
 
-        return view('admin::table_page_'.$templatePostfix,
-                compact('form', 'js', 'definition', 'id'))
+        return view(
+            'admin::table_page_' . $templatePostfix,
+            compact('form', 'js', 'definition', 'id')
+        )
                 ->render();
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showList()
     {
         $table = view('admin::tb.table_builder');
@@ -90,13 +120,17 @@ class ViewHandler
 
         $table->def = $this->definition;
         $table->controller = $this->controller;
-        $table->per_page = Session::get('table_builder.'.$this->definitionName.'.per_page');
+        $table->per_page = Session::get('table_builder.' . $this->definitionName . '.per_page');
         $table->fieldsList = $this->controller->definitionClass->getFieldsList();
         $table->filterView = $this->getViewFilter($table->def);
 
         return $table;
     }
 
+    /**
+     * @param $def
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
+     */
     private function getViewFilter($def)
     {
         if ($this->controller->hasCustomHandlerMethod('onViewFilter')) {
@@ -109,6 +143,10 @@ class ViewHandler
         return view('admin::tb.table_filter', ['def' => $def]);
     }
 
+    /**
+     * @return array
+     * @throws \Throwable
+     */
     public function showHtmlForeignDefinition()
     {
         $params = (array) json_decode(request('paramsJson'));
@@ -116,12 +154,12 @@ class ViewHandler
 
         foreach ($params['show'] as $field) {
             $arrayDefinitionFields[$field] =
-                config('builder.tb-definitions.'.$params['definition'].'.fields.'.$field);
+                config('builder.tb-definitions.' . $params['definition'] . '.fields.' . $field);
         }
 
         if (request('id')) {
-            $model = config('builder.tb-definitions.'.$params['definition'].'.options.model');
-            $result = $model::where($params['foreign_field'], request('id'));
+            $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
+            $result = $modelThis::where($params['foreign_field'], request('id'));
 
             $result = isset($params['sortable'])
                     ? $result->orderBy($params['sortable'], 'asc')->orderBy('id', 'desc')
@@ -134,25 +172,34 @@ class ViewHandler
         $attributes = request('paramsJson');
 
         return [
-            'html' => view('admin::tb.input_definition_table_data',
-                        compact('arrayDefinitionFields', 'result', 'idUpdate', 'attributes'))
+            'html' => view(
+                'admin::tb.input_definition_table_data',
+                compact('arrayDefinitionFields', 'result', 'idUpdate', 'attributes')
+            )
                         ->render(),
             'count_records' => count($result),
         ];
     }
 
+    /**
+     * @return array
+     * @throws \Throwable
+     */
     public function deleteForeignDefinition()
     {
         $this->controller->query->clearCache();
 
         $params = (array) json_decode(request('paramsJson'));
-        $model = config('builder.tb-definitions.'.$params['definition'].'.options.model');
+        $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
 
-        $model::find(request('idDelete'))->delete();
+        $modelThis::find(request('idDelete'))->delete();
 
         return $this->showHtmlForeignDefinition();
     }
 
+    /**
+     * @return bool
+     */
     public function changePositionDefinition()
     {
         $this->controller->query->clearCache();
@@ -163,13 +210,13 @@ class ViewHandler
             throw new \RuntimeException('Не определено поле для сортировки');
         }
         $idsPositionUpdate = (array) json_decode(request('idsPosition'));
-        $model = config('builder.tb-definitions.'.$params['definition'].'.options.model');
+        $modelThis = config('builder.tb-definitions.' . $params['definition'] . '.options.model');
         $sortField = $params['sortable'];
 
-        $records = $model::whereIn('id', $idsPositionUpdate)
-            ->orderByRaw('FIELD(id, '.implode(',', $idsPositionUpdate).')')->get();
+        $records = $modelThis::whereIn('id', $idsPositionUpdate)
+            ->orderByRaw('FIELD(id, ' . implode(',', $idsPositionUpdate) . ')')->get();
 
-        foreach ($records as $k=>$record) {
+        foreach ($records as $k => $record) {
             $record->$sortField = $k;
             $record->save();
         }
@@ -177,6 +224,12 @@ class ViewHandler
         return true;
     }
 
+    /**
+     * @param bool $id
+     * @param bool $isTree
+     * @return string
+     * @throws \Throwable
+     */
     public function showEditForm($id = false, $isTree = false)
     {
         $table = $id ? view('admin::tb.modal_form_edit') : view('admin::tb.modal_form');
@@ -196,11 +249,17 @@ class ViewHandler
         return $table->render();
     }
 
+    /**
+     * @param bool $id
+     * @param bool $isTree
+     * @return string
+     * @throws \Throwable
+     */
     public function showRevisionForm($id = false, $isTree = false)
     {
         $table = view('admin::tb.modal_revision');
-        $model = $this->model;
-        $objModel = $model::find($id);
+
+        $objModel = $this->model::find($id);
 
         $table->is_tree = $isTree;
         $table->def = $this->definition;
@@ -210,6 +269,12 @@ class ViewHandler
         return $table->render();
     }
 
+    /**
+     * @param bool $id
+     * @param bool $isTree
+     * @return string
+     * @throws \Throwable
+     */
     public function showViewsStatistic($id = false, $isTree = false)
     {
         $table = view('admin::tb.modal_views_statistic');
@@ -223,6 +288,11 @@ class ViewHandler
         return $table->render();
     }
 
+    /**
+     * @param $data
+     * @return string
+     * @throws \Throwable
+     */
     public function getRowHtml($data)
     {
         $row = view('admin::tb.single_row');
@@ -236,6 +306,11 @@ class ViewHandler
         return $row->render();
     }
 
+    /**
+     * @param $row
+     * @return string
+     * @throws \Throwable
+     */
     public function fetchActions($row)
     {
         $actions = view('admin::tb.single_row_actions');

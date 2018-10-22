@@ -2,11 +2,18 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class TimestampField
+ * @package Vis\Builder\Fields
+ */
 class TimestampField extends AbstractField
 {
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
@@ -18,7 +25,7 @@ class TimestampField extends AbstractField
             $dateFrom = isset($value['from']) ? $this->getTimestamp($value['from']) : '28800';
             $dateTo = isset($value['to']) ? $this->getTimestamp($value['to']) : '2146939932';
             $db->whereBetween(
-                $table.'.'.$this->getFieldName(),
+                $table . '.' . $this->getFieldName(),
                 [
                     date('Y-m-d H:i:s', $dateFrom),
                     date('Y-m-d H:i:s', $dateTo),
@@ -26,14 +33,16 @@ class TimestampField extends AbstractField
             );
         } else {
             $db->where(
-                $table.'.'.$this->getFieldName(),
+                $table . '.' . $this->getFieldName(),
                 date('Y-m-d H:i:s', $this->getTimestamp($value))
             );
         }
     }
 
-    // end onSearchFilter
-
+    /**
+     * @param $value
+     * @return string|void
+     */
     public function prepareQueryValue($value)
     {
         if (! $value) {
@@ -42,18 +51,22 @@ class TimestampField extends AbstractField
             }
         }
 
-        return date('Y-m-d H:i:s', $this->getTimestamp($value)).'.000000';
+        return date('Y-m-d H:i:s', $this->getTimestamp($value)) . '.000000';
     }
 
-    // end prepareQueryValue
-
+    /**
+     * @param $date
+     * @return false|int
+     */
     private function getTimestamp($date)
     {
         return strtotime(str_replace('/', '-', $date));
     }
 
-    // end getTimestamp
-
+    /**
+     * @param $row
+     * @return bool|false|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -70,8 +83,11 @@ class TimestampField extends AbstractField
         return date('d/m/Y', $this->getTimestamp($this->getValue($row)));
     }
 
-    // end getListValue
-
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -84,7 +100,7 @@ class TimestampField extends AbstractField
         $value = $this->getValue($row);
         $value = $value ? date('d/m/Y', $this->getTimestamp($value)) : '';
 
-        $input = View::make('admin::tb.input_timestamp');
+        $input = view('admin::tb.input_timestamp');
         $input->value = $value;
         $input->name = $this->getFieldName();
         $input->months = $this->getAttribute('months');
@@ -93,8 +109,10 @@ class TimestampField extends AbstractField
         return $input->render();
     }
 
-    // end getEditInput
-
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {
@@ -106,25 +124,27 @@ class TimestampField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $input = View::make('admin::tb.filter_datetime');
+        $input = view('admin::tb.filter_datetime');
         $input->name = $this->getFieldName();
         $input->value = $filter;
 
         return $input->render();
     }
 
-    // end getFilterInput
-
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     private function getFilterRangeInput()
     {
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
         $filter = Session::get($sessionPath, []);
 
-        $input = View::make('admin::tb.filter_timestamp_range');
+        $input = view('admin::tb.filter_timestamp_range');
         $input->name = $this->getFieldName();
         $input->valueFrom = isset($filter['from']) ? $filter['from'] : '';
         $input->valueTo = isset($filter['to']) ? $filter['to'] : '';

@@ -3,13 +3,19 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
 
+/**
+ * Class DashboardController
+ * @package Vis\Builder
+ */
 class DashboardController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showPage()
     {
-        $dashboardConfig = Config::get('builder.dashboard');
+        $dashboardConfig = config('builder.dashboard');
 
         $columns = $dashboardConfig['columns'];
         $countColoums = count($columns);

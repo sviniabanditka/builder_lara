@@ -11,7 +11,7 @@ class Translate extends AbstractSubaction
 
         $data = compact('caption', 'to', 'from');
 
-        return \View::make('admin::tb.subactions.translate', $data)->render();
+        return \view('admin::tb.subactions.translate', $data)->render();
     }
 
     // end fetch

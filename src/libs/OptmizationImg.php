@@ -9,11 +9,11 @@ class OptmizationImg
     public static function run($pathImg)
     {
         $infoImg = new \SplFileInfo($pathImg);
-        $fullPathPicture = public_path().$pathImg;
+        $fullPathPicture = public_path() . $pathImg;
 
-        if (Config::get('builder.optimization_img.active')) {
-            $commandPng = Config::get('builder.optimization_img.png_path');
-            $commandJpg = Config::get('builder.optimization_img.jpg_path');
+        if (config('builder.optimization_img.active')) {
+            $commandPng = config('builder.optimization_img.png_path');
+            $commandJpg = config('builder.optimization_img.jpg_path');
 
             try {
                 if ($infoImg->getExtension() == 'png') {

@@ -9,8 +9,18 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
+/**
+ * Class LoginController
+ * @package Vis\Builder
+ */
 class LoginController extends Controller
 {
+    private $sessionError = 'login_not_found';
+    private $routeLogin = 'login_show';
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function showLogin()
     {
         try {
@@ -18,32 +28,33 @@ class LoginController extends Controller
                 return Redirect::to(config('builder.admin.uri'));
             }
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            Session::flash('login_not_found', 'Пользователь не активирован');
+            Session::flash($this->sessionError, 'Пользователь не активирован');
             Sentinel::logout();
 
-            return Redirect::route('login_show');
+            return Redirect::route($this->routeLogin);
         }
 
         return view('admin::vis-login');
     }
 
-    // end showLogin
-
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postLogin()
     {
         if ($this->validation()) {
             try {
                 $user = Sentinel::authenticate(
                     [
-                        'email' => Input::get('email'),
-                        'password' => Input::get('password'),
+                        'email' => request('email'),
+                        'password' => request('password'),
                     ]
                 );
 
                 if (! $user) {
-                    Session::flash('login_not_found', 'Пользователь не найден');
+                    Session::flash($this->sessionError, 'Пользователь не найден');
 
-                    return Redirect::route('login_show');
+                    return Redirect::route($this->routeLogin);
                 }
 
                 if (config('builder.login.on_login') && config('builder.login.on_login')()) {
@@ -52,49 +63,50 @@ class LoginController extends Controller
 
                 return Redirect::intended(config('builder.admin.uri'));
             } catch (\Cartalyst\Sentinel\Checkpoints\ThrottlingException $e) {
-                Session::flash('login_not_found', 'Превышено количество возможных попыток входа');
+                Session::flash($this->sessionError, 'Превышено количество возможных попыток входа');
 
                 return Redirect::route('login_show');
             } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-                Session::flash('login_not_found', 'Пользователь не активирован');
+                Session::flash($this->sessionError, 'Пользователь не активирован');
 
-                return Redirect::route('login_show');
+                return Redirect::route($this->routeLogin);
             }
         } else {
-            Session::flash('login_not_found', 'Некорректные данные запроса');
+            Session::flash($this->sessionError, 'Некорректные данные запроса');
 
-            return Redirect::route('login_show');
+            return Redirect::route($this->routeLogin);
         }
     }
 
-    // end
-
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function doLogout()
     {
         Sentinel::logout();
         $this->clearSessionsAdmin();
 
-        return Redirect::route('login_show');
+        return Redirect::route($this->routeLogin);
     }
 
-    // end doLogout
-
+    /**
+     * @return bool
+     */
     private function validation()
     {
         $rules = [
             'email' => 'required|email|max:50',
-            'password'=> 'required|min:6|max:20',
+            'password' => 'required|min:6|max:20',
         ];
 
         $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !$validator->fails();
     }
 
+    /**
+     *
+     */
     private function clearSessionsAdmin()
     {
         Session::forget('table_builder');

@@ -25,14 +25,15 @@ View::composer(['admin::layouts.default', 'admin::partials.scripts'], function (
 });
 
 View::composer(['admin::tree.create_modal', 'admin::tree.content'], function (ViewParam $view) {
-    $templates = config('builder.'.$view->treeName.'.templates');
-    $model = config('builder.'.$view->treeName.'.model');
+    $templates = config('builder.' . $view->treeName . '.templates');
+    $model = config('builder.' . $view->treeName . '.model');
     $idNode = request('node', 1);
 
     if ($idNode && $model) {
         $info = $model::find($idNode);
         if (isset($info->template)) {
-            $accessTemplateShow = config('builder.'.$view->treeName.'.templates.'.$info->template.'.show_templates');
+            $accessTemplateShow =
+                config('builder.' . $view->treeName . '.templates.' . $info->template . '.show_templates');
 
             if (is_array($accessTemplateShow) && count($accessTemplateShow)) {
                 $accessTemplateShow = array_flip($accessTemplateShow);
@@ -56,26 +57,26 @@ View::composer(['admin::tree.partials.update',
     $active = false;
     $caption = '';
 
-    $node_definition = config('builder.'.$view->treeName.'.templates.'
-        .$view->item->template.'.node_definition');
+    $nodeDefinition = config('builder.' . $view->treeName . '.templates.'
+        . $view->item->template . '.node_definition');
 
-    $update = config('builder.tb-definitions.'.$view->treeName.'.'
-        .$node_definition.'.actions.'.$type);
+    $update = config('builder.tb-definitions.' . $view->treeName . '.'
+        . $nodeDefinition . '.actions.' . $type);
     //check present config in template file
     if ($update) {
-        $pathToConfig = 'builder.tb-definitions.'.$view->treeName.'.'
-            .$node_definition.'.actions.'.$type;
+        $pathToConfig = 'builder.tb-definitions.' . $view->treeName . '.'
+            . $nodeDefinition . '.actions.' . $type;
     }
 
     //check in main file config
     if (! isset($update) || ! $update) {
-        $pathToConfig = 'builder.'.$view->treeName.'.actions.'.$type;
-        $update = config('builder.'.$view->treeName.'.actions.'.$type);
+        $pathToConfig = 'builder.' . $view->treeName . '.actions.' . $type;
+        $update = config('builder.' . $view->treeName . '.actions.' . $type);
     }
 
     if ($update) {
-        $caption = config($pathToConfig.'.caption');
-        $checkFunction = config($pathToConfig.'.check');
+        $caption = config($pathToConfig . '.caption');
+        $checkFunction = config($pathToConfig . '.check');
         $active = $checkFunction && $checkFunction();
     }
 

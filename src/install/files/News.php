@@ -8,7 +8,7 @@ class News extends BaseModel
 
     public function getDate()
     {
-        return  date('d', strtotime($this->created_at)).' '.Util::getMonth($this->created_at).' '.date('Y', strtotime($this->created_at));
+        return  date('d', strtotime($this->created_at)) . ' ' . Util::getMonth($this->created_at) . ' ' . date('Y', strtotime($this->created_at));
     }
 
     // end getCreatedDate
