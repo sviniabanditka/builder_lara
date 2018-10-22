@@ -175,7 +175,7 @@ class URLify
             }
         }
 
-        self::$regex = '/[' . self::$chars . ']/u';
+        self::$regex = '/['.self::$chars.']/u';
     }
 
     /**

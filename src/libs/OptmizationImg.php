@@ -9,7 +9,7 @@ class OptmizationImg
     public static function run($pathImg)
     {
         $infoImg = new \SplFileInfo($pathImg);
-        $fullPathPicture = public_path() . $pathImg;
+        $fullPathPicture = public_path().$pathImg;
 
         if (config('builder.optimization_img.active')) {
             $commandPng = config('builder.optimization_img.png_path');

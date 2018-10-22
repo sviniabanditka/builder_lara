@@ -7,8 +7,7 @@ use Vis\Builder\Handlers\CustomHandler;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
- * Class GroupsHandler
- * @package Vis\Builder\Helpers
+ * Class GroupsHandler.
  */
 class GroupsHandler extends CustomHandler
 {
@@ -58,27 +57,27 @@ class GroupsHandler extends CustomHandler
             if (isset($permission['link']) && isset($permission['title'])) {
                 $slug = str_replace('/', '', $permission['link']);
 
-                $actions = config('builder.tb-definitions.' . $slug . '.actions');
+                $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
                 if (count($actions)) {
-                    $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
+                    $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                     foreach ($actions as $slugAction => $action) {
                         if (isset($action['caption'])) {
-                            $permissions[$permission['title']][$slug . '.' . $slugAction] = $action['caption'];
+                            $permissions[$permission['title']][$slug.'.'.$slugAction] = $action['caption'];
                         }
                     }
                 } else {
-                    $actions = config('builder.' . $slug . '.actions');
+                    $actions = config('builder.'.$slug.'.actions');
 
                     if (count($actions)) {
-                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
+                        $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                         foreach ($actions as $slugAction => $action) {
                             if (isset($action['caption'])) {
-                                $permissions[$permission['title']][$slug . '.' . $slugAction] = $action['caption'];
+                                $permissions[$permission['title']][$slug.'.'.$slugAction] = $action['caption'];
                             }
                         }
                     } else {
-                        $permissions[$permission['title']][$slug . '.view'] = 'Просмотр';
+                        $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                     }
                 }
             } else {
@@ -86,14 +85,14 @@ class GroupsHandler extends CustomHandler
                     foreach ($permission['submenu'] as $subMenu) {
                         if (isset($subMenu['link'])) {
                             $slug = str_replace('/', '', $subMenu['link']);
-                            $actions = config('builder.tb-definitions.' . $slug . '.actions');
+                            $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
                             if (isset($subMenu['link']) && isset($subMenu['title'])) {
-                                $permissions[$permission['title']][$subMenu['title']][$slug . '.view'] = 'Просмотр';
+                                $permissions[$permission['title']][$subMenu['title']][$slug.'.view'] = 'Просмотр';
 
                                 if (count($actions)) {
                                     foreach ($actions as $slugAction => $action) {
-                                        $permissions[$permission['title']][$subMenu['title']][$slug . '.' . $slugAction]
+                                        $permissions[$permission['title']][$subMenu['title']][$slug.'.'.$slugAction]
                                             = $action['caption'];
                                     }
                                 }

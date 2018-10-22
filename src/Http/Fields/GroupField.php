@@ -16,7 +16,7 @@ class GroupField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-        $db->where($this->getFieldName(), 'LIKE', '%' . $value . '%');
+        $db->where($this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
     // end onSearchFilter
@@ -38,7 +38,7 @@ class GroupField extends AbstractField
             foreach ($section as $k => $param) {
                 foreach ($param as $nameParam => $valParam) {
                     if (isset($filds[$nameParam]['type'])) {
-                        $nameClass = 'Vis\\Builder\\Fields\\' . ucfirst($filds[$nameParam]['type']) . 'Field';
+                        $nameClass = 'Vis\\Builder\\Fields\\'.ucfirst($filds[$nameParam]['type']).'Field';
 
                         $resultObjectFild = new $nameClass($nameParam, $filds[$nameParam], $this->options, $this->definition, $this->handler);
                         $sectionResult[$k][$nameParam] = $filds[$nameParam];
@@ -53,7 +53,7 @@ class GroupField extends AbstractField
             }
         } else {
             foreach ($filds as $name => $fild) {
-                $nameClass = 'Vis\\Builder\\Fields\\' . ucfirst($fild['type']) . 'Field';
+                $nameClass = 'Vis\\Builder\\Fields\\'.ucfirst($fild['type']).'Field';
 
                 $resultObjectFild = new $nameClass($name, $fild, $this->options, $this->definition, $this->handler);
                 $sectionResult[0][$name] = $fild;
@@ -65,7 +65,7 @@ class GroupField extends AbstractField
             }
         }
 
-        $input = view('admin::tb.input_' . $type);
+        $input = view('admin::tb.input_'.$type);
         $input->value = $valueArray;
         $input->name = $this->getFieldName();
         $input->rows = $sectionResult;

@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Class EditorController
- * @package Vis\Builder
+ * Class EditorController.
  */
 class EditorController extends Controller
 {
     /**
-    * Loading photos from froala Editor
-    */
+     * Loading photos from froala Editor.
+     */
     public function uploadFoto()
     {
         $photo = Input::file('file');
@@ -37,9 +36,9 @@ class EditorController extends Controller
 
         $ext = $photo->getClientOriginalExtension();  // Get real extension according to mime type
         $fullname = $photo->getClientOriginalName(); // Client file name, including the extension of the client
-        $hashname = md5(date('H.i.s') . '_' . $fullname) . '.' . $ext;
+        $hashname = md5(date('H.i.s').'_'.$fullname).'.'.$ext;
 
-        $fullPathImg = '/' . $destinationPath . '/' . $hashname;
+        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
 
         Input::file('file')->move($destinationPath, $hashname);
 
@@ -47,7 +46,7 @@ class EditorController extends Controller
     }
 
     /**
-     * Loading files from froala Editor
+     * Loading files from froala Editor.
      */
     public function uploadFile()
     {
@@ -67,14 +66,14 @@ class EditorController extends Controller
 
         $ext = $file->getClientOriginalExtension();  // Get real extension according to mime type
         $fullname = $file->getClientOriginalName();
-        $fullname = str_replace('.' . $ext, '', $fullname);
+        $fullname = str_replace('.'.$ext, '', $fullname);
 
-        $hashname = str_slug($fullname) . '.' . $ext;
-        $fullPathImg = '/' . $destinationPath . '/' . $hashname;
+        $hashname = str_slug($fullname).'.'.$ext;
+        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
 
-        if (file_exists(public_path() . $fullPathImg)) {
-            $hashname = str_slug($fullname) . '_' . time() . '.' . $ext;
-            $fullPathImg = '/' . $destinationPath . '/' . $hashname;
+        if (file_exists(public_path().$fullPathImg)) {
+            $hashname = str_slug($fullname).'_'.time().'.'.$ext;
+            $fullPathImg = '/'.$destinationPath.'/'.$hashname;
         }
 
         Input::file('file')->move($destinationPath, $hashname);
@@ -85,11 +84,11 @@ class EditorController extends Controller
     //end uploadFile
 
     /**
-     * load img manager
+     * load img manager.
      */
     public function loadImages()
     {
-        $imgs = scandir(public_path() . '/storage/editor/fotos');
+        $imgs = scandir(public_path().'/storage/editor/fotos');
 
         unset($imgs[0]);
         unset($imgs[1]);
@@ -98,9 +97,9 @@ class EditorController extends Controller
         $k = 0;
         $pathToImg = '/storage/editor/fotos/';
         foreach ($imgs as $img) {
-            if (is_file(public_path() . $pathToImg . $img)) {
-                $imgRes[$k]['url'] = $pathToImg . $img;
-                $imgRes[$k]['thumb'] = $pathToImg . $img;
+            if (is_file(public_path().$pathToImg.$img)) {
+                $imgRes[$k]['url'] = $pathToImg.$img;
+                $imgRes[$k]['thumb'] = $pathToImg.$img;
                 $k++;
             }
         }
@@ -109,15 +108,15 @@ class EditorController extends Controller
     }
 
     /**
-     * delete img
+     * delete img.
      */
     public function deleteImages()
     {
-        unlink(public_path() . request('src'));
+        unlink(public_path().request('src'));
     }
 
     /**
-     * Quick edit in list
+     * Quick edit in list.
      */
     public function doQuickEdit()
     {

@@ -21,19 +21,19 @@ class Img
         }
 
         $this->setOptions($options);
-        $source = '/' . ltrim($source, '/');
+        $source = '/'.ltrim($source, '/');
         $sourceArray = pathinfo($source);
 
         //create variables $dirname , $basename, $extension, $filename
         extract($sourceArray);
         if ($this->quality != 80) {
-            $this->nameFile = $filename . '_' . $this->quality . '.' . $extension;
+            $this->nameFile = $filename.'_'.$this->quality.'.'.$extension;
         } else {
-            $this->nameFile = $filename . '.' . $extension;
+            $this->nameFile = $filename.'.'.$extension;
         }
 
-        $this->pathFolder = $dirname . '/' . $this->size;
-        $this->picturePath = $this->pathFolder . '/' . $this->nameFile;
+        $this->pathFolder = $dirname.'/'.$this->size;
+        $this->picturePath = $this->pathFolder.'/'.$this->nameFile;
 
         if ($extension == 'svg') {
             return $source;
@@ -44,13 +44,13 @@ class Img
         }
 
         try {
-            $img = Image::make(public_path() . $source);
+            $img = Image::make(public_path().$source);
 
             $this->createRatioImg($img, $options);
 
-            @mkdir(public_path() . $this->pathFolder);
+            @mkdir(public_path().$this->pathFolder);
 
-            $pathSmallImg = public_path() . '/' . $this->picturePath;
+            $pathSmallImg = public_path().'/'.$this->picturePath;
             $img->save($pathSmallImg, $this->quality);
 
             OptmizationImg::run($this->picturePath);
@@ -68,11 +68,11 @@ class Img
         $this->width = isset($options['w']) ? $options['w'] : $this->width;
 
         if ($this->height === null) {
-            $this->size = $this->width . 'x0';
+            $this->size = $this->width.'x0';
         } elseif ($this->width === null) {
-            $this->size = '0x' . $this->height;
+            $this->size = '0x'.$this->height;
         } else {
-            $this->size = $this->width . 'x' . $this->height;
+            $this->size = $this->width.'x'.$this->height;
         }
     }
 
@@ -101,6 +101,6 @@ class Img
 
     protected function checkExistPicture()
     {
-        return file_exists(public_path() . $this->picturePath);
+        return file_exists(public_path().$this->picturePath);
     }
 }

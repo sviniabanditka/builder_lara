@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Trans
- * @package Vis\TranslationsCMS
+ * Class Trans.
  */
 class Trans extends Model
 {
@@ -77,9 +76,6 @@ class Trans extends Model
         return $arrayTranslate;
     }
 
-    /**
-     *
-     */
     public static function reCacheTrans()
     {
         Cache::tags('translations')->flush();

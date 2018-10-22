@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\View;
 
 /**
- * Class ColorField
- * @package Vis\Builder\Fields
+ * Class ColorField.
  */
 class ColorField extends AbstractField
 {
@@ -17,7 +16,7 @@ class ColorField extends AbstractField
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
+        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
     /**
@@ -33,7 +32,7 @@ class ColorField extends AbstractField
             }
         }
 
-        return '<span style="height: 20px; width:20px; display:inline-block; background-color: ' . $this->getValue($row) . ';"></spans>';
+        return '<span style="height: 20px; width:20px; display:inline-block; background-color: '.$this->getValue($row).';"></spans>';
     }
 
     /**

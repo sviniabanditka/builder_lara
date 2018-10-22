@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class ManyToManyField
- * for manu2many field
+ * for manu2many field.
  */
 class ManyToManyField extends AbstractField
 {
@@ -33,11 +33,11 @@ class ManyToManyField extends AbstractField
             $mtmExternalValueField = $this->getAttribute('mtm_external_value_field');
 
             $searchResult = DB::table($mtmTable)
-                ->leftJoin($mtmExternalTable, $mtmExternalTable . '.' . $mtmExternalForeignKeyField, '=', $mtmTable . '.' . $mtmExternalKeyField)
-                ->where($mtmExternalValueField, 'like', '%' . $value . '%')
+                ->leftJoin($mtmExternalTable, $mtmExternalTable.'.'.$mtmExternalForeignKeyField, '=', $mtmTable.'.'.$mtmExternalKeyField)
+                ->where($mtmExternalValueField, 'like', '%'.$value.'%')
                 ->select($mtmKeyField)->pluck($mtmKeyField);
 
-            $db->whereIn($this->definition['db']['table'] . '.id', $searchResult);
+            $db->whereIn($this->definition['db']['table'].'.id', $searchResult);
         }
     }
 
@@ -126,8 +126,8 @@ class ManyToManyField extends AbstractField
         $extValueField = $this->getAttribute('mtm_external_value_field');
 
         return DB::table($assocTable)
-            ->join($extTable, $assocTable . '.' . $assocExtKeyField, '=', $extTable . '.' . $extKeyField)
-            ->where($assocTable . '.' . $assocKeyField, $row['id'])->value($extValueField);
+            ->join($extTable, $assocTable.'.'.$assocExtKeyField, '=', $extTable.'.'.$extKeyField)
+            ->where($assocTable.'.'.$assocKeyField, $row['id'])->value($extValueField);
     }
 
     /**
@@ -169,7 +169,7 @@ class ManyToManyField extends AbstractField
             return $this->getEditInputSelectWithAjaxSearch($row);
         }
 
-        $input = view('admin::tb.input_many2many_' . $showType);
+        $input = view('admin::tb.input_many2many_'.$showType);
         $input->selected = [];
         if ($row) {
             $input->selected = $this->getRelatedExternalFieldOptions($row);
@@ -270,15 +270,15 @@ class ManyToManyField extends AbstractField
      */
     protected function getRelatedExternalFieldOptions($row, $isGetAll = false)
     {
-        $keyField = $this->getAttribute('mtm_table') . '.' . $this->getAttribute('mtm_external_key_field');
-        $valueField = $this->getAttribute('mtm_external_table') . '.' . $this->getAttribute('mtm_external_value_field');
+        $keyField = $this->getAttribute('mtm_table').'.'.$this->getAttribute('mtm_external_key_field');
+        $valueField = $this->getAttribute('mtm_external_table').'.'.$this->getAttribute('mtm_external_value_field');
         $externalTable = $this->getAttribute('mtm_external_table');
-        $externalForeignKey = $externalTable . '.' . $this->getAttribute('mtm_external_foreign_key_field');
+        $externalForeignKey = $externalTable.'.'.$this->getAttribute('mtm_external_foreign_key_field');
 
         $options = DB::table($this->getAttribute('mtm_table'));
         $options->select($keyField, $valueField);
         if ($isGetAll) {
-            $options->addSelect($this->getAttribute('mtm_table') . '.*');
+            $options->addSelect($this->getAttribute('mtm_table').'.*');
         }
 
         $options->join($externalTable, $keyField, '=', $externalForeignKey);
@@ -302,7 +302,7 @@ class ManyToManyField extends AbstractField
             }
         }
         if ($this->getAttribute('show_type') == 'select3') {
-            $res = $options->orderBy($this->getAttribute('mtm_table') . '.id', 'asc')->get();
+            $res = $options->orderBy($this->getAttribute('mtm_table').'.id', 'asc')->get();
         } else {
             $res = $options->get();
         }
@@ -332,9 +332,9 @@ class ManyToManyField extends AbstractField
      */
     protected function getAllExternalFieldOptions($isGetAll = false)
     {
-        $valueField = $this->getAttribute('mtm_external_table') . '.' . $this->getAttribute('mtm_external_value_field');
+        $valueField = $this->getAttribute('mtm_external_table').'.'.$this->getAttribute('mtm_external_value_field');
         $externalTable = $this->getAttribute('mtm_external_table');
-        $externalForeignKey = $externalTable . '.' . $this->getAttribute('mtm_external_foreign_key_field');
+        $externalForeignKey = $externalTable.'.'.$this->getAttribute('mtm_external_foreign_key_field');
 
         $options = DB::table($externalTable);
         if (! $isGetAll) {
@@ -396,7 +396,7 @@ class ManyToManyField extends AbstractField
 
         $results = DB::table($this->getAttribute('mtm_external_table'))
             ->select('id', $this->getAttribute('mtm_external_value_field'))
-            ->where($this->getAttribute('mtm_external_value_field'), 'LIKE', '%' . $query . '%')
+            ->where($this->getAttribute('mtm_external_value_field'), 'LIKE', '%'.$query.'%')
             ->take($limit)
             ->skip(($limit * $page) - $limit);
 

@@ -71,7 +71,7 @@ class BaseModel extends Model
 
     public function getUri()
     {
-        return '/news/' . $this->getSlug() . '-' . $this->id;
+        return '/news/'.$this->getSlug().'-'.$this->id;
     }
 
     // end getUri
@@ -80,7 +80,7 @@ class BaseModel extends Model
     {
         $date = strtotime($this->created_at);
 
-        return date('d', $date) . ' ' . $this->getMonth($this->created_at) . ' ' . date('Y', $date);
+        return date('d', $date).' '.$this->getMonth($this->created_at).' '.date('Y', $date);
     }
 
     // end getCreatedDate
@@ -199,7 +199,7 @@ class BaseModel extends Model
 
         //search last segment not url page
         foreach ($segments as $segment) {
-            if ($segment != $this->getSlug() . '-' . $this->id) {
+            if ($segment != $this->getSlug().'-'.$this->id) {
                 $nodeSlug = $segment;
             }
         }

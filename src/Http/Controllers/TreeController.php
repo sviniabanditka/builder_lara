@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 
 /**
- * Class TreeController
- * @package Vis\Builder
+ * Class TreeController.
  */
 class TreeController extends Controller
 {

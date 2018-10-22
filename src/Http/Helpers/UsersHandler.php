@@ -9,8 +9,7 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 
 /**
- * Class UsersHandler
- * @package Vis\Builder\Helpers
+ * Class UsersHandler.
  */
 class UsersHandler extends CustomHandler
 {

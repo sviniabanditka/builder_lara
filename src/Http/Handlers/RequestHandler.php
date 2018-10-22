@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Class RequestHandler
- * @package Vis\Builder\Handlers
+ * Class RequestHandler.
  */
 class RequestHandler
 {
@@ -222,7 +221,7 @@ class RequestHandler
         $isAllowed = $action['check'];
 
         if (! $isAllowed()) {
-            throw new \RuntimeException('Multi action not allowed: ' . $type);
+            throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 
         $handlerClosure = $action['handle'];
@@ -252,7 +251,7 @@ class RequestHandler
 
         $isAllowed = $action['check'];
         if (! $isAllowed()) {
-            throw new \RuntimeException('Multi action not allowed: ' . $type);
+            throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 
         $ids = request('multi_ids', []);
@@ -269,13 +268,10 @@ class RequestHandler
         return Response::json($data);
     }
 
-    /**
-     *
-     */
     protected function handleImportTemplateDownload()
     {
         $type = request('type');
-        $method = 'do' . ucfirst($type) . 'TemplateDownload';
+        $method = 'do'.ucfirst($type).'TemplateDownload';
 
         $this->controller->import->$method();
     }
@@ -287,16 +283,13 @@ class RequestHandler
     {
         $file = Input::file('file');
         $type = request('type');
-        $method = 'doImport' . ucfirst($type);
+        $method = 'doImport'.ucfirst($type);
 
         return Response::json([
             'status' => $this->controller->import->$method($file),
         ]);
     }
 
-    /**
-     *
-     */
     protected function handleExport()
     {
         $this->controller->export->doExport(request('type'));
@@ -309,7 +302,7 @@ class RequestHandler
     {
         $perPage = request('per_page');
 
-        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
         Session::put($sessionPath, $perPage);
 
         return Response::json([
@@ -327,7 +320,7 @@ class RequestHandler
             'field' => request('field'),
         ];
 
-        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
         Session::put($sessionPath, $order);
 
         return Response::json([
@@ -352,10 +345,10 @@ class RequestHandler
 
         $extension = $file->getClientOriginalExtension();
         $nameFile = explode('.', $file->getClientOriginalName());
-        $fileName = \Jarboe::urlify($nameFile[0]) . '.' . $extension;
+        $fileName = \Jarboe::urlify($nameFile[0]).'.'.$extension;
 
-        if (file_exists(public_path() . '/' . $prefixPath . $fileName)) {
-            $fileName = \Jarboe::urlify($nameFile[0]) . '_' . time() . '.' . $extension;
+        if (file_exists(public_path().'/'.$prefixPath.$fileName)) {
+            $fileName = \Jarboe::urlify($nameFile[0]).'_'.time().'.'.$extension;
         }
 
         $destinationPath = $prefixPath;
@@ -364,9 +357,9 @@ class RequestHandler
 
         $data = [
             'status' => true,
-            'link'   => URL::to($destinationPath . $fileName),
+            'link'   => URL::to($destinationPath.$fileName),
             'short_link' => $fileName,
-            'long_link' =>  '/' . $destinationPath . $fileName,
+            'long_link' =>  '/'.$destinationPath.$fileName,
         ];
 
         return Response::json($data);
@@ -599,9 +592,6 @@ class RequestHandler
         ];
     }
 
-    /**
-     *
-     */
     protected function handleSearchAction()
     {
         $filters = request('filter', []);
@@ -626,7 +616,7 @@ class RequestHandler
             $this->controller->getCustomHandler()->onPrepareSearchFilters($newFilters);
         }
 
-        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.filters';
         Session::put($sessionPath, $newFilters);
     }
 }

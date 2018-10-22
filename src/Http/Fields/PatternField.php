@@ -3,8 +3,7 @@
 namespace Vis\Builder\Fields;
 
 /**
- * Class PatternField
- * @package Vis\Builder\Fields
+ * Class PatternField.
  */
 class PatternField extends AbstractField
 {
@@ -44,7 +43,7 @@ class PatternField extends AbstractField
      */
     public function __construct($fieldName, $attributes, $options, $definition, $handler)
     {
-         $this->attributes = $attributes;
+        $this->attributes = $attributes;
         $this->options = $options;
         $this->definition = $definition;
         $this->fieldName = $fieldName;
@@ -52,7 +51,7 @@ class PatternField extends AbstractField
         $this->handler = &$handler;
 
         $patternName = preg_replace('~^pattern\.~', '', $fieldName);
-        $path = config_path() . '/builder/tb-definitions/pattern/' . $patternName . '.php';
+        $path = config_path().'/builder/tb-definitions/pattern/'.$patternName.'.php';
 
         if (! file_exists($path)) {
             throw new \RuntimeException("No pattern definition - [{$patternName}].");

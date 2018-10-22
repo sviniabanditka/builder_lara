@@ -68,13 +68,13 @@ class Tree extends TreeBuilder
 
     public function checkActiveMenu()
     {
-        $pathUrl = str_replace(Request::root() . '/', '', $this->getUrl());
+        $pathUrl = str_replace(Request::root().'/', '', $this->getUrl());
 
         //if main page
         if ($this->id == 1 && $this->slug == '/') {
             return true;
         } else {
-            if (Request::is($pathUrl) || Request::is($pathUrl . '/*')) {
+            if (Request::is($pathUrl) || Request::is($pathUrl.'/*')) {
                 return true;
             }
         }

@@ -5,8 +5,7 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class CheckboxField
- * @package Vis\Builder\Fields
+ * Class CheckboxField.
  */
 class CheckboxField extends AbstractField
 {
@@ -38,7 +37,7 @@ class CheckboxField extends AbstractField
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table . '.' . $this->getFieldName(), '=', $value);
+        $db->where($table.'.'.$this->getFieldName(), '=', $value);
     }
 
     /**
@@ -52,7 +51,7 @@ class CheckboxField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $table = view('admin::tb.filter_checkbox');

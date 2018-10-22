@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Class TBTreeController
- * @package Vis\Builder
+ * Class TBTreeController.
  */
 class TBTreeController extends \Controller
 {
@@ -36,7 +35,7 @@ class TBTreeController extends \Controller
         if ($template['type'] == 'table') {
             $options = [
                 'url'      => \URL::current(),
-                'def_name' => 'tree.' . $template['definition'],
+                'def_name' => 'tree.'.$template['definition'],
                 'additional' => [
                     'node' => $idNode,
                 ],
@@ -65,7 +64,7 @@ class TBTreeController extends \Controller
 
         $options = [
             'url'      => \URL::current(),
-            'def_name' => 'tree.' . $template['node_definition'],
+            'def_name' => 'tree.'.$template['node_definition'],
             'additional' => [
                 'node' => $idNode,
             ],
@@ -97,7 +96,7 @@ class TBTreeController extends \Controller
 
         $options = [
             'url'      => \URL::current(),
-            'def_name' => 'tree.' . $template['definition'],
+            'def_name' => 'tree.'.$template['definition'],
             'additional' => [
                 'node' => $idNode,
             ],
@@ -146,7 +145,7 @@ class TBTreeController extends \Controller
         if ($template['type'] == 'table') {
             $options = [
                 'url'      => \URL::current(),
-                'def_name' => 'tree.' . $template['definition'],
+                'def_name' => 'tree.'.$template['definition'],
                 'additional' => [
                     'node' => $idNode,
                 ],
@@ -195,17 +194,11 @@ class TBTreeController extends \Controller
         return Response::json($data);
     }
 
-    /**
-     *
-     */
     private function doFlushTreeStructureCache()
     {
         \Cache::tags('j_tree')->flush();
     }
 
-    /**
-     *
-     */
     public function changeActive()
     {
         $activeField = config('builder::tree.node_active_field.field');

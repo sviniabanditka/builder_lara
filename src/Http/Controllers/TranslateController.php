@@ -5,20 +5,16 @@ namespace Vis\TranslationsCMS;
 use Yandex\Translate\Translator;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Class TranslateController
- * @package Vis\TranslationsCMS
+ * Class TranslateController.
  */
 class TranslateController extends Controller
 {
-
     /**
      * @return mixed
      */
@@ -30,7 +26,7 @@ class TranslateController extends Controller
         $allpage = Trans::orderBy('id', 'desc');
 
         if ($search) {
-            $allpage = $allpage->where('phrase', 'LIKE', '%' . $search . '%');
+            $allpage = $allpage->where('phrase', 'LIKE', '%'.$search.'%');
         }
 
         $allpage = $allpage->paginate($countShow);
@@ -136,7 +132,7 @@ class TranslateController extends Controller
 
             $translator = new Translator(config('builder.translate_cms.api_yandex_key'));
 
-            $translation = $translator->translate($phrase, $langDef . '-' . $lang);
+            $translation = $translator->translate($phrase, $langDef.'-'.$lang);
 
             $lang = str_replace('uk', 'ua', $lang);
 
@@ -150,9 +146,6 @@ class TranslateController extends Controller
         }
     }
 
-    /**
-     *
-     */
     public function doSavePhrase()
     {
         $lang = request('name');

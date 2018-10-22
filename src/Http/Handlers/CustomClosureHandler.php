@@ -5,8 +5,7 @@ namespace Vis\Builder\Handlers;
 use Vis\Builder\JarboeController;
 
 /**
- * Class CustomClosureHandler
- * @package Vis\Builder\Handlers
+ * Class CustomClosureHandler.
  */
 class CustomClosureHandler
 {

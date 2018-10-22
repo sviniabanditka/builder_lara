@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Class TreeCatalogController
- * @package Vis\Builder
+ * Class TreeCatalogController.
  */
 class TreeCatalogController
 {
@@ -95,9 +94,6 @@ class TreeCatalogController
 
     // end handle
 
-    /**
-     *
-     */
     public function doUpdateNode()
     {
         $node = $this->model::find(request('pk'));
@@ -176,10 +172,9 @@ class TreeCatalogController
             $countPages = $model::where('parent_id', $page['parent_id'])->where('slug', $page['slug'])->count();
 
             if ($countPages) {
-
                 $page['slug'] = $parentId ?
-                                        $page['slug'] . '_' . $page['parent_id'] :
-                                        $page['slug'] . '_' . time();
+                                        $page['slug'].'_'.$page['parent_id'] :
+                                        $page['slug'].'_'.time();
             }
 
             foreach ($page as $k => $val) {
@@ -265,15 +260,15 @@ class TreeCatalogController
         $idNode = request('page_id', request('node', 1));
         $current = $this->model::find($idNode);
 
-        $templates = config('builder.' . $this->nameTree . '.templates');
-        $template = config('builder.' . $this->nameTree . '.default');
+        $templates = config('builder.'.$this->nameTree.'.templates');
+        $template = config('builder.'.$this->nameTree.'.default');
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
 
         return \Jarboe::table([
             'url'      => URL::current(),
-            'def_name' => $this->nameTree . '.' . $template['node_definition'],
+            'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
@@ -304,7 +299,7 @@ class TreeCatalogController
         $parentIDs = [];
         $treeName = $this->nameTree;
 
-        $perPage = Session::get('table_builder.' . $treeName . '.node.per_page', 20);
+        $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
 
         $idNode = request('node', 1);
         $current = $this->model::find($idNode);
@@ -316,7 +311,7 @@ class TreeCatalogController
         $children = $current->children();
 
         //filter ids
-        $actions = config('builder.' . $treeName . '.actions.show');
+        $actions = config('builder.'.$treeName.'.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
             $arrIdsShow = $actions['check']();
@@ -332,8 +327,8 @@ class TreeCatalogController
 
         $children = $children->paginate($perPage);
 
-        $templates = config('builder.' . $treeName . '.templates');
-        $template = config('builder.' . $treeName . '.default');
+        $templates = config('builder.'.$treeName.'.templates');
+        $template = config('builder.'.$treeName.'.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
@@ -342,7 +337,7 @@ class TreeCatalogController
         $content = view('admin::tree.content', compact('current', 'template', 'treeName', 'children', 'controller', 'perPage'));
         $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
 
-        return view('admin::' . $treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
+        return view('admin::'.$treeView, compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
     }
 
     /**
@@ -353,8 +348,8 @@ class TreeCatalogController
         $idNode = request('id');
         $current = $this->model::find($idNode);
 
-        $templates = config('builder.' . $this->nameTree . '.templates');
-        $template = config('builder.' . $this->nameTree . '.default');
+        $templates = config('builder.'.$this->nameTree.'.templates');
+        $template = config('builder.'.$this->nameTree.'.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
@@ -362,7 +357,7 @@ class TreeCatalogController
 
         $jarboeController = new JarboeController([
             'url'      => URL::current(),
-            'def_name' => $this->nameTree . '.' . $template['node_definition'],
+            'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
@@ -386,8 +381,8 @@ class TreeCatalogController
         $idNode = request('id');
         $current = $this->model::find($idNode);
 
-        $templates = config('builder.' . $this->nameTree . '.templates');
-        $template = config('builder.' . $this->nameTree . '.default');
+        $templates = config('builder.'.$this->nameTree.'.templates');
+        $template = config('builder.'.$this->nameTree.'.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
@@ -395,7 +390,7 @@ class TreeCatalogController
 
         $jarboeController = new JarboeController([
             'url'        => URL::current(),
-            'def_name'   => $this->nameTree . '.' . $template['node_definition'],
+            'def_name'   => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,

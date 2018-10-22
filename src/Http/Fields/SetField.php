@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class SetField
- * @package Vis\Builder\Fields
+ * Class SetField.
  */
 class SetField extends AbstractField
 {
@@ -28,7 +27,7 @@ class SetField extends AbstractField
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
-        $db->where($table . '.' . $this->getFieldName(), 'LIKE', '%' . $value . '%');
+        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
     // end onSearchFilter
@@ -44,7 +43,7 @@ class SetField extends AbstractField
         }
 
         $definitionName = $this->getOption('def_name');
-        $sessionPath = 'table_builder.' . $definitionName . '.filters.' . $this->getFieldName();
+        $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
         $table = view('admin::tb.filter_set');
@@ -103,12 +102,12 @@ class SetField extends AbstractField
             }
         }
 
-        $fieldName = $this->getFieldName() . $postfix;
+        $fieldName = $this->getFieldName().$postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
         if ($this->getAttribute('tabs') && ! $postfix) {
             $tabs = $this->getAttribute('tabs');
-            $fieldName = $fieldName . $tabs[0]['postfix'];
+            $fieldName = $fieldName.$tabs[0]['postfix'];
         }
 
         return isset($row[$fieldName]) ? $row[$fieldName] : '';

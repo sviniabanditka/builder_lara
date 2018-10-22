@@ -71,7 +71,7 @@ if (! function_exists('glide')) {
     function glide($source, $options = [])
     {
         if (env('APP_ENV') == 'local') {
-            return '//via.placeholder.com/' . $options['w'] . 'x' . @$options['h'] ?: $options['w'];
+            return '//via.placeholder.com/'.$options['w'].'x'.@$options['h'] ?: $options['w'];
         }
 
         $img = new Vis\Builder\Img();
@@ -88,15 +88,15 @@ if (! function_exists('filesize_format')) {
     function filesize_format($bytes)
     {
         if ($bytes >= 1073741824) {
-            $bytes = number_format($bytes / 1073741824, 1, '.', '') . ' Gb';
+            $bytes = number_format($bytes / 1073741824, 1, '.', '').' Gb';
         } elseif ($bytes >= 1048576) {
-            $bytes = number_format($bytes / 1048576, 1, '.', '') . ' Mb';
+            $bytes = number_format($bytes / 1048576, 1, '.', '').' Mb';
         } elseif ($bytes >= 1024) {
-            $bytes = number_format($bytes / 1024, 1, '.', '') . ' Kb';
+            $bytes = number_format($bytes / 1024, 1, '.', '').' Kb';
         } elseif ($bytes > 1) {
-            $bytes = $bytes . ' bytes';
+            $bytes = $bytes.' bytes';
         } elseif ($bytes == 1) {
-            $bytes = $bytes . ' byte';
+            $bytes = $bytes.' byte';
         } else {
             $bytes = '0 bytes';
         }
@@ -105,7 +105,7 @@ if (! function_exists('filesize_format')) {
     }
 }
 
-/**
+/*
  * @param $url
  * @param bool $locale
  * @param array $attributes
@@ -122,12 +122,11 @@ if (! function_exists('geturl')) {
     }
 }
 
-/**
+/*
  * @param $phrase
  * @return mixed
  */
 if (! function_exists('__cms')) {
-
     function __cms($phrase)
     {
         $thisLang = Cookie::get('lang_admin');
@@ -138,7 +137,7 @@ if (! function_exists('__cms')) {
     }
 }
 
-/**
+/*
  * get realy ip user
  *
  * @return string
@@ -158,14 +157,13 @@ if (! function_exists('getIp')) {
     }
 }
 
-/**
+/*
  * @param $tree
  * @param $node
  * @param array $slugs
  * @return string
  */
 if (! function_exists('recurseMyTree')) {
-
     function recurseMyTree($tree, $node, &$slugs = [])
     {
         if (! $node['parent_id']) {
@@ -183,7 +181,7 @@ if (! function_exists('recurseMyTree')) {
     }
 }
 
-/**
+/*
  * Returns entire string with current locale postfix, ex. string_ua
  *
  * @param  string
@@ -194,6 +192,6 @@ if (! function_exists('getWithLocalePostfix')) {
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
 
-        return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string . '_' . $currentLocale;
+        return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string.'_'.$currentLocale;
     }
 }

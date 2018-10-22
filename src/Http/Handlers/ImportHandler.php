@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Vis\Builder\Exceptions\JarboeValidationException;
 
 /**
- * Class ImportHandler
- * @package Vis\Builder\Handlers
+ * Class ImportHandler.
  */
 class ImportHandler
 {
@@ -96,10 +95,10 @@ class ImportHandler
 
             if (count($row) != count($fields)) {
                 if (is_null($row[0])) {
-                    $message = 'Пустые строки недопустимы для csv формата. Строка #' . $n;
+                    $message = 'Пустые строки недопустимы для csv формата. Строка #'.$n;
                 } else {
-                    $message = 'Не верное количество полей. Строка #' . $n . ': '
-                             . count($row) . ' из ' . count($fields);
+                    $message = 'Не верное количество полей. Строка #'.$n.': '
+                             .count($row).' из '.count($fields);
                 }
                 throw new JarboeValidationException($message);
             }
@@ -127,9 +126,6 @@ class ImportHandler
 
     // end doImportCsv
 
-    /**
-     *
-     */
     public function doCsvTemplateDownload()
     {
         $this->doCheckPermission();
@@ -141,13 +137,13 @@ class ImportHandler
 
         $csv = '';
         foreach ($this->def['fields'] as $field => $caption) {
-            $csv .= '"' . $caption . '"' . $delimiter;
+            $csv .= '"'.$caption.'"'.$delimiter;
         }
         // remove extra tailing delimiter
         $csv = rtrim($csv, $delimiter);
 
         $name = $this->getAttribute('filename', 'import_template');
-        $this->doSendHeaders($name . '_' . date('Y-m-d') . '.csv');
+        $this->doSendHeaders($name.'_'.date('Y-m-d').'.csv');
 
         die($csv);
     }
@@ -163,7 +159,7 @@ class ImportHandler
         $now = gmdate('D, d M Y H:i:s');
         header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
         header('Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate');
-        header('Last-Modified: ' . $now . ' GMT');
+        header('Last-Modified: '.$now.' GMT');
 
         // force download
         header('Content-Type: application/force-download');
@@ -171,7 +167,7 @@ class ImportHandler
         header('Content-Type: application/download');
 
         // disposition / encoding on response body
-        header('Content-Disposition: attachment;filename=' . $filename);
+        header('Content-Disposition: attachment;filename='.$filename);
         header('Content-Transfer-Encoding: binary');
     }
 
@@ -189,9 +185,6 @@ class ImportHandler
 
     // end getAttribute
 
-    /**
-     *
-     */
     private function doCheckPermission()
     {
         if (! $this->def['check']()) {

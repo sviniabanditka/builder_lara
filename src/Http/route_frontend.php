@@ -64,7 +64,7 @@ if ($arrSegments[0] != 'admin') {
             if (isset($otherTreeUrl[$startUrl])) {
                 $configName = $otherTreeUrl[$startUrl];
 
-                $definition = config('builder.' . $configName);
+                $definition = config('builder.'.$configName);
                 $model = $definition['model'];
 
                 $slug = end($arrSegments);
@@ -105,7 +105,7 @@ if ($arrSegments[0] != 'admin') {
                                                 list($controller, $method) = explode('@', $templates[$node->template]['action']);
 
                                                 $app = app();
-                                                $controller = $app->make('App\\Http\\Controllers\\' . $controller);
+                                                $controller = $app->make('App\\Http\\Controllers\\'.$controller);
 
                                                 return $controller->callAction('init', [$node, $method]);
                                             }

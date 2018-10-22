@@ -5,14 +5,10 @@ namespace Vis\Builder\Helpers\Traits;
 use Vis\Builder\ViewPage;
 
 /**
- * Trait ViewPageTrait
- * @package Vis\Builder\Helpers\Traits
+ * Trait ViewPageTrait.
  */
 trait ViewPageTrait
 {
-    /**
-     *
-     */
     public function setView()
     {
         ViewPage::create([

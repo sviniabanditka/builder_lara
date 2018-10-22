@@ -6,8 +6,7 @@ use Illuminate\Console\Command;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
- * Class GeneratePassword
- * @package Vis\Builder
+ * Class GeneratePassword.
  */
 class GeneratePassword extends Command
 {
@@ -33,7 +32,7 @@ class GeneratePassword extends Command
     public function handle()
     {
         $leters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R',
-                    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+                    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ];
         for ($i_zn = 0; $i_zn < 10; $i_zn++) {
             $arrLett[] = $leters[rand(0, count($leters) - 1)];
         }
@@ -44,6 +43,6 @@ class GeneratePassword extends Command
 
         $this->info('Access in cms: ');
         $this->info('Login: admin@vis-design.com');
-        $this->info('Password: ' . $newPass);
+        $this->info('Password: '.$newPass);
     }
 }

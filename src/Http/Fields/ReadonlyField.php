@@ -3,8 +3,7 @@
 namespace Vis\Builder\Fields;
 
 /**
- * Class ReadonlyField
- * @package Vis\Builder\Fields
+ * Class ReadonlyField.
  */
 class ReadonlyField extends AbstractField
 {

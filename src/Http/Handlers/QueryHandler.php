@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
 /**
- * Class QueryHandler
- * @package Vis\Builder\Handlers
+ * Class QueryHandler.
  */
 class QueryHandler
 {
@@ -85,7 +84,7 @@ class QueryHandler
                 if (isset($extend['id'])) {
                     $this->extendsTableId[$table] = $extend['id'];
                 } else {
-                    $this->extendsTableId[$table] = $this->dbName . '_id';
+                    $this->extendsTableId[$table] = $this->dbName.'_id';
                 }
             }
         }
@@ -124,7 +123,7 @@ class QueryHandler
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $this->db->addSelect($this->dbName . '.*');
+            $this->db->addSelect($this->dbName.'.*');
         }
 
         $this->prepareFilterValues();
@@ -141,16 +140,16 @@ class QueryHandler
 
         $this->dofilter();
 
-        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
         $order = Session::get($sessionPath, []);
 
         if ($order && $isUserFilters) {
-            $this->db->orderBy($this->dbName . '.' . $order['field'], $order['direction']);
+            $this->db->orderBy($this->dbName.'.'.$order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
             $order = $this->getOptionDB('order');
 
             foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->dbName . '.' . $field, $direction);
+                $this->db->orderBy($this->dbName.'.'.$field, $direction);
             }
         }
 
@@ -171,9 +170,6 @@ class QueryHandler
         return $this->db->get();
     }
 
-    /**
-     *
-     */
     private function dofilter()
     {
         if (Input::has('filter')) {
@@ -197,7 +193,7 @@ class QueryHandler
             return $info;
         }
 
-        $sessionPath = 'table_builder.' . $this->definitionName . '.per_page';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
         $perPage = Session::get($sessionPath);
 
         if (! $perPage) {
@@ -208,9 +204,6 @@ class QueryHandler
         return $perPage;
     }
 
-    /**
-     *
-     */
     protected function prepareFilterValues()
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
@@ -240,15 +233,12 @@ class QueryHandler
         }
     }
 
-    /**
-     *
-     */
     protected function prepareSelectValues()
     {
-        $this->db = $this->db->select($this->dbName . '.id');
+        $this->db = $this->db->select($this->dbName.'.id');
 
         if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-            $this->db = $this->db->addSelect($this->dbName . '.priority');
+            $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
 
         $fields = $this->controller->getFields();
@@ -274,17 +264,14 @@ class QueryHandler
 
         $this->prepareSelectValues();
 
-        $this->db->where($this->dbName . '.id', $id);
+        $this->db->where($this->dbName.'.id', $id);
 
         return $this->db->first();
     }
 
-    /**
-     *
-     */
     protected function onSearchFilterQuery()
     {
-        $sessionPath = 'table_builder.' . $this->definitionName . '.filters';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.filters';
 
         $filters = Session::get($sessionPath, []);
         foreach ($filters as $name => $value) {
@@ -389,7 +376,7 @@ class QueryHandler
     {
         if (isset($this->definition['fields'][$field]['tabs'])) {
             foreach ($this->definition['fields'][$field]['tabs'] as $tab) {
-                $updateDataRes[$field . $tab['postfix']] = $this->getTabsDataField($updateData, $field, $tab);
+                $updateDataRes[$field.$tab['postfix']] = $this->getTabsDataField($updateData, $field, $tab);
             }
         }
     }
@@ -402,8 +389,8 @@ class QueryHandler
      */
     private function getTabsDataField($updateData, $field, $tab)
     {
-        if ($updateData[$field . $tab['postfix']]) {
-            return $updateData[$field . $tab['postfix']];
+        if ($updateData[$field.$tab['postfix']]) {
+            return $updateData[$field.$tab['postfix']];
         }
 
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
@@ -429,7 +416,7 @@ class QueryHandler
             $langsDef = str_replace('ua', 'uk', $langsDef);
 
             $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
-            $translation = $translator->translate($phrase, $langsDef . '-' . $lang);
+            $translation = $translator->translate($phrase, $langsDef.'-'.$lang);
 
             if (isset($translation->getResult()[0])) {
                 return $translation->getResult()[0];
@@ -697,7 +684,7 @@ class QueryHandler
                 if ($tabs) {
                     if (! $field->getAttribute('extends_table')) {
                         foreach ($tabs as $tab) {
-                            $fieldName = $ident . $tab['postfix'];
+                            $fieldName = $ident.$tab['postfix'];
                             $field->doValidate($values[$fieldName]);
                         }
                     }
@@ -707,7 +694,7 @@ class QueryHandler
                     }
                 }
             } catch (\Exception $e) {
-                $errors[] = 'Поле "' . $field->getAttribute('caption') . '" ' . $e->getMessage();
+                $errors[] = 'Поле "'.$field->getAttribute('caption').'" '.$e->getMessage();
                 continue;
             }
         }
@@ -739,7 +726,7 @@ class QueryHandler
             $tabs = $field->getAttribute('tabs');
             if ($tabs) {
                 foreach ($tabs as $tab) {
-                    $fieldName = $ident . $tab['postfix'];
+                    $fieldName = $ident.$tab['postfix'];
                     $values[$fieldName] = $field->prepareQueryValue($values[$fieldName]);
 
                     if ($field->getAttribute('extends_table') && array_key_exists($fieldName, $values)) {
@@ -803,11 +790,11 @@ class QueryHandler
         foreach ($fields as $ident => $options) {
             $field = $this->controller->getField($ident);
 
-            if (method_exists($field, 'getNewValueId') && isset($values[$ident . '_new_foreign'])) {
-                if ($new_id = $field->getNewValueId($values[$ident . '_new_foreign'])) {
+            if (method_exists($field, 'getNewValueId') && isset($values[$ident.'_new_foreign'])) {
+                if ($new_id = $field->getNewValueId($values[$ident.'_new_foreign'])) {
                     $values[$ident] = $new_id;
                 }
-                unset($values[$ident . '_new_foreign']);
+                unset($values[$ident.'_new_foreign']);
             }
 
             if ($field->isPattern()) {
@@ -845,15 +832,12 @@ class QueryHandler
      */
     public function clearOrderBy()
     {
-        $sessionPath = 'table_builder.' . $this->definitionName . '.order';
+        $sessionPath = 'table_builder.'.$this->definitionName.'.order';
         Session::forget($sessionPath);
 
         return true;
     }
 
-    /**
-     *
-     */
     public function clearCache()
     {
         if (isset($this->definition['cache'])) {
@@ -875,7 +859,7 @@ class QueryHandler
      */
     public function getUploadedFiles()
     {
-        $list = File::files(public_path() . '/storage/files');
+        $list = File::files(public_path().'/storage/files');
 
         return [
             'status' => 'success',
@@ -914,7 +898,7 @@ class QueryHandler
             }
 
             if (request('q')) {
-                $list->where('vis_images.title', 'like', request('q') . '%');
+                $list->where('vis_images.title', 'like', request('q').'%');
             }
 
             $list = $list->groupBy('vis_images.id')->paginate(18);
