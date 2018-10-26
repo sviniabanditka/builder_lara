@@ -1,3 +1,6 @@
+@if(isset($annotation))
+    {!! $annotation !!}
+@endif
 <div class="widget-box table-builder dataTables_wrapper">
         @include('admin::tb.form')
         @include('admin::tb.table')
