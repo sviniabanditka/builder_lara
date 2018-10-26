@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Handlers;
 
-
 use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\Session;
 use Vis\Builder\Helpers\AnnotationHelper;

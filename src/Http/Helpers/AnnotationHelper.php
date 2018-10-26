@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Helpers;
 
-
 use Throwable;
 use Illuminate\View\View;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -18,7 +17,7 @@ class AnnotationHelper
 
     /**
      * @return string
-    */
+     */
     public function handle()
     {
         if ($this->annotation instanceof View || $this->annotation instanceof ViewFactory) {
