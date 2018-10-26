@@ -44,15 +44,20 @@ class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase
                     // The system redirect the user to the very same url "localized"
                     // we use the current locale to redirect him
                     $redirection
-                        = app('laravellocalization')->getLocalizedURL(session('locale'),
-                        $request->fullUrl());
+                        = app('laravellocalization')->getLocalizedURL(
+                            session('locale'),
+                            $request->fullUrl()
+                        );
                 }
                 if ($redirection) {
                     // Save any flashed data for redirect
                     app('session')->reflash();
 
-                    return new RedirectResponse($redirection, 301,
-                        ['Vary' => 'Accept-Language']);
+                    return new RedirectResponse(
+                        $redirection,
+                        301,
+                        ['Vary' => 'Accept-Language']
+                    );
                 }
             }
         }

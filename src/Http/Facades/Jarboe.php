@@ -15,6 +15,4 @@ class Jarboe extends Facade
     {
         return 'jarboe';
     }
-
-    // end getFacadeAccessor
 }

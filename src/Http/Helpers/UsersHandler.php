@@ -8,10 +8,15 @@ use Vis\Builder\Handlers\CustomHandler;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 
+/**
+ * Class UsersHandler.
+ */
 class UsersHandler extends CustomHandler
 {
-    /*
-     * show field in list users
+    /**
+     * @param $formField
+     * @param array $row
+     * @return \Illuminate\Contracts\View\View|void
      */
     public function onGetListValue($formField, array &$row)
     {
@@ -19,15 +24,17 @@ class UsersHandler extends CustomHandler
             $activation = DB::table('activations')->where('user_id', $row['id'])->where('completed', 1)->count();
 
             if ($activation) {
-                return View::make('admin::tb.input_checkbox_list')->with('is_checked', 1);
+                return view('admin::tb.input_checkbox_list')->with('is_checked', 1);
             } else {
-                return View::make('admin::tb.input_checkbox_list')->with('is_checked', 0);
+                return view('admin::tb.input_checkbox_list')->with('is_checked', 0);
             }
         }
     }
 
-    /*
-     * not select in db
+    /**
+     * @param $formField
+     * @param $row
+     * @return bool
      */
     public function onAddSelectField($formField, $row)
     {
@@ -36,6 +43,12 @@ class UsersHandler extends CustomHandler
         }
     }
 
+    /**
+     * @param $formField
+     * @param array $row
+     * @param $postfix
+     * @return int|void
+     */
     public function onGetValue($formField, array &$row, &$postfix)
     {
         if ($formField->getFieldName() == 'activated') {
@@ -49,11 +62,14 @@ class UsersHandler extends CustomHandler
         }
     }
 
-    /*
-     * update record
+    /**
+     * @param array $value
+     * @param $row
      */
     public function onUpdateRowData(array &$value, $row)
     {
+        $password = $value['password'];
+
         if (isset($row['id'])) {
             if ($value['activated'] == 0) {
                 $user = Sentinel::findById($row['id']);
@@ -65,8 +81,8 @@ class UsersHandler extends CustomHandler
                 Activation::complete($user, $activation->code);
             }
 
-            if ($value['password'] && $value['password'] != 'password') {
-                Sentinel::update($user, ['password' => $value['password']]);
+            if ($password && $password != 'password') {
+                Sentinel::update($user, ['password' => $password]);
             }
 
             unset($value['activated']);
@@ -74,8 +90,9 @@ class UsersHandler extends CustomHandler
         }
     }
 
-    /*
-     * insert user
+    /**
+     * @param array $value
+     * @return int
      */
     public function onInsertRowData(array &$value)
     {

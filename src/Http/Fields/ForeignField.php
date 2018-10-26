@@ -130,7 +130,9 @@ class ForeignField extends AbstractField
         $join = $this->getAttribute('is_null') ? 'leftJoin' : 'join';
         $db->$join(
             $foreignTableName,
-            $foreignKeyField, '=', $internalSelect
+            $foreignKeyField,
+            '=',
+            $internalSelect
         );
 
         $foreignValueFields = $this->getForeignValueFields();

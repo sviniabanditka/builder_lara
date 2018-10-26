@@ -5,11 +5,17 @@ namespace Vis\Builder;
 use Vis\Builder\Helpers\URLify;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * Class Jarboe.
+ */
 class Jarboe
 {
     protected $controller;
     protected $default;
 
+    /**
+     * @param $options
+     */
     protected function onInit($options)
     {
         $this->controller = new JarboeController($options);
@@ -21,19 +27,32 @@ class Jarboe
         Config::set('database.fetch', $this->default['fetch']);
     }
 
+    /**
+     * @param $options
+     * @return mixed
+     */
     public function table($options)
     {
         $this->onInit($options);
-        $result = $this->controller->handle();
 
-        return $result;
+        return $this->controller->handle();
     }
 
+    /**
+     * @param string $string
+     * @return string string
+     */
     public function urlify($string)
     {
         return URLify::filter($string);
     }
 
+    /**
+     * @param string $model
+     * @param array $options
+     * @param string $nameTree
+     * @return TreeCatalogController
+     */
     public function tree(
         $model = 'Vis\Builder\Tree',
         $options = [
@@ -42,8 +61,6 @@ class Jarboe
         ],
         $nameTree = 'tree'
     ) {
-        $controller = new TreeCatalogController($model, $options, $nameTree);
-
-        return $controller;
+        return new TreeCatalogController($model, $options, $nameTree);
     }
 }

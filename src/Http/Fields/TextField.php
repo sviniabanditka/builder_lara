@@ -2,13 +2,24 @@
 
 namespace Vis\Builder\Fields;
 
+/**
+ * Class TextField
+ * for text field.
+ */
 class TextField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $tabs = $this->getAttribute('tabs');
@@ -34,6 +45,11 @@ class TextField extends AbstractField
         $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -66,6 +82,10 @@ class TextField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -76,9 +96,7 @@ class TextField extends AbstractField
         }
 
         if ($this->getAttribute('fast_edit')) {
-            $html = '<p>'.parent::getListValue($row).'</p>';
-
-            return $html;
+            return  '<p>'.parent::getListValue($row).'</p>';
         }
 
         return $this->getValue($row);

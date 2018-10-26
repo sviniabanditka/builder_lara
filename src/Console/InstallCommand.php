@@ -115,20 +115,28 @@ class InstallCommand extends Command
      */
     private function loadFiles()
     {
-        copy($this->installPath.'/files/app/Providers/RouteServiceProvider.php',
-            app_path().'/Providers/RouteServiceProvider.php');
+        copy(
+            $this->installPath.'/files/app/Providers/RouteServiceProvider.php',
+            app_path().'/Providers/RouteServiceProvider.php'
+        );
         $this->info('Created '.app_path().'/Providers/RouteServiceProvider.php - OK');
 
-        copy($this->installPath.'/files/app/Exceptions/Handler.php',
-            app_path().'/Exceptions/Handler.php');
+        copy(
+            $this->installPath.'/files/app/Exceptions/Handler.php',
+            app_path().'/Exceptions/Handler.php'
+        );
         $this->info('Created '.app_path().'/Exceptions/Handler.php - OK');
 
-        copy($this->installPath.'/files/app/Providers/AppServiceProvider.php',
-            app_path().'/Providers/AppServiceProvider.php');
+        copy(
+            $this->installPath.'/files/app/Providers/AppServiceProvider.php',
+            app_path().'/Providers/AppServiceProvider.php'
+        );
         $this->info('Created '.app_path().'/Providers/AppServiceProvider.php - OK');
 
-        copy($this->installPath.'/files/app/Providers/ComposerServiceProvider.php',
-            app_path().'/Providers/ComposerServiceProvider.php');
+        copy(
+            $this->installPath.'/files/app/Providers/ComposerServiceProvider.php',
+            app_path().'/Providers/ComposerServiceProvider.php'
+        );
         $this->info('Created '.app_path().'/Providers/ComposerServiceProvider.php - OK');
 
         copy($this->installPath.'/files/routes/front.php', base_path().'/routes/front.php');
@@ -229,13 +237,19 @@ class InstallCommand extends Command
             File::makeDirectory(base_path().'/resources/lang/ua', 0777, true);
         }
 
-        copy($this->installPath.'/files/resources/lang/ru/validation.php',
-            base_path().'/resources/lang/ru/validation.php');
-        copy($this->installPath.'/files/resources/lang/ua/validation.php',
-            base_path().'/resources/lang/ua/validation.php');
+        copy(
+            $this->installPath.'/files/resources/lang/ru/validation.php',
+            base_path().'/resources/lang/ru/validation.php'
+        );
+        copy(
+            $this->installPath.'/files/resources/lang/ua/validation.php',
+            base_path().'/resources/lang/ua/validation.php'
+        );
 
-        copy($this->installPath.'/files/resources/views/front/index.blade.php',
-            base_path().'/resources/views/front/index.blade.php');
+        copy(
+            $this->installPath.'/files/resources/views/front/index.blade.php',
+            base_path().'/resources/views/front/index.blade.php'
+        );
         $this->info('Created front/index.blade.php- OK');
 
         copy($this->installPath.'/files/resources/views/layouts/default.blade.php', base_path().'/resources/views/layouts/default.blade.php');

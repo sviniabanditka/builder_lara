@@ -4,8 +4,15 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class DatetimeField.
+ */
 class DatetimeField extends AbstractField
 {
+    /**
+     * @param $value
+     * @return false|string|void
+     */
     public function prepareQueryValue($value)
     {
         if (! $value) {
@@ -23,6 +30,10 @@ class DatetimeField extends AbstractField
         return $value;
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -41,6 +52,11 @@ class DatetimeField extends AbstractField
 
     // end getListValue
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -65,6 +81,10 @@ class DatetimeField extends AbstractField
 
     // end getEditInput
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {

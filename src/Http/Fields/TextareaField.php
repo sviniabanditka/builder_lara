@@ -2,13 +2,23 @@
 
 namespace Vis\Builder\Fields;
 
+/**
+ * Class TextareaField.
+ */
 class TextareaField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
@@ -25,6 +35,9 @@ class TextareaField extends AbstractField
         }
     }
 
+    /**
+     * @return string
+     */
     public function getLabelClass()
     {
         return 'textarea';

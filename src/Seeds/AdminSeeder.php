@@ -82,7 +82,7 @@ class AdminSeeder extends Seeder
             'seo_description' => '',
             'seo_keywords' => '',
             'created_at' => date('Y-m-d G:i:s'),
-            'updated_at'=> date('Y-m-d G:i:s'),
+            'updated_at' => date('Y-m-d G:i:s'),
             'picture' => '',
             'is_show_in_menu' => 0,
             'is_show_in_footer_menu' => 0,

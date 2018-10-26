@@ -5,8 +5,14 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class SetField.
+ */
 class SetField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
@@ -14,6 +20,10 @@ class SetField extends AbstractField
 
     // end isEditable
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
@@ -22,6 +32,10 @@ class SetField extends AbstractField
 
     // end onSearchFilter
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {
@@ -32,7 +46,7 @@ class SetField extends AbstractField
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = Session::get($sessionPath, '');
 
-        $table = View::make('admin::tb.filter_set');
+        $table = view('admin::tb.filter_set');
         $table->filter = $filter;
         $table->name = $this->getFieldName();
         $table->options = $this->getAttribute('options');
@@ -40,8 +54,11 @@ class SetField extends AbstractField
         return $table->render();
     }
 
-    // end getFilterInput
-
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -51,7 +68,7 @@ class SetField extends AbstractField
             }
         }
 
-        $table = View::make('admin::tb.input_set');
+        $table = view('admin::tb.input_set');
         $table->selected = explode(',', $this->getValue($row));
         $table->name = $this->getFieldName();
         $table->options = $this->getAttribute('options');
@@ -59,8 +76,10 @@ class SetField extends AbstractField
         return $table->render();
     }
 
-    // end getEditInput
-
+    /**
+     * @param $row
+     * @return string
+     */
     public function getRowColor($row)
     {
         $colors = $this->getAttribute('colors');
@@ -69,6 +88,11 @@ class SetField extends AbstractField
         }
     }
 
+    /**
+     * @param $row
+     * @param string $postfix
+     * @return bool|string
+     */
     public function getValue($row, $postfix = '')
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {
@@ -85,26 +109,27 @@ class SetField extends AbstractField
             $tabs = $this->getAttribute('tabs');
             $fieldName = $fieldName.$tabs[0]['postfix'];
         }
-        $value = isset($row[$fieldName]) ? $row[$fieldName] : '';
 
-        return $value;
+        return isset($row[$fieldName]) ? $row[$fieldName] : '';
     }
 
-    // end getValue
-
+    /**
+     * @param $value
+     * @return string|void
+     */
     public function prepareQueryValue($value)
     {
-        if (! $value) {
-            if ($this->getAttribute('is_null')) {
-                return;
-            }
+        if (! $value && $this->getAttribute('is_null')) {
+            return;
         }
 
         return implode(',', $value);
     }
 
-    // end prepareQueryValue
-
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -123,6 +148,4 @@ class SetField extends AbstractField
 
         return implode(', ', $prepared);
     }
-
-    // end getListValue
 }

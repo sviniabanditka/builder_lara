@@ -1,7 +1,7 @@
 /* ==========================================================
  * bootstrap-maxlength.js v1.4.2
- * 
- * Copyright (c) 2013 Maurizio Napoleoni; 
+ *
+ * Copyright (c) 2013 Maurizio Napoleoni;
  *
  * Licensed under the terms of the MIT license.
  * See: https://github.com/mimo84/bootstrap-maxlength/blob/master/LICENSE
@@ -43,7 +43,8 @@
           * @param input
           * @return {number}
           */
-            function inputLength(input) {
+            function inputLength(input)
+            {
               var text = input.val();
               var matches = text.match(/\n/g);
 
@@ -66,18 +67,17 @@
           * @param input
           * @return {number}
           */
-            function utf8Length(string) {
+            function utf8Length(string)
+            {
               var utf8length = 0;
               for (var n = 0; n < string.length; n++) {
                 var c = string.charCodeAt(n);
                 if (c < 128) {
                   utf8length++;
-                }
-                else if((c > 127) && (c < 2048)) {
-                  utf8length = utf8length+2;
-                }
-                else {
-                  utf8length = utf8length+3;
+                } else if ((c > 127) && (c < 2048)) {
+                  utf8length = utf8length + 2;
+                } else {
+                  utf8length = utf8length + 3;
                 }
               }
               return utf8length;
@@ -91,7 +91,8 @@
            * @param maxlength
            * @return {number}
            */
-            function charsLeftThreshold(input, thereshold, maxlength) {
+            function charsLeftThreshold(input, thereshold, maxlength)
+            {
                 var output = true;
                 if (!options.alwaysShow && (maxlength - inputLength(input) > thereshold)) {
                     output = false;
@@ -106,7 +107,8 @@
            * @param maxlength
            * @return {number}
            */
-            function remainingChars(input, maxlength) {
+            function remainingChars(input, maxlength)
+            {
                 var length = maxlength - inputLength(input);
                 return length;
             }
@@ -116,7 +118,8 @@
            *
            * @param indicator
            */
-            function showRemaining(indicator) {
+            function showRemaining(indicator)
+            {
                 indicator.css({
                     display: 'block'
                 });
@@ -127,7 +130,8 @@
            *
            * @param indicator
            */
-            function hideRemaining(indicator) {
+            function hideRemaining(indicator)
+            {
                 indicator.css({
                     display: 'none'
                 });
@@ -135,14 +139,15 @@
 
            /**
            * This function updates the value in the indicator
-           *  
+           *
            * @param maxLengthThisInput
            * @param typedChars
            * @return String
            */
-            function updateMaxLengthHTML(maxLengthThisInput, typedChars) {
+            function updateMaxLengthHTML(maxLengthThisInput, typedChars)
+            {
                 var output = '';
-                if (options.message){
+                if (options.message) {
                     output = options.message.replace('%charsTyped%', typedChars)
                             .replace('%charsRemaining%', maxLengthThisInput - typedChars)
                             .replace('%charsTotal%', maxLengthThisInput);
@@ -152,8 +157,7 @@
                     }
                     if (!options.showCharsTyped) {
                         output += maxLengthThisInput - typedChars;
-                    }
-                    else {
+                    } else {
                         output += typedChars;
                     }
                     if (options.showMaxLength) {
@@ -176,7 +180,8 @@
            * @param maxLengthCurrentInput
            * @param maxLengthIndicator
            */
-            function manageRemainingVisibility(remaining, currentInput, maxLengthCurrentInput, maxLengthIndicator) {
+            function manageRemainingVisibility(remaining, currentInput, maxLengthCurrentInput, maxLengthIndicator)
+            {
                 maxLengthIndicator.html(updateMaxLengthHTML(maxLengthCurrentInput, (maxLengthCurrentInput - remaining)));
 
                 if (remaining > 0) {
@@ -191,14 +196,15 @@
             }
 
           /**
-           * This function returns an object containing all the 
-           * informations about the position of the current input 
-           *  
+           * This function returns an object containing all the
+           * informations about the position of the current input
+           *
            *  @param currentInput
            *  @return object {bottom height left right top  width}
            *
            */
-            function getPosition(currentInput) {
+            function getPosition(currentInput)
+            {
                 var el = currentInput[0];
                 return $.extend({}, (typeof el.getBoundingClientRect === 'function') ? el.getBoundingClientRect() : {
                     width: el.offsetWidth,
@@ -215,7 +221,8 @@
            *  @return null
            *
            */
-            function place(currentInput, maxLengthIndicator) {
+            function place(currentInput, maxLengthIndicator)
+            {
                 var pos = getPosition(currentInput),
                     inputOuter = currentInput.outerWidth(),
                     outerWidth = maxLengthIndicator.outerWidth(),
@@ -260,11 +267,12 @@
              *  @return {number}
              *
              */
-            function getMaxLength(currentInput) {
+            function getMaxLength(currentInput)
+            {
                 return currentInput.attr('maxlength') || currentInput.attr('size');
             }
 
-            return this.each(function() {
+            return this.each(function () {
 
                 var currentInput = $(this),
                     maxLengthCurrentInput = getMaxLength(currentInput),
@@ -280,7 +288,7 @@
                     currentInput.data('maxlenghtsizex', currentInput.outerWidth());
                     currentInput.data('maxlenghtsizey', currentInput.outerHeight());
 
-                    currentInput.mouseup(function() {
+                    currentInput.mouseup(function () {
                         if (currentInput.outerWidth() !== currentInput.data('maxlenghtsizex') || currentInput.outerHeight() !== currentInput.data('maxlenghtsizey')) {
                             place(currentInput, maxLengthIndicator);
                         }
@@ -292,32 +300,31 @@
 
                 documentBody.append(maxLengthIndicator);
 
-                currentInput.focus(function() {
+                currentInput.focus(function () {
                     var remaining = remainingChars(currentInput, getMaxLength(currentInput));
                     manageRemainingVisibility(remaining, currentInput, maxLengthCurrentInput, maxLengthIndicator);
                     place(currentInput, maxLengthIndicator);
                 });
 
-                $(window).resize(function() {
+                $(window).resize(function () {
                   place(currentInput, maxLengthIndicator);
                 });
 
-                currentInput.blur(function() {
+                currentInput.blur(function () {
                     maxLengthIndicator.css('display', 'none');
                 });
 
-                currentInput.keyup(function(e) {
+                currentInput.keyup(function (e) {
                     var remaining = remainingChars(currentInput, getMaxLength(currentInput)),
                         output = true,
                         keyCode = e.keyCode || e.which;
                     // Handle the tab press when the maxlength have been reached.
-                    if (remaining===0 && keyCode===9 && !e.shiftKey) {
-                      currentInput.attr('maxlength',getMaxLength(currentInput)+1)
+                    if (remaining === 0 && keyCode === 9 && !e.shiftKey) {
+                      currentInput.attr('maxlength',getMaxLength(currentInput) + 1)
                                   .trigger({
                                     type: 'keypress',
                                     which: 9
-                                  }).attr('maxlength',getMaxLength(currentInput)-1);
-
+                                  }).attr('maxlength',getMaxLength(currentInput) - 1);
                     }
                     if (options.validate && remaining < 0) {
                         output = false;

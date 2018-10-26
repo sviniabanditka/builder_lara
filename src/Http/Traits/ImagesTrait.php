@@ -94,7 +94,7 @@ trait ImagesTrait
         $imagesRes = [];
         foreach ($images as $imgOne) {
             if ($paramImg) {
-                if (Config::get('builder.watermark.active') && $imgOne) {
+                if (config('builder.watermark.active') && $imgOne) {
                     $imagesRes[] = '/img/watermark/'.ltrim($imgOne, '/');
                 } else {
                     $imagesRes[] = glide($imgOne, $paramImg);
@@ -135,7 +135,7 @@ trait ImagesTrait
 
     public function getWatermark($width = '', $height = '', $options = [])
     {
-        if (Config::get('builder.watermark.active') && $this->picture) {
+        if (config('builder.watermark.active') && $this->picture) {
             return '/img/watermark/'.ltrim($this->picture, '/');
         } else {
             return $this->getImgPath($width, $height, $options);

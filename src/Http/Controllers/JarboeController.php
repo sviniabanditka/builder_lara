@@ -12,31 +12,92 @@ use Vis\Builder\Handlers\RequestHandler;
 use Vis\Builder\Handlers\DefinitionHandler;
 use Vis\Builder\Handlers\CustomClosureHandler;
 
+/**
+ * Class JarboeController.
+ */
 class JarboeController
 {
+    /**
+     * @var array|bool|\Illuminate\Http\Request|string
+     */
     protected $currentID = false;
 
+    /**
+     * @var
+     */
     protected $options;
+    /**
+     * @var mixed
+     */
     protected $definition;
 
+    /**
+     * @var bool
+     */
     protected $handler;
+    /**
+     * @var CustomClosureHandler
+     */
     protected $callbacks;
+    /**
+     * @var array
+     */
     protected $fields;
+    /**
+     * @var array
+     */
     protected $groupFields;
+    /**
+     * @var array
+     */
     protected $patterns = [];
 
+    /**
+     * @var ViewHandler
+     */
     public $view;
+    /**
+     * @var RequestHandler
+     */
     public $request;
+    /**
+     * @var QueryHandler
+     */
     public $query;
+    /**
+     * @var ActionsHandler
+     */
     public $actions;
+    /**
+     * @var ExportHandler
+     */
     public $export;
+    /**
+     * @var ImportHandler
+     */
     public $import;
+    /**
+     * @var
+     */
     public $imageStorage;
+    /**
+     * @var
+     */
     public $fileStorage;
+    /**
+     * @var DefinitionHandler
+     */
     public $definitionClass;
 
+    /**
+     * @var
+     */
     protected $allowedIds;
 
+    /**
+     * JarboeController constructor.
+     * @param $options
+     */
     public function __construct($options)
     {
         $this->options = $options;
@@ -72,16 +133,25 @@ class JarboeController
         $this->currentID = request('id');
     }
 
+    /**
+     * @return array|bool|\Illuminate\Http\Request|string
+     */
     public function getCurrentID()
     {
         return $this->currentID;
     }
 
+    /**
+     * @return mixed
+     */
     public function getModel()
     {
         return $this->definition['options']['model'];
     }
 
+    /**
+     * @return mixed
+     */
     public function getTable()
     {
         return $this->definition['db']['table'];
@@ -107,6 +177,9 @@ class JarboeController
 
     // end doPrepareDefinition
 
+    /**
+     * @return array|\Illuminate\Http\JsonResponse|mixed
+     */
     public function handle()
     {
         if ($this->hasCustomHandlerMethod('handle')) {
@@ -121,57 +194,61 @@ class JarboeController
 
     // end handle
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function isAllowedID($id)
     {
         return in_array($id, $this->allowedIds);
     }
 
-    // end isAllowedID
-
-    protected function getPreparedOptions($opt)
+    /**
+     * @param $opt
+     * @return mixed
+     */
+    protected function getPreparedOptions($optionsParam)
     {
-        $options = $opt;
-        $options['def_path'] = app_path().$opt['def_path'];
+        $optionsParam['def_path'] = app_path().$optionsParam['def_path'];
 
-        return $options;
+        return $optionsParam;
     }
 
-    // end getPreparedOptions
-
+    /**
+     * @return bool
+     */
     protected function createCustomHandlerInstance()
     {
         if (isset($this->definition['options']['handler'])) {
-            $handler = '\\'.$this->definition['options']['handler'];
+            $handlerCustom = '\\'.$this->definition['options']['handler'];
 
-            return new $handler($this);
+            return new $handlerCustom($this);
         }
 
         return false;
     }
 
-    // end createCustomHandlerInstance
-
+    /**
+     * @param $methodName
+     * @return bool
+     */
     public function hasCustomHandlerMethod($methodName)
     {
         return $this->getCustomHandler() && is_callable([$this->getCustomHandler(), $methodName]);
     }
 
-    // end hasCustomHandlerMethod
-
-    public function isSetDefinitionCallback($methodName)
-    {
-        //
-    }
-
-    // end isSetDefinitionCallback
-
+    /**
+     * @return CustomClosureHandler
+     */
     public function getCustomHandler()
     {
         return $this->handler ?: $this->callbacks;
     }
 
-    // end getCustomHandler
-
+    /**
+     * @param $ident
+     * @return mixed
+     */
     public function getField($ident)
     {
         if (isset($this->fields[$ident])) {
@@ -187,6 +264,9 @@ class JarboeController
 
     // end getField
 
+    /**
+     * @return array
+     */
     public function getFields()
     {
         return $this->fields;
@@ -194,6 +274,10 @@ class JarboeController
 
     // end getFields
 
+    /**
+     * @param $ident
+     * @return mixed
+     */
     public function getOption($ident)
     {
         if (isset($this->options[$ident])) {
@@ -205,18 +289,27 @@ class JarboeController
 
     // end getOption
 
+    /**
+     * @return string
+     */
     public function getDefinitionName()
     {
-        $definition = explode('.', $this->getOption('def_name'));
+        $definitionName = explode('.', $this->getOption('def_name'));
 
-        return $definition[0];
+        return $definitionName[0];
     }
 
+    /**
+     * @return string
+     */
     public function getUrlAction()
     {
         return '/admin/handle/'.$this->getDefinitionName();
     }
 
+    /**
+     * @return array
+     */
     public function getAdditionalOptions()
     {
         if (isset($this->options['additional'])) {
@@ -228,6 +321,9 @@ class JarboeController
 
     // end getAdditionalOptions
 
+    /**
+     * @return mixed
+     */
     public function getDefinition()
     {
         return $this->definition;
@@ -235,39 +331,48 @@ class JarboeController
 
     // end getDefinition
 
+    /**
+     * @return array
+     */
     protected function loadFields()
     {
-        $definition = $this->getDefinition();
+        $definitionThis = $this->getDefinition();
 
-        $fields = [];
-        foreach ($definition['fields'] as $name => $info) {
+        $fieldsThis = [];
+        foreach ($definitionThis['fields'] as $name => $info) {
             if ($this->isPatternField($name)) {
                 $this->patterns[$name] = $this->createPatternInstance($name, $info);
             } else {
-                $fields[$name] = $this->createFieldInstance($name, $info);
+                $fieldsThis[$name] = $this->createFieldInstance($name, $info);
             }
         }
 
-        return $fields;
+        return $fieldsThis;
     }
 
     // end loadFields
 
+    /**
+     * @return array
+     */
     protected function loadGroupFields()
     {
-        $definition = $this->getDefinition();
-        $fields = [];
-        foreach ($definition['fields'] as $name => $info) {
+        $definitionThis = $this->getDefinition();
+        $fieldsThis = [];
+        foreach ($definitionThis['fields'] as $info) {
             if ($info['type'] == 'group' && count($info['filds'])) {
                 foreach ($info['filds'] as $nameGroup => $infoGroup) {
-                    $fields[$nameGroup] = $this->createFieldInstance($nameGroup, $infoGroup);
+                    $fieldsThis[$nameGroup] = $this->createFieldInstance($nameGroup, $infoGroup);
                 }
             }
         }
 
-        return $fields;
+        return $fieldsThis;
     }
 
+    /**
+     * @return array
+     */
     public function getPatterns()
     {
         return $this->patterns;
@@ -275,6 +380,10 @@ class JarboeController
 
     // end getPatterns
 
+    /**
+     * @param $name
+     * @return false|int
+     */
     public function isPatternField($name)
     {
         return preg_match('~^pattern\.~', $name);
@@ -282,6 +391,11 @@ class JarboeController
 
     // end isPatternField
 
+    /**
+     * @param $name
+     * @param $info
+     * @return Fields\PatternField
+     */
     protected function createPatternInstance($name, $info)
     {
         return new Fields\PatternField(
@@ -293,8 +407,11 @@ class JarboeController
         );
     }
 
-    // end createPatternInstance
-
+    /**
+     * @param $name
+     * @param $info
+     * @return mixed
+     */
     protected function createFieldInstance($name, $info)
     {
         $className = 'Vis\\Builder\\Fields\\'.ucfirst(camel_case($info['type'])).'Field';
@@ -308,8 +425,10 @@ class JarboeController
         );
     }
 
-    // end createFieldInstance
-
+    /**
+     * @param string $table
+     * @return mixed
+     */
     protected function getTableDefinition($table)
     {
         $table = preg_replace('~\.~', '/', $table);
@@ -319,20 +438,22 @@ class JarboeController
             throw new \RuntimeException("Definition \n[{$path}]\n does not exist.");
         }
 
-        $definition = require $path;
+        $definitionThis = require $path;
 
-        if (! $definition) {
+        if (! $definitionThis) {
             throw new \RuntimeException('Empty definition?');
         }
 
-        $definition['is_searchable'] = $this->isSearchable($definition);
-        $definition['options']['admin_uri'] = \Config::get('builder.admin.uri');
+        $definitionThis['is_searchable'] = $this->isSearchable($definitionThis);
+        $definitionThis['options']['admin_uri'] = config('builder.admin.uri');
 
-        return $definition;
+        return $definitionThis;
     }
 
-    // end getTableDefinition
-
+    /**
+     * @param array $definition
+     * @return bool
+     */
     private function isSearchable($definition)
     {
         $isSearchable = false;
@@ -347,6 +468,9 @@ class JarboeController
         return $isSearchable;
     }
 
+    /**
+     * @return \Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed
+     */
     public function getFiltersDefinition()
     {
         $defName = $this->getOption('def_name');
@@ -354,6 +478,9 @@ class JarboeController
         return session('table_builder.'.$defName.'.filters', []);
     }
 
+    /**
+     * @return \Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed
+     */
     public function getOrderDefinition()
     {
         $defName = $this->getOption('def_name');

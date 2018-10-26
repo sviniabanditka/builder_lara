@@ -3,7 +3,7 @@
     <form id="edit_form_{{$def['db']['table']}}" class="smart-form" method="post" action="/admin/handle/{{$definitionName}}" novalidate="novalidate">
 
         @if (!isset($def['position']))
-            <fieldset style="{{ Input::get('edit') ? '' : 'padding:0;' }}">
+            <fieldset style="{{ request('edit') ? '' : 'padding:0;' }}">
 
             @include('admin::tb.modal_form_edit_field_simple')
             

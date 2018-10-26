@@ -9,7 +9,7 @@ var Cropper = {
         var cropBoxData;
         var canvasData;
 
-        jQuery(document).on('click', '.image-attr-editable', function() {
+        jQuery(document).on('click', '.image-attr-editable', function () {
             var top = $(document).scrollTop();
             $('#modal_crop_img').show().css({ top: top + 'px', 'opacity': '100' });
             Cropper.imgThis = $(this);
@@ -32,7 +32,7 @@ var Cropper = {
 
         });
 
-        jQuery(document).on('click', '#modal_crop_img .close_crop, #modal_crop_img .close', function() {
+        jQuery(document).on('click', '#modal_crop_img .close_crop, #modal_crop_img .close', function () {
             $("#modal_crop_img").hide()
         });
     },
@@ -43,7 +43,9 @@ var Cropper = {
         var result = Cropper.image.cropper('getCroppedCanvas');
         var srcImg = $("#modal_crop_img #image").attr("src");
 
-        $.post("/admin/save_croped_img", {
+        $.post(
+            "/admin/save_croped_img",
+            {
                 data: result.toDataURL(),
                 originalImg: srcImg,
                 width: Cropper.imgThis.attr('data-width'),
@@ -61,11 +63,13 @@ var Cropper = {
                     TableBuilder.setInputImages(contextFile);
 
                     $("#modal_crop_img").hide();
-
                 }
-            }, "json");
+            },
+            "json"
+        );
     },
 
 }
 
 Cropper.init();
+

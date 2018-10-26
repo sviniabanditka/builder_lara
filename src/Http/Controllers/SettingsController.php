@@ -9,94 +9,79 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class SettingsController.
+ */
 class SettingsController extends Controller
 {
-    /*
-    * show start page settings
-    */
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
     public function fetchIndex()
     {
-        $breadcrumb[Config::get('builder.settings.title_page')] = '';
-        $groupsSettings = Config::get('builder.settings.groups');
+        $breadcrumb[config('builder.settings.title_page')] = '';
+        $groupsSettings = config('builder.settings.groups');
 
-        $allpage = Setting::orderBy('id', 'desc');
-        $title = Config::get('builder.settings.title_page');
+        $data = Setting::orderBy('id', 'desc');
+        $title = config('builder.settings.title_page');
 
         //filter group
-        if (Input::get('group')) {
-            $allpage = $allpage->where('group_type', Input::get('group'));
-            $title .= ' / '.$groupsSettings[Input::get('group')];
+        if (request('group')) {
+            $data = $data->where('group_type', request('group'));
+            $title .= ' / '.$groupsSettings[request('group')];
         }
 
-        $allpage = $allpage->paginate(20);
-        $groups = Config::get('builder.settings.groups');
+        $data = $data->paginate(20);
+        $groups = config('builder.settings.groups');
 
-        $view = 'settings.settings_all';
-        if (Request::ajax()) {
-            $view = 'settings.part.settings_center';
-        }
+        $view = Request::ajax() ? 'settings.part.settings_center' : 'settings.settings_all';
 
-        return View::make('admin::'.$view)
-            ->with('title', $title)
-            ->with('breadcrumb', $breadcrumb)
-            ->with('data', $allpage)
-            ->with('groups', $groups);
+        return view('admin::'.$view, compact('title', 'breadcrumb', 'data', 'groups'));
     }
 
-    // end fetchIndex
-
-    /*
-    * Создания настройки
-    */
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
     public function fetchCreate()
     {
-        $types = Config::get('builder.settings.type');
-        $groups = Config::get('builder.settings.groups');
+        $type = config('builder.settings.type');
+        $groups = config('builder.settings.groups');
 
-        return View::make('admin::settings.part.form_settings')
-            ->with('type', $types)
-            ->with('groups', $groups);
+        return view('admin::settings.part.form_settings', compact('type', 'groups'));
     }
 
-    // end fetchCreate
-
-    /*
-   * Сохранение настройки
-   */
+    /**
+     * @return bool|\Illuminate\Http\JsonResponse
+     */
     public function doSave()
     {
         $file = Input::file('file');
-        parse_str(Input::get('data'), $data);
+        parse_str(request('data'), $data);
 
         $validation = Setting::isValid($data, $data['id']);
+
         if ($validation) {
             return $validation;
         }
 
         Setting::doSaveSetting($data, $file);
 
-        if ($data['id'] != 0 && is_numeric($data['id'])) {
-            $ok_messages = 'Запись успешно обновлена';
-        } else {
-            $ok_messages = 'Запись успешно добавлена';
-        }
+        $message = $data['id'] != 0 && is_numeric($data['id']) ? 'Запись успешно обновлена' : 'Запись успешно добавлена';
 
         return Response::json(
             [
                 'status'            => 'ok',
-                'ok_messages'       => $ok_messages,
+                'ok_messages'       => $message,
             ]
         );
     }
 
-    // end doSave
-
-    /*
-    * Удаление настройки
-    */
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doDelete()
     {
-        Setting::doDelete(Input::get('id'));
+        Setting::doDelete(request('id'));
 
         return Response::json(
             [
@@ -105,41 +90,35 @@ class SettingsController extends Controller
         );
     }
 
-    /*
-    * Редактирование настройки
-    */
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
     public function fetchEdit()
     {
-        $id = Input::get('id');
-        if (is_numeric($id)) {
-            $page = Setting::findOrFail($id);
-            $type = Config::get('builder.settings.type');
-            $groups = Config::get('builder.settings.groups');
+        $id = request('id');
 
-            $select_info = [];
-            if ($page->type == 2 || $page->type == 3 || $page->type == 5) {
-                $select_info = SettingSelect::where('id_setting', $page->id)
-                    ->orderBy('priority')
-                    ->get()
-                    ->toArray();
-            }
+        $info = Setting::findOrFail($id);
+        $type = config('builder.settings.type');
+        $groups = config('builder.settings.groups');
 
-            return View::make('admin::settings.part.form_settings')
-                ->with('info', $page)
-                ->with('type', $type)
-                ->with('select_info', $select_info)
-                ->with('groups', $groups);
+        $select_info = [];
+        if ($info->type == 2 || $info->type == 3 || $info->type == 5) {
+            $select_info = SettingSelect::where('id_setting', $info->id)
+                ->orderBy('priority')
+                ->get()
+                ->toArray();
         }
+
+        return view('admin::settings.part.form_settings',
+            compact('info', 'type', 'select_info', 'groups'));
     }
 
-    // end fetchEdit
-
-    /*
-    * Deleting item select
-    */
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doDeleteSettingSelect()
     {
-        SettingSelect::doDelete(Input::get('id'));
+        SettingSelect::doDelete(request('id'));
 
         return Response::json(
             [
@@ -149,13 +128,14 @@ class SettingsController extends Controller
         );
     }
 
-    //end doSettingSelectDelete
-
+    /**
+     * quick edit in list.
+     */
     public function doFastSave()
     {
         if (Input::has('id') && Input::has('value')) {
-            $setting = Setting::find(Input::get('id'));
-            $setting->value = trim(Input::get('value'));
+            $setting = Setting::find(request('id'));
+            $setting->value = trim(request('value'));
             $setting->save();
 
             Setting::reCacheSettings();

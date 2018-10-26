@@ -5,11 +5,25 @@ namespace Vis\Builder\Handlers;
 use Illuminate\Support\Facades\DB;
 use Vis\Builder\Exceptions\JarboeValidationException;
 
+/**
+ * Class ImportHandler.
+ */
 class ImportHandler
 {
+    /**
+     * @var array
+     */
     protected $def;
+    /**
+     * @var
+     */
     protected $controller;
 
+    /**
+     * ImportHandler constructor.
+     * @param array $importDefinition
+     * @param $controller
+     */
     public function __construct(array $importDefinition, &$controller)
     {
         $this->def = $importDefinition;
@@ -18,6 +32,10 @@ class ImportHandler
 
     // end __construct
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     * @throws \Throwable
+     */
     public function fetch()
     {
         $def = $this->def;
@@ -40,6 +58,10 @@ class ImportHandler
 
     // end fetch
 
+    /**
+     * @param $file
+     * @return bool
+     */
     public function doImportCsv($file)
     {
         $this->doCheckPermission();
@@ -128,6 +150,9 @@ class ImportHandler
 
     // end doCsvTemplateDownload
 
+    /**
+     * @param $filename
+     */
     private function doSendHeaders($filename)
     {
         // disable caching
@@ -148,6 +173,11 @@ class ImportHandler
 
     // end doSendHeaders
 
+    /**
+     * @param $ident
+     * @param bool $default
+     * @return bool|mixed
+     */
     private function getAttribute($ident, $default = false)
     {
         return isset($this->def[$ident]) ? $this->def[$ident] : $default;

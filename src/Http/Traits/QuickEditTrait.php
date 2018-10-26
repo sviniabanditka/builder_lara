@@ -15,7 +15,7 @@ trait QuickEditTrait
             $pageEditor = $this;
             $fieldEdit = 'editor_init_'.get_class($pageEditor).'_'.$field.'_'.$pageEditor->id;
 
-            return View::make('admin::partials.editor_init', compact('pageEditor', 'field', 'fieldEdit'));
+            return view('admin::partials.editor_init', compact('pageEditor', 'field', 'fieldEdit'));
         } else {
             return $this->$field;
         }

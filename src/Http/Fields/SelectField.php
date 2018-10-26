@@ -5,8 +5,14 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class SelectField.
+ */
 class SelectField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
@@ -14,6 +20,10 @@ class SelectField extends AbstractField
 
     // end isEditable
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
@@ -22,6 +32,10 @@ class SelectField extends AbstractField
 
     // end onSearchFilter
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {
@@ -42,6 +56,11 @@ class SelectField extends AbstractField
 
     // end getFilterInput
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -70,6 +89,10 @@ class SelectField extends AbstractField
 
     // end getEditInput
 
+    /**
+     * @param $row
+     * @return bool
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -97,6 +120,10 @@ class SelectField extends AbstractField
 
     // end getListValue
 
+    /**
+     * @param $row
+     * @return string
+     */
     public function getRowColor($row)
     {
         $colors = $this->getAttribute('colors');

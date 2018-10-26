@@ -2,7 +2,7 @@
     <div class="row filter_gallary_images" style="padding-top: 10px">
         <section  class="col col-4">
             <label class="input">
-                <input type="text" value="{{Input::get('q')}}" name="q" placeholder="Введите название картинки">
+                <input type="text" value="{{request('q')}}" name="q" placeholder="Введите название картинки">
             </label>
         </section>
         <section class="col col-4">
@@ -10,7 +10,7 @@
                 <select name="id_gallery" onchange="TableBuilder.changeGalleryAndTags($(this))">
                     <option value="">Выбрать галерею</option>
                      @foreach($galleries as $gallery)
-                        <option value="{{$gallery->id}}" {{Input::get('gallary') == $gallery->id ? 'selected' : ''}}>{{$gallery->title}}</option>
+                        <option value="{{$gallery->id}}" {{request('gallary') == $gallery->id ? 'selected' : ''}}>{{$gallery->title}}</option>
                      @endforeach
                 </select>
                 <i></i>
@@ -22,14 +22,14 @@
                 <select name="id_tag" onchange="TableBuilder.changeGalleryAndTags($(this))">
                     <option value="">Выбрать тег</option>
                     @foreach($tags as $tag)
-                        <option value="{{$tag->id}}" {{Input::get('tag') == $tag->id ? 'selected' : ''}}>{{$tag->title}}</option>
+                        <option value="{{$tag->id}}" {{request('tag') == $tag->id ? 'selected' : ''}}>{{$tag->title}}</option>
                     @endforeach
                 </select>
                 <i></i>
             </label>
         </section>
-        <input type="hidden" value="{{Input::get('ident')}}" name="ident">
-        <input type="hidden" value="{{Input::get('baseName')}}" name="baseName">
+        <input type="hidden" value="{{request('ident')}}" name="ident">
+        <input type="hidden" value="{{request('baseName')}}" name="baseName">
 
     </div>
 </div>

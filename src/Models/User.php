@@ -5,33 +5,46 @@ namespace Vis\Builder;
 use DB;
 use Cartalyst\Sentinel\Users\EloquentUser;
 
+/**
+ * Class User.
+ */
 class User extends EloquentUser
 {
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
+    /**
+     * @param array $params
+     */
     public function setFillable(array $params)
     {
         $this->fillable = $params;
     }
 
+    /**
+     * @param array $imgParam
+     * @return mixed|string
+     */
     public function getAvatar(array $imgParam)
     {
-        if ($this->image) {
-            $image = $this->image;
-        } elseif ($this->picture) {
-            $image = $this->picture;
-        } else {
-            $image = '/packages/vis/builder/img/blank_avatar.gif';
-        }
+        $image = $this->picture ?? '/packages/vis/builder/img/blank_avatar.gif';
 
         return glide($image, $imgParam);
     }
 
+    /**
+     * @return string
+     */
     public function getFullName()
     {
         return $this->first_name.' '.$this->last_name;
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function getIdsTreeAccess()
     {
         return DB::table('role_users')

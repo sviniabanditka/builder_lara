@@ -5,7 +5,6 @@ namespace Vis\Builder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -94,7 +93,7 @@ class Setting extends Eloquent
     public static function doSaveSetting($data, $file)
     {
         if ($data['id'] == 0) {
-            $settings = new self;
+            $settings = new self();
         } else {
             $settings = self::find($data['id']);
         }
@@ -157,7 +156,7 @@ class Setting extends Eloquent
                         foreach ($data['select']['new'] as $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->priority = $i;
@@ -190,7 +189,7 @@ class Setting extends Eloquent
                         foreach ($data['select21']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->value2
@@ -226,7 +225,7 @@ class Setting extends Eloquent
                         foreach ($data['select31']['new'] as $k_new => $el_new) {
                             $el_new = trim($el_new);
                             if ($el_new) {
-                                $SettingSelect = new SettingSelect;
+                                $SettingSelect = new SettingSelect();
                                 $SettingSelect->id_setting = $settings->id;
                                 $SettingSelect->value = $el_new;
                                 $SettingSelect->value2
@@ -264,7 +263,7 @@ class Setting extends Eloquent
     public static function doDelete($id)
     {
         if (is_numeric($id)) {
-            $id_page = Input::get('id');
+            $id_page = request('id');
             $page = self::find($id_page);
 
             Event::fire('setting.delete', [$page]);

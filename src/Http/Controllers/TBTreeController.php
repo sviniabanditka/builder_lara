@@ -3,18 +3,22 @@
 namespace Vis\Builder;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class TBTreeController.
+ */
 class TBTreeController extends \Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showTree()
     {
         $tree = Tree::all()->toHierarchy();
 
-        $idNode = Input::get('node', 1);
+        $idNode = request('node', 1);
         $current = Tree::find($idNode);
 
         $parentIDs = [];
@@ -22,8 +26,8 @@ class TBTreeController extends \Controller
             $parentIDs[] = $anc->id;
         }
 
-        $templates = Config::get('builder::tree.templates');
-        $template = Config::get('builder::tree.default');
+        $templates = config('builder::tree.templates');
+        $template = config('builder::tree.default');
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
@@ -37,24 +41,23 @@ class TBTreeController extends \Controller
                 ],
             ];
             list($table, $form) = \Jarboe::table($options);
-            $content = View::make('admin::tree.content', compact('current', 'table', 'form', 'template'));
-        } elseif (false && $current->isLeaf()) {
-            $content = 'ama leaf';
+            $content = view('admin::tree.content', compact('current', 'table', 'form', 'template'));
         } else {
-            $content = View::make('admin::tree.content', compact('current', 'template'));
+            $content = view('admin::tree.content', compact('current', 'template'));
         }
 
-        return View::make('admin::tree', compact('tree', 'content', 'current', 'parentIDs'));
+        return view('admin::tree', compact('tree', 'content', 'current', 'parentIDs'));
     }
 
-    // end showTree
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getEditModalForm()
     {
-        $idNode = Input::get('id');
+        $idNode = request('id');
         $current = Tree::find($idNode);
-        $templates = Config::get('builder::tree.templates');
-        $template = Config::get('builder::tree.default');
+        $templates = config('builder::tree.templates');
+        $template = config('builder::tree.default');
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
@@ -76,14 +79,16 @@ class TBTreeController extends \Controller
         ]);
     }
 
-    // end getEditModalForm
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
     public function doEditNode()
     {
-        $idNode = Input::get('id');
+        $idNode = request('id');
         $current = Tree::find($idNode);
-        $templates = Config::get('builder::tree.templates');
-        $template = Config::get('builder::tree.default');
+        $templates = config('builder::tree.templates');
+        $template = config('builder::tree.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
@@ -101,18 +106,19 @@ class TBTreeController extends \Controller
 
         $result = $controller->query->updateRow(Input::all());
         $item = Tree::find($idNode);
-        $result['html'] = View::make('admin::tree.content_row', compact('item'))->render();
+        $result['html'] = view('admin::tree.content_row', compact('item'))->render();
 
         $this->doFlushTreeStructureCache();
 
         return Response::json($result);
     }
 
-    // end doEditNode
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doDeleteNode()
     {
-        $item = Tree::find(Input::get('id'));
+        $item = Tree::find(request('id'));
         $status = $item->delete();
 
         $this->doFlushTreeStructureCache();
@@ -122,15 +128,16 @@ class TBTreeController extends \Controller
         ]);
     }
 
-    // end doDeleteNode
-
+    /**
+     * @return mixed
+     */
     public function handleTree()
     {
-        $idNode = Input::get('node', 1);
+        $idNode = request('node', 1);
         $current = Tree::find($idNode);
 
-        $templates = Config::get('builder::tree.templates');
-        $template = Config::get('builder::tree.default');
+        $templates = config('builder::tree.templates');
+        $template = config('builder::tree.default');
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
@@ -146,18 +153,17 @@ class TBTreeController extends \Controller
 
             return \Jarboe::table($options);
         }
-
-        //
     }
 
-    // end handleTree
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changePosition()
     {
-        $id = Input::get('id');
-        $idParent = Input::get('parent_id', 1);
-        $idLeftSibling = Input::get('left_sibling_id');
-        $idRightSibling = Input::get('right_sibling_id');
+        $id = request('id');
+        $idParent = request('parent_id', 1);
+        $idLeftSibling = request('left_sibling_id');
+        $idRightSibling = request('right_sibling_id');
 
         $item = Tree::find($id);
         $root = Tree::find($idParent);
@@ -165,7 +171,6 @@ class TBTreeController extends \Controller
         $prevParentID = $item->parent_id;
         $item->makeChildOf($root);
 
-        $item->slug = $item->slug;
         $item->save();
 
         if ($prevParentID == $idParent) {
@@ -189,43 +194,40 @@ class TBTreeController extends \Controller
         return Response::json($data);
     }
 
-    // end changePosition
-
     private function doFlushTreeStructureCache()
     {
         \Cache::tags('j_tree')->flush();
     }
 
-    // end doFlushTreeStructureCache
-
     public function changeActive()
     {
-        $activeField = \Config::get('builder::tree.node_active_field.field');
-        $options = \Config::get('builder::tree.node_active_field.options', []);
+        $activeField = config('builder::tree.node_active_field.field');
+        $options = config('builder::tree.node_active_field.options', []);
 
-        $value = Input::get('is_active');
+        $value = request('is_active');
         if ($options) {
-            $value = implode(array_filter(Input::get('onoffswitch', [])), ',');
+            $value = implode(array_filter(request('onoffswitch', [])), ',');
         }
 
-        DB::table('tb_tree')->where('id', Input::get('id'))->update([
+        DB::table('tb_tree')->where('id', request('id'))->update([
             $activeField => $value,
         ]);
 
         $this->doFlushTreeStructureCache();
     }
 
-    // end changeActive
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function doCreateNode()
     {
-        $root = Tree::find(Input::get('node', 1));
+        $root = Tree::find(request('node', 1));
 
         $node = new Tree();
-        $node->parent_id = Input::get('node', 1);
-        $node->title = Input::get('title');
-        $node->slug = Input::get('slug') ?: Input::get('title');
-        $node->template = Input::get('template');
+        $node->parent_id = request('node', 1);
+        $node->title = request('title');
+        $node->slug = request('slug') ?: request('title');
+        $node->template = request('template');
         $node->is_active = '0';
         $node->save();
 
@@ -237,24 +239,4 @@ class TBTreeController extends \Controller
             'status' => true,
         ]);
     }
-
-    // end doCreateNode
-
-    public function doUpdateNode()
-    {
-        switch (Input::get('name')) {
-            case 'template':
-                DB::table('tb_tree')->where('id', Input::get('pk'))->update([
-                    'template' => Input::get('value'),
-                ]);
-                break;
-
-            default:
-                throw new \RuntimeException('someone tries to hack me :c');
-        }
-
-        $this->doFlushTreeStructureCache();
-    }
-
-    // end doUpdateNode
 }

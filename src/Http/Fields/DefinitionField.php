@@ -4,16 +4,25 @@ namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Facades\View;
 
+/**
+ * Class DefinitionField.
+ */
 class DefinitionField extends AbstractField
 {
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];
         $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
-    // end onSearchFilter
-
+    /**
+     * @param $row
+     * @return bool
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -24,12 +33,18 @@ class DefinitionField extends AbstractField
         }
     }
 
-    // end getListValue
-
+    /**
+     * @param $db
+     */
     public function onSelectValue(&$db)
     {
     }
 
+    /**
+     * @param string $ident
+     * @param bool $default
+     * @return bool
+     */
     public function getAttribute($ident, $default = false)
     {
         if ($ident == 'hide_list') {
@@ -39,8 +54,11 @@ class DefinitionField extends AbstractField
         return parent::getAttribute($ident, $default);
     }
 
-    // end getAttribute
-
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -53,7 +71,7 @@ class DefinitionField extends AbstractField
         $this->attributes['name'] = $this->getFieldName();
         $this->attributes['table'] = config('builder.tb-definitions.'.$this->getAttribute('definition').'.db.table');
 
-        $input = View::make('admin::tb.input_definition');
+        $input = view('admin::tb.input_definition');
         $input->nameDefinition = $this->getAttribute('definition');
         $input->foreignField = $this->getAttribute('foreign_field');
         $input->name = $this->getFieldName();
@@ -62,6 +80,4 @@ class DefinitionField extends AbstractField
 
         return $input->render();
     }
-
-    // end getEditInput
 }

@@ -4,12 +4,29 @@ namespace Vis\Builder\Handlers;
 
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Class ExportHandler.
+ */
 class ExportHandler
 {
+    /**
+     * @var array
+     */
     protected $def;
+    /**
+     * @var
+     */
     protected $controller;
+    /**
+     * @var
+     */
     protected $model;
 
+    /**
+     * ExportHandler constructor.
+     * @param array $exportDefinition
+     * @param $controller
+     */
     public function __construct(array $exportDefinition, &$controller)
     {
         $this->def = $exportDefinition;
@@ -17,6 +34,9 @@ class ExportHandler
         $this->model = $this->controller->getModel();
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
     public function fetch()
     {
         $def = $this->def;
@@ -41,6 +61,9 @@ class ExportHandler
         return view('admin::tb.export_buttons', compact('def', 'fields'));
     }
 
+    /**
+     * @param $type
+     */
     public function doExport($type)
     {
         $fieldsCaptions = $this->getFieldsCaptions();
@@ -59,6 +82,9 @@ class ExportHandler
         })->export($type);
     }
 
+    /**
+     * @return array
+     */
     private function getFieldsCaptions()
     {
         foreach ($this->controller->getFields() as $field) {
@@ -70,6 +96,9 @@ class ExportHandler
         return array_values($fields);
     }
 
+    /**
+     * @return array
+     */
     private function getFieldsBody()
     {
         $between = $this->getBetweenValues();
@@ -87,9 +116,14 @@ class ExportHandler
         return $resultArray;
     }
 
+    /**
+     * @param $field
+     * @param $collection
+     * @return string
+     */
     private function getValueField($field, $collection)
     {
-        if ($this->checkManyToMany($field) && isset($arr['id'])) {
+        if ($this->checkManyToMany($field)) {
             return $this->getValueManyToMantField($field, $collection['id']);
         }
 
@@ -102,29 +136,44 @@ class ExportHandler
         return strip_tags($fieldModel->getListValue($collection), '<a><span><img><br>');
     }
 
+    /**
+     * @param $field
+     * @return bool
+     */
     private function checkManyToMany($field)
     {
         return strpos($field, 'many2many') !== false
             && isset($this->controller->getDefinition()['fields'][$field]);
     }
 
+    /**
+     * @param $field
+     * @param $id
+     * @return string
+     */
     private function getValueManyToMantField($field, $id)
     {
         $manyField = $this->controller->getDefinition()['fields'][$field];
+        $mtmExternalTable = $manyField['mtm_external_table'];
+        $mtmTable = $manyField['mtm_table'];
 
-        $res = (array) \DB::table($manyField['mtm_table'])
-            ->leftJoin($manyField['mtm_external_table'],
-                "{$manyField['mtm_external_table']}.{$manyField['mtm_external_foreign_key_field']}",
+        $res = (array) \DB::table($mtmTable)
+            ->leftJoin(
+                $mtmExternalTable,
+                "{$mtmExternalTable}.{$manyField['mtm_external_foreign_key_field']}",
                 '=',
-                "{$manyField['mtm_table']}.{$manyField['mtm_external_key_field']}"
+                "{$mtmTable}.{$manyField['mtm_external_key_field']}"
             )
-            ->select("{$manyField['mtm_external_table']}.{$manyField['mtm_external_value_field']}")
-            ->where("{$manyField['mtm_table']}.{$manyField['mtm_key_field']}", $id)
+            ->select("{$mtmExternalTable}.{$manyField['mtm_external_value_field']}")
+            ->where("{$mtmTable}.{$manyField['mtm_key_field']}", $id)
             ->pluck("{$manyField['mtm_external_table']}.{$manyField['mtm_external_value_field']}");
 
         return implode('; ', $res);
     }
 
+    /**
+     * @return array
+     */
     private function getBetweenValues()
     {
         $from = request('d.from') ? request('d.from').' 00:00:01' : '1900-01-01 00:00:01';
@@ -144,6 +193,11 @@ class ExportHandler
         ];
     }
 
+    /**
+     * @param $ident
+     * @param bool $default
+     * @return bool|mixed
+     */
     private function getAttribute($ident, $default = false)
     {
         return isset($this->def[$ident]) ? $this->def[$ident] : $default;

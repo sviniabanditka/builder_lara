@@ -94,7 +94,7 @@ class ImageField extends AbstractField
 
         $type = $this->getAttribute('type');
 
-        $input = View::make('admin::tb.tab_input_'.$type);
+        $input = view('admin::tb.tab_input_'.$type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->rows = $this->getAttribute('rows');
@@ -133,7 +133,7 @@ class ImageField extends AbstractField
             }
         }
 
-        $input = View::make('admin::tb.input_image_upload');
+        $input = view('admin::tb.input_image_upload');
         $input->value = $this->getValue($row);
         $input->source = json_decode($this->getValue($row), true);
         $input->name = $this->getFieldName();
@@ -227,7 +227,7 @@ class ImageField extends AbstractField
             $fileName :
             str_replace('/storage/editor/fotos/', '', $link);
 
-        $imgStorage = new \Vis\ImageStorage\Image;
+        $imgStorage = new \Vis\ImageStorage\Image();
         $imgStorage->file_folder = '/storage/editor/fotos/';
         $imgStorage->file_source = $fileName;
         $imgStorage->file_cms_preview = $fileCmsPreview;

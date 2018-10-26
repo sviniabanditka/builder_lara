@@ -5,8 +5,15 @@ namespace Vis\Builder;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class BuilderServiceProvider.
+ */
 class BuilderServiceProvider extends ServiceProvider
 {
+    private $commandAdminInstall = 'command.admin.install';
+    private $commandAdminGeneratePass = 'command.admin.generatePassword';
+    private $commandAdminCreateConfig = 'command.admin.createConfig';
+
     /**
      * Bootstrap the application services.
      *
@@ -66,8 +73,10 @@ class BuilderServiceProvider extends ServiceProvider
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
 
         if (method_exists(\Illuminate\Routing\Router::class, 'aliasMiddleware')) {
-            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
-            $this->app[\Illuminate\Routing\Router::class]->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+            $this->app[\Illuminate\Routing\Router::class]
+                ->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
+            $this->app[\Illuminate\Routing\Router::class]
+                ->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
         }
 
         $this->app->singleton('jarboe', function () {
@@ -79,35 +88,32 @@ class BuilderServiceProvider extends ServiceProvider
 
     private function registerCommands()
     {
-        $this->app->singleton('command.admin.install', function ($app) {
+        $this->app->singleton($this->commandAdminInstall, function () {
             return new InstallCommand();
         });
 
-        $this->app->singleton('command.admin.generatePassword', function ($app) {
+        $this->app->singleton($this->commandAdminGeneratePass, function () {
             return new GeneratePassword();
         });
 
-        $this->app->singleton('command.admin.createConfig', function ($app) {
+        $this->app->singleton($this->commandAdminCreateConfig, function () {
             return new CreateConfig();
         });
 
-        $this->app->singleton('command.admin.generateConfig', function ($app) {
-            return new AdminGenerateConfig();
-        });
-
-        $this->commands('command.admin.install');
-        $this->commands('command.admin.generatePassword');
-        $this->commands('command.admin.createConfig');
-        $this->commands('command.admin.generateConfig');
+        $this->commands($this->commandAdminInstall);
+        $this->commands($this->commandAdminGeneratePass);
+        $this->commands($this->commandAdminCreateConfig);
     }
 
+    /**
+     * @return array
+     */
     public function provides()
     {
         return [
-            'command.admin.install',
-            'command.admin.generatePassword',
-            'command.admin.createConfig',
-            'command.admin.generateConfig',
+            $this->commandAdminInstall,
+            $this->commandAdminGeneratePass,
+            $this->commandAdminCreateConfig,
         ];
     }
 }

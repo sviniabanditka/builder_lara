@@ -2,8 +2,6 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
-
 class FileStorageField extends AbstractField
 {
     public function isEditable()
@@ -11,19 +9,13 @@ class FileStorageField extends AbstractField
         return true;
     }
 
-    // end isEditable
-
     public function getListValue($row)
     {
     }
 
-    // end getListValue
-
     public function onSearchFilter(&$db, $value)
     {
     }
-
-    // end onSearchFilter
 
     public function getEditInput($row = [])
     {
@@ -34,7 +26,7 @@ class FileStorageField extends AbstractField
             }
         }
 
-        $input = View::make('admin::tb.storage.file.input');
+        $input = view('admin::tb.storage.file.input');
         $input->value = $this->getValue($row);
         $input->row = $row;
         $input->name = $this->getFieldName();
@@ -44,12 +36,8 @@ class FileStorageField extends AbstractField
         return $input->render();
     }
 
-    // end getEditInput
-
     public function prepareQueryValue($value)
     {
         return $value;
     }
-
-    // end prepareQueryValue
 }

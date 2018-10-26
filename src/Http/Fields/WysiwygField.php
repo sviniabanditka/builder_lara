@@ -2,13 +2,23 @@
 
 namespace Vis\Builder\Fields;
 
+/**
+ * Class WysiwygField.
+ */
 class WysiwygField extends AbstractField
 {
+    /**
+     * @return bool
+     */
     public function isEditable()
     {
         return true;
     }
 
+    /**
+     * @param $row
+     * @return bool|string
+     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
@@ -21,6 +31,11 @@ class WysiwygField extends AbstractField
         return mb_substr(strip_tags($this->getValue($row)), 0, 300).'...';
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -47,6 +62,11 @@ class WysiwygField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @param array $row
+     * @return string
+     * @throws \Throwable
+     */
     public function getTabbedEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
@@ -79,6 +99,10 @@ class WysiwygField extends AbstractField
         return $input->render();
     }
 
+    /**
+     * @param $db
+     * @param $value
+     */
     public function onSearchFilter(&$db, $value)
     {
         $table = $this->definition['db']['table'];

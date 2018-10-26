@@ -18,7 +18,7 @@
 
                   <select class="form-control" name="dt_basic_length" aria-controls="dt_basic">
 
-                  @foreach(Config::get('builder.translate_cms.show_count') as $val)
+                  @foreach(config('builder.translate_cms.show_count') as $val)
                       <option value="{{$val}}"
                         @if($val == $count_show)
                          selected

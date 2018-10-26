@@ -2,17 +2,34 @@
 
 namespace Vis\Builder\Handlers;
 
+/**
+ * Class ButtonsHandler.
+ */
 class ButtonsHandler
 {
+    /**
+     * @var array
+     */
     protected $def;
+    /**
+     * @var
+     */
     protected $controller;
 
+    /**
+     * ButtonsHandler constructor.
+     * @param array $exportDefinition
+     * @param $controller
+     */
     public function __construct(array $exportDefinition, &$controller)
     {
         $this->def = $exportDefinition;
         $this->controller = $controller;
     }
 
+    /**
+     * @return string|void
+     */
     public function fetch()
     {
         $buttons = $this->def;
@@ -30,6 +47,10 @@ class ButtonsHandler
         return $buttonsHtml;
     }
 
+    /**
+     * @param $button
+     * @return bool
+     */
     private function checkShowButton($button)
     {
         return ! $button || ! $button['check']();

@@ -16,7 +16,7 @@
                          </div>
                     </div>
                     <div class="b-bottom">
-                       {{Config::get('builder.login.bottom_block')}}
+                       {{config('builder.login.bottom_block')}}
                     </div>
 
                     <div class="well no-padding">
@@ -50,7 +50,7 @@
                                         </label>
                                 </section>
                                 
-                                @if (Config::get('builder::login.is_active_remember_me'))
+                                @if (config('builder::login.is_active_remember_me'))
                                     <section>
                                         <label class="checkbox">
                                             <input type="checkbox" name="remember" checked="checked">

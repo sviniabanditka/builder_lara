@@ -65,7 +65,7 @@ class GroupField extends AbstractField
             }
         }
 
-        $input = View::make('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_'.$type);
         $input->value = $valueArray;
         $input->name = $this->getFieldName();
         $input->rows = $sectionResult;

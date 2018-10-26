@@ -4,7 +4,7 @@ $arrSegments = explode('/', Request::path());
 
 if ($arrSegments[0] != 'admin') {
     try {
-        $_model = Config::get('builder.tree.model');
+        $_model = config('builder.tree.model');
         if ($_model) {
             $slug = end($arrSegments);
 
@@ -45,7 +45,7 @@ if ($arrSegments[0] != 'admin') {
     /*
      * other tree
      */
-    $otherTreeUrl = Config::get('builder.tree.other_tree_url');
+    $otherTreeUrl = config('builder.tree.other_tree_url');
 
     if ($otherTreeUrl && is_array($otherTreeUrl)) {
         $startUrl = $arrSegments[0];
@@ -64,7 +64,7 @@ if ($arrSegments[0] != 'admin') {
             if (isset($otherTreeUrl[$startUrl])) {
                 $configName = $otherTreeUrl[$startUrl];
 
-                $definition = Config::get('builder.'.$configName);
+                $definition = config('builder.'.$configName);
                 $model = $definition['model'];
 
                 $slug = end($arrSegments);
