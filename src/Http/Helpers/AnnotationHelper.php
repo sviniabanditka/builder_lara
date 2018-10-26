@@ -2,9 +2,10 @@
 
 namespace Vis\Builder\Helpers;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\View\View;
+
 use Throwable;
+use Illuminate\View\View;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class AnnotationHelper
 {
@@ -26,6 +27,7 @@ class AnnotationHelper
             } catch (Throwable $e) {
                 $view = $e->getMessage();
             }
+
             return $view;
         } elseif (is_string($this->annotation)) {
             return $this->annotation;
@@ -33,10 +35,12 @@ class AnnotationHelper
             try {
                 $annotation = $this->annotation;
                 $this->annotation = $annotation();
+
                 return $this->handle();
             } catch (Throwable $e) {
                 return $e->getMessage();
             }
         }
     }
+
 }
