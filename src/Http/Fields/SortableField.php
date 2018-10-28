@@ -15,31 +15,20 @@ class SortableField extends AbstractField
 
     public function onSelectValue(&$query)
     {
-        $tabs = $this->getAttribute('tabs');
-
         $tableName = $this->definition['db']['table'];
         $fieldName = $this->getFieldName();
 
-        if ($tabs) {
-            foreach ($tabs as $tab) {
-
-                $name = $tableName . '.' . $this->getFieldName() . $tab['postfix'];
-                $query->addSelect($name);
-            }
-
-        } else {
-            $query->addSelect("$tableName.$fieldName");
-        }
+        $query->addSelect("$tableName.$fieldName");
     }
 
     public function getEditInput($row = [])
     {
         $input = view('admin::tb.input_sortable');
+        $fieldName = $this->getFieldName();
 
-        $input->name             = $this->getFieldName();
-        $input->fieldValue       = $row[$input->name] ? explode(',', $row[$input->name]) : [];
-        $input->store            = $this->getAttribute('store');
-        $input->optionActivation = $this->getAttribute('option_activation', false);
+        $input->name             = $fieldName;
+        $input->fieldValue       = $row[$fieldName] ? explode(',', $row[$fieldName]) : [];
+        $input->add_checkbox     = $this->getAttribute('add_checkbox', false);
         $input->is_sortable      = $this->getAttribute('is_sortable', true);
         $input->is_checked       = $this->getAttribute('is_checked', true);
         $input->main_field       = $this->getAttribute('main', false);
@@ -57,6 +46,13 @@ class SortableField extends AbstractField
 
     public function getListValue($row)
     {
-        return false;
+        if ($this->hasCustomHandlerMethod('onGetListValue')) {
+            $res = $this->handler->onGetListValue($this, $row);
+            if ($res) {
+                return $res;
+            }
+        }
+
+        return $row[$this->getFieldName()] ?? null;
     }
 }
