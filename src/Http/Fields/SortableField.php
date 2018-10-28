@@ -10,7 +10,7 @@ class SortableField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-        return null;
+        $db->where("{$this->definition['db']['table']}.{$this->getFieldName()}", 'LIKE', '%'. str_replace(' ', '%', $value) .'%');
     }
 
     public function onSelectValue(&$query)
@@ -26,12 +26,12 @@ class SortableField extends AbstractField
         $input = view('admin::tb.input_sortable');
         $fieldName = $this->getFieldName();
 
-        $input->name             = $fieldName;
-        $input->fieldValue       = $row[$fieldName] ? explode(',', $row[$fieldName]) : [];
-        $input->add_checkbox     = $this->getAttribute('add_checkbox', false);
-        $input->is_sortable      = $this->getAttribute('is_sortable', true);
-        $input->is_checked       = $this->getAttribute('is_checked', true);
-        $input->main_field       = $this->getAttribute('main', false);
+        $input->name = $fieldName;
+        $input->fieldValue = $row[$fieldName] ? explode(',', $row[$fieldName]) : [];
+        $input->add_checkbox = $this->getAttribute('add_checkbox', false);
+        $input->is_sortable = $this->getAttribute('is_sortable', true);
+        $input->is_checked = $this->getAttribute('is_checked', true);
+        $input->main_field = $this->getAttribute('main', false);
 
         $list = $this->getAttribute('list', []);
 
