@@ -10,7 +10,10 @@ class SortableField extends AbstractField
 
     public function onSearchFilter(&$db, $value)
     {
-        $db->where("{$this->definition['db']['table']}.{$this->getFieldName()}", 'LIKE', '%'. str_replace(' ', '%', $value) .'%');
+        $preparedValue = str_replace(' ', '%', $value);
+        $preparedColumn = "{$this->definition['db']['table']}.{$this->getFieldName()}";
+
+        $db->where($preparedColumn, 'LIKE', "%$preparedValue%");
     }
 
     public function onSelectValue(&$query)
