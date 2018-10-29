@@ -688,34 +688,28 @@ function getInternetExplorerVersion()
 
 function checkVersion()
 {
-
     var msg = "You're not using Windows Internet Explorer.";
     var ver = getInternetExplorerVersion();
     if (ver > -1) {
         if (ver >= 8.0) {
             msg = "You're using a recent copy of Windows Internet Explorer."
-        else {
-msg = "You should upgrade your copy of Windows Internet Explorer.";
-        }
+        } else {
+            msg = "You should upgrade your copy of Windows Internet Explorer.";
         }
     }
     alert(msg);
-
 }
 
 function isIE8orlower()
 {
-
     var msg = "0";
     var ver = getInternetExplorerVersion();
     if (ver > -1) {
         if (ver >= 9.0) {
-            msg = 0
-        else {
-msg = 1;
-        }
+            msg = 0;
+        } else {
+            msg = 1;
         }
     }
     return msg;
-    // alert(msg);
 }
