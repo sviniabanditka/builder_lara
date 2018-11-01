@@ -23,6 +23,6 @@
 ```
 
 Если нужно обновить css и js, то
-```json
-   php artisan vendor:publish --tag=public --force
+```json   
+   php artisan vendor:publish --tag=public --force --provider="Vis\Builder\BuilderServiceProvider"
 ```
