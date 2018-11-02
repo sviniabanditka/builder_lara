@@ -74,8 +74,8 @@ class SetField extends AbstractField
                             json_decode($this->getValue($row)) :
                             explode(',', $this->getValue($row));
 
-        if (!is_array($table->selected)) {
-           $table->selected = [];
+        if (! is_array($table->selected)) {
+            $table->selected = [];
         }
 
         $table->name = $this->getFieldName();
@@ -157,7 +157,7 @@ class SetField extends AbstractField
 
         $options = $this->getAttribute('options');
 
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return;
         }
 
