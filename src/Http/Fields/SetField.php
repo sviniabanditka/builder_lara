@@ -69,7 +69,15 @@ class SetField extends AbstractField
         }
 
         $table = view('admin::tb.input_set');
-        $table->selected = explode(',', $this->getValue($row));
+
+        $table->selected = $this->getAttribute('json_use') ?
+                            json_decode($this->getValue($row)) :
+                            explode(',', $this->getValue($row));
+
+        if (!is_array($table->selected)) {
+           $table->selected = [];
+        }
+
         $table->name = $this->getFieldName();
         $table->options = $this->getAttribute('options');
 
@@ -123,6 +131,10 @@ class SetField extends AbstractField
             return;
         }
 
+        if ($this->getAttribute('json_use')) {
+            return json_encode($value);
+        }
+
         return implode(',', $value);
     }
 
@@ -139,8 +151,16 @@ class SetField extends AbstractField
             }
         }
 
-        $values = array_filter(explode(',', $this->getValue($row)));
+        $values = $this->getAttribute('json_use') ?
+                    json_decode($this->getValue($row)) :
+                     array_filter(explode(',', $this->getValue($row)));
+
         $options = $this->getAttribute('options');
+
+        if (!is_array($values)) {
+            return;
+        }
+
         $prepared = [];
         foreach ($values as $value) {
             $prepared[] = $options[$value];
