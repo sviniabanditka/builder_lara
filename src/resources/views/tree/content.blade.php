@@ -9,7 +9,7 @@
                 @if(config('builder.'.$treeName.'.list_fields'))
                     @foreach(config('builder.'.$treeName.'.list_fields') as $nameBDField => $field)
                         <th>
-                           {{$field['name'] or ""}}
+                           {{$field['name']}}
                         </th>
                     @endforeach
                 @else
