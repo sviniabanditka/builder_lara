@@ -3,6 +3,7 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class FooterComposer
 {

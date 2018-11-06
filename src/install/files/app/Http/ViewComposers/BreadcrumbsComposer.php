@@ -20,10 +20,10 @@ class BreadcrumbsComposer
 
         //if node
         if (get_class($page) == 'Tree' || get_class($page) == 'NewsTree') {
-            $breadcrumbs = new Breadcrumbs($page);
+            $breadcrumbs = new \Breadcrumbs($page);
         } else {
             $node = $page->getNode();
-            $breadcrumbs = new Breadcrumbs($node);
+            $breadcrumbs = new \Breadcrumbs($node);
             $breadcrumbs->add($page->getUrl(), $page->title);
         }
 
