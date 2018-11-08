@@ -20,7 +20,7 @@
                     <label class="label" for="title">{{__cms('Название')}}</label>
                     <div style="position: relative;">
                       <label class="input">
-                      <input type="text" id="title" value="{{ $info->title or "" }}" name="title"
+                      <input type="text" id="title" value="{{ $info->title ?? '' }}" name="title"
                         class="dblclick-edit-input form-control input-sm unselectable">
                       </input>
                       </label>
@@ -30,7 +30,7 @@
                     <label class="label" for="slug">{{__cms('Код(для вставки)')}}</label>
                     <div style="position: relative;">
                       <label class="input">
-                      <input type="text" id="slug" value="{{ $info->slug or "" }}"  name="slug"
+                      <input type="text" id="slug" value="{{ $info->slug ?? '' }}"  name="slug"
                         {{ isset($info->slug) ? "readonly" : "" }}
                         class="dblclick-edit-input form-control input-sm unselectable">
                       </input>
@@ -252,7 +252,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal"> {{__cms('Отмена')}} </button>
                 </div>
 
-                <input type="hidden" name="id" value="{{$info->id or "0"}}">
+                <input type="hidden" name="id" value="{{$info->id ?? '0'}}">
         </form>
       </div>
  <script>

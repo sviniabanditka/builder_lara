@@ -13,13 +13,13 @@
                 <?php $value = 'value' . $prefix;?>
                 <div id="etextarea_froala{{$prefix}}" class="tab-pane {{$loop->index == 0 ? 'active' : ''}}">
 
-                  <textarea name="value6{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll text_block">{{ $info->$value or "" }}</textarea>
+                  <textarea name="value6{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll text_block">{{ $info->$value ?? '' }}</textarea>
 
                 </div>
             @endforeach
         </div>
     @else
         <label class="label" >{{__cms('Значение')}}</label>
-        <textarea name="value6" style="height: 250px" class="custom-scroll text_block">{{ $info->value or "" }}</textarea>
+        <textarea name="value6" style="height: 250px" class="custom-scroll text_block">{{ $info->value ?? '' }}</textarea>
     @endif
 </div>

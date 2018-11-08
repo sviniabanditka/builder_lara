@@ -20,8 +20,8 @@ class CreateSettingsTable extends Migration
             $table->integer('type');
             $table->string('title');
             $table->string('slug');
-            $table->string('value');
-            $table->enum('group_type', ['general', 'seo', 'graphics', 'price', 'security']);
+            $table->text('value');
+            $table->string('group_type');
         });
     }
 

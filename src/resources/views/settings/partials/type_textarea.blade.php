@@ -14,7 +14,7 @@
                 <div id="etextarea{{$prefix}}" class="tab-pane {{$loop->index == 0 ? 'active' : ''}}">
                     <div style="position: relative;">
                         <label class="textarea">
-                            <textarea name="value1{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll">{{ $info->$value or "" }}</textarea>
+                            <textarea name="value1{{$prefix}}" style="height: 250px"  placeholder="Текст {{$name}}" class="custom-scroll">{{ $info->$value ?? '' }}</textarea>
                         </label>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
     @else
         <label class="label" >{{__cms('Значение')}}</label>
         <label class="textarea">
-            <textarea name="value1" style="height: 250px" class="custom-scroll">{{ $info->value or "" }}</textarea>
+            <textarea name="value1" style="height: 250px" class="custom-scroll">{{ $info->value ?? '' }}</textarea>
         </label>
     @endif
 </div>
