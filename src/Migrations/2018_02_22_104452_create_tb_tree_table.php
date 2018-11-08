@@ -38,6 +38,8 @@ class CreateTbTreeTable extends Migration
             $table->index('parent_id');
             $table->index('lft');
             $table->index('rgt');
+
+            $table->foreign('parent_id')->references('id')->on('tb_tree')->onDelete('cascade');
         });
     }
 
