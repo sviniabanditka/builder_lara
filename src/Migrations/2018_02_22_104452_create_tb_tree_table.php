@@ -17,7 +17,7 @@ class CreateTbTreeTable extends Migration
             $table->charset = 'utf8';
 
             $table->increments('id');
-            $table->integer('parent_id')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
             $table->integer('lft');
             $table->integer('rgt');
             $table->integer('depth');
@@ -35,9 +35,10 @@ class CreateTbTreeTable extends Migration
             $table->tinyInteger('is_show_in_footer_menu');
             $table->timestamps();
 
-            $table->index('parent_id');
             $table->index('lft');
             $table->index('rgt');
+
+            $table->foreign('parent_id')->references('id')->on('tb_tree')->onDelete('cascade');
         });
     }
 
