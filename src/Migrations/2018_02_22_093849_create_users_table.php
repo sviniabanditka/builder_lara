@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->charset = 'utf8';
 
             $table->increments('id');
-            $table->string('email');
+            $table->string('email')->index();
             $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
