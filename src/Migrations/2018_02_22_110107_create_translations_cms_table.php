@@ -22,7 +22,6 @@ class CreateTranslationsCmsTable extends Migration
             $table->text('translate');
 
             $table->index('id_translations_phrase');
-
         });
     }
 
