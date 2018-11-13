@@ -17,7 +17,7 @@ class CreateThrottleTable extends Migration
             $table->charset = 'utf8';
 
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->nullable()->unsigned();
             $table->string('type');
             $table->string('ip', 50);
             $table->timestamps();
