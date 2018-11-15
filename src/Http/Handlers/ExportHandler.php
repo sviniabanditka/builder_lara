@@ -176,8 +176,10 @@ class ExportHandler
      */
     private function getBetweenValues()
     {
-        $from = request('d.from') ? request('d.from').' 00:00:01' : '1900-01-01 00:00:01';
-        $to = request('d.to') ? request('d.to').' 23:59:59' : date('Y-m-d 23:59:59');
+        $dataFilter = request('d');
+
+        $from = $dataFilter['from'] ? $dataFilter['from'] . ' 00:00:01' : '1900-01-01 00:00:01';
+        $to = $dataFilter['to'] ? $dataFilter['to'] . ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $table = $this->controller->getDefinition()['db']['table'];
 
