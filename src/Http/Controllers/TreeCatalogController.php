@@ -384,23 +384,23 @@ class TreeCatalogController
         $idNode = request('id');
         $current = $this->model::find($idNode);
 
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
+        $templates = config('builder.' . $this->nameTree . '.templates');
+        $template = config('builder.' . $this->nameTree . '.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
         }
 
-        $jarboeController = new JarboeController([
+        $controller = new JarboeController([
             'url'        => URL::current(),
-            'def_name'   => $this->nameTree.'.'.$template['node_definition'],
+            'def_name'   => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
             ],
         ]);
 
-        $result = $jarboeController->query->updateRow(Input::all());
+        $result = $controller->query->updateRow(Input::all());
 
         $item = $this->model::find($idNode);
         $item->clearCache();
