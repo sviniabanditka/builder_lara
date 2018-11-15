@@ -178,8 +178,8 @@ class ExportHandler
     {
         $dataFilter = request('d');
 
-        $from = $dataFilter['from'] ? $dataFilter['from'] . ' 00:00:01' : '1900-01-01 00:00:01';
-        $to = $dataFilter['to'] ? $dataFilter['to'] . ' 23:59:59' : date('Y-m-d 23:59:59');
+        $from = $dataFilter['from'] ? $dataFilter['from'].' 00:00:01' : '1900-01-01 00:00:01';
+        $to = $dataFilter['to'] ? $dataFilter['to'].' 23:59:59' : date('Y-m-d 23:59:59');
 
         $table = $this->controller->getDefinition()['db']['table'];
 
