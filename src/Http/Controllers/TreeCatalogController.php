@@ -87,6 +87,9 @@ class TreeCatalogController
             case 'get_edit_modal_form':
                 return $this->getEditModalForm();
 
+            case 'fast_save':
+                return $this->doFastSave();
+
             default:
                 return $this->handleShowCatalog();
         }
@@ -408,6 +411,14 @@ class TreeCatalogController
         $treeName = $this->nameTree;
         $result['html'] = view('admin::tree.content_row',
             compact('item', 'treeName', 'controller'))->render();
+
+        return Response::json($result);
+    }
+
+    public function doFastSave()
+    {
+        $result = $this->controller->query->fastSave(Input::all());
+        $result['status'] = 'ok';
 
         return Response::json($result);
     }

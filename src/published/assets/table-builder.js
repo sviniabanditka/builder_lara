@@ -140,7 +140,7 @@ var TableBuilder = {
             return content.parents('form').attr('action');
         }
 
-        return TableBuilder.action_url ? TableBuilder.action_url : '/admin/handle/tree';
+        return TableBuilder.action_url ? TableBuilder.action_url : '/admin/tree';
     }, // end getActionUrl
 
     initSearchOnEnterPressed: function () {
@@ -1938,6 +1938,18 @@ var TableBuilder = {
         });
 
         $input.val(values.join(','));
+    },
+
+    editFastSetField : function (content) {
+
+        var value = content.attr('data-is-json') ? JSON.stringify(content.val()) : content.val();
+
+        $.post( TableBuilder.getActionUrl(content), {
+            name: content.attr('data-name'),
+            id: content.attr('data-id'),
+            value: value,
+            query_type : 'fast_save'
+        } );
     }
 };
 
