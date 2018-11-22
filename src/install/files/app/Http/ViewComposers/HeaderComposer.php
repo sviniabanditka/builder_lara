@@ -4,13 +4,10 @@ namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Tree;
 
 class HeaderComposer
 {
-    public function __construct()
-    {
-    }
-
     public function compose(View $view)
     {
         $menu = Cache::tags(['tree'])->rememberForever('menuProduct', function () {
