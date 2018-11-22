@@ -2,9 +2,9 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Models\Tree;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
-use App\Models\Tree;
 
 class FooterComposer
 {
