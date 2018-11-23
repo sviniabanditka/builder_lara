@@ -121,7 +121,7 @@ class TreeCatalogController
         $node->title = request('title');
         $node->template = request('template') ?: '';
         $node->slug = request('slug') ?: request('title');
-        $node->is_active = 1;
+       // $node->is_active = 1;
         $node->save();
 
         $node->checkUnicUrl();
@@ -417,7 +417,15 @@ class TreeCatalogController
 
     public function doFastSave()
     {
-        $result = $this->controller->query->fastSave(Input::all());
+        $field = request('name');
+
+        $fieldArray = request($field) ?? [];
+
+        $data['value'] = json_encode(array_values($fieldArray));
+        $data['name'] = $field;
+        $data['id'] = request('id');
+
+        $result = $this->controller->query->fastSave($data);
         $result['status'] = 'ok';
 
         return Response::json($result);
