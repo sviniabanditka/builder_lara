@@ -121,7 +121,7 @@ class TreeCatalogController
         $node->title = request('title');
         $node->template = request('template') ?: '';
         $node->slug = request('slug') ?: request('title');
-       // $node->is_active = 1;
+        // $node->is_active = 1;
         $node->save();
 
         $node->checkUnicUrl();

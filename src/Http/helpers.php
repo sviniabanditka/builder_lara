@@ -70,7 +70,10 @@ if (! function_exists('glide')) {
      */
     function glide($source, $options = [])
     {
-        if (env('APP_ENV') === 'local' || env('APP_ENV') === 'testing') {
+        if (
+            env('IMG_PLACEHOLDER', true)
+            && (env('APP_ENV') === 'local' || env('APP_ENV') === 'testing')
+        ) {
             $width = $options['w'] ?? 100;
             $height = $options['h'] ?? 100;
 
