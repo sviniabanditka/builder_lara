@@ -36,7 +36,7 @@
         <td style="white-space: nowrap;">{{ $item->slug }}</td>
         <td style="position: relative;">
 
-            @if ($controller->getField('is_active')->getAttribute('type') == 'set')
+            @if (isset($controller->getFields()['is_active']) && $controller->getField('is_active')->getAttribute('type') == 'set')
                 {!! $controller->getField('is_active')->getListValueFastEdit($item, 'is_active') !!}
             @else
                 <span class="onoffswitch">
