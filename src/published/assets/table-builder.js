@@ -944,7 +944,7 @@ var TableBuilder = {
                 },
                 data: data,
                 type: "POST",
-                url: TableBuilder.getActionUrl(),
+                url: TableBuilder.getActionUrl($(context)),
                 cache: false,
                 contentType: false,
                 processData: false,
