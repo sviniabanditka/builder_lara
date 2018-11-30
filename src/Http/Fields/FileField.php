@@ -42,28 +42,56 @@ class FileField extends AbstractField
 
         $type = $this->getAttribute('type');
 
-        $valueJson = $this->getValue($row);
-        if ($valueJson && $this->isJson($valueJson)) {
-            $filesArray = json_decode($valueJson);
-        }
-
-        $input = view('admin::tb.input_'.$type);
+        $input = view('admin::tb.input_'. $type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
-        $input->rows = $this->getAttribute('rows');
-
         $input->is_multiple = $this->getAttribute('is_multiple');
-        $input->mask = $this->getAttribute('mask');
-        $input->placeholder = $this->getAttribute('placeholder');
         $input->accept = $this->getAttribute('accept');
         $input->comment = $this->getAttribute('comment');
 
-        if (isset($filesArray)) {
-            $input->source = $filesArray;
+        if ($input->value && $this->isJson($input->value)) {
+            $input->source  = json_decode($input->value);
         }
 
         return $input->render();
     }
+
+    public function getTabbedEditInput($row = [])
+    {
+        if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
+            $res = $this->handler->onGetTabbedEditInput($this, $row);
+            if ($res) {
+                return $res;
+            }
+        }
+
+        $type = $this->getAttribute('type');
+
+        $input = view('admin::tb.tab_input_'.$type);
+        $input->value = $this->getValue($row);
+        $input->name = $this->getFieldName();
+        $input->caption = $this->getAttribute('caption');
+        $input->tabs = $this->getPreparedTabs($row);
+        $input->is_multiple = $this->getAttribute('is_multiple');
+        $input->accept = $this->getAttribute('accept');
+        $input->comment = $this->getAttribute('comment');
+
+        $this->getPreparedTabsMulti($input->tabs);
+
+        return $input->render();
+    }
+
+    private function getPreparedTabsMulti(&$tabs)
+    {
+        if ($this->getAttribute('is_multiple')) {
+            foreach ($tabs as $k => $tab) {
+                if ($this->isJson($tab['value'])) {
+                    $tabs[$k]['source'] = json_decode($tab['value']);
+                }
+            }
+        }
+    }
+
 
     /**
      * @param $string
