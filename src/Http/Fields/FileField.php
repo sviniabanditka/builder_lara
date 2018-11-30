@@ -42,7 +42,7 @@ class FileField extends AbstractField
 
         $type = $this->getAttribute('type');
 
-        $input = view('admin::tb.input_'. $type);
+        $input = view('admin::tb.input_'.$type);
         $input->value = $this->getValue($row);
         $input->name = $this->getFieldName();
         $input->is_multiple = $this->getAttribute('is_multiple');
@@ -50,7 +50,7 @@ class FileField extends AbstractField
         $input->comment = $this->getAttribute('comment');
 
         if ($input->value && $this->isJson($input->value)) {
-            $input->source  = json_decode($input->value);
+            $input->source = json_decode($input->value);
         }
 
         return $input->render();
@@ -91,7 +91,6 @@ class FileField extends AbstractField
             }
         }
     }
-
 
     /**
      * @param $string
