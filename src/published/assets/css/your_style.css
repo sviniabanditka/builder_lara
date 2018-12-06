@@ -383,9 +383,18 @@ div.dataTables_info{
     font-size: 14px;
     font-weight: 400;
     font-family: "Open Sans",Arial,Helvetica,sans-serif !important;
+    line-height: 32px;
 }
 #tb-tree-table thead th.text-left a{
     color: #fff;
+}
+#tb-tree-table thead th.text-left .widget-toolbar a {
+    color: #000;
+}
+#tb-tree-table thead th.text-left .buttons-panel {
+    display: inline-block;
+    float: right;
+    position: relative;
 }
 #screenshot{
     background-color: #fff;

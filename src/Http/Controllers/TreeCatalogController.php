@@ -338,12 +338,14 @@ class TreeCatalogController
             $template = $templates[$current->template];
         }
 
+        $buttons = isset($this->controller->buttons) ? $this->controller->buttons->fetch() : '';
+
         $content = view('admin::tree.content',
             compact('current', 'template', 'treeName', 'children', 'controller', 'perPage'));
         $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
 
         return view('admin::'.$treeView,
-            compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage'));
+            compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage', 'buttons'));
     }
 
     /**
