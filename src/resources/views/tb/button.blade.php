@@ -1,6 +1,9 @@
 <div class="widget-toolbar" role="menu">
     @if (isset($button['ajax']))
-        <a onclick="sendAjax('{{$button['link']}}'{{isset($button['massage_start']) ? ", '" . $button['massage_start'] . "'" : ''}})" class="btn btn-xs btn-default">
+        <a onclick="sendAjax('{{$button['link']}}'{{isset($button['massage_start']) ? ", '" . $button['massage_start'] . "'" : ''}})"
+           class="btn btn-xs btn-default"
+           @if(isset($button['id'])) id="{{ $button['id'] }}" @endif
+        >
             <i class="fa {{isset($button['icon']) && $button['icon'] ? "fa-".$button['icon'] : ""}}"></i>
             {{__cms($button['caption'])}}
         </a>
@@ -22,15 +25,16 @@
                                 TableBuilder.showErrorNotification(data.message);
                             }
 
+                        }, 'json')
+                        .complete(function () {
                             TableBuilder.hidePreloader();
-
-                        }, 'json');
+                        });
                 }
             }
 
         </script>
     @else
-    <a href="{{$button['link']}}" class="btn btn-xs btn-default">
+    <a href="{{$button['link']}}" class="btn btn-xs btn-default" @if(isset($button['id'])) id="{{ $button['id'] }}" @endif>
         <i class="fa {{isset($button['icon']) && $button['icon'] ? "fa-".$button['icon'] : ""}}"></i>
         {{__cms($button['caption'])}}
     </a>
