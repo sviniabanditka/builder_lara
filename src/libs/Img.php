@@ -24,13 +24,13 @@ class Img
         $source = '/'.ltrim($source, '/');
         $sourceArray = pathinfo($source);
 
-        //create variables $dirname , $basename, $extension, $filename
-        extract($sourceArray);
-        if ($this->quality != 80) {
-            $this->nameFile = $filename.'_'.$this->quality.'.'.$extension;
-        } else {
-            $this->nameFile = $filename.'.'.$extension;
-        }
+        $filename = $sourceArray['filename'];
+        $extension = $sourceArray['extension'];
+        $dirname = $sourceArray['dirname'];
+
+        $this->nameFile = $this->quality == 80 ?
+                $filename.'.'.$extension :
+                $filename.'_'.$this->quality.'.'.$extension;
 
         $this->pathFolder = $dirname.'/'.$this->size;
         $this->picturePath = $this->pathFolder.'/'.$this->nameFile;
