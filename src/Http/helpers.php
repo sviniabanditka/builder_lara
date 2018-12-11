@@ -4,11 +4,12 @@ if (! function_exists('setting')) {
     /**
      * @param string $value
      * @param string $default
+     * @param bool $useLocale
      * @return mixed|string
      */
-    function setting($value, $default = '')
+    function setting($value, $default = '', $useLocale = false)
     {
-        return Vis\Builder\Setting::get($value, $default);
+        return Vis\Builder\Setting::get($value, $default, $useLocale);
     }
 }
 
@@ -20,7 +21,7 @@ if (! function_exists('settingWithLang')) {
      */
     function settingWithLang($value, $default = '')
     {
-        return Vis\Builder\Setting::getWithLang($value, $default);
+        return setting($value, $default, true);
     }
 }
 
@@ -197,5 +198,24 @@ if (! function_exists('getWithLocalePostfix')) {
         $currentLocale = LaravelLocalization::getCurrentLocale();
 
         return $currentLocale == LaravelLocalization::getDefaultLocale() ? $string : $string.'_'.$currentLocale;
+    }
+}
+
+if (!function_exists('getLocalePostfix')) {
+    function getLocalePostfix($locale = null)
+    {
+        if (!$locale) {
+            $locale = app()->getLocale();
+        }
+
+        $languages = config('translations.config.languages');
+
+        foreach ($languages as $language) {
+            if ($language['caption'] === $locale) {
+                return $language['postfix'];
+            }
+        }
+
+        return '';
     }
 }
