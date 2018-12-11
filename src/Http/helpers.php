@@ -201,10 +201,10 @@ if (! function_exists('getWithLocalePostfix')) {
     }
 }
 
-if (!function_exists('getLocalePostfix')) {
+if (! function_exists('getLocalePostfix')) {
     function getLocalePostfix($locale = null)
     {
-        if (!$locale) {
+        if (! $locale) {
             $locale = app()->getLocale();
         }
 

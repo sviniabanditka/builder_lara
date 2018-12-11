@@ -2,15 +2,14 @@
 
 namespace Vis\Builder;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Helpers\Traits\Rememberable;
-use \Venturecraft\Revisionable\RevisionableTrait;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Venturecraft\Revisionable\RevisionableTrait;
 
-class Setting extends Eloquent
+class Setting extends Model
 {
     use RevisionableTrait, Rememberable;
 
@@ -31,7 +30,7 @@ class Setting extends Eloquent
 
     public static function get($slug, $default = '', $useLocale = false)
     {
-        $cacheKey = "settings:$slug:" . app()->getLocale();
+        $cacheKey = "settings:$slug:".app()->getLocale();
 
         if (Cache::tags('settings')->has($cacheKey)) {
             return Cache::tags('settings')->get($cacheKey);
@@ -40,13 +39,13 @@ class Setting extends Eloquent
         $setting = self::where('slug', 'like', $slug)->first();
         $postfix = getLocalePostfix();
 
-        if (!$setting && $default) {
+        if (! $setting && $default) {
             $defaultColumns = [
                 'type'       => 0,
                 'title'      => $slug,
                 'slug'       => $slug,
                 'value'      => $default,
-                'group_type' => 'general'
+                'group_type' => 'general',
             ];
 
             if ($useLocale) {
@@ -68,8 +67,6 @@ class Setting extends Eloquent
 
             return $value;
         }
-
-        return null;
     }
 
     public static function getWithLang($slug, $default = '')
@@ -79,7 +76,7 @@ class Setting extends Eloquent
 
     public static function getItem($ids)
     {
-        if (!$ids) {
+        if (! $ids) {
             return [];
         }
 
