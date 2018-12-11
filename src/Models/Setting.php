@@ -2,83 +2,76 @@
 
 namespace Vis\Builder;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Vis\Builder\Helpers\Traits\Rememberable;
+use Venturecraft\Revisionable\RevisionableTrait;
 
-class Setting extends Eloquent
+class Setting extends Model
 {
-    use \Venturecraft\Revisionable\RevisionableTrait;
-
-    protected $fillable = [
-            'type',
-            'title',
-            'slug',
-            'value',
-            'group_type',
-        ];
-    protected $table = 'settings';
+    use RevisionableTrait, Rememberable;
 
     public static $rules = [
-            'title' => 'required',
-            'slug' => 'required|max:256|unique:settings,slug,',
-        ];
+        'title' => 'required',
+        'slug' => 'required|max:256|unique:settings,slug,',
+    ];
+
+    protected $fillable = [
+        'type',
+        'title',
+        'slug',
+        'value',
+        'group_type',
+    ];
 
     public $timestamps = false;
 
-    public static function get($slug, $default = '')
+    public static function get($slug, $default = '', $useLocale = false)
     {
-        if (Cache::tags('settings')->has($slug)) {
-            return Cache::tags('settings')->get($slug);
-        } else {
-            $setting = self::where('slug', 'like', $slug)->first();
+        $cacheKey = "settings:$slug:".app()->getLocale();
 
-            if (isset($setting->id)) {
-                $value = $setting->value ?: $default;
+        if (Cache::tags('settings')->has($cacheKey)) {
+            return Cache::tags('settings')->get($cacheKey);
+        }
 
-                if ($setting->type == 2 || $setting->type == 3 || $setting->type == 5) {
-                    $value = $setting->selectValues();
-                }
+        $setting = self::where('slug', 'like', $slug)->first();
+        $postfix = getLocalePostfix();
 
-                Cache::tags('settings')->forever($slug, $value);
+        if (! $setting && $default) {
+            $defaultColumns = [
+                'type'       => 0,
+                'title'      => $slug,
+                'slug'       => $slug,
+                'value'      => $default,
+                'group_type' => 'general',
+            ];
 
-                return $value;
+            if ($useLocale) {
+                $defaultColumns["value$postfix"] = $default;
             }
+
+            $setting = self::create($defaultColumns);
+        }
+
+        if (isset($setting->id)) {
+            $value = $useLocale ? ($setting->{"value$postfix"} ?: $setting->value) : $setting->value;
+            $arrayTypes = [2, 3, 5];
+
+            if (in_array($setting->type, $arrayTypes)) {
+                $value = $setting->selectValues();
+            }
+
+            Cache::tags('settings')->forever($cacheKey, $value);
+
+            return $value;
         }
     }
 
     public static function getWithLang($slug, $default = '')
     {
-        $prefixLang = self::getPrefixLang();
-        $key = $slug.$prefixLang;
-
-        if (Cache::tags('settings')->has($key)) {
-            return Cache::tags('settings')->get($key);
-        } else {
-            $setting = self::where('slug', 'like', $slug)->first();
-
-            if (isset($setting->id)) {
-                $field = 'value'.$prefixLang;
-                $value = $setting->$field ?: $default;
-
-                Cache::tags('settings')->forever($key, $value);
-
-                return $value;
-            }
-        }
-    }
-
-    public static function getPrefixLang()
-    {
-        $lang = App::getLocale();
-        $defaultLocale = config('translations.config.def_locale');
-
-        if ($lang != $defaultLocale) {
-            return '_'.$lang;
-        }
+        return self::get($slug, $default, true);
     }
 
     public static function getItem($ids)
@@ -247,19 +240,11 @@ class Setting extends Eloquent
         return $settings;
     }
 
-    /*
-    * recache settings
-    */
     public static function reCacheSettings()
     {
         Cache::tags('settings')->flush();
     }
 
-    // end reCacheSettings
-
-    /*
-     * delete setting
-     */
     public static function doDelete($id)
     {
         if (is_numeric($id)) {
@@ -274,38 +259,27 @@ class Setting extends Eloquent
         }
     }
 
-    // end doDelete
-
-    /*
-     * validation
-     */
     public static function isValid($data, $id)
     {
         self::$rules['slug'] .= $id;
 
         $validator = Validator::make($data, self::$rules);
+
         if ($validator->fails()) {
-            return Response::json(
-                [
-                    'status' => 'error',
-                    'errors_messages' => $validator->messages(),
-                ]
-            );
-        } else {
-            return false;
+            return response()->json([
+                'status' => 'error',
+                'errors_messages' => $validator->messages(),
+            ]);
         }
+
+        return false;
     }
 
-    //end isValid
-
-    /*
-     * join settingSelect
-     */
     public function selectValues()
     {
-        return $this->hasMany('Vis\Builder\SettingSelect', 'id_setting')
-            ->orderBy('priority')->get()->toArray();
+        return $this->hasMany(SettingSelect::class, 'id_setting')
+            ->orderBy('priority')
+            ->get()
+            ->toArray();
     }
-
-    // end select_get
 }
