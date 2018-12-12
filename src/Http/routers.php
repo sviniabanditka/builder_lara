@@ -3,6 +3,13 @@
     Route::pattern('tree_name', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
 
+    if (config('builder.admin.not_cms_urls')) {
+        $noCmsUrl = config('builder.admin.not_cms_urls');
+
+        Route::pattern('page_admin', '^(?!' . implode('|', $noCmsUrl) . ').*$');
+    }
+
+
     Route::group(['middleware' => ['web']], function () {
         Route::get('login', 'Vis\Builder\LoginController@showLogin')->name('login_show');
         Route::post('login', 'Vis\Builder\LoginController@postLogin')->name('login');
