@@ -6,9 +6,8 @@
     if (config('builder.admin.not_cms_urls')) {
         $noCmsUrl = config('builder.admin.not_cms_urls');
 
-        Route::pattern('page_admin', '^(?!' . implode('|', $noCmsUrl) . ').*$');
+        Route::pattern('page_admin', '^(?!'.implode('|', $noCmsUrl).').*$');
     }
-
 
     Route::group(['middleware' => ['web']], function () {
         Route::get('login', 'Vis\Builder\LoginController@showLogin')->name('login_show');
