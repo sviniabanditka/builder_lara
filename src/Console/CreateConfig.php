@@ -74,7 +74,7 @@ class CreateConfig extends Command
 
         $this->replaceParams($fileModel);
 
-        $this->info('Model ' . $this->model . ' created');
+        $this->info('Model '.$this->model.' created');
     }
 
     private function createDefinition()
@@ -95,7 +95,7 @@ class CreateConfig extends Command
         $this->replaceParams($fileDefinition);
         $this->replaceFieldsConfig($fileDefinition);
 
-        $this->info('Definition ' . $this->table . ' created');
+        $this->info('Definition '.$this->table.' created');
     }
 
     private function createMigration()
@@ -111,7 +111,7 @@ class CreateConfig extends Command
         $this->replaceParams($fileMigration);
         $this->replaceFieldsMigration($fileMigration);
 
-        $this->info('Migration ' . $nameMigration . ' created');
+        $this->info('Migration '.$nameMigration.' created');
     }
 
     private function replaceParams($fileReplace)
