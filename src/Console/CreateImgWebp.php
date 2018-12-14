@@ -1,4 +1,5 @@
 <?php
+
 namespace Vis\Builder;
 
 use Illuminate\Console\Command;
@@ -26,6 +27,5 @@ class CreateImgWebp extends Command
      */
     public function handle()
     {
-
     }
 }
