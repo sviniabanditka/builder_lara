@@ -1,13 +1,8 @@
 <?php
-
 namespace Vis\Builder;
 
 use Illuminate\Console\Command;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
-/**
- * Class GeneratePassword.
- */
 class CreateImgWebp extends Command
 {
     /**
