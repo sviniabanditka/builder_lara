@@ -27,7 +27,6 @@ class CreateConfig extends Command
      *
      * @return void
      */
-
     private $table;
     private $model;
     private $installPath;
@@ -35,7 +34,7 @@ class CreateConfig extends Command
 
     public function __construct()
     {
-        $this->installPath = __DIR__ . '/../install/files/generateFiles';
+        $this->installPath = __DIR__.'/../install/files/generateFiles';
 
         parent::__construct();
     }
@@ -60,16 +59,16 @@ class CreateConfig extends Command
 
     private function createModel()
     {
-        $fileModel = app_path() . '/Models/' . $this->model . '.php';
+        $fileModel = app_path().'/Models/'.$this->model.'.php';
 
         if (file_exists($fileModel)) {
-            if (!$this->confirm('Model ' . $this->model . ' is exist, replace model?')) {
+            if (! $this->confirm('Model '.$this->model.' is exist, replace model?')) {
                 return;
             }
         }
 
         copy(
-            $this->installPath . '/Model.php',
+            $this->installPath.'/Model.php',
             $fileModel
         );
 
@@ -80,16 +79,16 @@ class CreateConfig extends Command
 
     private function createDefinition()
     {
-        $fileDefinition = config_path() . '/builder/tb-definitions/' . $this->table . '.php';
+        $fileDefinition = config_path().'/builder/tb-definitions/'.$this->table.'.php';
 
         if (file_exists($fileDefinition)) {
-            if (!$this->confirm('Definition ' . $this->table . ' is exist, replace definition?')) {
+            if (! $this->confirm('Definition '.$this->table.' is exist, replace definition?')) {
                 return;
             }
         }
 
         copy(
-            $this->installPath . '/Config.php',
+            $this->installPath.'/Config.php',
             $fileDefinition
         );
 
@@ -101,11 +100,11 @@ class CreateConfig extends Command
 
     private function createMigration()
     {
-        $nameMigration = date('Y_m_d_his') . '_create_' .  $this->table . '.php';
-        $fileMigration = base_path() . '/database/migrations/' . $nameMigration;
+        $nameMigration = date('Y_m_d_his').'_create_'.$this->table.'.php';
+        $fileMigration = base_path().'/database/migrations/'.$nameMigration;
 
         copy(
-            $this->installPath . '/Migration.php',
+            $this->installPath.'/Migration.php',
             $fileMigration
         );
 
@@ -134,16 +133,15 @@ class CreateConfig extends Command
             $arrFields = explode(',', $this->fields);
 
             foreach ($arrFields as $field) {
-                if (strpos( $field, ':')) {
+                if (strpos($field, ':')) {
                     $nameAndType = explode(':', $field);
                     $field = $nameAndType[0];
                     $type = $this->adaptiveFieldForConfig($nameAndType[1]);
-
                 } else {
                     $type = 'text';
                 }
 
-                $fieldsReplaceTabs .= "'" . $field . "',
+                $fieldsReplaceTabs .= "'".$field."',
                 ";
 
                 $fieldsDescription .= "'".$field."' => [
@@ -191,7 +189,7 @@ class CreateConfig extends Command
             $arrFields = explode(',', $this->fields);
 
             foreach ($arrFields as $field) {
-                if (strpos( $field, ':')) {
+                if (strpos($field, ':')) {
                     $nameAndType = explode(':', $field);
                     $type = $nameAndType[1];
                     $field = $nameAndType[0];
@@ -199,7 +197,7 @@ class CreateConfig extends Command
                     $type = 'string';
                 }
 
-                $fieldsReplace .= '$table->' . $type . '("' . $field . '");
+                $fieldsReplace .= '$table->'.$type.'("'.$field.'");
             ';
             }
         }
