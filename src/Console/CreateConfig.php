@@ -100,6 +100,7 @@ class CreateConfig extends Command
 
     private function createMigration()
     {
+
         $nameMigration = date('Y_m_d_his').'_create_'.$this->table.'.php';
         $fileMigration = base_path().'/database/migrations/'.$nameMigration;
 
@@ -119,7 +120,7 @@ class CreateConfig extends Command
         $file = file_get_contents($fileReplace);
         $file = str_replace(
             ['modelName', 'tableName', 'tableUpName'],
-            [$this->model, $this->table, ucfirst($this->table)], $file);
+            [$this->model, $this->table, ucfirst(camel_case($this->table))], $file);
 
         file_put_contents($fileReplace, $file);
     }

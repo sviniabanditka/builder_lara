@@ -13,6 +13,7 @@ class BuilderServiceProvider extends ServiceProvider
     private $commandAdminInstall = 'command.admin.install';
     private $commandAdminGeneratePass = 'command.admin.generatePassword';
     private $commandAdminCreateConfig = 'command.admin.createConfig';
+    private $commandAdminCreateImgWebp = 'command.admin.createImgWebp';
 
     /**
      * Bootstrap the application services.
@@ -100,9 +101,14 @@ class BuilderServiceProvider extends ServiceProvider
             return new CreateConfig();
         });
 
+        $this->app->singleton($this->commandAdminCreateImgWebp, function () {
+            return new CreateImgWebp();
+        });
+
         $this->commands($this->commandAdminInstall);
         $this->commands($this->commandAdminGeneratePass);
         $this->commands($this->commandAdminCreateConfig);
+        $this->commands($this->commandAdminCreateImgWebp);
     }
 
     /**
@@ -114,6 +120,7 @@ class BuilderServiceProvider extends ServiceProvider
             $this->commandAdminInstall,
             $this->commandAdminGeneratePass,
             $this->commandAdminCreateConfig,
+            $this->commandAdminCreateImgWebp,
         ];
     }
 }

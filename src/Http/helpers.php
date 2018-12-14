@@ -210,9 +210,11 @@ if (! function_exists('getLocalePostfix')) {
 
         $languages = config('translations.config.languages');
 
-        foreach ($languages as $language) {
-            if ($language['caption'] === $locale) {
-                return $language['postfix'];
+        if (is_array($languages)) {
+            foreach ($languages as $language) {
+                if ($language['caption'] === $locale) {
+                    return $language['postfix'];
+                }
             }
         }
 

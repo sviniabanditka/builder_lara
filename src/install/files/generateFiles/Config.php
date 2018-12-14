@@ -66,6 +66,13 @@ return [
                 return true;
             },
         ],
+
+        'update' => [
+            'caption' => 'Редактировать',
+            'check' => function () {
+                return true;
+            },
+        ],
         'preview' => [
             'caption' => 'Предпросмотр',
             'check' => function () {
@@ -74,12 +81,6 @@ return [
         ],
         'clone' => [
             'caption' => 'Клонировать',
-            'check' => function () {
-                return true;
-            },
-        ],
-        'update' => [
-            'caption' => 'Редактировать',
             'check' => function () {
                 return true;
             },
