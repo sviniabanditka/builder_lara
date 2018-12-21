@@ -21,6 +21,10 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
+        if (!$this->checkIp($request)) {
+            return redirect()->to('/');
+        }
+
         try {
             if (! Sentinel::check()) {
                 if (Request::ajax()) {
@@ -52,4 +56,14 @@ class Authenticate
 
         return $next($request);
     }
+
+    private function checkIp($request)
+    {
+        if (count(config('builder.admin.limitation_of_ip')) && is_array(config('builder.admin.limitation_of_ip'))) {
+            return in_array($request->ip(), config('builder.admin.limitation_of_ip'));
+        }
+
+        return true;
+    }
+
 }
