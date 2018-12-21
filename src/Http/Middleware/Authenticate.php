@@ -59,8 +59,18 @@ class Authenticate
 
     private function checkIp($request)
     {
-        if (count(config('builder.admin.limitation_of_ip')) && is_array(config('builder.admin.limitation_of_ip'))) {
-            return in_array($request->ip(), config('builder.admin.limitation_of_ip'));
+        $listIp = [];
+
+        if (is_callable(config('builder.admin.limitation_of_ip'))) {
+            $listIp = config('builder.admin.limitation_of_ip')();
+        }
+
+        if (is_array(config('builder.admin.limitation_of_ip'))) {
+            $listIp = config('builder.admin.limitation_of_ip');
+        }
+
+        if (count($listIp)) {
+            return in_array($request->ip(), $listIp);
         }
 
         return true;
