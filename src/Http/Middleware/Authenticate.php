@@ -21,7 +21,7 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->checkIp($request)) {
+        if (! $this->checkIp($request)) {
             return redirect()->to('/');
         }
 
@@ -75,5 +75,4 @@ class Authenticate
 
         return true;
     }
-
 }
