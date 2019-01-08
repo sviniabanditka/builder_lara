@@ -16,31 +16,17 @@
   @elseif($el->type==4)
         <a href="{{$el->value}}" target="_blank">{{basename($el->value)}}</a>
   @elseif($el->type==7)
-      <span class="dblclick-edit selectable element_title" onclick="TableBuilder.showFastEdit(this)">
-      @if ($el->value == 1)
-            <span class="glyphicon glyphicon-ok"></span>
-      @else
-            <span class="glyphicon glyphicon-minus"></span>
-      @endif
-      </span>
 
-          <div class="fast-edit-buttons">
-              <div class="input_field">
-                  <div class="div_input">
-                      <div class="input_content smart-form input_content_toggle">
-
-                          <label class="toggle">
-
-                              <input type="checkbox" {{$el->value == 1 ? "checked" : ""}} value="1" name="title_{{$el->id}}">
-                              <i data-swchoff-text="ВЫКЛ" data-swchon-text="ВКЛ"></i>
-                          </label>
-
-                      </div>
-                  </div>
-              </div>
-              <span class="fa fa-save" onclick="Settings.saveFastEdit(this, {{$el->id}});"></span>
-              <i class="glyphicon glyphicon-remove btn-cancel" onclick="TableBuilder.closeFastEdit(this, 'cancel');"></i>
-          </div>
+        <span class="onoffswitch">
+            <input onchange="Settings.activeToggle('{{$el->id}}', this.checked);"
+                   type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"  id="myonoffswitch{{$el->id}}"
+                  {{$el->value == 1 ? 'checked' : ''}}
+            >
+            <label class="onoffswitch-label" for="myonoffswitch{{$el->id}}">
+                <span class="onoffswitch-inner" data-swchon-text="ДА" data-swchoff-text="НЕТ"></span>
+                <span class="onoffswitch-switch"></span>
+            </label>
+        </span>
 
   @else
         <span class="dblclick-edit selectable element_title" onclick="TableBuilder.showFastEdit(this)">{{$el->value}}</span>

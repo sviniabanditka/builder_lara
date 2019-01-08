@@ -132,6 +132,16 @@ var Settings =
             });
         }, // end doSaveSetting
 
+        activeToggle : function(idPage, checked)
+        {
+            var value = checked ? 1 : 0;
+
+            $.post("/admin/settings/fast_save", {id : idPage, value : value },
+                function(data){
+                    doAjaxLoadContent(window.location.href);
+                });
+        },
+
         doDelete: function(id, context)
         {
             jQuery.SmartMessageBox({
