@@ -1,4 +1,4 @@
-<section>
+<section class="{{$className}}">
     <div class="tab-pane active">
         <ul class="nav nav-tabs tabs-pull-right">
             <label class="label pull-left" style="line-height: 32px;">{{__cms($caption)}}</label>

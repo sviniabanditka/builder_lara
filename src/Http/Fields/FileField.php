@@ -48,6 +48,7 @@ class FileField extends AbstractField
         $input->is_multiple = $this->getAttribute('is_multiple');
         $input->accept = $this->getAttribute('accept');
         $input->comment = $this->getAttribute('comment');
+        $input->className = $this->getAttribute('class_name');
 
         if ($input->value && $this->isJson($input->value)) {
             $input->source = json_decode($input->value);
@@ -75,6 +76,7 @@ class FileField extends AbstractField
         $input->is_multiple = $this->getAttribute('is_multiple');
         $input->accept = $this->getAttribute('accept');
         $input->comment = $this->getAttribute('comment');
+        $input->className = $this->getAttribute('class_name');
 
         $this->getPreparedTabsMulti($input->tabs);
 
