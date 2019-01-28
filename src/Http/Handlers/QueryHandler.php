@@ -393,6 +393,10 @@ class QueryHandler
             return $updateData[$field.$tab['postfix']];
         }
 
+        if (config('builder.translate_cms.auto_translate') === false) {
+            return '';
+        }
+
         if ($updateData[$field] && $this->definition['fields'][$field]['type'] != 'image') {
             $translateText = $this->generateTranslation($updateData[$field], ltrim($tab['postfix'], '_'));
 
