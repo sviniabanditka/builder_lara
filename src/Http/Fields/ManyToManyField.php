@@ -274,9 +274,14 @@ class ManyToManyField extends AbstractField
         $valueField = $this->getAttribute('mtm_external_table').'.'.$this->getAttribute('mtm_external_value_field');
         $externalTable = $this->getAttribute('mtm_external_table');
         $externalForeignKey = $externalTable.'.'.$this->getAttribute('mtm_external_foreign_key_field');
+        $addFieldQuery = $this->getAttribute('mtm_external_select_field', true);
 
-        $options = DB::table($this->getAttribute('mtm_table'));
-        $options->select($keyField, $valueField);
+        $options = DB::table($this->getAttribute('mtm_table'))->select($keyField);
+
+        if ($addFieldQuery) {
+            $options->addSelect($valueField);
+        }
+
         if ($isGetAll) {
             $options->addSelect($this->getAttribute('mtm_table').'.*');
         }
@@ -335,10 +340,16 @@ class ManyToManyField extends AbstractField
         $valueField = $this->getAttribute('mtm_external_table').'.'.$this->getAttribute('mtm_external_value_field');
         $externalTable = $this->getAttribute('mtm_external_table');
         $externalForeignKey = $externalTable.'.'.$this->getAttribute('mtm_external_foreign_key_field');
+        $addFieldQuery = $this->getAttribute('mtm_external_select_field', true);
 
         $options = DB::table($externalTable);
+
         if (! $isGetAll) {
-            $options->select($externalForeignKey, $valueField);
+            $options->select($externalForeignKey);
+
+            if ($addFieldQuery) {
+                $options->addSelect($valueField);
+            }
         }
 
         $this->additionalWhere($options);
