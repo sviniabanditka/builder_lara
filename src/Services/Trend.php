@@ -62,7 +62,7 @@ class Trend
 
     public function currentRange() : array
     {
-        $from = request('from', date('Y-m-d', strtotime('-' . $this->defaultCountDays . ' days')));
+        $from = request('from', date('Y-m-d', strtotime('-'.$this->defaultCountDays.' days')));
         $to = request('to', date('Y-m-d'));
 
         return [
