@@ -1,4 +1,6 @@
-<?php namespace Vis\Builder\Services;
+<?php
+
+namespace Vis\Builder\Services;
 
 use Illuminate\Support\Facades\DB;
 
