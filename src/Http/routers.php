@@ -18,10 +18,8 @@
         Route::group(
             ['prefix' => 'admin', 'middleware' => 'auth.admin'],
             function () {
-
                 Route::post('change-range-card', 'Vis\Builder\ChangeRangeController@doChangeValue');
                 Route::post('change-range-trend', 'Vis\Builder\ChangeRangeController@doChangeTrend');
-
 
                 Route::get('logout', 'Vis\Builder\LoginController@doLogout')->name('logout');
 
@@ -79,7 +77,6 @@
                 Route::post('save_croped_img', 'Vis\Builder\TBController@doSaveCropImg');
 
                 Route::post('change-relation-field', 'Vis\Builder\TableAdminController@doChangeRelationField');
-
 
                 //router for pages builder
                 Route::get(

@@ -1,4 +1,6 @@
-<?php namespace Vis\Builder\Services;
+<?php
+
+namespace Vis\Builder\Services;
 
 class Value
 {
@@ -65,13 +67,13 @@ class Value
     {
         return [
             'current' => round($current, 2),
-            'difference' => $this->getDifference($current, $previous)
+            'difference' => $this->getDifference($current, $previous),
         ];
     }
 
     protected function getDifference($current, $previous) : string
     {
-        $difference = $previous ? ($current / $previous - 1 ) * 100 :  $current * 100;
+        $difference = $previous ? ($current / $previous - 1) * 100 : $current * 100;
 
         $plusOrMinus = $current > $previous ? '+' : '';
 
@@ -79,7 +81,7 @@ class Value
             $plusOrMinus = '';
         }
 
-        return $plusOrMinus . round($difference, 2) . '%';
+        return $plusOrMinus.round($difference, 2).'%';
     }
 
     protected function currentRange() : array
