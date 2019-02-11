@@ -16,6 +16,7 @@ var Table =
 
     init: function()
     {
+
     }, // end init
 
     doDelete: function(id, context)

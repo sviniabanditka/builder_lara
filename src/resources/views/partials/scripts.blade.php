@@ -18,6 +18,7 @@
             $(window).scrollTop(50);
 
             TableBuilder.afterLoadPage();
+            Cards.init();
 
         }).fail(function(xhr, ajaxOptions, thrownError) {
             var errorResult = jQuery.parseJSON(xhr.responseText);

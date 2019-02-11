@@ -35,6 +35,7 @@
 
         <script type="text/javascript" src="/packages/vis/builder/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="/packages/vis/builder/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.js"></script>
 
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
