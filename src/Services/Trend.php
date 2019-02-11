@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 class Trend
 {
     public $size = 'col-xs-12 col-sm-12 col-md-12 col-lg-12';
+    protected $defaultCountDays = 356;
 
     public function countByDays(string $model, string $field = 'id')
     {
@@ -59,8 +60,8 @@ class Trend
 
     public function currentRange() : array
     {
-        $from = request('from', now()->subDays(30));
-        $to = request('to', now());
+        $from = request('from', date('Y-m-d', strtotime('-' . $this->defaultCountDays . ' days')));
+        $to = request('to', date('Y-m-d'));
 
         return [
             $from,

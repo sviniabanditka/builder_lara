@@ -10,7 +10,7 @@
                            autocomplete="off"
                            class="form-control datepicker_trend"
                            name="trend_from"
-                           value="{{$modelCard->currentRange()[0]->format('Y-m-d')}}"
+                           value="{{$modelCard->currentRange()[0]}}"
                     >
                     <i class="fa fa-calendar" style="position: absolute; top: 10px; right: 10px"></i>
                 </label>
@@ -19,7 +19,7 @@
                            autocomplete="off"
                            class="form-control datepicker_trend"
                            name="trend_to"
-                           value="{{$modelCard->currentRange()[1]->format('Y-m-d')}}"
+                           value="{{$modelCard->currentRange()[1]}}"
                     >
 
                         <i class="fa fa-calendar" style="position: absolute; top: 10px; right: 10px"></i>
