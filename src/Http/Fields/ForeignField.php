@@ -123,7 +123,6 @@ class ForeignField extends AbstractField
                 $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
                 $db->join($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
             }
-
         }
 
         $tableName = $this->getAttribute('extends_table', $this->definition['db']['table']);
