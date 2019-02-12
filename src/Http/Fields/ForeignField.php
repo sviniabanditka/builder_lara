@@ -121,7 +121,7 @@ class ForeignField extends AbstractField
 
             if (! collect($joins)->pluck('table')->contains($extendTable)) {
                 $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
-                $db->join($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
+                $db->leftJoin($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
             }
         }
 
