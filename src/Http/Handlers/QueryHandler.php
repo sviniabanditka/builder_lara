@@ -133,7 +133,12 @@ class QueryHandler
         }
 
         if ($this->extendsTable) {
+            $joinedTables = collect($this->db->getQuery()->joins)->pluck('table');
             foreach ($this->extendsTable as $table) {
+                if ($joinedTables->contains($table)) {
+                    continue;
+                }
+
                 $this->db->leftJoin($table, "{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
             }
         }
