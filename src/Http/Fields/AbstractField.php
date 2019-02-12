@@ -274,12 +274,8 @@ abstract class AbstractField
 
         $tabs = $this->getAttribute('tabs');
 
-        $tableName = $this->definition['db']['table'];
+        $tableName = $this->getAttribute('extends_table', $this->definition['db']['table']);
         $fieldName = $this->getFieldName();
-
-        if ($extendsTable = $this->getAttribute('extends_table')) {
-            $tableName = $extendsTable;
-        }
 
         if ($tabs) {
             foreach ($tabs as $tab) {

@@ -116,7 +116,18 @@ class ForeignField extends AbstractField
             }
         }
 
-        $internalSelect = $this->definition['db']['table'].'.'.$this->getFieldName();
+        if ($extendTable = $this->getAttribute('extends_table')) {
+            $joins = $db instanceof \Illuminate\Database\Eloquent\Builder ? $db->getQuery()->joins : $db->joins;
+
+            if (!collect($joins)->pluck('table')->contains($extendTable)) {
+                $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
+                $db->join($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
+            }
+
+        }
+
+        $tableName = $this->getAttribute('extends_table', $this->definition['db']['table']);
+        $internalSelect = $tableName.'.'.$this->getFieldName();
         $db->addSelect($internalSelect);
         $foreignTable = $this->getAttribute('foreign_table');
         $foreignTableName = $foreignTable;
@@ -178,9 +189,7 @@ class ForeignField extends AbstractField
 
         $foreignValueFields = $this->getForeignValueFields();
 
-        $foreignTableName = $this->getAttribute('alias')
-            ? $this->getAttribute('alias')
-            : $this->getAttribute('foreign_table');
+        $foreignTableName = $this->getAttribute('alias', $this->getAttribute('foreign_table'));
 
         $resultArray = array_map(function ($v) use ($foreignTableName) {
             return $foreignTableName.'_'.$v;
