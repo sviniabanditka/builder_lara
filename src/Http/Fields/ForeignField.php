@@ -119,7 +119,7 @@ class ForeignField extends AbstractField
         if ($extendTable = $this->getAttribute('extends_table')) {
             $joins = $db instanceof \Illuminate\Database\Eloquent\Builder ? $db->getQuery()->joins : $db->joins;
 
-            if (!collect($joins)->pluck('table')->contains($extendTable)) {
+            if (! collect($joins)->pluck('table')->contains($extendTable)) {
                 $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
                 $db->join($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
             }
