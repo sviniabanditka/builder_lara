@@ -101,7 +101,7 @@ class ExportHandler
      */
     private function getFieldsBody()
     {
-        $between = $this->getBetweenValues();
+        $between = isset($this->def['date_range_field']) ? $this->getBetweenValues() : [];
         $fields = request('b');
 
         $rows = $this->controller->query->getRows(false, true, $between, true)->toArray();
