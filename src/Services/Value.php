@@ -81,13 +81,13 @@ class Value
             $plusOrMinus = '';
         }
 
-        return $plusOrMinus . round($difference, 2) . '%';
+        return $plusOrMinus.round($difference, 2).'%';
     }
 
     protected function currentRange() : array
     {
         return [
-            date('Y-m-d', strtotime('-' . $this->range . ' days')),
+            date('Y-m-d', strtotime('-'.$this->range.' days')),
             date('Y-m-d'),
         ];
     }
@@ -95,8 +95,8 @@ class Value
     protected function previousRange() : array
     {
         return [
-            date('Y-m-d', strtotime('-' . ($this->range * 2) . ' days')),
-            date('Y-m-d', strtotime('-' . $this->range . ' days')),
+            date('Y-m-d', strtotime('-'.($this->range * 2).' days')),
+            date('Y-m-d', strtotime('-'.$this->range.' days')),
         ];
     }
 }
