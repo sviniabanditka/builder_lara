@@ -12,6 +12,10 @@ if ($arrSegments[0] != 'admin') {
                 $slug = '/';
             }
 
+            if (config('builder.tree.extension')) {
+                $slug = str_replace(config('builder.tree.extension'), '', $slug);
+            }
+
             $nodes = $_model::where('slug', 'like', $slug)->get();
             foreach ($nodes as $node) {
                 if ($node->getUrl() == Request::url()) {

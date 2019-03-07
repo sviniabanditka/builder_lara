@@ -168,6 +168,10 @@ class TableAdminController extends Controller
             $slug = '/';
         }
 
+        if (config('builder.tree.extension')) {
+            $slug = str_replace(config('builder.tree.extension'), '', $slug);
+        }
+
         $_model = config('builder.tree.model');
         $nodes = $_model::where('slug', 'like', $slug)->get();
         $templates = config('builder.tree.templates');
