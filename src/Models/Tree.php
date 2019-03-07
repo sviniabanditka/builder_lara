@@ -189,7 +189,7 @@ class Tree extends \Baum\Node
             return $protocol.$basicDomain.'/'.$this->_nodeUrl;
         }
 
-        return '/' . $this->_nodeUrl . config('builder.tree.extension');
+        return '/'.$this->_nodeUrl.config('builder.tree.extension');
     }
 
     // end getUrl
