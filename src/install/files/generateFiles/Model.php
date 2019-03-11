@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Model extends BaseModel
+class modelName extends BaseModel
 {
     protected $table = 'tableName';
     protected $fillable = [];
