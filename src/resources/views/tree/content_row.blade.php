@@ -3,19 +3,19 @@
         <i class="fa fa-sort"></i>
     </td>
     <td>
-        <i class="fa {{$item->isHasChilder() ? 'fa-folder' : 'fa-file-o'}}"></i>&nbsp;
+        <i class="fa {{$item->isHasChildren() ? 'fa-folder' : 'fa-file-o'}}"></i>&nbsp;
         <a href="?node={{ $item->id }}" class="node_link">{{ $item->title }}</a>
     </td>
     @if(config('builder.' . $treeName . '.list_fields'))
-        @foreach(config('builder.' . $treeName . '.list_fields') as $nameBDField => $field)
+        @foreach(config('builder.' . $treeName . '.list_fields') as $fieldNameDB => $field)
             <td style="text-align: center">
-                 @if (isset($item->$nameBDField))
-                        <?php $fieldClass =  $controller->getField($nameBDField); ?>
+                @php $fieldClass =  $controller->getField($fieldNameDB); @endphp
 
-                        {!! $fieldClass->getAttribute('fast-edit') ?
-                                $fieldClass->getListValueFastEdit($item->toArray(), $nameBDField) :
-                                $fieldClass->getListValue($item->toArray()) !!}
-                 @endif
+                @if($fieldClass->getAttribute('fast-edit'))
+                    {!! $fieldClass->getListValueFastEdit($item->toArray(), $fieldNameDB) !!}
+                @else
+                    {!! $fieldClass->getListValue($item->toArray()) !!}
+                @endif
             </td>
         @endforeach
     @else
@@ -26,7 +26,7 @@
                 data-pk="{{ $item->id }}"
                 data-value="{{ $item->template }}"
                 data-original-title="{{__cms("Выберите шаблон")}}">
-                    @if (isset(config('builder.' . $treeName . '.templates')[$item->template]['title']))
+                    @if(isset(config('builder.' . $treeName . '.templates')[$item->template]['title']))
                         {{config('builder.' . $treeName . '.templates')[$item->template]['title']}}
                     @else
                         {{ $item->template }}

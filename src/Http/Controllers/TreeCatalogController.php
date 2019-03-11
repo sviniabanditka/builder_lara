@@ -2,11 +2,7 @@
 
 namespace Vis\Builder;
 
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Response;
 
 class TreeCatalogController
 {
@@ -94,7 +90,7 @@ class TreeCatalogController
 
         $root->clearCache();
 
-        return Response::json([
+        return response()->json([
             'status' => true,
         ]);
     }
@@ -164,7 +160,7 @@ class TreeCatalogController
 
         $node->clearCache();
 
-        return Response::json([
+        return response()->json([
             'active' => true,
         ]);
     }
@@ -203,7 +199,7 @@ class TreeCatalogController
             'parent_id' => $root->id,
         ];
 
-        return Response::json($data);
+        return response()->json($data);
     }
 
     public function process()
@@ -218,7 +214,7 @@ class TreeCatalogController
         }
 
         return \Jarboe::table([
-            'url'      => URL::current(),
+            'url'      => url()->current(),
             'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
@@ -231,32 +227,23 @@ class TreeCatalogController
     {
         $this->model::destroy(request('id'));
 
-        $modelObj = $this->model::find('1');
-        $modelObj->clearCache();
+        $this->model::root()->clearCache();
 
-        return Response::json([
+        return response()->json([
             'status' => true,
         ]);
     }
 
     private function handleShowCatalog()
     {
-        $parentIDs = [];
         $treeName = $this->nameTree;
         $controller = $this->controller;
-
         $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
-
-        $idNode = request('node', 1);
-        $current = $this->model::find($idNode);
-
-        foreach ($current->getAncestors() as $anc) {
-            $parentIDs[] = $anc->id;
-        }
+        $current = $this->model::findOrFail(request('node', 1));
 
         $children = $current->children();
 
-        //filter ids
+        //filter children by action check which can return array of id
         $actions = config('builder.'.$treeName.'.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
@@ -269,31 +256,23 @@ class TreeCatalogController
             $arrIdsShow = array_flatten($arrIdsShow);
             $children = $children->whereIn('id', $arrIdsShow);
         }
-        //filter ids end
 
-        $children = $children->paginate($perPage);
-
-        $templates = config('builder.'.$treeName.'.templates');
-        $template = config('builder.'.$treeName.'.default');
-
-        if (isset($templates[$current->template])) {
-            $template = $templates[$current->template];
-        }
+        $children = $children->withCount('children')->paginate($perPage);
 
         $buttons = isset($this->controller->buttons) ? $this->controller->buttons->fetch() : '';
 
         $content = view('admin::tree.content',
-            compact('current', 'template', 'treeName', 'children', 'controller', 'perPage'));
-        $treeView = Request::ajax() ? 'tree_ajax' : 'tree';
+            compact('current', 'treeName', 'children', 'controller', 'perPage'));
+        $treeView = request()->ajax() ? 'tree_ajax' : 'tree';
 
         return view('admin::'.$treeView,
-            compact('content', 'current', 'parentIDs', 'treeName', 'controller', 'perPage', 'buttons'));
+            compact('content', 'current', 'treeName', 'controller', 'perPage', 'buttons'));
     }
 
     public function getEditModalForm()
     {
-        $idNode = request('id');
-        $current = $this->model::find($idNode);
+        $nodeId = request('id');
+        $current = $this->model::findOrFail($nodeId);
 
         $templates = config('builder.'.$this->nameTree.'.templates');
         $template = config('builder.'.$this->nameTree.'.default');
@@ -303,17 +282,17 @@ class TreeCatalogController
         }
 
         $jarboeController = new JarboeController([
-            'url'      => URL::current(),
+            'url'      => url()->current(),
             'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
-                'node'    => $idNode,
+                'node'    => $nodeId,
                 'current' => $current,
             ],
         ]);
 
-        $html = $jarboeController->view->showEditForm($idNode, true);
+        $html = $jarboeController->view->showEditForm($nodeId, true);
 
-        return Response::json([
+        return response()->json([
             'status' => true,
             'html' => $html,
         ]);
@@ -332,7 +311,7 @@ class TreeCatalogController
         }
 
         $controller = new JarboeController([
-            'url'        => URL::current(),
+            'url'        => url()->current(),
             'def_name'   => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
@@ -340,7 +319,7 @@ class TreeCatalogController
             ],
         ]);
 
-        $result = $controller->query->updateRow(Input::all());
+        $result = $controller->query->updateRow(request()->all());
 
         $item = $this->model::find($idNode);
         $item->clearCache();
@@ -349,7 +328,7 @@ class TreeCatalogController
         $result['html'] = view('admin::tree.content_row',
             compact('item', 'treeName', 'controller'))->render();
 
-        return Response::json($result);
+        return response()->json($result);
     }
 
     public function doFastSave()
@@ -365,6 +344,6 @@ class TreeCatalogController
         $result = $this->controller->query->fastSave($data);
         $result['status'] = 'ok';
 
-        return Response::json($result);
+        return response()->json($result);
     }
 }
