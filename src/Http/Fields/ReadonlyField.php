@@ -9,6 +9,7 @@ class ReadonlyField extends AbstractField
 {
     /**
      * @param array $row
+     *
      * @return string
      */
     public function getEditInput($row = [])

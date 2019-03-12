@@ -2,13 +2,13 @@
 
 namespace Vis\TranslationsCMS;
 
-use Yandex\Translate\Translator;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+use Yandex\Translate\Translator;
 
 /**
  * Class TranslateController.
@@ -67,7 +67,7 @@ class TranslateController extends Controller
         if ($validator->fails()) {
             return Response::json(
                 [
-                    'status' => 'error',
+                    'status'          => 'error',
                     'errors_messages' => $validator->messages(),
                 ]
             );
@@ -93,7 +93,7 @@ class TranslateController extends Controller
 
         return Response::json(
             [
-                'status' => 'ok',
+                'status'      => 'ok',
                 'ok_messages' => 'Фраза успешно добавлена', ]
         );
     }

@@ -2,8 +2,8 @@
 
 namespace Vis\Builder;
 
-use DB;
 use Cartalyst\Sentinel\Users\EloquentUser;
+use DB;
 
 /**
  * Class User.
@@ -25,6 +25,7 @@ class User extends EloquentUser
 
     /**
      * @param array $imgParam
+     *
      * @return mixed|string
      */
     public function getAvatar(array $imgParam)

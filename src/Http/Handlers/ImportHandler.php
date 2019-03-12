@@ -21,6 +21,7 @@ class ImportHandler
 
     /**
      * ImportHandler constructor.
+     *
      * @param array $importDefinition
      * @param $controller
      */
@@ -33,8 +34,9 @@ class ImportHandler
     // end __construct
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      * @throws \Throwable
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function fetch()
     {
@@ -60,6 +62,7 @@ class ImportHandler
 
     /**
      * @param $file
+     *
      * @return bool
      */
     public function doImportCsv($file)
@@ -100,6 +103,7 @@ class ImportHandler
                     $message = 'Не верное количество полей. Строка #'.$n.': '
                              .count($row).' из '.count($fields);
                 }
+
                 throw new JarboeValidationException($message);
             }
 
@@ -112,7 +116,7 @@ class ImportHandler
                 }
                 $updateData[$ident] = $row[$key];
             }
-            if (! $pkValue) {
+            if (!$pkValue) {
                 throw new JarboeValidationException('Ключ для обновления не установлен.');
             }
 
@@ -176,6 +180,7 @@ class ImportHandler
     /**
      * @param $ident
      * @param bool $default
+     *
      * @return bool|mixed
      */
     private function getAttribute($ident, $default = false)
@@ -187,7 +192,7 @@ class ImportHandler
 
     private function doCheckPermission()
     {
-        if (! $this->def['check']()) {
+        if (!$this->def['check']()) {
             throw new \RuntimeException('Import not permitted');
         }
     }

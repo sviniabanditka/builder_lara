@@ -31,7 +31,8 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
+     *
      * @return void
      */
     public function report(Exception $exception)
@@ -42,8 +43,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
@@ -56,8 +58,8 @@ class Handler extends ExceptionHandler
             || (env('APP_ENV') == 'testing')
         ) {
             $data = [
-                'status' => 'error',
-                'code' => $e->getCode(),
+                'status'  => 'error',
+                'code'    => $e->getCode(),
                 'message' => class_basename($e).' in '.basename($e->getFile()).' line '.$e->getLine().': '.$e->getMessage(),
             ];
 

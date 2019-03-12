@@ -54,7 +54,7 @@ class ImageStorageField extends AbstractField
 
     public function prepareQueryValue($value)
     {
-        return (! $value && $this->getAttribute('is_null')) ? null : $value;
+        return (!$value && $this->getAttribute('is_null')) ? null : $value;
     }
 
     // end prepareQueryValue

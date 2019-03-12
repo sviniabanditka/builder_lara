@@ -8,7 +8,7 @@ class BreadcrumbsComposer
 {
     public function compose(View $view)
     {
-        if (! isset($view->getData()['page'])) {
+        if (!isset($view->getData()['page'])) {
             return 'Не передан параметр';
         }
 

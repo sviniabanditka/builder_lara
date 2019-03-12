@@ -16,6 +16,7 @@ abstract class CustomHandler
 
     /**
      * CustomHandler constructor.
+     *
      * @param JarboeController $controller
      */
     public function __construct(JarboeController $controller)
@@ -25,6 +26,7 @@ abstract class CustomHandler
 
     /**
      * @param $ident
+     *
      * @return mixed
      */
     protected function getOption($ident)

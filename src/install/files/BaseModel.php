@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Vis\Builder\Facades\Jarboe;
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
+use Vis\Builder\Facades\Jarboe;
 
 class BaseModel extends Model
 {
@@ -18,16 +18,16 @@ class BaseModel extends Model
         \Vis\Builder\Helpers\Traits\Rememberable;
 
     protected $revisionFormattedFieldNames = [
-        'title'  => 'Название',
-        'description'  => 'Описание',
-        'is_active' => 'Активация',
-        'picture' => 'Изображение',
+        'title'             => 'Название',
+        'description'       => 'Описание',
+        'is_active'         => 'Активация',
+        'picture'           => 'Изображение',
         'short_description' => 'Короткий текст',
-        'created_at' => 'Дата создания',
+        'created_at'        => 'Дата создания',
     ];
     protected $revisionFormattedFields = [
-        '1'  => 'string:<strong>%s</strong>',
-        'public' => 'boolean:No|Yes',
+        '1'          => 'string:<strong>%s</strong>',
+        'public'     => 'boolean:No|Yes',
         'deleted_at' => 'isEmpty:Active|Deleted',
     ];
 
@@ -88,15 +88,15 @@ class BaseModel extends Model
     public function getMonth($date)
     {
         $month = [
-            '1' => 'Января',
-            '2' => 'Февраля',
-            '3' => 'Марта',
-            '4' => 'Апреля',
-            '5' => 'Мая',
-            '6' => 'Июня',
-            '7' => 'Июля',
-            '8' => 'Августа',
-            '9' => 'Сентября',
+            '1'  => 'Января',
+            '2'  => 'Февраля',
+            '3'  => 'Марта',
+            '4'  => 'Апреля',
+            '5'  => 'Мая',
+            '6'  => 'Июня',
+            '7'  => 'Июля',
+            '8'  => 'Августа',
+            '9'  => 'Сентября',
             '10' => 'Октября',
             '11' => 'Ноября',
             '12' => 'Декабря',
@@ -134,7 +134,7 @@ class BaseModel extends Model
     {
         $page = $query->where('id', $id)->active()->first();
 
-        if (! isset($page->id) || $page->getSlug() != $slug) {
+        if (!isset($page->id) || $page->getSlug() != $slug) {
             App::abort(404);
         }
 
@@ -152,7 +152,7 @@ class BaseModel extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        if (! $next_page) {
+        if (!$next_page) {
             $next_page = self::where('is_active', '1')
                 ->where('id', '!=', $this->id)
                 ->orderBy('priority', 'asc')
@@ -175,7 +175,7 @@ class BaseModel extends Model
             ->orderBy('priority', 'desc')
             ->orderBy('id', 'desc')->first();
 
-        if (! $prev_page) {
+        if (!$prev_page) {
             $prev_page = self::where('is_active', '1')
                 ->where('id', '!=', $this->id)
                 ->orderBy('priority', 'desc')
@@ -204,7 +204,7 @@ class BaseModel extends Model
             }
         }
 
-        if (! $nodeSlug) {
+        if (!$nodeSlug) {
             return false;
         } else {
             return Tree::where('slug', 'like', $nodeSlug)->first();

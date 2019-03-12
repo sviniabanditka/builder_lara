@@ -35,6 +35,7 @@ class PatternField extends AbstractField
 
     /**
      * PatternField constructor.
+     *
      * @param $fieldName
      * @param $attributes
      * @param $options
@@ -53,7 +54,7 @@ class PatternField extends AbstractField
         $patternName = preg_replace('~^pattern\.~', '', $fieldName);
         $path = config_path().'/builder/tb-definitions/pattern/'.$patternName.'.php';
 
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             throw new \RuntimeException("No pattern definition - [{$patternName}].");
         }
         $this->calls = require $path;
@@ -61,6 +62,7 @@ class PatternField extends AbstractField
 
     /**
      * @param array $row
+     *
      * @return mixed
      */
     public function render($row = [])
@@ -73,6 +75,7 @@ class PatternField extends AbstractField
     /**
      * @param $values
      * @param $idRow
+     *
      * @return mixed
      */
     public function update($values, $idRow)
@@ -85,6 +88,7 @@ class PatternField extends AbstractField
     /**
      * @param $values
      * @param $idRow
+     *
      * @return mixed
      */
     public function insert($values, $idRow)
@@ -96,6 +100,7 @@ class PatternField extends AbstractField
 
     /**
      * @param $idRow
+     *
      * @return mixed
      */
     public function delete($idRow)
@@ -146,6 +151,7 @@ class PatternField extends AbstractField
 
     /**
      * @param array $row
+     *
      * @return mixed|string
      */
     public function getEditInput($row = [])
@@ -155,6 +161,7 @@ class PatternField extends AbstractField
 
     /**
      * @param array $row
+     *
      * @return mixed|string
      */
     public function getTabbedEditInput($row = [])

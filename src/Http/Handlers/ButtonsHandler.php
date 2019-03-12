@@ -18,6 +18,7 @@ class ButtonsHandler
 
     /**
      * ButtonsHandler constructor.
+     *
      * @param array $exportDefinition
      * @param $controller
      */
@@ -34,7 +35,7 @@ class ButtonsHandler
     {
         $buttons = $this->def;
 
-        if (! count($buttons)) {
+        if (!count($buttons)) {
             return;
         }
 
@@ -49,10 +50,11 @@ class ButtonsHandler
 
     /**
      * @param $button
+     *
      * @return bool
      */
     private function checkShowButton($button)
     {
-        return ! $button || ! $button['check']();
+        return !$button || !$button['check']();
     }
 }

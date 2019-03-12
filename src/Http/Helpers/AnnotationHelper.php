@@ -2,9 +2,9 @@
 
 namespace Vis\Builder\Helpers;
 
-use Throwable;
-use Illuminate\View\View;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Throwable;
 
 class AnnotationHelper
 {

@@ -2,11 +2,11 @@
 
 namespace Vis\Builder\Fields;
 
-use Vis\Builder\Facades\Jarboe;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+use Vis\Builder\Facades\Jarboe;
 
 class ImageField extends AbstractField
 {
@@ -39,7 +39,7 @@ class ImageField extends AbstractField
     {
         $pathPhoto = $this->getValue($row);
 
-        if (! $pathPhoto) {
+        if (!$pathPhoto) {
             return '';
         }
 
@@ -53,7 +53,7 @@ class ImageField extends AbstractField
 
     private function getListMultiple($row)
     {
-        if (! $this->getValue($row)) {
+        if (!$this->getValue($row)) {
             return '';
         }
 
@@ -192,14 +192,14 @@ class ImageField extends AbstractField
             'status'     => $status,
             'link'       => $link,
             'short_link' => $destinationPath.$fileName,
-            'delimiter' => ',',
-            'html' => view(
+            'delimiter'  => ',',
+            'html'       => view(
                 $returnView,
-                ['link' => $link,
-                 'data' => $data,
-                 'value' => $destinationPath.$fileName,
-                 'name' => request('ident'),
-                 'width' => $width,
+                ['link'   => $link,
+                 'data'   => $data,
+                 'value'  => $destinationPath.$fileName,
+                 'name'   => request('ident'),
+                 'width'  => $width,
                  'height' => $height,
                 ]
             )->render(),
@@ -219,7 +219,7 @@ class ImageField extends AbstractField
 
     private function saveInImageStore($fileName, $link)
     {
-        if (! $this->getAttribute('use_image_storage') || ! class_exists('\Vis\ImageStorage\Image')) {
+        if (!$this->getAttribute('use_image_storage') || !class_exists('\Vis\ImageStorage\Image')) {
             return;
         }
 
@@ -236,7 +236,7 @@ class ImageField extends AbstractField
 
     private function checkSizeFile($file)
     {
-        if (! $this->getAttribute('limit_mb')) {
+        if (!$this->getAttribute('limit_mb')) {
             return;
         }
 
@@ -249,7 +249,7 @@ class ImageField extends AbstractField
 
     public function prepareQueryValue($value)
     {
-        if (! $value) {
+        if (!$value) {
             return '';
         }
 

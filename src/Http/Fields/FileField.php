@@ -28,8 +28,10 @@ class FileField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -96,6 +98,7 @@ class FileField extends AbstractField
 
     /**
      * @param $string
+     *
      * @return bool
      */
     private function isJson($string)
@@ -107,6 +110,7 @@ class FileField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)
@@ -118,7 +122,7 @@ class FileField extends AbstractField
             }
         }
 
-        if (! $this->getValue($row)) {
+        if (!$this->getValue($row)) {
             return '';
         }
 

@@ -2,8 +2,8 @@
 
 namespace Vis\Builder;
 
-use Request;
 use Illuminate\Support\Facades\Cache;
+use Request;
 use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 
 /**
@@ -26,19 +26,19 @@ class Tree extends \Baum\Node
      * @var array
      */
     protected $revisionFormattedFieldNames = [
-        'title'  => 'Название',
-        'description'  => 'Описание',
-        'is_active' => 'Активация',
-        'picture' => 'Изображение',
+        'title'             => 'Название',
+        'description'       => 'Описание',
+        'is_active'         => 'Активация',
+        'picture'           => 'Изображение',
         'short_description' => 'Короткий текст',
-        'created_at' => 'Дата создания',
+        'created_at'        => 'Дата создания',
     ];
     /**
      * @var array
      */
     protected $revisionFormattedFields = [
-        '1'  => 'string:<strong>%s</strong>',
-        'public' => 'boolean:No|Yes',
+        '1'          => 'string:<strong>%s</strong>',
+        'public'     => 'boolean:No|Yes',
         'deleted_at' => 'isEmpty:Active|Deleted',
     ];
     /**
@@ -173,7 +173,7 @@ class Tree extends \Baum\Node
      */
     public function getUrl()
     {
-        if (! $this->_nodeUrl) {
+        if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
@@ -201,7 +201,7 @@ class Tree extends \Baum\Node
      */
     public function getUrlNoLocation()
     {
-        if (! $this->_nodeUrl) {
+        if (!$this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
@@ -288,6 +288,7 @@ class Tree extends \Baum\Node
     /**
      * @param $id
      * @param bool $recursiveOnlyLastLevel
+     *
      * @return mixed
      */
     public function getCategory($id, $recursiveOnlyLastLevel = false)

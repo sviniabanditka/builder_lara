@@ -18,6 +18,7 @@ class DefinitionHandler
 
     /**
      * DefinitionHandler constructor.
+     *
      * @param array $definition
      * @param $controller
      */
@@ -68,6 +69,7 @@ class DefinitionHandler
 
     /**
      * @param array $value
+     *
      * @return bool
      */
     private function checkShowList($value)

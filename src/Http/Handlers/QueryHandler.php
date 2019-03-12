@@ -2,13 +2,13 @@
 
 namespace Vis\Builder\Handlers;
 
-use Vis\Builder\JarboeController;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Vis\Builder\JarboeController;
 
 /**
  * Class QueryHandler.
@@ -58,6 +58,7 @@ class QueryHandler
 
     /**
      * QueryHandler constructor.
+     *
      * @param JarboeController $controller
      */
     public function __construct(JarboeController $controller)
@@ -92,6 +93,7 @@ class QueryHandler
 
     /**
      * @param $ident
+     *
      * @return mixed
      */
     protected function getOptionDB($ident)
@@ -101,6 +103,7 @@ class QueryHandler
 
     /**
      * @param $ident
+     *
      * @return bool
      */
     protected function hasOptionDB($ident)
@@ -109,10 +112,11 @@ class QueryHandler
     }
 
     /**
-     * @param bool $isPagination
-     * @param bool $isUserFilters
+     * @param bool  $isPagination
+     * @param bool  $isUserFilters
      * @param array $betweenWhere
-     * @param bool $isSelectAll
+     * @param bool  $isSelectAll
+     *
      * @return mixed
      */
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
@@ -190,18 +194,19 @@ class QueryHandler
 
     /**
      * @param $info
+     *
      * @return mixed
      */
     public function getPerPageAmount($info)
     {
-        if (! is_array($info)) {
+        if (!is_array($info)) {
             return $info;
         }
 
         $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
         $perPage = Session::get($sessionPath);
 
-        if (! $perPage) {
+        if (!$perPage) {
             $keys = array_keys($info);
             $perPage = $keys[0];
         }
@@ -255,6 +260,7 @@ class QueryHandler
 
     /**
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
      */
     public function getRow($id)
@@ -293,6 +299,7 @@ class QueryHandler
 
     /**
      * @param $values
+     *
      * @return array|mixed
      */
     public function updateRow($values)
@@ -324,7 +331,7 @@ class QueryHandler
         }
 
         foreach ($updateData as $field => $data) {
-            if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
+            if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
                 $updateDataRes[$field] = $this->getData($data);
             } else {
                 $this->getDataTabs($updateDataRes, $updateData, $field);
@@ -361,6 +368,7 @@ class QueryHandler
 
     /**
      * @param $data
+     *
      * @return false|string
      */
     private function getData($data)
@@ -390,6 +398,7 @@ class QueryHandler
      * @param $updateData
      * @param $field
      * @param $tab
+     *
      * @return string
      */
     private function getTabsDataField($updateData, $field, $tab)
@@ -414,6 +423,7 @@ class QueryHandler
     /**
      * @param $phrase
      * @param $thisLang
+     *
      * @return mixed
      */
     private function generateTranslation($phrase, $thisLang)
@@ -482,6 +492,7 @@ class QueryHandler
 
     /**
      * @param $id
+     *
      * @return array
      */
     public function cloneRow($id)
@@ -528,6 +539,7 @@ class QueryHandler
 
     /**
      * @param $id
+     *
      * @return array|mixed
      */
     public function deleteRow($id)
@@ -597,6 +609,7 @@ class QueryHandler
 
     /**
      * @param $values
+     *
      * @return array|mixed
      */
     public function insertRow($values)
@@ -621,9 +634,9 @@ class QueryHandler
             $id = $this->controller->getCustomHandler()->onInsertRowData($insertData);
         }
 
-        if (! $id) {
+        if (!$id) {
             foreach ($insertData as $field => $data) {
-                if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
+                if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
                     $insertDataRes[$field] = $this->getData($data);
                 } else {
                     $this->getDataTabs($insertDataRes, $insertData, $field);
@@ -657,7 +670,7 @@ class QueryHandler
         $this->updateExtendsTable($id);
 
         $res = [
-            'id' => $id,
+            'id'     => $id,
             'values' => $insertData,
         ];
 
@@ -697,7 +710,7 @@ class QueryHandler
 
                 $tabs = $field->getAttribute('tabs');
                 if ($tabs) {
-                    if (! $field->getAttribute('extends_table')) {
+                    if (!$field->getAttribute('extends_table')) {
                         foreach ($tabs as $tab) {
                             $fieldName = $ident.$tab['postfix'];
                             $field->doValidate($values[$fieldName]);
@@ -723,6 +736,7 @@ class QueryHandler
 
     /**
      * @param $values
+     *
      * @return mixed
      */
     private function getRowQueryValues($values)
@@ -772,6 +786,7 @@ class QueryHandler
 
     /**
      * @param $values
+     *
      * @return mixed
      */
     private function unsetFutileFields($values)
@@ -837,7 +852,7 @@ class QueryHandler
      */
     private function checkField($values, $ident, $field)
     {
-        if (! $field->isEditable()) {
+        if (!$field->isEditable()) {
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
     }
@@ -869,8 +884,9 @@ class QueryHandler
     }
 
     /**
-     * @return array
      * @throws \Throwable
+     *
+     * @return array
      */
     public function getUploadedFiles()
     {
@@ -884,6 +900,7 @@ class QueryHandler
 
     /**
      * @param $field
+     *
      * @return array
      */
     public function getUploadedImages($field)
@@ -896,8 +913,9 @@ class QueryHandler
     }
 
     /**
-     * @return array
      * @throws \Throwable
+     *
+     * @return array
      */
     private function getImagesWithImageStorage()
     {
@@ -923,12 +941,12 @@ class QueryHandler
 
             $data = [
                 'status' => 'success',
-                'data' => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries'))->render(),
+                'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries'))->render(),
             ];
         } else {
             $data = [
                 'status' => 'success',
-                'data' => 'Не подключен пакет ImageStorage',
+                'data'   => 'Не подключен пакет ImageStorage',
             ];
         }
 
@@ -936,8 +954,9 @@ class QueryHandler
     }
 
     /**
-     * @return array
      * @throws \Throwable
+     *
+     * @return array
      */
     private function getImagesWithDefaultPath()
     {

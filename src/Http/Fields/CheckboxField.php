@@ -19,11 +19,12 @@ class CheckboxField extends AbstractField
 
     /**
      * @param $value
+     *
      * @return string|void
      */
     public function prepareQueryValue($value)
     {
-        if (! $value && $this->getAttribute('is_null')) {
+        if (!$value && $this->getAttribute('is_null')) {
             return;
         }
 
@@ -41,12 +42,13 @@ class CheckboxField extends AbstractField
     }
 
     /**
-     * @return string|void
      * @throws \Throwable
+     *
+     * @return string|void
      */
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return;
         }
 
@@ -64,8 +66,10 @@ class CheckboxField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -87,6 +91,7 @@ class CheckboxField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return string
      */
     public function getValueExport($row)
@@ -96,6 +101,7 @@ class CheckboxField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getListValue($row)
@@ -113,6 +119,7 @@ class CheckboxField extends AbstractField
     /**
      * @param $row
      * @param $ident
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getListValueFastEdit($row, $ident)
@@ -125,6 +132,7 @@ class CheckboxField extends AbstractField
     /**
      * @param $row
      * @param string $postfix
+     *
      * @return bool|string
      */
     public function getValue($row, $postfix = '')
@@ -139,7 +147,7 @@ class CheckboxField extends AbstractField
 
         return (
             (isset($row[$this->getFieldName()]) && $row[$this->getFieldName()]) ||
-            (! isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') !== true)
+            (!isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') !== true)
 
                 )
                     ? '1' : '0';

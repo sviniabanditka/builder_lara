@@ -2,8 +2,8 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class TimeField.
@@ -18,7 +18,7 @@ class TimeField extends AbstractField
     {
         $table = $this->definition['db']['table'];
         if ($this->getAttribute('is_range')) {
-            if (! isset($value['from']) && ! isset($value['to'])) {
+            if (!isset($value['from']) && !isset($value['to'])) {
                 return;
             }
 
@@ -40,6 +40,7 @@ class TimeField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)
@@ -51,7 +52,7 @@ class TimeField extends AbstractField
             }
         }
 
-        if (! $this->getValue($row)) {
+        if (!$this->getValue($row)) {
             return '';
         }
 
@@ -60,8 +61,10 @@ class TimeField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -85,12 +88,13 @@ class TimeField extends AbstractField
     }
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return '';
         }
 
@@ -110,8 +114,9 @@ class TimeField extends AbstractField
     }
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     private function getFilterRangeInput()
     {

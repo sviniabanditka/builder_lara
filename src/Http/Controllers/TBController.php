@@ -3,8 +3,8 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
@@ -73,19 +73,20 @@ class TBController extends Controller
     /**
      * @param $exception
      * @param $code
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public static function returnError($exception, $code)
     {
         $message = $exception->getMessage();
 
-        if (! $message) {
+        if (!$message) {
             $message = '404 error';
         }
 
         $data = [
-            'status' => 'error',
-            'code' => $code,
+            'status'  => 'error',
+            'code'    => $code,
             'message' => $message,
         ];
 
@@ -112,8 +113,8 @@ class TBController extends Controller
 
         return Response::json(
             [
-                'status' => 'success',
-                'picture' => ltrim($fileCrop, '/'),
+                'status'       => 'success',
+                'picture'      => ltrim($fileCrop, '/'),
                 'pictureSmall' => $smallImg,
             ]
         );

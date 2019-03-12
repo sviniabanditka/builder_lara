@@ -47,8 +47,10 @@ class TextField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -84,6 +86,7 @@ class TextField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)

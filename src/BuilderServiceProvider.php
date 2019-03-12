@@ -36,7 +36,7 @@ class BuilderServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__
             .'/published/assets' => public_path('packages/vis/builder'),
-            __DIR__.'/config' => config_path('builder/'),
+            __DIR__.'/config'    => config_path('builder/'),
         ], 'builder');
 
         $this->publishes([
@@ -52,7 +52,7 @@ class BuilderServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router $router
+     * @param \Illuminate\Routing\Router $router
      *
      * @return void
      */

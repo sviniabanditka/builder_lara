@@ -51,9 +51,9 @@ return [
     */
 
     'templates' => [
-        'small' => 'Intervention\Image\Templates\Small',
-        'medium' => 'Intervention\Image\Templates\Medium',
-        'large' => 'Intervention\Image\Templates\Large',
+        'small'     => 'Intervention\Image\Templates\Small',
+        'medium'    => 'Intervention\Image\Templates\Medium',
+        'large'     => 'Intervention\Image\Templates\Large',
         'watermark' => 'Vis\Builder\Watermark',
     ],
 

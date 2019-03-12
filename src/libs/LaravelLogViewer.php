@@ -13,33 +13,34 @@ class LaravelLogViewer
     private static $file;
 
     private static $levels_classes = [
-        'debug' => 'info',
-        'info' => 'info',
-        'notice' => 'info',
-        'warning' => 'warning',
-        'error' => 'danger',
-        'critical' => 'danger',
-        'alert' => 'danger',
+        'debug'     => 'info',
+        'info'      => 'info',
+        'notice'    => 'info',
+        'warning'   => 'warning',
+        'error'     => 'danger',
+        'critical'  => 'danger',
+        'alert'     => 'danger',
         'emergency' => 'danger',
         'processed' => 'info',
-        'failed' => 'warning',
+        'failed'    => 'warning',
     ];
 
     private static $levels_imgs = [
-        'debug' => 'info-circle',
-        'info' => 'info-circle',
-        'notice' => 'info-circle',
-        'warning' => 'exclamation-triangle',
-        'error' => 'exclamation-triangle',
-        'critical' => 'exclamation-triangle',
-        'alert' => 'exclamation-triangle',
+        'debug'     => 'info-circle',
+        'info'      => 'info-circle',
+        'notice'    => 'info-circle',
+        'warning'   => 'exclamation-triangle',
+        'error'     => 'exclamation-triangle',
+        'critical'  => 'exclamation-triangle',
+        'alert'     => 'exclamation-triangle',
         'emergency' => 'exclamation-triangle',
         'processed' => 'info-circle',
-        'failed' => 'exclamation-triangle',
+        'failed'    => 'exclamation-triangle',
     ];
 
     /**
      * Log levels that are used.
+     *
      * @var array
      */
     private static $log_levels = [
@@ -71,8 +72,10 @@ class LaravelLogViewer
 
     /**
      * @param string $file
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     public static function pathToLogFile($file)
     {
@@ -109,9 +112,9 @@ class LaravelLogViewer
 
         $pattern = '/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}([\+-]\d{4})?\].*/';
 
-        if (! self::$file) {
+        if (!self::$file) {
             $log_file = self::getFiles();
-            if (! count($log_file)) {
+            if (!count($log_file)) {
                 return [];
             }
             self::$file = $log_file[0];
@@ -125,7 +128,7 @@ class LaravelLogViewer
 
         preg_match_all($pattern, $file, $headings);
 
-        if (! is_array($headings)) {
+        if (!is_array($headings)) {
             return $log;
         }
 
@@ -140,19 +143,19 @@ class LaravelLogViewer
                 foreach (self::$log_levels as $level) {
                     if (strpos(strtolower($h[$i]), '.'.$level) || strpos(strtolower($h[$i]), $level.':')) {
                         preg_match('/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}([\+-]\d{4})?)\](?:.*?(\w+)\.|.*?)'.$level.': (.*?)( in .*?:[0-9]+)?$/i', $h[$i], $current);
-                        if (! isset($current[4])) {
+                        if (!isset($current[4])) {
                             continue;
                         }
 
                         $log[] = [
-                            'context' => $current[3],
-                            'level' => $level,
+                            'context'     => $current[3],
+                            'level'       => $level,
                             'level_class' => self::$levels_classes[$level],
-                            'level_img' => self::$levels_imgs[$level],
-                            'date' => $current[1],
-                            'text' => $current[4],
-                            'in_file' => isset($current[5]) ? $current[5] : null,
-                            'stack' => preg_replace("/^\n*/", '', $log_data[$i]),
+                            'level_img'   => self::$levels_imgs[$level],
+                            'date'        => $current[1],
+                            'text'        => $current[4],
+                            'in_file'     => isset($current[5]) ? $current[5] : null,
+                            'stack'       => preg_replace("/^\n*/", '', $log_data[$i]),
                         ];
                     }
                 }
@@ -164,6 +167,7 @@ class LaravelLogViewer
 
     /**
      * @param bool $basename
+     *
      * @return array
      */
     public static function getFiles($basename = false)

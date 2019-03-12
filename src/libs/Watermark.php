@@ -2,9 +2,9 @@
 
 namespace Vis\Builder;
 
-use Intervention\Image\Image;
 use Illuminate\Support\Facades\Config;
 use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\Image;
 
 class Watermark implements FilterInterface
 {

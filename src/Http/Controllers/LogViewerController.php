@@ -4,8 +4,8 @@ namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Crypt;
-use Vis\Builder\Libs\LaravelLogViewer;
 use Illuminate\Support\Facades\Request;
+use Vis\Builder\Libs\LaravelLogViewer;
 
 class LogViewerController extends Controller
 {
@@ -37,8 +37,8 @@ class LogViewerController extends Controller
         }
 
         $data = [
-            'logs' => LaravelLogViewer::all(),
-            'files' => LaravelLogViewer::getFiles(true),
+            'logs'         => LaravelLogViewer::all(),
+            'files'        => LaravelLogViewer::getFiles(true),
             'current_file' => LaravelLogViewer::getFileName(),
         ];
 

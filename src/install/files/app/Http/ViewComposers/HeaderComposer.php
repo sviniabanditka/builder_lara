@@ -3,8 +3,8 @@
 namespace App\Http\ViewComposers;
 
 use App\Models\Tree;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
 
 class HeaderComposer
 {

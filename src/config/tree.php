@@ -8,45 +8,45 @@ return [
     ],
     'templates' => [
         'contacts' => [
-            'action' => 'ContactsController@showPage',
+            'action'          => 'ContactsController@showPage',
             'node_definition' => 'contacts',
-            'check' => function () {
+            'check'           => function () {
                 return true;
             },
             'title' => 'Контакты',
             //'show_templates' => ['news', 'about']
         ],
         'news' => [
-            'action' => 'NewsController@showPages',
+            'action'          => 'NewsController@showPages',
             'node_definition' => 'node',
-            'check' => function () {
+            'check'           => function () {
                 return true;
             },
             'title' => 'Новости',
         ],
 
         'about' => [
-            'action' => 'AboutController@showPage',
+            'action'          => 'AboutController@showPage',
             'node_definition' => 'node',
-            'check' => function () {
+            'check'           => function () {
                 return true;
             },
             'title' => 'О нас',
         ],
 
         'article' => [
-            'action' => 'ArticleController@showPage',
+            'action'          => 'ArticleController@showPage',
             'node_definition' => 'node',
-            'check' => function () {
+            'check'           => function () {
                 return true;
             },
             'title' => 'Статья',
         ],
 
         'main' => [
-            'action' => 'HomeController@showPage',
+            'action'          => 'HomeController@showPage',
             'node_definition' => 'node',
-            'check' => function () {
+            'check'           => function () {
                 return true;
             },
             'title' => 'Главная',
@@ -55,8 +55,8 @@ return [
     ],
 
     'default' => [
-        'type' => 'node',
-        'action' => 'HomeController@showPage',
+        'type'            => 'node',
+        'action'          => 'HomeController@showPage',
         'node_definition' => 'node',
     ],
 
@@ -64,32 +64,32 @@ return [
 
         'update' => [
             'caption' => 'Редактировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'preview' => [
             'caption' => 'Предпросмотр',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'clone' => [
             'caption' => 'Клонировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
 
         'revisions' => [
             'caption' => 'Версии',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'delete' => [
             'caption' => 'Удалить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],

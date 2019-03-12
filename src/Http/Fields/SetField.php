@@ -2,8 +2,8 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class SetField.
@@ -33,12 +33,13 @@ class SetField extends AbstractField
     // end onSearchFilter
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return '';
         }
 
@@ -56,8 +57,10 @@ class SetField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -74,7 +77,7 @@ class SetField extends AbstractField
                             json_decode($this->getValue($row)) :
                             explode(',', $this->getValue($row));
 
-        if (! is_array($table->selected)) {
+        if (!is_array($table->selected)) {
             $table->selected = [];
         }
 
@@ -86,6 +89,7 @@ class SetField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return string
      */
     public function getRowColor($row)
@@ -99,6 +103,7 @@ class SetField extends AbstractField
     /**
      * @param $row
      * @param string $postfix
+     *
      * @return bool|string
      */
     public function getValue($row, $postfix = '')
@@ -113,7 +118,7 @@ class SetField extends AbstractField
         $fieldName = $this->getFieldName().$postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
-        if ($this->getAttribute('tabs') && ! $postfix) {
+        if ($this->getAttribute('tabs') && !$postfix) {
             $tabs = $this->getAttribute('tabs');
             $fieldName = $fieldName.$tabs[0]['postfix'];
         }
@@ -123,11 +128,12 @@ class SetField extends AbstractField
 
     /**
      * @param $value
+     *
      * @return string|void
      */
     public function prepareQueryValue($value)
     {
-        if (! $value && $this->getAttribute('is_null')) {
+        if (!$value && $this->getAttribute('is_null')) {
             return;
         }
 
@@ -140,6 +146,7 @@ class SetField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)
@@ -157,7 +164,7 @@ class SetField extends AbstractField
 
         $options = $this->getAttribute('options');
 
-        if (! is_array($values)) {
+        if (!is_array($values)) {
             return;
         }
 

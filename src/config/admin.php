@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'caption'  => 'Административная часть сайта',
-    'logo_url' => '/packages/vis/builder/img/logo.png',
-    'favicon_url' => '/packages/vis/builder/img/favicon/favicon.ico',
-    'uri' => '/admin',
+    'caption'          => 'Административная часть сайта',
+    'logo_url'         => '/packages/vis/builder/img/logo.png',
+    'favicon_url'      => '/packages/vis/builder/img/favicon/favicon.ico',
+    'uri'              => '/admin',
     'limitation_of_ip' => [],
-    'menu' => [
+    'menu'             => [
 
         /* array(
              'title' => 'Главная',
@@ -36,11 +36,11 @@ return [
         ],
 
         [
-            'title' => 'Настройки',
-            'icon'  => 'cog',
+            'title'   => 'Настройки',
+            'icon'    => 'cog',
             'submenu' => [
                 [
-                    'title' => 'Управление',
+                    'title'   => 'Управление',
                     'submenu' => [
                         [
                             'title' => 'Общее',
@@ -100,8 +100,8 @@ return [
         ],
 
         [
-            'title' => 'Упр. пользователями',
-            'icon'  => 'user',
+            'title'   => 'Упр. пользователями',
+            'icon'    => 'user',
             'submenu' => [
                 [
                     'title' => 'Пользователи',

@@ -2,8 +2,8 @@
 
 namespace Vis\Builder;
 
-use Illuminate\Console\Command;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Console\Command;
 
 /**
  * Class GeneratePassword.

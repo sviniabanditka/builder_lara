@@ -20,6 +20,7 @@ class CustomClosureHandler
 
     /**
      * CustomClosureHandler constructor.
+     *
      * @param $functions
      * @param JarboeController $controller
      */
@@ -33,6 +34,7 @@ class CustomClosureHandler
 
     /**
      * @param string $name
+     *
      * @return bool|mixed
      */
     private function getClosure($name)
@@ -57,6 +59,7 @@ class CustomClosureHandler
      * @param $formField
      * @param array $row
      * @param $postfix
+     *
      * @return mixed
      */
     public function onGetValue($formField, array &$row, &$postfix)
@@ -74,6 +77,7 @@ class CustomClosureHandler
      * @param $type
      * @param array $row
      * @param $postfix
+     *
      * @return mixed
      */
     public function onGetExportValue($formField, $type, array &$row, &$postfix)
@@ -89,6 +93,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return mixed
      */
     public function onGetEditInput($formField, array &$row)
@@ -104,6 +109,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return mixed
      */
     public function onGetListValue($formField, array &$row)
@@ -119,6 +125,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param $db
+     *
      * @return mixed
      */
     public function onSelectField($formField, &$db)
@@ -133,6 +140,7 @@ class CustomClosureHandler
 
     /**
      * @param array $filters
+     *
      * @return mixed
      */
     public function onPrepareSearchFilters(array &$filters)
@@ -149,6 +157,7 @@ class CustomClosureHandler
      * @param $db
      * @param $name
      * @param $value
+     *
      * @return mixed
      */
     public function onSearchFilter(&$db, $name, $value)
@@ -176,6 +185,7 @@ class CustomClosureHandler
 
     /**
      * @param array $response
+     *
      * @return mixed
      */
     public function onUpdateRowResponse(array &$response)
@@ -190,6 +200,7 @@ class CustomClosureHandler
 
     /**
      * @param array $response
+     *
      * @return mixed
      */
     public function onInsertRowResponse(array &$response)
@@ -204,6 +215,7 @@ class CustomClosureHandler
 
     /**
      * @param array $response
+     *
      * @return mixed
      */
     public function onDeleteRowResponse(array &$response)
@@ -218,6 +230,7 @@ class CustomClosureHandler
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function handleDeleteRow($id)
@@ -232,6 +245,7 @@ class CustomClosureHandler
 
     /**
      * @param $values
+     *
      * @return mixed
      */
     public function handleInsertRow($values)
@@ -246,6 +260,7 @@ class CustomClosureHandler
 
     /**
      * @param $values
+     *
      * @return mixed
      */
     public function handleUpdateRow($values)
@@ -260,6 +275,7 @@ class CustomClosureHandler
 
     /**
      * @param array $response
+     *
      * @return mixed
      */
     public function onUpdateFastRowResponse(array &$response)
@@ -274,6 +290,7 @@ class CustomClosureHandler
 
     /**
      * @param array $data
+     *
      * @return mixed
      */
     public function onInsertRowData(array &$data)
@@ -288,6 +305,7 @@ class CustomClosureHandler
 
     /**
      * @param array $data
+     *
      * @return mixed
      */
     public function onUpdateRowData(array &$data)
@@ -304,6 +322,7 @@ class CustomClosureHandler
      * @param $formField
      * @param $db
      * @param $value
+     *
      * @return mixed
      */
     public function onSearchCustomFilter($formField, &$db, $value)
@@ -320,6 +339,7 @@ class CustomClosureHandler
      * @param $formField
      * @param array $row
      * @param $postfix
+     *
      * @return mixed
      */
     public function onGetCustomValue($formField, array &$row, &$postfix)
@@ -335,6 +355,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return mixed
      */
     public function onGetCustomEditInput($formField, array &$row)
@@ -350,6 +371,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return mixed
      */
     public function onGetCustomListValue($formField, array &$row)
@@ -364,6 +386,7 @@ class CustomClosureHandler
 
     /**
      * @param $db
+     *
      * @return mixed
      */
     public function onSelectCustomValue(&$db)
@@ -378,6 +401,7 @@ class CustomClosureHandler
 
     /**
      * @param $file
+     *
      * @return mixed
      */
     public function onFileUpload($file)
@@ -393,6 +417,7 @@ class CustomClosureHandler
     /**
      * @param $formField
      * @param $file
+     *
      * @return mixed
      */
     public function onPhotoUpload($formField, $file)
@@ -407,6 +432,7 @@ class CustomClosureHandler
 
     /**
      * @param $file
+     *
      * @return mixed
      */
     public function onPhotoUploadFromWysiwyg($file)
@@ -421,6 +447,7 @@ class CustomClosureHandler
 
     /**
      * @param $def
+     *
      * @return mixed
      */
     public function onInsertButtonFetch($def)
@@ -435,6 +462,7 @@ class CustomClosureHandler
 
     /**
      * @param $def
+     *
      * @return mixed
      */
     public function onUpdateButtonFetch($def)
@@ -449,6 +477,7 @@ class CustomClosureHandler
 
     /**
      * @param $def
+     *
      * @return mixed
      */
     public function onDeleteButtonFetch($def)

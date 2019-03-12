@@ -2,12 +2,12 @@
 
 namespace Vis\Builder\Handlers;
 
-use Vis\Builder\Revision;
-use Vis\Builder\JarboeController;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
+use Vis\Builder\JarboeController;
+use Vis\Builder\Revision;
 
 /**
  * Class RequestHandler.
@@ -29,6 +29,7 @@ class RequestHandler
 
     /**
      * RequestHandler constructor.
+     *
      * @param JarboeController $controller
      */
     public function __construct(JarboeController $controller)
@@ -137,8 +138,9 @@ class RequestHandler
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function handleSelectWithUploaded()
     {
@@ -183,7 +185,7 @@ class RequestHandler
           || count($this->controller->getOrderDefinition())
         ) {
             return Response::json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'Изменение порядка невозможно при фильтрации и сортировки',
             ]);
         }
@@ -212,7 +214,7 @@ class RequestHandler
         $type = request('type');
         $ids = request('multi_ids');
 
-        if (! $ids) {
+        if (!$ids) {
             return;
         }
 
@@ -220,7 +222,7 @@ class RequestHandler
 
         $isAllowed = $action['check'];
 
-        if (! $isAllowed()) {
+        if (!$isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 
@@ -250,7 +252,7 @@ class RequestHandler
         $action = $this->definition['multi_actions'][$type];
 
         $isAllowed = $action['check'];
-        if (! $isAllowed()) {
+        if (!$isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 
@@ -317,7 +319,7 @@ class RequestHandler
     {
         $order = [
             'direction' => request('direction'),
-            'field' => request('field'),
+            'field'     => request('field'),
         ];
 
         $sessionPath = 'table_builder.'.$this->definitionName.'.order';
@@ -356,10 +358,10 @@ class RequestHandler
         $file->move($destinationPath, $fileName);
 
         $data = [
-            'status' => true,
-            'link'   => URL::to($destinationPath.$fileName),
+            'status'     => true,
+            'link'       => URL::to($destinationPath.$fileName),
             'short_link' => $fileName,
-            'long_link' =>  '/'.$destinationPath.$fileName,
+            'long_link'  => '/'.$destinationPath.$fileName,
         ];
 
         return Response::json($data);
@@ -473,7 +475,7 @@ class RequestHandler
         $html = $this->controller->view->showEditForm($idRow);
 
         return Response::json([
-            'html' => $html,
+            'html'   => $html,
             'status' => true,
         ]);
     }
@@ -489,7 +491,7 @@ class RequestHandler
         $html = $this->controller->view->showRevisionForm($idRow);
 
         return Response::json([
-            'html' => $html,
+            'html'   => $html,
             'status' => true,
         ]);
     }
@@ -505,7 +507,7 @@ class RequestHandler
         $html = $this->controller->view->showViewsStatistic($idRow);
 
         return Response::json([
-            'html' => $html,
+            'html'   => $html,
             'status' => true,
         ]);
     }
