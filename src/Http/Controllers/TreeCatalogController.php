@@ -81,7 +81,7 @@ class TreeCatalogController
         $node->title = request('title');
         $node->template = request('template') ?: '';
         $node->slug = request('slug') ?: request('title');
-        // $node->is_active = 1;
+
         $node->save();
 
         $node->checkUnicUrl();
@@ -206,16 +206,11 @@ class TreeCatalogController
     {
         $idNode = request('page_id', request('node', 1));
         $current = $this->model::find($idNode);
-
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
-        if (isset($templates[$current->template])) {
-            $template = $templates[$current->template];
-        }
+        $template = $this->getTemplate($current);
 
         return \Jarboe::table([
             'url'      => url()->current(),
-            'def_name' => $this->nameTree.'.'.$template['node_definition'],
+            'def_name' => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
@@ -274,16 +269,11 @@ class TreeCatalogController
         $nodeId = request('id');
         $current = $this->model::findOrFail($nodeId);
 
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
-
-        if (isset($templates[$current->template])) {
-            $template = $templates[$current->template];
-        }
+        $template = $this->getTemplate($current);
 
         $jarboeController = new JarboeController([
             'url'      => url()->current(),
-            'def_name' => $this->nameTree.'.'.$template['node_definition'],
+            'def_name' => $this->nameTree . '.' . $template['node_definition'],
             'additional' => [
                 'node'    => $nodeId,
                 'current' => $current,
@@ -303,12 +293,7 @@ class TreeCatalogController
         $idNode = request('id');
         $current = $this->model::find($idNode);
 
-        $templates = config('builder.'.$this->nameTree.'.templates');
-        $template = config('builder.'.$this->nameTree.'.default');
-
-        if (isset($templates[$current->template])) {
-            $template = $templates[$current->template];
-        }
+        $template = $this->getTemplate($current);
 
         $controller = new JarboeController([
             'url'        => url()->current(),
@@ -329,6 +314,18 @@ class TreeCatalogController
             compact('item', 'treeName', 'controller'))->render();
 
         return response()->json($result);
+    }
+
+    private function getTemplate($current)
+    {
+        $templates = config('builder.' . $this->nameTree . '.templates');
+        $template = config('builder.' . $this->nameTree . '.default');
+
+        if (isset($templates[$current->template])) {
+            $template = $templates[$current->template];
+        }
+
+        return $template;
     }
 
     public function doFastSave()
