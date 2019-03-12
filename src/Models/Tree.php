@@ -256,20 +256,9 @@ class Tree extends \Baum\Node
         return implode('/', $slugs);
     }
 
-    /**
-     * @return int|mixed
-     */
-    public function isHasChilder()
+    public function isHasChildren()
     {
-        $tags = $this->getCacheTags();
-
-        if ($tags) {
-            return Cache::tags($tags)->rememberForever('count_'.$this->fileDefinition.$this->id, function () {
-                return $this->children()->count();
-            });
-        }
-
-        return $this->children()->count();
+        return (bool) $this->children_count;
     }
 
     public function clearCache()
