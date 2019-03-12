@@ -233,13 +233,13 @@ class TreeCatalogController
     {
         $treeName = $this->nameTree;
         $controller = $this->controller;
-        $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
+        $perPage = Session::get('table_builder.' . $treeName . '.node.per_page', 20);
         $current = $this->model::findOrFail(request('node', 1));
 
         $children = $current->children();
 
         //filter children by action check which can return array of id
-        $actions = config('builder.'.$treeName.'.actions.show');
+        $actions = config('builder.' . $treeName . '.actions.show');
 
         if ($actions && $actions['check']() !== true && is_array($actions['check']())) {
             $arrIdsShow = $actions['check']();
