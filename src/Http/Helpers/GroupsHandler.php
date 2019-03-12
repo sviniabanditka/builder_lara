@@ -2,9 +2,9 @@
 
 namespace Vis\Builder\Helpers;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\View;
 use Vis\Builder\Handlers\CustomHandler;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
  * Class GroupsHandler.
@@ -14,6 +14,7 @@ class GroupsHandler extends CustomHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return \Illuminate\Contracts\View\View|void
      */
     public function onGetListValue($formField, array &$row)
@@ -26,6 +27,7 @@ class GroupsHandler extends CustomHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return \Illuminate\Contracts\View\View|void
      */
     public function onGetEditInput($formField, array &$row)
@@ -45,6 +47,7 @@ class GroupsHandler extends CustomHandler
 
     /**
      * @param array $row
+     *
      * @return \Illuminate\Contracts\View\View
      */
     private function generatePermissions(array &$row)
@@ -110,6 +113,7 @@ class GroupsHandler extends CustomHandler
 
     /**
      * @param int $id
+     *
      * @return array
      */
     private function getPermissionsThis($id)
@@ -129,6 +133,7 @@ class GroupsHandler extends CustomHandler
     /**
      * @param $field
      * @param $db
+     *
      * @return bool
      */
     public function onAddSelectField($field, $db)
@@ -160,6 +165,7 @@ class GroupsHandler extends CustomHandler
 
     /**
      * @param array $value
+     *
      * @return int
      */
     public function onInsertRowData(array &$value)

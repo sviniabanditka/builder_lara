@@ -17,7 +17,7 @@ class TimestampField extends AbstractField
     {
         $table = $this->definition['db']['table'];
         if ($this->getAttribute('is_range')) {
-            if (! isset($value['from']) && ! isset($value['to'])) {
+            if (!isset($value['from']) && !isset($value['to'])) {
                 return;
             }
 
@@ -40,11 +40,12 @@ class TimestampField extends AbstractField
 
     /**
      * @param $value
+     *
      * @return string|void
      */
     public function prepareQueryValue($value)
     {
-        if (! $value) {
+        if (!$value) {
             if ($this->getAttribute('is_null')) {
                 return;
             }
@@ -55,6 +56,7 @@ class TimestampField extends AbstractField
 
     /**
      * @param $date
+     *
      * @return false|int
      */
     private function getTimestamp($date)
@@ -64,6 +66,7 @@ class TimestampField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|false|string
      */
     public function getListValue($row)
@@ -75,7 +78,7 @@ class TimestampField extends AbstractField
             }
         }
 
-        if (! $this->getValue($row)) {
+        if (!$this->getValue($row)) {
             return '';
         }
 
@@ -84,8 +87,10 @@ class TimestampField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -109,12 +114,13 @@ class TimestampField extends AbstractField
     }
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return '';
         }
 
@@ -134,8 +140,9 @@ class TimestampField extends AbstractField
     }
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     private function getFilterRangeInput()
     {

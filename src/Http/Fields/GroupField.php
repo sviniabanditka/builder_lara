@@ -127,7 +127,7 @@ class GroupField extends AbstractField
 
     public function onSelectValue(&$db)
     {
-        if (! $this->ifUseTable()) {
+        if (!$this->ifUseTable()) {
             return parent::onSelectValue($db);
         }
     }

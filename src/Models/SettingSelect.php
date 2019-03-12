@@ -10,7 +10,7 @@ class SettingSelect extends Eloquent
 
     //Некоторые правила валидиции
     public static $rules = [
-        'value' => 'required',
+        'value'      => 'required',
         'id_setting' => 'required|numeric',
     ];
 

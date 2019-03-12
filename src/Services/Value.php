@@ -16,8 +16,8 @@ class Value
     public function ranges() : array
     {
         return [
-            30 => '30 Days',
-            60 => '60 Days',
+            30  => '30 Days',
+            60  => '60 Days',
             365 => '365 Days',
         ];
     }
@@ -66,7 +66,7 @@ class Value
     protected function returnValue($current, $previous) : array
     {
         return [
-            'current' => round($current, 2),
+            'current'    => round($current, 2),
             'difference' => $this->getDifference($current, $previous),
         ];
     }

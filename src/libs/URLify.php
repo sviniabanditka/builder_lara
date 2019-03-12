@@ -183,7 +183,7 @@ class URLify
      */
     public static function add_chars($map)
     {
-        if (! is_array($map)) {
+        if (!is_array($map)) {
             throw new \RuntimeException('$map must be an associative array.');
         }
         self::$maps[] = $map;

@@ -2,12 +2,12 @@
 
 namespace Vis\Builder;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Vis\Builder\Helpers\Traits\Rememberable;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Vis\Builder\Helpers\Traits\Rememberable;
 
 class Setting extends Model
 {
@@ -15,7 +15,7 @@ class Setting extends Model
 
     public static $rules = [
         'title' => 'required',
-        'slug' => 'required|max:256|unique:settings,slug,',
+        'slug'  => 'required|max:256|unique:settings,slug,',
     ];
 
     protected $fillable = [
@@ -39,7 +39,7 @@ class Setting extends Model
         $setting = self::where('slug', 'like', $slug)->first();
         $postfix = getLocalePostfix();
 
-        if (! $setting && $default) {
+        if (!$setting && $default) {
             $defaultColumns = [
                 'type'       => 0,
                 'title'      => $slug,
@@ -76,7 +76,7 @@ class Setting extends Model
 
     public static function getItem($ids)
     {
-        if (! $ids) {
+        if (!$ids) {
             return [];
         }
 
@@ -267,7 +267,7 @@ class Setting extends Model
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
+                'status'          => 'error',
                 'errors_messages' => $validator->messages(),
             ]);
         }

@@ -2,8 +2,8 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class SelectField.
@@ -33,12 +33,13 @@ class SelectField extends AbstractField
     // end onSearchFilter
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return '';
         }
 
@@ -58,8 +59,10 @@ class SelectField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -91,6 +94,7 @@ class SelectField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool
      */
     public function getListValue($row)
@@ -122,6 +126,7 @@ class SelectField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return string
      */
     public function getRowColor($row)

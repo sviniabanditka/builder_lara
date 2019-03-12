@@ -17,6 +17,7 @@ class WysiwygField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)
@@ -33,8 +34,10 @@ class WysiwygField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -64,8 +67,10 @@ class WysiwygField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getTabbedEditInput($row = [])
     {

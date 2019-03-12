@@ -3,14 +3,14 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Vis\Builder\Facades\Jarboe as JarboeFacade;
+use Illuminate\Support\Facades\View;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Vis\Builder\Facades\Jarboe as JarboeFacade;
 
 /**
  * Class TableAdminController.
@@ -31,6 +31,7 @@ class TableAdminController extends Controller
 
     /**
      * @param $nameTree
+     *
      * @return mixed
      */
     public function showTreeOther($nameTree)
@@ -39,7 +40,7 @@ class TableAdminController extends Controller
         $nameTree = $nameTree.'_tree';
 
         $option = [
-            'url' => $this->urlAdmin.$nameTree,
+            'url'      => $this->urlAdmin.$nameTree,
             'def_name' => $nameTree.'/node',
         ];
 
@@ -60,6 +61,7 @@ class TableAdminController extends Controller
 
     /**
      * @param $nameTree
+     *
      * @return mixed
      */
     public function handleTreeOther($nameTree)
@@ -68,7 +70,7 @@ class TableAdminController extends Controller
         $nameTree = $nameTree.'_tree';
 
         $option = [
-            'url' => $this->urlAdmin.$nameTree,
+            'url'      => $this->urlAdmin.$nameTree,
             'def_name' => $nameTree.'/node',
         ];
 
@@ -79,6 +81,7 @@ class TableAdminController extends Controller
 
     /**
      * @param string $nameTree
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showTreeAll($nameTree)
@@ -105,6 +108,7 @@ class TableAdminController extends Controller
 
     /**
      * @param string $page
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showPage($page)
@@ -121,6 +125,7 @@ class TableAdminController extends Controller
 
     /**
      * @param $page
+     *
      * @return mixed
      */
     public function showPagePost($page)
@@ -135,6 +140,7 @@ class TableAdminController extends Controller
 
     /**
      * @param $page
+     *
      * @return mixed
      */
     public function handlePage($page)
@@ -157,6 +163,7 @@ class TableAdminController extends Controller
 
     /**
      * @param string $slug
+     *
      * @return mixed
      */
     public function showPageUrlTree($slug = '')
@@ -188,7 +195,7 @@ class TableAdminController extends Controller
         }
 
         //check is active
-        if (! $node->is_active && request('show') != 1) {
+        if (!$node->is_active && request('show') != 1) {
             App::abort(404);
         }
 
@@ -197,7 +204,7 @@ class TableAdminController extends Controller
         }
 
         //check isset template
-        if (! isset($templates[$node->template])) {
+        if (!isset($templates[$node->template])) {
             App::abort(404);
         }
 
@@ -218,8 +225,9 @@ class TableAdminController extends Controller
     }
 
     /**
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function doChangeRelationField()
     {

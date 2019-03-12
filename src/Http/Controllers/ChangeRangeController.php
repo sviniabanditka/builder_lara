@@ -10,7 +10,7 @@ class ChangeRangeController extends Controller
     {
         $model = request('model');
 
-        $modelCard = new $model;
+        $modelCard = new $model();
 
         return $modelCard->calculate();
     }
@@ -19,7 +19,7 @@ class ChangeRangeController extends Controller
     {
         $model = request('model');
 
-        $modelCard = new $model;
+        $modelCard = new $model();
 
         return $modelCard->calculate();
     }

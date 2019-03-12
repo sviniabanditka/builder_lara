@@ -13,6 +13,7 @@ class SlugHandler extends CustomHandler
     /**
      * @param array $response
      * @param $model
+     *
      * @return string
      */
     protected function generateUniqueSlug(array $response, $model)

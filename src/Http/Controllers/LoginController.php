@@ -2,12 +2,12 @@
 
 namespace Vis\Builder;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
  * Class LoginController.
@@ -45,12 +45,12 @@ class LoginController extends Controller
             try {
                 $user = Sentinel::authenticate(
                     [
-                        'email' => request('email'),
+                        'email'    => request('email'),
                         'password' => request('password'),
                     ]
                 );
 
-                if (! $user) {
+                if (!$user) {
                     Session::flash($this->sessionError, 'Пользователь не найден');
 
                     return Redirect::route($this->routeLogin);
@@ -94,13 +94,13 @@ class LoginController extends Controller
     private function validation()
     {
         $rules = [
-            'email' => 'required|email|max:50',
+            'email'    => 'required|email|max:50',
             'password' => 'required|min:6|max:20',
         ];
 
         $validator = Validator::make(Input::all(), $rules);
 
-        return ! $validator->fails();
+        return !$validator->fails();
     }
 
     private function clearSessionsAdmin()

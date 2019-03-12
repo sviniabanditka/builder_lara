@@ -8,7 +8,7 @@ return [
         ],
         'pagination' => [
             'per_page' => 20,
-            'uri' => '/admin/tableName',
+            'uri'      => '/admin/tableName',
         ],
     ],
     'cache' => [
@@ -16,7 +16,7 @@ return [
     ],
     'options' => [
         'caption' => 'modelName',
-        'model' => 'App\Models\modelName',
+        'model'   => 'App\Models\modelName',
     ],
     'position' => [
         'tabs' => [
@@ -30,29 +30,29 @@ return [
     ],
     'fields' => [
         'id' => [
-            'caption' => '#',
-            'type' => 'readonly',
-            'filter' => 'integer',
-            'class' => 'col-id',
-            'width' => '100px',
-            'hide' => true,
+            'caption'    => '#',
+            'type'       => 'readonly',
+            'filter'     => 'integer',
+            'class'      => 'col-id',
+            'width'      => '100px',
+            'hide'       => true,
             'is_sorting' => false,
         ],
 
         'fieldsDescription',
 
         'created_at' => [
-            'caption' => 'Дата создания',
-            'type' => 'datetime',
-            'is_sorting' => true,
-            'months' => 2,
+            'caption'     => 'Дата создания',
+            'type'        => 'datetime',
+            'is_sorting'  => true,
+            'months'      => 2,
             'hide'        => true,
         ],
         'updated_at' => [
-            'caption' => 'Дата обновления',
-            'type' => 'readonly',
-            'hide_list' => true,
-            'is_sorting' => true,
+            'caption'     => 'Дата обновления',
+            'type'        => 'readonly',
+            'hide_list'   => true,
+            'is_sorting'  => true,
             'hide'        => true,
         ],
     ],
@@ -62,38 +62,38 @@ return [
 
         'insert' => [
             'caption' => 'Добавить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
 
         'update' => [
             'caption' => 'Редактировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'preview' => [
             'caption' => 'Предпросмотр',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'clone' => [
             'caption' => 'Клонировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'revisions' => [
             'caption' => 'Версии',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'delete' => [
             'caption' => 'Удалить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],

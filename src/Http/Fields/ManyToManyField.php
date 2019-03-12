@@ -107,6 +107,7 @@ class ManyToManyField extends AbstractField
     /**
      * @param $row
      * @param string $postfix
+     *
      * @return bool|mixed
      */
     public function getValue($row, $postfix = '')
@@ -132,6 +133,7 @@ class ManyToManyField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool|string
      */
     public function getListValue($row)
@@ -148,8 +150,10 @@ class ManyToManyField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {
@@ -193,8 +197,10 @@ class ManyToManyField extends AbstractField
 
     /**
      * @param $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     private function getEditInputSelectWithAjaxSearch($row)
     {
@@ -225,8 +231,10 @@ class ManyToManyField extends AbstractField
 
     /**
      * @param $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     private function getEditInputWithExtra($row)
     {
@@ -248,6 +256,7 @@ class ManyToManyField extends AbstractField
     /**
      * @param $array
      * @param $segmentCount
+     *
      * @return array
      */
     private function doDivideOnParts($array, $segmentCount)
@@ -266,6 +275,7 @@ class ManyToManyField extends AbstractField
     /**
      * @param $row
      * @param bool $isGetAll
+     *
      * @return array|\Illuminate\Database\Query\Builder
      */
     protected function getRelatedExternalFieldOptions($row, $isGetAll = false)
@@ -333,6 +343,7 @@ class ManyToManyField extends AbstractField
 
     /**
      * @param bool $isGetAll
+     *
      * @return array|\Illuminate\Database\Query\Builder
      */
     protected function getAllExternalFieldOptions($isGetAll = false)
@@ -344,7 +355,7 @@ class ManyToManyField extends AbstractField
 
         $options = DB::table($externalTable);
 
-        if (! $isGetAll) {
+        if (!$isGetAll) {
             $options->select($externalForeignKey);
 
             if ($addFieldQuery) {
@@ -394,6 +405,7 @@ class ManyToManyField extends AbstractField
      * @param $query
      * @param $limit
      * @param $page
+     *
      * @return array
      */
     public function getAjaxSearchResult($query, $limit, $page)
@@ -430,7 +442,7 @@ class ManyToManyField extends AbstractField
 
         return [
             'results' => $res,
-            'more'    => $res && ! empty($res),
+            'more'    => $res && !empty($res),
             'message' => '',
         ];
     }

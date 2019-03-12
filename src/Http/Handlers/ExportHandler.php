@@ -24,6 +24,7 @@ class ExportHandler
 
     /**
      * ExportHandler constructor.
+     *
      * @param array $exportDefinition
      * @param $controller
      */
@@ -40,7 +41,7 @@ class ExportHandler
     public function fetch()
     {
         $def = $this->def;
-        if (! $this->def || ! $this->def['check']()) {
+        if (!$this->def || !$this->def['check']()) {
             return '';
         }
 
@@ -119,6 +120,7 @@ class ExportHandler
     /**
      * @param $field
      * @param $collection
+     *
      * @return string
      */
     private function getValueField($field, $collection)
@@ -138,6 +140,7 @@ class ExportHandler
 
     /**
      * @param $field
+     *
      * @return bool
      */
     private function checkManyToMany($field)
@@ -149,6 +152,7 @@ class ExportHandler
     /**
      * @param $field
      * @param $id
+     *
      * @return string
      */
     private function getValueManyToMantField($field, $id)
@@ -188,7 +192,7 @@ class ExportHandler
             : $table.'.created_at';
 
         return [
-            'field' => $field,
+            'field'  => $field,
             'values' => [
                 $from, $to,
             ],
@@ -198,6 +202,7 @@ class ExportHandler
     /**
      * @param $ident
      * @param bool $default
+     *
      * @return bool|mixed
      */
     private function getAttribute($ident, $default = false)

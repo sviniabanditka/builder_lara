@@ -2,30 +2,31 @@
 
 namespace Vis\Builder;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Closure;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Session;
 
 class AuthenticateFrontend
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $guard
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param string|null              $guard
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         try {
-            if (! Sentinel::check()) {
+            if (!Sentinel::check()) {
                 if (Request::ajax()) {
                     $data = [
-                        'status' => 'error',
-                        'code' => '401',
+                        'status'  => 'error',
+                        'code'    => '401',
                         'message' => 'Unauthorized',
                     ];
 

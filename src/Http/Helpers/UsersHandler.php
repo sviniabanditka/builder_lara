@@ -2,11 +2,11 @@
 
 namespace Vis\Builder\Helpers;
 
+use Cartalyst\Sentinel\Laravel\Facades\Activation;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Vis\Builder\Handlers\CustomHandler;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Cartalyst\Sentinel\Laravel\Facades\Activation;
 
 /**
  * Class UsersHandler.
@@ -16,6 +16,7 @@ class UsersHandler extends CustomHandler
     /**
      * @param $formField
      * @param array $row
+     *
      * @return \Illuminate\Contracts\View\View|void
      */
     public function onGetListValue($formField, array &$row)
@@ -34,6 +35,7 @@ class UsersHandler extends CustomHandler
     /**
      * @param $formField
      * @param $row
+     *
      * @return bool
      */
     public function onAddSelectField($formField, $row)
@@ -47,12 +49,13 @@ class UsersHandler extends CustomHandler
      * @param $formField
      * @param array $row
      * @param $postfix
+     *
      * @return int|void
      */
     public function onGetValue($formField, array &$row, &$postfix)
     {
         if ($formField->getFieldName() == 'activated') {
-            if (! isset($row['id'])) {
+            if (!isset($row['id'])) {
                 return 0;
             }
 
@@ -92,6 +95,7 @@ class UsersHandler extends CustomHandler
 
     /**
      * @param array $value
+     *
      * @return int
      */
     public function onInsertRowData(array &$value)

@@ -2,9 +2,9 @@
 
 namespace Vis\Builder\Handlers;
 
-use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\Session;
 use Vis\Builder\Helpers\AnnotationHelper;
+use Vis\Builder\JarboeController;
 
 /**
  * Class ViewHandler.
@@ -30,6 +30,7 @@ class ViewHandler
 
     /**
      * ViewHandler constructor.
+     *
      * @param JarboeController $controller
      */
     public function __construct(JarboeController $controller)
@@ -42,20 +43,22 @@ class ViewHandler
 
     /**
      * @param $id
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function showEditFormPage($id)
     {
         if ($id === false) {
-            if (! $this->controller->actions->isAllowed('insert')) {
+            if (!$this->controller->actions->isAllowed('insert')) {
                 throw new \RuntimeException('Insert action is not permitted');
             }
         } else {
-            if (! $this->controller->actions->isAllowed('update')) {
+            if (!$this->controller->actions->isAllowed('update')) {
                 throw new \RuntimeException('Update action is not permitted');
             }
-            if (! $this->controller->isAllowedID($id)) {
+            if (!$this->controller->isAllowedID($id)) {
                 throw new \RuntimeException('Not allowed to edit row #'.$id);
             }
         }
@@ -114,7 +117,7 @@ class ViewHandler
             }
         }
 
-        if (! $table->rows) {
+        if (!$table->rows) {
             $table->rows = $this->controller->query->getRows();
         }
 
@@ -134,6 +137,7 @@ class ViewHandler
 
     /**
      * @param $def
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
      */
     private function getViewFilter($def)
@@ -149,8 +153,9 @@ class ViewHandler
     }
 
     /**
-     * @return array
      * @throws \Throwable
+     *
+     * @return array
      */
     public function showHtmlForeignDefinition()
     {
@@ -187,8 +192,9 @@ class ViewHandler
     }
 
     /**
-     * @return array
      * @throws \Throwable
+     *
+     * @return array
      */
     public function deleteForeignDefinition()
     {
@@ -211,7 +217,7 @@ class ViewHandler
 
         $params = (array) json_decode(request('paramsJson'));
 
-        if (! isset($params['sortable'])) {
+        if (!isset($params['sortable'])) {
             throw new \RuntimeException('Не определено поле для сортировки');
         }
         $idsPositionUpdate = (array) json_decode(request('idsPosition'));
@@ -232,8 +238,10 @@ class ViewHandler
     /**
      * @param bool $id
      * @param bool $isTree
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function showEditForm($id = false, $isTree = false)
     {
@@ -257,8 +265,10 @@ class ViewHandler
     /**
      * @param bool $id
      * @param bool $isTree
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function showRevisionForm($id = false, $isTree = false)
     {
@@ -277,8 +287,10 @@ class ViewHandler
     /**
      * @param bool $id
      * @param bool $isTree
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function showViewsStatistic($id = false, $isTree = false)
     {
@@ -295,8 +307,10 @@ class ViewHandler
 
     /**
      * @param $data
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getRowHtml($data)
     {
@@ -313,8 +327,10 @@ class ViewHandler
 
     /**
      * @param $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function fetchActions($row)
     {

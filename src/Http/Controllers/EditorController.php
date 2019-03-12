@@ -27,7 +27,7 @@ class EditorController extends Controller
 
         if ($validator->fails()) {
             return Response::json([
-                'status' => 'error',
+                'status'          => 'error',
                 'errors_messages' => $validator->messages(),
             ]);
         }

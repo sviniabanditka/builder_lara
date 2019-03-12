@@ -8,16 +8,16 @@ return [
         ],
         'pagination' => [
             'per_page' => 20,
-            'uri' => '/admin/news',
+            'uri'      => '/admin/news',
         ],
     ],
     'cache' => [
         'tags' => ['news'],
     ],
     'options' => [
-        'caption' => 'Новости',
+        'caption'     => 'Новости',
         'is_sortable' => true,
-        'model' => 'App\Models\News',
+        'model'       => 'App\Models\News',
     ],
     'position' => [
         'tabs' => [
@@ -41,66 +41,66 @@ return [
     ],
     'fields' => [
         'id' => [
-            'caption' => '#',
-            'type' => 'readonly',
-            'class' => 'col-id',
-            'width' => '1%',
-            'hide' => true,
+            'caption'    => '#',
+            'type'       => 'readonly',
+            'class'      => 'col-id',
+            'width'      => '1%',
+            'hide'       => true,
             'is_sorting' => false,
         ],
 
         'picture' => [
-            'caption' => 'Изображение',
-            'type' => 'image',
+            'caption'      => 'Изображение',
+            'type'         => 'image',
             'storage_type' => 'image', // image|tag|gallery
-            'img_height' => '50px',
-            'is_upload' => true,
-            'is_null' => true,
-            'is_remote' => false,
-            'hide_list' => true,
-            'field' => 'string',
+            'img_height'   => '50px',
+            'is_upload'    => true,
+            'is_null'      => true,
+            'is_remote'    => false,
+            'hide_list'    => true,
+            'field'        => 'string',
 
         ],
         'title' => [
-            'caption' => 'Название',
-            'type' => 'text',
-            'filter' => 'text',
+            'caption'    => 'Название',
+            'type'       => 'text',
+            'filter'     => 'text',
             'is_sorting' => true,
-            'field' => 'string',
+            'field'      => 'string',
         ],
 
         'short_description' => [
-            'caption' => 'Краткое описание',
-            'type'    => 'wysiwyg',
-            'wysiwyg' => 'redactor',
+            'caption'   => 'Краткое описание',
+            'type'      => 'wysiwyg',
+            'wysiwyg'   => 'redactor',
             'hide_list' => true,
-            'field' => 'text',
+            'field'     => 'text',
         ],
         'description' => [
-            'caption' => 'Полное описание',
-            'type'    => 'wysiwyg',
+            'caption'   => 'Полное описание',
+            'type'      => 'wysiwyg',
             'hide_list' => true,
-            'field' => 'text',
+            'field'     => 'text',
         ],
 
         'created_at' => [
-            'caption' => 'Дата создания',
-            'type' => 'datetime',
+            'caption'    => 'Дата создания',
+            'type'       => 'datetime',
             'is_sorting' => true,
-            'months' => 2,
-            'field' => 'datetime',
+            'months'     => 2,
+            'field'      => 'datetime',
         ],
         'updated_at' => [
-            'caption' => 'Дата обновления',
-            'type' => 'readonly',
-            'hide_list' => true,
-            'is_sorting' => true,
+            'caption'     => 'Дата обновления',
+            'type'        => 'readonly',
+            'hide_list'   => true,
+            'is_sorting'  => true,
             'hide'        => true,
-            'field' => 'datetime',
+            'field'       => 'datetime',
         ],
         'is_active' => [
             'caption' => 'Статья активна',
-            'type' => 'checkbox',
+            'type'    => 'checkbox',
             'options' => [
                 1 => 'Активные',
                 0 => 'He aктивные',
@@ -109,27 +109,27 @@ return [
         ],
 
         'seo_title' => [
-            'caption' => 'Seo: title',
-            'type' => 'text',
-            'filter' => 'text',
+            'caption'   => 'Seo: title',
+            'type'      => 'text',
+            'filter'    => 'text',
             'hide_list' => true,
-            'field' => 'string',
+            'field'     => 'string',
 
         ],
         'seo_description' => [
-            'caption' => 'Seo: description',
-            'type' => 'text',
-            'filter' => 'text',
+            'caption'   => 'Seo: description',
+            'type'      => 'text',
+            'filter'    => 'text',
             'hide_list' => true,
-            'field' => 'text',
+            'field'     => 'text',
 
         ],
         'seo_keywords' => [
-            'caption' => 'Seo: keywords',
-            'type' => 'text',
-            'filter' => 'text',
+            'caption'   => 'Seo: keywords',
+            'type'      => 'text',
+            'filter'    => 'text',
             'hide_list' => true,
-            'field' => 'string',
+            'field'     => 'string',
         ],
     ],
     'filters' => [
@@ -140,37 +140,37 @@ return [
          ),*/
         'insert' => [
             'caption' => 'Добавить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'preview' => [
             'caption' => 'Предпросмотр',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'clone' => [
             'caption' => 'Клонировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'update' => [
             'caption' => 'Редактировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'revisions' => [
             'caption' => 'Версии',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'delete' => [
             'caption' => 'Удалить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],

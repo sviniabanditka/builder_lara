@@ -21,6 +21,7 @@ class DefinitionField extends AbstractField
 
     /**
      * @param $row
+     *
      * @return bool
      */
     public function getListValue($row)
@@ -42,7 +43,8 @@ class DefinitionField extends AbstractField
 
     /**
      * @param string $ident
-     * @param bool $default
+     * @param bool   $default
+     *
      * @return bool
      */
     public function getAttribute($ident, $default = false)
@@ -56,8 +58,10 @@ class DefinitionField extends AbstractField
 
     /**
      * @param array $row
-     * @return string
+     *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function getEditInput($row = [])
     {

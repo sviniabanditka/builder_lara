@@ -11,9 +11,10 @@ class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $guard
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param string|null              $guard
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -32,13 +33,13 @@ class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase
                 $hideDefaultLocale
                     = app('laravellocalization')->hideDefaultLocaleInURL();
                 $redirection = false;
-                if (! empty($locales[$localeCode])) {
+                if (!empty($locales[$localeCode])) {
                     if ($localeCode === $defaultLocale && $hideDefaultLocale) {
                         $redirection
                             = app('laravellocalization')->getNonLocalizedURL();
                     }
                 } elseif ($currentLocale !== $defaultLocale
-                    || ! $hideDefaultLocale
+                    || !$hideDefaultLocale
                 ) {
                     // If the current url does not contain any locale
                     // The system redirect the user to the very same url "localized"

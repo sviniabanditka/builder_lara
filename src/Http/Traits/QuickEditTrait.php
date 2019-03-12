@@ -2,8 +2,8 @@
 
 namespace Vis\Builder\Helpers\Traits;
 
-use Illuminate\Support\Facades\View;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\View;
 
 trait QuickEditTrait
 {

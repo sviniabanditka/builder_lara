@@ -2,8 +2,8 @@
 
 namespace Vis\Builder;
 
-use Vis\Builder\Helpers\URLify;
 use Illuminate\Support\Facades\Config;
+use Vis\Builder\Helpers\URLify;
 
 /**
  * Class Jarboe.
@@ -29,6 +29,7 @@ class Jarboe
 
     /**
      * @param $options
+     *
      * @return mixed
      */
     public function table($options)
@@ -40,6 +41,7 @@ class Jarboe
 
     /**
      * @param string $string
+     *
      * @return string string
      */
     public function urlify($string)
@@ -49,14 +51,15 @@ class Jarboe
 
     /**
      * @param string $model
-     * @param array $options
+     * @param array  $options
      * @param string $nameTree
+     *
      * @return TreeCatalogController
      */
     public function tree(
         $model = 'Vis\Builder\Tree',
         $options = [
-            'url' => '/admin/tree',
+            'url'      => '/admin/tree',
             'def_name' => 'tree/node',
         ],
         $nameTree = 'tree'

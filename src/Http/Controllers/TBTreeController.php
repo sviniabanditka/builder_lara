@@ -34,8 +34,8 @@ class TBTreeController extends \Controller
 
         if ($template['type'] == 'table') {
             $options = [
-                'url'      => \URL::current(),
-                'def_name' => 'tree.'.$template['definition'],
+                'url'        => \URL::current(),
+                'def_name'   => 'tree.'.$template['definition'],
                 'additional' => [
                     'node' => $idNode,
                 ],
@@ -63,8 +63,8 @@ class TBTreeController extends \Controller
         }
 
         $options = [
-            'url'      => \URL::current(),
-            'def_name' => 'tree.'.$template['node_definition'],
+            'url'        => \URL::current(),
+            'def_name'   => 'tree.'.$template['node_definition'],
             'additional' => [
                 'node' => $idNode,
             ],
@@ -75,13 +75,14 @@ class TBTreeController extends \Controller
 
         return Response::json([
             'status' => true,
-            'html' => $html,
+            'html'   => $html,
         ]);
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function doEditNode()
     {
@@ -95,8 +96,8 @@ class TBTreeController extends \Controller
         }
 
         $options = [
-            'url'      => \URL::current(),
-            'def_name' => 'tree.'.$template['definition'],
+            'url'        => \URL::current(),
+            'def_name'   => 'tree.'.$template['definition'],
             'additional' => [
                 'node' => $idNode,
             ],
@@ -144,8 +145,8 @@ class TBTreeController extends \Controller
 
         if ($template['type'] == 'table') {
             $options = [
-                'url'      => \URL::current(),
-                'def_name' => 'tree.'.$template['definition'],
+                'url'        => \URL::current(),
+                'def_name'   => 'tree.'.$template['definition'],
                 'additional' => [
                     'node' => $idNode,
                 ],
@@ -186,8 +187,8 @@ class TBTreeController extends \Controller
         $item = Tree::find($item->id);
 
         $data = [
-            'status' => true,
-            'item' => $item,
+            'status'    => true,
+            'item'      => $item,
             'parent_id' => $root->id,
         ];
 

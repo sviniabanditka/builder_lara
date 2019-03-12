@@ -1,10 +1,11 @@
 <?php
 
-if (! function_exists('setting')) {
+if (!function_exists('setting')) {
     /**
      * @param string $value
      * @param string $default
-     * @param bool $useLocale
+     * @param bool   $useLocale
+     *
      * @return mixed|string
      */
     function setting($value, $default = '', $useLocale = false)
@@ -13,10 +14,11 @@ if (! function_exists('setting')) {
     }
 }
 
-if (! function_exists('settingWithLang')) {
+if (!function_exists('settingWithLang')) {
     /**
      * @param string $value
      * @param string $default
+     *
      * @return mixed|string
      */
     function settingWithLang($value, $default = '')
@@ -25,7 +27,7 @@ if (! function_exists('settingWithLang')) {
     }
 }
 
-if (! function_exists('dr')) {
+if (!function_exists('dr')) {
     /**
      * @param $array
      */
@@ -36,7 +38,7 @@ if (! function_exists('dr')) {
     }
 }
 
-if (! function_exists('print_arr')) {
+if (!function_exists('print_arr')) {
     /**
      * @param $array
      */
@@ -48,9 +50,10 @@ if (! function_exists('print_arr')) {
     }
 }
 
-if (! function_exists('remove_bom')) {
+if (!function_exists('remove_bom')) {
     /**
      * @param $val
+     *
      * @return bool|string
      */
     function remove_bom($val)
@@ -63,10 +66,11 @@ if (! function_exists('remove_bom')) {
     }
 }
 
-if (! function_exists('glide')) {
+if (!function_exists('glide')) {
     /**
      * @param $source
      * @param array $options
+     *
      * @return mixed|string
      */
     function glide($source, $options = [])
@@ -85,9 +89,10 @@ if (! function_exists('glide')) {
     }
 }
 
-if (! function_exists('filesize_format')) {
+if (!function_exists('filesize_format')) {
     /**
      * @param $bytes
+     *
      * @return string
      */
     function filesize_format($bytes)
@@ -116,10 +121,10 @@ if (! function_exists('filesize_format')) {
  * @param array $attributes
  * @return false|string
  */
-if (! function_exists('geturl')) {
+if (!function_exists('geturl')) {
     function geturl($url, $locale = false, $attributes = [])
     {
-        if (! $locale) {
+        if (!$locale) {
             $locale = App::getLocale();
         }
 
@@ -131,7 +136,7 @@ if (! function_exists('geturl')) {
  * @param $phrase
  * @return mixed
  */
-if (! function_exists('__cms')) {
+if (!function_exists('__cms')) {
     function __cms($phrase)
     {
         $thisLang = Cookie::get('lang_admin');
@@ -147,12 +152,12 @@ if (! function_exists('__cms')) {
  *
  * @return string
  */
-if (! function_exists('getIp')) {
+if (!function_exists('getIp')) {
     function getIp()
     {
-        if (! empty($_SERVER['HTTP_CLIENT_IP'])) {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -168,10 +173,10 @@ if (! function_exists('getIp')) {
  * @param array $slugs
  * @return string
  */
-if (! function_exists('recurseMyTree')) {
+if (!function_exists('recurseMyTree')) {
     function recurseMyTree($tree, $node, &$slugs = [])
     {
-        if (! $node['parent_id']) {
+        if (!$node['parent_id']) {
             return $node['slug'];
         }
 
@@ -192,7 +197,7 @@ if (! function_exists('recurseMyTree')) {
  * @param  string
  * @return string
  */
-if (! function_exists('getWithLocalePostfix')) {
+if (!function_exists('getWithLocalePostfix')) {
     function getWithLocalePostfix($string)
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
@@ -201,10 +206,10 @@ if (! function_exists('getWithLocalePostfix')) {
     }
 }
 
-if (! function_exists('getLocalePostfix')) {
+if (!function_exists('getLocalePostfix')) {
     function getLocalePostfix($locale = null)
     {
-        if (! $locale) {
+        if (!$locale) {
             $locale = app()->getLocale();
         }
 

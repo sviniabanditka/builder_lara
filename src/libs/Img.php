@@ -16,7 +16,7 @@ class Img
 
     public function get($source, $options)
     {
-        if (! $source) {
+        if (!$source) {
             return;
         }
 

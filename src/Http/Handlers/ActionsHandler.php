@@ -2,8 +2,8 @@
 
 namespace Vis\Builder\Handlers;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class ActionsHandler.
@@ -21,6 +21,7 @@ class ActionsHandler
 
     /**
      * ActionsHandler constructor.
+     *
      * @param array $actionsDefinition
      * @param $controller
      */
@@ -34,6 +35,7 @@ class ActionsHandler
      * @param $type
      * @param array $row
      * @param array $buttonDefinition
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
      */
     public function fetch($type, $row = [], $buttonDefinition = [])
@@ -74,6 +76,7 @@ class ActionsHandler
     /**
      * @param $row
      * @param $button
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onCustomButton($row, $button)
@@ -107,6 +110,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onUpdateButton($row)
@@ -128,6 +132,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onRevisionsButton($row)
@@ -142,6 +147,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onСloneButton($row)
@@ -163,6 +169,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onViewStatisticButton($row)
@@ -177,6 +184,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onPreviewButton($row)
@@ -198,6 +206,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onConstructorButton($row)
@@ -217,6 +226,7 @@ class ActionsHandler
      * @param $action
      * @param $model
      * @param $id
+     *
      * @return mixed
      */
     private function getUrl($action, $model, $id)
@@ -233,6 +243,7 @@ class ActionsHandler
 
     /**
      * @param $row
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     private function onDeleteButton($row)

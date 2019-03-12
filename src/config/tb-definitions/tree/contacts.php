@@ -8,12 +8,12 @@ return [
         ],
         'pagination' => [
             'per_page' => 1,
-            'uri' => '/admin/tree',
+            'uri'      => '/admin/tree',
         ],
     ],
     'options' => [
         'caption' => '',
-        'model' => 'App\Models\Tree',
+        'model'   => 'App\Models\Tree',
     ],
     'position' => [
         'tabs' => [
@@ -36,16 +36,16 @@ return [
     ],
     'fields' => [
         'id' => [
-            'caption' => '#',
-            'type' => 'readonly',
-            'class' => 'col-id',
-            'width' => '1%',
-            'hide' => true,
+            'caption'    => '#',
+            'type'       => 'readonly',
+            'class'      => 'col-id',
+            'width'      => '1%',
+            'hide'       => true,
             'is_sorting' => true,
         ],
         'title' => [
             'caption' => 'Заголовок',
-            'type' => 'text',
+            'type'    => 'text',
         ],
         'description' => [
             'caption' => 'Текст',
@@ -53,7 +53,7 @@ return [
         ],
         'is_show_in_menu' => [
             'caption' => 'Показывать в меню',
-            'type' => 'checkbox',
+            'type'    => 'checkbox',
             'options' => [
                 1 => 'Да',
                 0 => 'Нет',
@@ -62,30 +62,30 @@ return [
         ],
         'created_at' => [
             'caption' => 'Дата создания',
-            'type' => 'datetime',
-            'hide' => true,
+            'type'    => 'datetime',
+            'hide'    => true,
         ],
         'updated_at' => [
             'caption' => 'Дата обновления',
-            'type' => 'datetime',
-            'hide' => true,
+            'type'    => 'datetime',
+            'hide'    => true,
         ],
         'seo_title' => [
             'caption' => 'SEO title',
-            'type' => 'text',
+            'type'    => 'text',
         ],
         'seo_description' => [
             'caption' => 'SEO description',
-            'type' => 'textarea',
-            'rows' => '2',
+            'type'    => 'textarea',
+            'rows'    => '2',
         ],
         'seo_keywords' => [
             'caption' => 'SEO keywords',
-            'type' => 'text',
+            'type'    => 'text',
         ],
         'slug' => [
             'caption' => 'Url',
-            'type' => 'text',
+            'type'    => 'text',
         ],
     ],
 

@@ -8,12 +8,12 @@ return [
         ],
         'pagination' => [
             'per_page' => 1,
-            'uri' => '/admin/tree',
+            'uri'      => '/admin/tree',
         ],
     ],
     'options' => [
         'caption' => '',
-        'model' => 'App\Models\Tree',
+        'model'   => 'App\Models\Tree',
     ],
     'position' => [
         'tabs' => [
@@ -37,51 +37,51 @@ return [
     ],
     'fields' => [
         'id' => [
-            'caption' => '#',
-            'type' => 'readonly',
-            'class' => 'col-id',
-            'width' => '1%',
-            'hide' => true,
+            'caption'    => '#',
+            'type'       => 'readonly',
+            'class'      => 'col-id',
+            'width'      => '1%',
+            'hide'       => true,
             'is_sorting' => true,
         ],
         'title' => [
             'caption' => 'Заголовок',
-            'type' => 'text',
-            'field' => 'string',
+            'type'    => 'text',
+            'field'   => 'string',
         ],
 
         'picture' => [
-            'caption' => 'Изображение',
-            'type' => 'image',
+            'caption'      => 'Изображение',
+            'type'         => 'image',
             'storage_type' => 'image',
-            'img_height' => '150px',
-            'is_upload' => true,
-            'is_null' => true,
-            'is_remote' => false,
-            'limit_mb' => '2',
-            'field' => 'string',
+            'img_height'   => '150px',
+            'is_upload'    => true,
+            'is_null'      => true,
+            'is_remote'    => false,
+            'limit_mb'     => '2',
+            'field'        => 'string',
         ],
 
         'description' => [
             'caption' => 'Текст',
             'type'    => 'wysiwyg',
-            'field' => 'text',
+            'field'   => 'text',
         ],
         'created_at' => [
             'caption' => 'Дата создания',
-            'type' => 'datetime',
-            'hide' => true,
-            'field' => 'datetime',
+            'type'    => 'datetime',
+            'hide'    => true,
+            'field'   => 'datetime',
         ],
         'updated_at' => [
             'caption' => 'Дата обновления',
-            'type' => 'datetime',
-            'hide' => true,
-            'field' => 'datetime',
+            'type'    => 'datetime',
+            'hide'    => true,
+            'field'   => 'datetime',
         ],
         'is_show_in_menu' => [
             'caption' => 'Показывать в меню',
-            'type' => 'checkbox',
+            'type'    => 'checkbox',
             'options' => [
                 1 => 'Да',
                 0 => 'Нет',
@@ -90,7 +90,7 @@ return [
         ],
         'is_show_in_footer_menu' => [
             'caption' => 'Показывать в футере меню ',
-            'type' => 'checkbox',
+            'type'    => 'checkbox',
             'options' => [
                 1 => 'Да',
                 0 => 'Нет',
@@ -100,23 +100,23 @@ return [
 
         'seo_title' => [
             'caption' => 'SEO title',
-            'type' => 'text',
+            'type'    => 'text',
         ],
 
         'seo_description' => [
             'caption' => 'SEO description',
-            'type' => 'textarea',
-            'rows' => '2',
+            'type'    => 'textarea',
+            'rows'    => '2',
         ],
 
         'seo_keywords' => [
             'caption' => 'SEO keywords',
-            'type' => 'text',
+            'type'    => 'text',
         ],
 
         'slug' => [
             'caption' => 'Url',
-            'type' => 'text',
+            'type'    => 'text',
         ],
 
     ],
@@ -129,19 +129,19 @@ return [
         ],
         'insert' => [
             'caption' => 'Создать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'update' => [
             'caption' => 'Редактировать',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],
         'delete' => [
             'caption' => 'Удалить',
-            'check' => function () {
+            'check'   => function () {
                 return true;
             },
         ],

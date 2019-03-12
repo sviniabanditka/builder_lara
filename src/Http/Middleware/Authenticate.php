@@ -2,35 +2,36 @@
 
 namespace Vis\Builder;
 
-use Closure;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Response;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Closure;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $guard
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param string|null              $guard
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (! $this->checkIp($request)) {
+        if (!$this->checkIp($request)) {
             return redirect()->to('/');
         }
 
         try {
-            if (! Sentinel::check()) {
+            if (!Sentinel::check()) {
                 if (Request::ajax()) {
                     $data = [
-                        'status' => 'error',
-                        'code' => '401',
+                        'status'  => 'error',
+                        'code'    => '401',
                         'message' => 'Unauthorized',
                     ];
 
@@ -41,7 +42,7 @@ class Authenticate
             }
             //check access
             $user = Sentinel::getUser();
-            if (! $user->hasAccess(['admin.access'])) {
+            if (!$user->hasAccess(['admin.access'])) {
                 Session::flash('login_not_found', 'Нет прав на вход в админку');
                 Sentinel::logout();
 
