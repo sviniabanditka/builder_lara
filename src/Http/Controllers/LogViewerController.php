@@ -2,10 +2,10 @@
 
 namespace Vis\Builder;
 
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Crypt;
 use Vis\Builder\Libs\LaravelLogViewer;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Routing\Controller;
 
 class LogViewerController extends Controller
 {
