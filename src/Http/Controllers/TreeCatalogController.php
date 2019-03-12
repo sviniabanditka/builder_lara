@@ -210,7 +210,7 @@ class TreeCatalogController
 
         return \Jarboe::table([
             'url'      => url()->current(),
-            'def_name' => $this->nameTree . '.' . $template['node_definition'],
+            'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $idNode,
                 'current' => $current,
@@ -273,7 +273,7 @@ class TreeCatalogController
 
         $jarboeController = new JarboeController([
             'url'      => url()->current(),
-            'def_name' => $this->nameTree . '.' . $template['node_definition'],
+            'def_name' => $this->nameTree.'.'.$template['node_definition'],
             'additional' => [
                 'node'    => $nodeId,
                 'current' => $current,
@@ -318,8 +318,8 @@ class TreeCatalogController
 
     private function getTemplate($current)
     {
-        $templates = config('builder.' . $this->nameTree . '.templates');
-        $template = config('builder.' . $this->nameTree . '.default');
+        $templates = config('builder.'.$this->nameTree.'.templates');
+        $template = config('builder.'.$this->nameTree.'.default');
 
         if (isset($templates[$current->template])) {
             $template = $templates[$current->template];
