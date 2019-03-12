@@ -29,7 +29,13 @@
         </span>
 
   @else
-        <span class="dblclick-edit selectable element_title" onclick="TableBuilder.showFastEdit(this)">{{$el->value}}</span>
+        <span class="dblclick-edit selectable"
+              data-type="text"
+              data-pk="{{$el->id}}}"
+              data-url="/admin/handle/settings/fast-edit"
+              data-name="value"
+              data-title="Введите:"
+        >{{$el->value}}</span>
         <div class="fast-edit-buttons">
             <div class="input_field">
                 <div class="div_input">
