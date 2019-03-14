@@ -20,12 +20,12 @@
         $(".multiselect").multiselect();
 
         var depended = {
-            is: Boolean('{{ $depends_on }}'),
+            is: Boolean('{{ $depends_on && $depends_on_url }}'),
             fields: '{{ $depends_on }}',
             url:  '{{ $depends_on_url }}'
         };
 
-        if (depended.is && depended.url) {
+        if (depended.is) {
             var $field = $('[name="' + depended.fields + '"]')
 
             if ($field.length) {
