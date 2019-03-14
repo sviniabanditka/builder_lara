@@ -41,7 +41,7 @@ class ExportHandler
     public function fetch()
     {
         $def = $this->def;
-        if (!$this->def || !$this->def['check']()) {
+        if (! $this->def || ! $this->def['check']()) {
             return '';
         }
 

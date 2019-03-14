@@ -116,7 +116,7 @@ class ImportHandler
                 }
                 $updateData[$ident] = $row[$key];
             }
-            if (!$pkValue) {
+            if (! $pkValue) {
                 throw new JarboeValidationException('Ключ для обновления не установлен.');
             }
 
@@ -192,7 +192,7 @@ class ImportHandler
 
     private function doCheckPermission()
     {
-        if (!$this->def['check']()) {
+        if (! $this->def['check']()) {
             throw new \RuntimeException('Import not permitted');
         }
     }

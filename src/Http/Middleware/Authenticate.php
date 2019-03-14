@@ -22,12 +22,12 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->checkIp($request)) {
+        if (! $this->checkIp($request)) {
             return redirect()->to('/');
         }
 
         try {
-            if (!Sentinel::check()) {
+            if (! Sentinel::check()) {
                 if (Request::ajax()) {
                     $data = [
                         'status'  => 'error',
@@ -42,7 +42,7 @@ class Authenticate
             }
             //check access
             $user = Sentinel::getUser();
-            if (!$user->hasAccess(['admin.access'])) {
+            if (! $user->hasAccess(['admin.access'])) {
                 Session::flash('login_not_found', 'Нет прав на вход в админку');
                 Sentinel::logout();
 

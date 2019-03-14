@@ -62,7 +62,7 @@ class CreateConfig extends Command
         $fileModel = app_path().'/Models/'.$this->model.'.php';
 
         if (file_exists($fileModel)) {
-            if (!$this->confirm('Model '.$this->model.' is exist, replace model?')) {
+            if (! $this->confirm('Model '.$this->model.' is exist, replace model?')) {
                 return;
             }
         }
@@ -82,7 +82,7 @@ class CreateConfig extends Command
         $fileDefinition = config_path().'/builder/tb-definitions/'.$this->table.'.php';
 
         if (file_exists($fileDefinition)) {
-            if (!$this->confirm('Definition '.$this->table.' is exist, replace definition?')) {
+            if (! $this->confirm('Definition '.$this->table.' is exist, replace definition?')) {
                 return;
             }
         }

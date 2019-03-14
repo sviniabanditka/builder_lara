@@ -22,7 +22,7 @@ class AuthenticateFrontend
     public function handle($request, Closure $next)
     {
         try {
-            if (!Sentinel::check()) {
+            if (! Sentinel::check()) {
                 if (Request::ajax()) {
                     $data = [
                         'status'  => 'error',

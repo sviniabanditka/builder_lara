@@ -51,14 +51,14 @@ class ViewHandler
     public function showEditFormPage($id)
     {
         if ($id === false) {
-            if (!$this->controller->actions->isAllowed('insert')) {
+            if (! $this->controller->actions->isAllowed('insert')) {
                 throw new \RuntimeException('Insert action is not permitted');
             }
         } else {
-            if (!$this->controller->actions->isAllowed('update')) {
+            if (! $this->controller->actions->isAllowed('update')) {
                 throw new \RuntimeException('Update action is not permitted');
             }
-            if (!$this->controller->isAllowedID($id)) {
+            if (! $this->controller->isAllowedID($id)) {
                 throw new \RuntimeException('Not allowed to edit row #'.$id);
             }
         }
@@ -117,7 +117,7 @@ class ViewHandler
             }
         }
 
-        if (!$table->rows) {
+        if (! $table->rows) {
             $table->rows = $this->controller->query->getRows();
         }
 
@@ -217,7 +217,7 @@ class ViewHandler
 
         $params = (array) json_decode(request('paramsJson'));
 
-        if (!isset($params['sortable'])) {
+        if (! isset($params['sortable'])) {
             throw new \RuntimeException('Не определено поле для сортировки');
         }
         $idsPositionUpdate = (array) json_decode(request('idsPosition'));

@@ -55,7 +55,7 @@ class UsersHandler extends CustomHandler
     public function onGetValue($formField, array &$row, &$postfix)
     {
         if ($formField->getFieldName() == 'activated') {
-            if (!isset($row['id'])) {
+            if (! isset($row['id'])) {
                 return 0;
             }
 

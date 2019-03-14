@@ -69,7 +69,7 @@ View::composer(['admin::tree.partials.update',
     }
 
     //check in main file config
-    if (!isset($update) || !$update) {
+    if (! isset($update) || ! $update) {
         $pathToConfig = 'builder.'.$view->treeName.'.actions.'.$type;
         $update = config('builder.'.$view->treeName.'.actions.'.$type);
     }

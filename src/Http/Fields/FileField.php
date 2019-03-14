@@ -122,7 +122,7 @@ class FileField extends AbstractField
             }
         }
 
-        if (!$this->getValue($row)) {
+        if (! $this->getValue($row)) {
             return '';
         }
 

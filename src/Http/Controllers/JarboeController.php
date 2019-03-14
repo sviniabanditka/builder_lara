@@ -160,18 +160,18 @@ class JarboeController
 
     private function doPrepareDefinition()
     {
-        if (!isset($this->definition['export'])) {
+        if (! isset($this->definition['export'])) {
             $this->definition['export'] = [];
         }
-        if (!isset($this->definition['import'])) {
+        if (! isset($this->definition['import'])) {
             $this->definition['import'] = [];
         }
 
-        if (!isset($this->definition['actions'])) {
+        if (! isset($this->definition['actions'])) {
             $this->definition['actions'] = [];
         }
 
-        if (!isset($this->definition['db']['pagination']['uri'])) {
+        if (! isset($this->definition['db']['pagination']['uri'])) {
             $this->definition['db']['pagination']['uri'] = $this->options['url'];
         }
     }
@@ -444,13 +444,13 @@ class JarboeController
         $table = preg_replace('~\.~', '/', $table);
         $path = config_path().'/builder/tb-definitions/'.$table.'.php';
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             throw new \RuntimeException("Definition \n[{$path}]\n does not exist.");
         }
 
         $definitionThis = require $path;
 
-        if (!$definitionThis) {
+        if (! $definitionThis) {
             throw new \RuntimeException('Empty definition?');
         }
 

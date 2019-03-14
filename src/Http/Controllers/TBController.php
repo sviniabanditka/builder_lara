@@ -80,7 +80,7 @@ class TBController extends Controller
     {
         $message = $exception->getMessage();
 
-        if (!$message) {
+        if (! $message) {
             $message = '404 error';
         }
 

@@ -35,7 +35,7 @@ class ButtonsHandler
     {
         $buttons = $this->def;
 
-        if (!count($buttons)) {
+        if (! count($buttons)) {
             return;
         }
 
@@ -55,6 +55,6 @@ class ButtonsHandler
      */
     private function checkShowButton($button)
     {
-        return !$button || !$button['check']();
+        return ! $button || ! $button['check']();
     }
 }

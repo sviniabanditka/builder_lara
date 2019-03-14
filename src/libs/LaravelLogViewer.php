@@ -112,9 +112,9 @@ class LaravelLogViewer
 
         $pattern = '/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}([\+-]\d{4})?\].*/';
 
-        if (!self::$file) {
+        if (! self::$file) {
             $log_file = self::getFiles();
-            if (!count($log_file)) {
+            if (! count($log_file)) {
                 return [];
             }
             self::$file = $log_file[0];
@@ -128,7 +128,7 @@ class LaravelLogViewer
 
         preg_match_all($pattern, $file, $headings);
 
-        if (!is_array($headings)) {
+        if (! is_array($headings)) {
             return $log;
         }
 
@@ -143,7 +143,7 @@ class LaravelLogViewer
                 foreach (self::$log_levels as $level) {
                     if (strpos(strtolower($h[$i]), '.'.$level) || strpos(strtolower($h[$i]), $level.':')) {
                         preg_match('/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}([\+-]\d{4})?)\](?:.*?(\w+)\.|.*?)'.$level.': (.*?)( in .*?:[0-9]+)?$/i', $h[$i], $current);
-                        if (!isset($current[4])) {
+                        if (! isset($current[4])) {
                             continue;
                         }
 

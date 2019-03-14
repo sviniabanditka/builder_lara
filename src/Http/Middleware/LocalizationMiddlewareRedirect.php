@@ -33,13 +33,13 @@ class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase
                 $hideDefaultLocale
                     = app('laravellocalization')->hideDefaultLocaleInURL();
                 $redirection = false;
-                if (!empty($locales[$localeCode])) {
+                if (! empty($locales[$localeCode])) {
                     if ($localeCode === $defaultLocale && $hideDefaultLocale) {
                         $redirection
                             = app('laravellocalization')->getNonLocalizedURL();
                     }
                 } elseif ($currentLocale !== $defaultLocale
-                    || !$hideDefaultLocale
+                    || ! $hideDefaultLocale
                 ) {
                     // If the current url does not contain any locale
                     // The system redirect the user to the very same url "localized"

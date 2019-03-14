@@ -39,7 +39,7 @@ class Setting extends Model
         $setting = self::where('slug', 'like', $slug)->first();
         $postfix = getLocalePostfix();
 
-        if (!$setting && $default) {
+        if (! $setting && $default) {
             $defaultColumns = [
                 'type'       => 0,
                 'title'      => $slug,
@@ -76,7 +76,7 @@ class Setting extends Model
 
     public static function getItem($ids)
     {
-        if (!$ids) {
+        if (! $ids) {
             return [];
         }
 

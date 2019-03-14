@@ -50,7 +50,7 @@ class LoginController extends Controller
                     ]
                 );
 
-                if (!$user) {
+                if (! $user) {
                     Session::flash($this->sessionError, 'Пользователь не найден');
 
                     return Redirect::route($this->routeLogin);
@@ -100,7 +100,7 @@ class LoginController extends Controller
 
         $validator = Validator::make(Input::all(), $rules);
 
-        return !$validator->fails();
+        return ! $validator->fails();
     }
 
     private function clearSessionsAdmin()

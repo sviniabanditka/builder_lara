@@ -16,7 +16,7 @@ class DateField extends AbstractField
      */
     public function prepareQueryValue($value)
     {
-        if (!$value) {
+        if (! $value) {
             if ($this->getAttribute('is_null')) {
                 return;
             }
@@ -41,7 +41,7 @@ class DateField extends AbstractField
             }
         }
 
-        if (!$this->getValue($row)) {
+        if (! $this->getValue($row)) {
             return '';
         }
 
@@ -84,7 +84,7 @@ class DateField extends AbstractField
      */
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return '';
         }
 
