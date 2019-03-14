@@ -1,28 +1,27 @@
-
-   <select class="multiselect" multiple="multiple" name="{{$name}}[]" id="{{$name}}">
-        @if (isset($selected) && count($selected))
-            @foreach($selected as $id => $selectOption)
-                <option value="{{$id}}" selected>{{$selectOption}}</option>
-            @endforeach
-        @endif
-        @foreach ($options as $option)
-            @foreach ($option as $key => $title)
-              @if (!isset($selected[$key]))
-                <option value="{{$key}}">{{ trim($title) }}</option>
-             @endif
-            @endforeach
+<select class="multiselect" multiple="multiple" name="{{$name}}[]" id="{{$name}}">
+    @if (isset($selected) && count($selected))
+        @foreach($selected as $id => $selectOption)
+            <option value="{{$id}}" selected>{{$selectOption}}</option>
         @endforeach
-  </select>
-      
+    @endif
+    @foreach ($options as $option)
+        @foreach ($option as $key => $title)
+            @if (!isset($selected[$key]))
+                <option value="{{$key}}">{{ trim($title) }}</option>
+            @endif
+        @endforeach
+    @endforeach
+</select>
+
 <script type="text/javascript">
-    $(document).ready(function() {
-      //  $.localise('ui-multiselect', {language: 'ru', path: '/packages/vis/builder/js/multiselect_master/js/locale/'});
+    $(document).ready(function () {
+        //  $.localise('ui-multiselect', {language: 'ru', path: '/packages/vis/builder/js/multiselect_master/js/locale/'});
         $(".multiselect").multiselect();
 
         var depended = {
             is: Boolean('{{ $depends_on && $depends_on_url }}'),
             fields: '{{ $depends_on }}',
-            url:  '{{ $depends_on_url }}'
+            url: '{{ $depends_on_url }}'
         };
 
         if (depended.is) {
@@ -31,7 +30,8 @@
 
             if ($field.length) {
                 $field.on('change', function (e) {
-                    var $that = $(this)
+                    var $that = $(this),
+                        $select = $('#{{ $name }}')
 
                     $.ajax({
                         url: depended.url,
@@ -44,23 +44,23 @@
                                 return console.log('Неправильный ответ: ', res);
                             }
 
-                            var $select = $('#{{ $name }}')
-
                             $select.multiselect('destroy')
 
-                            $select.html(' ')
+                            var iterations = $select[0].options.length - 1
 
-                            res.data.forEach(function (option) {
-                                var htmlOption = document.createElement('option')
+                            for (var i = iterations; i > -1; i--) {
+                                $select[0].options.remove(i)
+                            }
 
-                                htmlOption.value = option.value
-                                htmlOption.text = option.text
-                                htmlOption.selected = option.selected ? 'selected' : false
+                            res.data.forEach(function (o) {
+                                var selected = o.selected ? 'selected' : '';
+                                var option = `<option ${selected} value="${o.value}">${o.text}</option>`;
 
-                                $select.append(htmlOption)
+                                $select.append(option)
                             })
 
                             $select.multiselect();
+
                         },
                         error: function () {
                             TableBuilder.showErrorNotification('Произошла ошибка!');
