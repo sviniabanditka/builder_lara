@@ -17,7 +17,7 @@ class TimestampField extends AbstractField
     {
         $table = $this->definition['db']['table'];
         if ($this->getAttribute('is_range')) {
-            if (!isset($value['from']) && !isset($value['to'])) {
+            if (! isset($value['from']) && ! isset($value['to'])) {
                 return;
             }
 
@@ -45,7 +45,7 @@ class TimestampField extends AbstractField
      */
     public function prepareQueryValue($value)
     {
-        if (!$value) {
+        if (! $value) {
             if ($this->getAttribute('is_null')) {
                 return;
             }
@@ -78,7 +78,7 @@ class TimestampField extends AbstractField
             }
         }
 
-        if (!$this->getValue($row)) {
+        if (! $this->getValue($row)) {
             return '';
         }
 
@@ -120,7 +120,7 @@ class TimestampField extends AbstractField
      */
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return '';
         }
 

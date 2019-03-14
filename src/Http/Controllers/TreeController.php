@@ -21,7 +21,7 @@ class TreeController extends Controller
      */
     public function init($node, $method)
     {
-        if (!$node->active(App::getLocale()) && !Input::has('show')) {
+        if (! $node->active(App::getLocale()) && ! Input::has('show')) {
             App::abort(404);
         }
         $this->node = $node;

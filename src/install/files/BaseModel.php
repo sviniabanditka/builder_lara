@@ -134,7 +134,7 @@ class BaseModel extends Model
     {
         $page = $query->where('id', $id)->active()->first();
 
-        if (!isset($page->id) || $page->getSlug() != $slug) {
+        if (! isset($page->id) || $page->getSlug() != $slug) {
             App::abort(404);
         }
 
@@ -152,7 +152,7 @@ class BaseModel extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        if (!$next_page) {
+        if (! $next_page) {
             $next_page = self::where('is_active', '1')
                 ->where('id', '!=', $this->id)
                 ->orderBy('priority', 'asc')
@@ -175,7 +175,7 @@ class BaseModel extends Model
             ->orderBy('priority', 'desc')
             ->orderBy('id', 'desc')->first();
 
-        if (!$prev_page) {
+        if (! $prev_page) {
             $prev_page = self::where('is_active', '1')
                 ->where('id', '!=', $this->id)
                 ->orderBy('priority', 'desc')
@@ -204,7 +204,7 @@ class BaseModel extends Model
             }
         }
 
-        if (!$nodeSlug) {
+        if (! $nodeSlug) {
             return false;
         } else {
             return Tree::where('slug', 'like', $nodeSlug)->first();

@@ -199,14 +199,14 @@ class QueryHandler
      */
     public function getPerPageAmount($info)
     {
-        if (!is_array($info)) {
+        if (! is_array($info)) {
             return $info;
         }
 
         $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
         $perPage = Session::get($sessionPath);
 
-        if (!$perPage) {
+        if (! $perPage) {
             $keys = array_keys($info);
             $perPage = $keys[0];
         }
@@ -331,7 +331,7 @@ class QueryHandler
         }
 
         foreach ($updateData as $field => $data) {
-            if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+            if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
                 $updateDataRes[$field] = $this->getData($data);
             } else {
                 $this->getDataTabs($updateDataRes, $updateData, $field);
@@ -634,9 +634,9 @@ class QueryHandler
             $id = $this->controller->getCustomHandler()->onInsertRowData($insertData);
         }
 
-        if (!$id) {
+        if (! $id) {
             foreach ($insertData as $field => $data) {
-                if (isset($this->definition['fields'][$field]) && !isset($this->definition['fields'][$field]['tabs'])) {
+                if (isset($this->definition['fields'][$field]) && ! isset($this->definition['fields'][$field]['tabs'])) {
                     $insertDataRes[$field] = $this->getData($data);
                 } else {
                     $this->getDataTabs($insertDataRes, $insertData, $field);
@@ -710,7 +710,7 @@ class QueryHandler
 
                 $tabs = $field->getAttribute('tabs');
                 if ($tabs) {
-                    if (!$field->getAttribute('extends_table')) {
+                    if (! $field->getAttribute('extends_table')) {
                         foreach ($tabs as $tab) {
                             $fieldName = $ident.$tab['postfix'];
                             $field->doValidate($values[$fieldName]);
@@ -852,7 +852,7 @@ class QueryHandler
      */
     private function checkField($values, $ident, $field)
     {
-        if (!$field->isEditable()) {
+        if (! $field->isEditable()) {
             throw new \RuntimeException("Field [{$ident}] is not editable");
         }
     }

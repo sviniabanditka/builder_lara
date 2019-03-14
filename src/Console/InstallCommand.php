@@ -157,17 +157,17 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/public/robots.txt', public_path().'/robots.txt');
         $this->info('Replace robots.txt - OK');
 
-        if (!is_dir(app_path().'/Models')) {
+        if (! is_dir(app_path().'/Models')) {
             File::makeDirectory(app_path().'/Models', 0777, true);
             $this->info('Folder app/Models is created');
         }
 
-        if (!is_dir(app_path().'/Services')) {
+        if (! is_dir(app_path().'/Services')) {
             File::makeDirectory(app_path().'/Services', 0777, true);
             $this->info('Folder app/Models is Services');
         }
 
-        if (!is_dir(app_path().'/Http/ViewComposers')) {
+        if (! is_dir(app_path().'/Http/ViewComposers')) {
             File::makeDirectory(app_path().'/Http/ViewComposers', 0777, true);
             $this->info('Folder Http/ViewComposers is created');
         }
@@ -208,32 +208,32 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/Breadcrumbs.php', app_path().'/Services/Breadcrumbs.php');
         $this->info('Created app/Models/Breadcrumbs.php- OK');
 
-        if (!is_dir(base_path().'/resources/views/layouts')) {
+        if (! is_dir(base_path().'/resources/views/layouts')) {
             File::makeDirectory(base_path().'/resources/views/layouts', 0777, true);
             $this->info('Folder resources/views/layouts is created');
         }
-        if (!is_dir(base_path().'/resources/views/home')) {
+        if (! is_dir(base_path().'/resources/views/home')) {
             File::makeDirectory(base_path().'/resources/views/home', 0777, true);
             $this->info('Folder resources/views/home is created');
         }
-        if (!is_dir(base_path().'/resources/views/partials')) {
+        if (! is_dir(base_path().'/resources/views/partials')) {
             File::makeDirectory(base_path().'/resources/views/partials', 0777, true);
             $this->info('Folder resources/views/partials is created');
         }
-        if (!is_dir(base_path().'/resources/views/popups')) {
+        if (! is_dir(base_path().'/resources/views/popups')) {
             File::makeDirectory(base_path().'/resources/views/popups', 0777, true);
             $this->info('Folder resources/views/popups is created');
         }
-        if (!is_dir(base_path().'/resources/views/front')) {
+        if (! is_dir(base_path().'/resources/views/front')) {
             File::makeDirectory(base_path().'/resources/views/front', 0777, true);
             $this->info('Folder resources/views/front is created');
         }
 
-        if (!is_dir(base_path().'/resources/lang/ru')) {
+        if (! is_dir(base_path().'/resources/lang/ru')) {
             File::makeDirectory(base_path().'/resources/lang/ru', 0777, true);
         }
 
-        if (!is_dir(base_path().'/resources/lang/ua')) {
+        if (! is_dir(base_path().'/resources/lang/ua')) {
             File::makeDirectory(base_path().'/resources/lang/ua', 0777, true);
         }
 

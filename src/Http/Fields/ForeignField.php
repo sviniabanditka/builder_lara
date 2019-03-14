@@ -33,7 +33,7 @@ class ForeignField extends AbstractField
 
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return;
         }
 
@@ -119,7 +119,7 @@ class ForeignField extends AbstractField
         if ($extendTable = $this->getAttribute('extends_table')) {
             $joins = $db instanceof \Illuminate\Database\Eloquent\Builder ? $db->getQuery()->joins : $db->joins;
 
-            if (!collect($joins)->pluck('table')->contains($extendTable)) {
+            if (! collect($joins)->pluck('table')->contains($extendTable)) {
                 $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
                 $db->leftJoin($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
             }
@@ -169,7 +169,7 @@ class ForeignField extends AbstractField
             $foreignValueField = $this->getAttribute('foreign_value_field');
 
             $first = DB::table($foreignTable)->where($foreignValueField, '=', $input)->first();
-            if (!$first) {
+            if (! $first) {
                 $new_id = DB::table($foreignTable)->insertGetId([$foreignValueField => $input]);
             }
         }
@@ -197,7 +197,7 @@ class ForeignField extends AbstractField
         $needsField = array_only($row, $resultArray);
 
         $value = trim(implode(' ', $needsField));
-        if (!$value && $this->getAttribute('is_null')) {
+        if (! $value && $this->getAttribute('is_null')) {
             $value = $this->getAttribute('null_caption', '<i class="fa fa-minus"></i>');
         }
 
@@ -381,7 +381,7 @@ class ForeignField extends AbstractField
 
         $nameField = $this->getFieldName();
 
-        if (!$row->$nameField) {
+        if (! $row->$nameField) {
             return $this->getAttribute('null_caption');
         }
 

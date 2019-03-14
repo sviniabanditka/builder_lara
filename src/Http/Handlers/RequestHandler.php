@@ -214,7 +214,7 @@ class RequestHandler
         $type = request('type');
         $ids = request('multi_ids');
 
-        if (!$ids) {
+        if (! $ids) {
             return;
         }
 
@@ -222,7 +222,7 @@ class RequestHandler
 
         $isAllowed = $action['check'];
 
-        if (!$isAllowed()) {
+        if (! $isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 
@@ -252,7 +252,7 @@ class RequestHandler
         $action = $this->definition['multi_actions'][$type];
 
         $isAllowed = $action['check'];
-        if (!$isAllowed()) {
+        if (! $isAllowed()) {
             throw new \RuntimeException('Multi action not allowed: '.$type);
         }
 

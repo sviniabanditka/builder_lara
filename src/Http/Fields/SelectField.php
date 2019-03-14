@@ -39,7 +39,7 @@ class SelectField extends AbstractField
      */
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return '';
         }
 

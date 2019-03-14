@@ -54,7 +54,7 @@ class PatternField extends AbstractField
         $patternName = preg_replace('~^pattern\.~', '', $fieldName);
         $path = config_path().'/builder/tb-definitions/pattern/'.$patternName.'.php';
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             throw new \RuntimeException("No pattern definition - [{$patternName}].");
         }
         $this->calls = require $path;

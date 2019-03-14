@@ -173,7 +173,7 @@ class Tree extends \Baum\Node
      */
     public function getUrl()
     {
-        if (!$this->_nodeUrl) {
+        if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
@@ -201,7 +201,7 @@ class Tree extends \Baum\Node
      */
     public function getUrlNoLocation()
     {
-        if (!$this->_nodeUrl) {
+        if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 

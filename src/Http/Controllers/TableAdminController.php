@@ -195,7 +195,7 @@ class TableAdminController extends Controller
         }
 
         //check is active
-        if (!$node->is_active && request('show') != 1) {
+        if (! $node->is_active && request('show') != 1) {
             App::abort(404);
         }
 
@@ -204,7 +204,7 @@ class TableAdminController extends Controller
         }
 
         //check isset template
-        if (!isset($templates[$node->template])) {
+        if (! isset($templates[$node->template])) {
             App::abort(404);
         }
 

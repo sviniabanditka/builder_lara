@@ -39,7 +39,7 @@ class SetField extends AbstractField
      */
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return '';
         }
 
@@ -77,7 +77,7 @@ class SetField extends AbstractField
                             json_decode($this->getValue($row)) :
                             explode(',', $this->getValue($row));
 
-        if (!is_array($table->selected)) {
+        if (! is_array($table->selected)) {
             $table->selected = [];
         }
 
@@ -118,7 +118,7 @@ class SetField extends AbstractField
         $fieldName = $this->getFieldName().$postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
-        if ($this->getAttribute('tabs') && !$postfix) {
+        if ($this->getAttribute('tabs') && ! $postfix) {
             $tabs = $this->getAttribute('tabs');
             $fieldName = $fieldName.$tabs[0]['postfix'];
         }
@@ -133,7 +133,7 @@ class SetField extends AbstractField
      */
     public function prepareQueryValue($value)
     {
-        if (!$value && $this->getAttribute('is_null')) {
+        if (! $value && $this->getAttribute('is_null')) {
             return;
         }
 
@@ -164,7 +164,7 @@ class SetField extends AbstractField
 
         $options = $this->getAttribute('options');
 
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return;
         }
 

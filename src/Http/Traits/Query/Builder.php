@@ -48,7 +48,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function get($columns = ['*'])
     {
-        if (!is_null($this->cacheMinutes)) {
+        if (! is_null($this->cacheMinutes)) {
             return $this->getCached($columns);
         }
 
@@ -219,7 +219,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $store = app('cache')->getStore();
 
-        if (!method_exists($store, 'tags')) {
+        if (! method_exists($store, 'tags')) {
             return false;
         }
 
@@ -264,7 +264,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $this->orders = null;
 
-        if (!is_null($column)) {
+        if (! is_null($column)) {
             return $this->orderBy($column, $direction);
         }
 

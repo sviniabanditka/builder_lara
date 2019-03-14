@@ -44,7 +44,7 @@ trait ImagesTrait
             $picture = $this->t('picture');
         }
 
-        if (!$picture) {
+        if (! $picture) {
             $picture = Setting::get('no-foto');
         }
 
@@ -70,7 +70,7 @@ trait ImagesTrait
      */
     public function getOtherImg($nameField = 'additional_pictures', $paramImg = '')
     {
-        if (!$this->$nameField) {
+        if (! $this->$nameField) {
             return;
         }
 
@@ -90,7 +90,7 @@ trait ImagesTrait
 
     public function getOtherImgWatermark($nameField = 'additional_pictures', $paramImg = '')
     {
-        if (!$this->$nameField) {
+        if (! $this->$nameField) {
             return;
         }
 
@@ -120,7 +120,7 @@ trait ImagesTrait
      */
     public function getOtherImgWithOriginal($nameField = 'additional_pictures', $paramImg = '')
     {
-        if (!$this->$nameField) {
+        if (! $this->$nameField) {
             return;
         }
 

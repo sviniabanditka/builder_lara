@@ -62,7 +62,7 @@ abstract class AbstractField
 
     public function getRequiredAttribute($ident)
     {
-        if (!array_key_exists($ident, $this->attributes)) {
+        if (! array_key_exists($ident, $this->attributes)) {
             throw new \RuntimeException('Image storage field requires ['.$ident.'] attribute');
         }
 
@@ -86,7 +86,7 @@ abstract class AbstractField
         $fieldName = $this->getFieldName().$postfix;
         // postfix used for getting values for form - tabs loop
         // so there is no need to force appending postfix
-        if ($this->getAttribute('tabs') && !$postfix) {
+        if ($this->getAttribute('tabs') && ! $postfix) {
             $tabs = $this->getAttribute('tabs');
             $fieldName = $fieldName.$tabs[0]['postfix'];
         }
@@ -211,14 +211,14 @@ abstract class AbstractField
         ];
         foreach ($tabs as &$tab) {
             foreach ($required as $option) {
-                if (!isset($tab[$option])) {
+                if (! isset($tab[$option])) {
                     $tab[$option] = '';
                 }
             }
 
             $tab['value'] = $this->getValue($row, $tab['postfix']);
 
-            if (!$tab['value'] && isset($tab['default'])) {
+            if (! $tab['value'] && isset($tab['default'])) {
                 $tab['value'] = $tab['default'];
             }
         }
@@ -228,7 +228,7 @@ abstract class AbstractField
 
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return '';
         }
 
@@ -252,7 +252,7 @@ abstract class AbstractField
 
     public function prepareQueryValue($value)
     {
-        if (!$value && $this->getAttribute('is_null')) {
+        if (! $value && $this->getAttribute('is_null')) {
             return;
         }
 
@@ -296,7 +296,7 @@ abstract class AbstractField
     {
         $validation = $this->getAttribute('validation');
 
-        if (!isset($validation['client'])) {
+        if (! isset($validation['client'])) {
             return;
         }
 
@@ -315,7 +315,7 @@ abstract class AbstractField
     {
         $validation = $this->getAttribute('validation');
 
-        if (!isset($validation['client'])) {
+        if (! isset($validation['client'])) {
             return;
         }
 
@@ -334,7 +334,7 @@ abstract class AbstractField
     {
         $validation = $this->getAttribute('validation');
 
-        if (!isset($validation['server'])) {
+        if (! isset($validation['server'])) {
             return;
         }
 
@@ -399,13 +399,13 @@ abstract class AbstractField
         }
 
         if ($this->getAttribute('filter') == 'date_range') {
-            if (!isset($value['to'])) {
+            if (! isset($value['to'])) {
                 $db->where($table.'.'.$this->getFieldName(), '>', $value['from']);
 
                 return;
             }
 
-            if (!isset($value['from'])) {
+            if (! isset($value['from'])) {
                 $db->where($table.'.'.$this->getFieldName(), '<', $value['to']);
 
                 return;

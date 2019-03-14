@@ -24,7 +24,7 @@ class CheckboxField extends AbstractField
      */
     public function prepareQueryValue($value)
     {
-        if (!$value && $this->getAttribute('is_null')) {
+        if (! $value && $this->getAttribute('is_null')) {
             return;
         }
 
@@ -48,7 +48,7 @@ class CheckboxField extends AbstractField
      */
     public function getFilterInput()
     {
-        if (!$this->getAttribute('filter')) {
+        if (! $this->getAttribute('filter')) {
             return;
         }
 
@@ -147,7 +147,7 @@ class CheckboxField extends AbstractField
 
         return (
             (isset($row[$this->getFieldName()]) && $row[$this->getFieldName()]) ||
-            (!isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') !== true)
+            (! isset($row[$this->getFieldName()]) && $this->getAttribute('not_checked_default') !== true)
 
                 )
                     ? '1' : '0';

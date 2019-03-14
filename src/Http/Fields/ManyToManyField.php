@@ -357,7 +357,7 @@ class ManyToManyField extends AbstractField
 
         $options = DB::table($externalTable);
 
-        if (!$isGetAll) {
+        if (! $isGetAll) {
             $options->select($externalForeignKey);
 
             if ($addFieldQuery) {
@@ -444,7 +444,7 @@ class ManyToManyField extends AbstractField
 
         return [
             'results' => $res,
-            'more'    => $res && !empty($res),
+            'more'    => $res && ! empty($res),
             'message' => '',
         ];
     }
