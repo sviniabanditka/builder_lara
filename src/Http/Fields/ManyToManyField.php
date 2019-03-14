@@ -182,6 +182,8 @@ class ManyToManyField extends AbstractField
         $input->link = $this->getAttribute('with_link');
         $input->name = $this->getFieldName();
         $input->divide = $this->getAttribute('divide_columns', 2);
+        $input->depends_on = $this->getAttribute('mtm_depends_on');
+        $input->depends_on_url = $this->getAttribute('mtm_depends_on_url');
 
         if ($showType == 'select_tree') {
             $input->options = $this->getFieldOptionForTree();
