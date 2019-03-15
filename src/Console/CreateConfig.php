@@ -68,7 +68,7 @@ class CreateConfig extends Command
         }
 
         copy(
-            $this->installPath.'/Model.php',
+            $this->installPath.'/modelName.php',
             $fileModel
         );
 

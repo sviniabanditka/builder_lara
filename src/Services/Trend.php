@@ -46,9 +46,12 @@ class Trend
 
     protected function aggregate(string $model, string $field, string $type) : array
     {
+        $dateRange = $this->currentRange();
+        $dateRange[1] .= ' 23:59:59';
+
         return (new $model())
             ->select(DB::raw("date(created_at) as x, {$type}({$field}) as y"))
-            ->whereBetween('created_at', $this->currentRange())
+            ->whereBetween('created_at', $dateRange)
             ->orderBy('x')
             ->groupBy('x')
             ->get()
