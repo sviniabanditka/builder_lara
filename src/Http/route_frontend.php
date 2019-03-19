@@ -4,7 +4,6 @@ $arrSegments = explode('/', Request::path());
 
 if ($arrSegments[0] != 'admin') {
     try {
-
         $controllerMethodArray = (new \Vis\Builder\Services\FindAndCheckUrlForTree())->getRoute($arrSegments);
 
         if ($controllerMethodArray) {
@@ -13,8 +12,7 @@ if ($arrSegments[0] != 'admin') {
                 function () use ($controllerMethodArray) {
                     Route::group(
                         ['prefix' => LaravelLocalization::setLocale()],
-                        function ()  use ($controllerMethodArray)  {
-
+                        function () use ($controllerMethodArray) {
                             Route::get(
                                 $controllerMethodArray['node']->getUrlNoLocation(),
                                 function () use ($controllerMethodArray) {
@@ -27,7 +25,6 @@ if ($arrSegments[0] != 'admin') {
                 }
             );
         }
-
     } catch (Exception $e) {
     }
 
