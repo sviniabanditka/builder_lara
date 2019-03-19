@@ -2,8 +2,6 @@
 
 namespace Vis\Builder;
 
-use Illuminate\Support\Facades\Config;
-
 class OptmizationImg
 {
     public static function run($pathImg)
@@ -24,6 +22,18 @@ class OptmizationImg
 
                     exec($commandJpg, $res);
                 }
+            } catch (\Exception $e) {
+            }
+        }
+
+        if (config('builder.optimization_img.webp_optimize')) {
+            try {
+                $newFile = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $fullPathPicture);
+
+                $command = 'cwebp -q 80 '. $fullPathPicture .' -o '. $newFile;
+
+                exec($command, $res);
+
             } catch (\Exception $e) {
             }
         }

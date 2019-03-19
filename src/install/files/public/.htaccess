@@ -13,17 +13,16 @@
     mod_gzip_item_include file \.css$ </ifmodule>
 </IfModule>
 
-
 FileETag MTime Size
 <ifmodule mod_expires.c>
-    <filesmatch ".(jpg|JPG|jpeg|gif|png|ico|css|js|svg|ttf|woff)$">
+    <filesmatch ".(jpg|JPG|jpeg|gif|png|ico|css|js|svg|ttf|woff|webp)$">
     ExpiresActive on
     ExpiresDefault "access plus 1 month"
     </filesmatch>
 </ifmodule>
 
 <ifModule mod_headers.c>
-    <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|svg|ttf|woff)$">
+    <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|svg|ttf|woff|webp)$">
     Header set Cache-Control "max-age=2592000, public"
     </filesMatch>
     <filesMatch "\\.(css)$">
@@ -43,7 +42,17 @@ FileETag MTime Size
     </FilesMatch>
 </ifModule>
 
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+</IfModule>
+
 <IfModule mod_rewrite.c>
+
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_FILENAME} ^(.+)\.(jpe?g|png)$
+    RewriteCond %1\.webp -f
+    RewriteRule ^(.+)\.(jpe?g|png)$ $1.webp [T=image/webp,E=accept:1]
+
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
@@ -66,5 +75,3 @@ FileETag MTime Size
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
-
-
