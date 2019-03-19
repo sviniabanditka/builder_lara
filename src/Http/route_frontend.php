@@ -4,45 +4,30 @@ $arrSegments = explode('/', Request::path());
 
 if ($arrSegments[0] != 'admin') {
     try {
-        $_model = config('builder.tree.model');
-        if ($_model) {
-            $slug = end($arrSegments);
 
-            if (! $slug || $slug == LaravelLocalization::setLocale()) {
-                $slug = '/';
-            }
+        $controllerMethodArray = (new \Vis\Builder\Services\FindAndCheckUrlForTree())->getRoute($arrSegments);
 
-            if (config('builder.tree.extension')) {
-                $slug = str_replace(config('builder.tree.extension'), '', $slug);
-            }
+        if ($controllerMethodArray) {
+            Route::group(
+                ['middleware' => ['web']],
+                function () use ($controllerMethodArray) {
+                    Route::group(
+                        ['prefix' => LaravelLocalization::setLocale()],
+                        function ()  use ($controllerMethodArray)  {
 
-            $nodes = $_model::where('slug', 'like', $slug)->get();
-            foreach ($nodes as $node) {
-                if ($node->getUrl() == Request::url()) {
-                    break;
+                            Route::get(
+                                $controllerMethodArray['node']->getUrlNoLocation(),
+                                function () use ($controllerMethodArray) {
+                                    return $controllerMethodArray['controller']
+                                        ->callAction('init', [$controllerMethodArray['node'], $controllerMethodArray['method']]);
+                                }
+                            );
+                        }
+                    );
                 }
-            }
-
-            if (isset($node->id)) {
-                $slugTree = $slug;
-                $_nodeUrl = trim($node->getUrlNoLocation(), '/');
-
-                Route::group(
-                    ['middleware' => ['web']],
-                    function () {
-                        Route::group(
-                            ['prefix' => LaravelLocalization::setLocale()],
-                            function () {
-                                Route::get('{slug?}', [
-                                    'as'   => 'route_admin',
-                                    'uses' => 'Vis\Builder\TableAdminController@showPageUrlTree',
-                                ])->where('slug', '.+');
-                            }
-                        );
-                    }
-                );
-            }
+            );
         }
+
     } catch (Exception $e) {
     }
 

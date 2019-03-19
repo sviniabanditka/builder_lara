@@ -161,68 +161,6 @@ class TableAdminController extends Controller
         DB::table($table)->where('id', request('pk'))->update([request('name') => request('value')]);
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return mixed
-     */
-    public function showPageUrlTree($slug = '')
-    {
-        $arrSegments = explode('/', $slug);
-        $slug = end($arrSegments);
-
-        if ($slug === '' || $slug == LaravelLocalization::setLocale()) {
-            $slug = '/';
-        }
-
-        if (config('builder.tree.extension')) {
-            $slug = str_replace(config('builder.tree.extension'), '', $slug);
-        }
-
-        $_model = config('builder.tree.model');
-        $nodes = $_model::where('slug', 'like', $slug)->get();
-        $templates = config('builder.tree.templates');
-
-        //check correctly url
-        if (count($nodes)) {
-            foreach ($nodes as $node) {
-                if ($node->getUrl() == Request::url()) {
-                    break;
-                }
-            }
-        } else {
-            App::abort(404);
-        }
-
-        //check is active
-        if (! $node->is_active && request('show') != 1) {
-            App::abort(404);
-        }
-
-        if ($slug != '/' && $node->getUrl() != Request::url()) {
-            App::abort(404);
-        }
-
-        //check isset template
-        if (! isset($templates[$node->template])) {
-            App::abort(404);
-        }
-
-        if (empty($templates[$node->template]['action'])) {
-            App::abort(404);
-        }
-
-        $def = $templates[$node->template]['node_definition'];
-
-        $_model = config("builder.tb-definitions.tree.$def.options.model");
-        $node = (new $_model())->setRawAttributes($node->getAttributes());
-
-        list($controller, $method) = explode('@', $templates[$node->template]['action']);
-
-        Session::put('currentNode', $node);
-
-        return app('App\\Http\\Controllers\\'.$controller)->init($node, $method);
-    }
 
     /**
      * @throws \Throwable
