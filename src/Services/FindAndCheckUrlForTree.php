@@ -22,6 +22,7 @@ class FindAndCheckUrlForTree
             return false;
         }
 
+
         return $this->getControllerAndMethod($node);
     }
 
@@ -41,12 +42,12 @@ class FindAndCheckUrlForTree
         $tagsCache = config('builder.tree.cache.tags', ['tree']);
         $model = $this->model;
 
-        $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug', function () use ($model, $slug) {
+        $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug_'. $slug, function () use ($model, $slug) {
             return $model::where('slug', 'like', $slug)->get();
         });
 
         foreach ($nodes as $node) {
-            if ($node->getUrl() == Request::url()) {
+            if (trim($node->getUrl(), '/') == Request::url()) {
                 return $node;
             }
         }
