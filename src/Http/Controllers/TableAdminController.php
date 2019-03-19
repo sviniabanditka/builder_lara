@@ -3,13 +3,10 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Vis\Builder\Facades\Jarboe as JarboeFacade;
 
 /**
@@ -160,7 +157,6 @@ class TableAdminController extends Controller
     {
         DB::table($table)->where('id', request('pk'))->update([request('name') => request('value')]);
     }
-
 
     /**
      * @throws \Throwable
