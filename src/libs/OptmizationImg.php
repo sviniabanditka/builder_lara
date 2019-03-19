@@ -30,10 +30,9 @@ class OptmizationImg
             try {
                 $newFile = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $fullPathPicture);
 
-                $command = 'cwebp -q 80 '. $fullPathPicture .' -o '. $newFile;
+                $command = 'cwebp -q 80 '.$fullPathPicture.' -o '.$newFile;
 
                 exec($command, $res);
-
             } catch (\Exception $e) {
             }
         }
