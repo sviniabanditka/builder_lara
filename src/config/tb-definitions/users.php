@@ -149,7 +149,6 @@ return [
             'type'       => 'readonly',
             'is_sorting' => true,
             'months'     => 2,
-            'field'      => 'datetime',
         ],
         'activated' => [
             'caption' => 'Активен',
@@ -165,7 +164,6 @@ return [
             'type'       => 'readonly',
             'is_sorting' => true,
             'months'     => 2,
-            'field'      => 'datetime',
         ],
         'updated_at' => [
             'caption'    => 'Дата обновления',
@@ -174,7 +172,6 @@ return [
             'is_sorting' => true,
             'months'     => 2,
             'hide_list'  => true,
-            'field'      => 'datetime',
         ],
 
         'many2many_groups' => [

@@ -45,24 +45,20 @@ return [
             'type'       => 'text',
             'filter'     => 'text',
             'is_sorting' => true,
-            'field'      => 'string',
         ],
         'ip_user' => [
             'caption'    => 'IP пользователя',
             'type'       => 'text',
-            'filter'     => 'text',
             'is_sorting' => true,
         ],
         'message' => [
             'caption'    => 'Сообщение',
             'type'       => 'text',
-            'filter'     => 'text',
             'is_sorting' => true,
         ],
         'model' => [
             'caption'    => 'Модель/таблица',
             'type'       => 'text',
-            'filter'     => 'text',
             'is_sorting' => true,
         ],
         'id_record' => [
@@ -83,7 +79,6 @@ return [
             'type'       => 'datetime',
             'is_sorting' => true,
             'months'     => 2,
-            'field'      => 'datetime',
         ],
         'updated_at' => [
             'caption'     => 'Дата обновления',
@@ -91,7 +86,6 @@ return [
             'hide_list'   => true,
             'is_sorting'  => true,
             'hide'        => true,
-            'field'       => 'datetime',
         ],
 
     ],

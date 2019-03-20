@@ -74,7 +74,7 @@ class DefinitionHandler
      */
     private function checkShowList($value)
     {
-        if ($value['type'] == 'pattern' || $value['type'] == 'definition') {
+        if (in_array($value['type'], ['pattern', 'definition', 'hidden'])) {
             return false;
         }
 

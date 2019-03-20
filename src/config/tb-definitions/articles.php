@@ -58,7 +58,6 @@ return [
             'is_null'      => true,
             'is_remote'    => false,
             'hide_list'    => true,
-            'field'        => 'string',
             'is_multiple'  => true,
         ],
         'title' => [
@@ -66,21 +65,17 @@ return [
             'type'       => 'text',
             'filter'     => 'text',
             'is_sorting' => true,
-            'field'      => 'string',
         ],
 
         'short_description' => [
             'caption' => 'Краткое описание',
             'type'    => 'wysiwyg',
-
             'hide_list' => true,
-            'field'     => 'text',
         ],
         'description' => [
             'caption'   => 'Полное описание',
             'type'      => 'wysiwyg',
             'hide_list' => true,
-            'field'     => 'text',
         ],
 
         'created_at' => [
@@ -88,7 +83,6 @@ return [
             'type'       => 'datetime',
             'is_sorting' => true,
             'months'     => 2,
-            'field'      => 'datetime',
         ],
         'updated_at' => [
             'caption'     => 'Дата обновления',
@@ -96,7 +90,6 @@ return [
             'hide_list'   => true,
             'is_sorting'  => true,
             'hide'        => true,
-            'field'       => 'datetime',
         ],
         'is_active' => [
             'caption' => 'Статья активна',
@@ -105,7 +98,6 @@ return [
                 1 => 'Активные',
                 0 => 'He aктивные',
             ],
-            'field' => 'tinyInteger',
         ],
 
         'seo_title' => [
@@ -113,23 +105,18 @@ return [
             'type'      => 'text',
             'filter'    => 'text',
             'hide_list' => true,
-            'field'     => 'string',
-
         ],
         'seo_description' => [
             'caption'   => 'Seo: description',
             'type'      => 'text',
             'filter'    => 'text',
             'hide_list' => true,
-            'field'     => 'text',
-
         ],
         'seo_keywords' => [
             'caption'   => 'Seo: keywords',
             'type'      => 'text',
             'filter'    => 'text',
             'hide_list' => true,
-            'field'     => 'string',
         ],
     ],
     'filters' => [
