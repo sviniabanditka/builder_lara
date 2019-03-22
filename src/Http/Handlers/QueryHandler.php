@@ -119,7 +119,7 @@ class QueryHandler
     {
         $modelName = $this->model;
 
-        if (!$modelName) {
+        if (! $modelName) {
             return [];
         }
 

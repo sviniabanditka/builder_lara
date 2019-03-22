@@ -346,7 +346,7 @@ class JarboeController
 
         $fieldsThis = [];
 
-        if (!isset($definitionThis['fields'])) {
+        if (! isset($definitionThis['fields'])) {
             return $fieldsThis;
         }
 
@@ -371,7 +371,7 @@ class JarboeController
         $definitionThis = $this->getDefinition();
         $fieldsThis = [];
 
-        if (!isset($definitionThis['fields'])) {
+        if (! isset($definitionThis['fields'])) {
             return $fieldsThis;
         }
 
