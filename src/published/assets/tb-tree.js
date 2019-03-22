@@ -367,9 +367,10 @@ var Tree =
                     TableBuilder.destroyFroala();
 
                     if (response.id) {
+
                         TableBuilder.showSuccessNotification(phrase['Сохранено']);
                         jQuery(TableBuilder.form_edit).modal('hide');
-                        doAjaxLoadContent(location.href);
+                        $('#tb-tree-table').find('tr[data-id="' + id + '"]').replaceWith(response.html);
                         $(document).height($(window).height());
                     } else {
                         var errors = '';

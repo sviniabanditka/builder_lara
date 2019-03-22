@@ -31,6 +31,7 @@ var TableBuilder = {
     init: function (options) {
         TableBuilder.options = TableBuilder.getOptions(options);
         TableBuilder.initSelect2Hider();
+
     },
 
     optionsInit : function (options) {

@@ -13,6 +13,8 @@ var Settings =
                 w.addRange(range);
             });
 
+            $('.selectable').editable();
+
         }, // end init
 
         handleSaveSetting: function()
