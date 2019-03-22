@@ -67,15 +67,11 @@ class QueryHandler
         $this->definition = $controller->getDefinition();
         $this->definitionName = $controller->getOption('def_name');
 
-        if (isset($this->definition['cache']['tags'])) {
-            $this->cache = $this->definition['cache']['tags'];
-        } else {
-            $this->cache = '';
-        }
+        $this->cache = isset($this->definition['cache']['tags']) ? $this->definition['cache']['tags'] : '';
 
         $this->dbOptions = $this->definition['db'];
-        $this->model = $this->definition['options']['model'];
-        $this->dbName = $this->definition['db']['table'];
+        $this->model = $this->definition['options']['model'] ?? '';
+        $this->dbName = $this->definition['db']['table'] ?? '';
 
         if (isset($this->definition['options']['extends']) && count($this->definition['options']['extends'])) {
             foreach ($this->definition['options']['extends'] as $extend) {
@@ -122,6 +118,11 @@ class QueryHandler
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
     {
         $modelName = $this->model;
+
+        if (!$modelName) {
+            return [];
+        }
+
         $this->db = new $modelName();
 
         $this->prepareSelectValues();

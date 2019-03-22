@@ -58,6 +58,11 @@ class DefinitionHandler
     public function getFieldsList()
     {
         $result = [];
+
+        if (!isset($this->def['fields'])) {
+            return $result;
+        }
+
         foreach ($this->def['fields'] as $name => $value) {
             if ($this->checkShowList($value)) {
                 $result[] = $this->controller->getField($name);

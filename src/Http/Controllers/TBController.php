@@ -27,8 +27,6 @@ class TBController extends Controller
         return Redirect::to('/admin/tree');
     }
 
-    // end showDashboard
-
     /**
      * change skin.
      */

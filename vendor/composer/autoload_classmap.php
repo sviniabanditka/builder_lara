@@ -40,6 +40,7 @@ return array(
     'Vis\\Builder\\Fields\\FileStorageField' => $baseDir . '/src/Http/Fields/FileStorageField.php',
     'Vis\\Builder\\Fields\\ForeignField' => $baseDir . '/src/Http/Fields/ForeignField.php',
     'Vis\\Builder\\Fields\\GroupField' => $baseDir . '/src/Http/Fields/GroupField.php',
+    'Vis\\Builder\\Fields\\HiddenField' => $baseDir . '/src/Http/Fields/HiddenField.php',
     'Vis\\Builder\\Fields\\ImageField' => $baseDir . '/src/Http/Fields/ImageField.php',
     'Vis\\Builder\\Fields\\ImageStorageField' => $baseDir . '/src/Http/Fields/ImageStorageField.php',
     'Vis\\Builder\\Fields\\ManyToManyField' => $baseDir . '/src/Http/Fields/ManyToManyField.php',

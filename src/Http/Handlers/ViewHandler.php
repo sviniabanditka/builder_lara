@@ -38,7 +38,7 @@ class ViewHandler
         $this->controller = $controller;
         $this->definition = $controller->getDefinition();
         $this->definitionName = $controller->getOption('def_name');
-        $this->model = $this->definition['options']['model'];
+        $this->model = $this->definition['options']['model'] ?? '';
     }
 
     /**

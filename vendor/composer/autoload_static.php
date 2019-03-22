@@ -55,6 +55,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Fields\\FileStorageField' => __DIR__ . '/../..' . '/src/Http/Fields/FileStorageField.php',
         'Vis\\Builder\\Fields\\ForeignField' => __DIR__ . '/../..' . '/src/Http/Fields/ForeignField.php',
         'Vis\\Builder\\Fields\\GroupField' => __DIR__ . '/../..' . '/src/Http/Fields/GroupField.php',
+        'Vis\\Builder\\Fields\\HiddenField' => __DIR__ . '/../..' . '/src/Http/Fields/HiddenField.php',
         'Vis\\Builder\\Fields\\ImageField' => __DIR__ . '/../..' . '/src/Http/Fields/ImageField.php',
         'Vis\\Builder\\Fields\\ImageStorageField' => __DIR__ . '/../..' . '/src/Http/Fields/ImageStorageField.php',
         'Vis\\Builder\\Fields\\ManyToManyField' => __DIR__ . '/../..' . '/src/Http/Fields/ManyToManyField.php',

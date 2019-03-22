@@ -345,6 +345,11 @@ class JarboeController
         $definitionThis = $this->getDefinition();
 
         $fieldsThis = [];
+
+        if (!isset($definitionThis['fields'])) {
+            return $fieldsThis;
+        }
+
         foreach ($definitionThis['fields'] as $name => $info) {
             if ($this->isPatternField($name)) {
                 $this->patterns[$name] = $this->createPatternInstance($name, $info);
@@ -365,6 +370,11 @@ class JarboeController
     {
         $definitionThis = $this->getDefinition();
         $fieldsThis = [];
+
+        if (!isset($definitionThis['fields'])) {
+            return $fieldsThis;
+        }
+
         foreach ($definitionThis['fields'] as $info) {
             if ($info['type'] == 'group' && count($info['filds'])) {
                 foreach ($info['filds'] as $nameGroup => $infoGroup) {
@@ -450,10 +460,6 @@ class JarboeController
 
         $definitionThis = require $path;
 
-        if (! $definitionThis) {
-            throw new \RuntimeException('Empty definition?');
-        }
-
         $definitionThis['is_searchable'] = $this->isSearchable($definitionThis);
         $definitionThis['options']['admin_uri'] = config('builder.admin.uri');
 
@@ -469,10 +475,12 @@ class JarboeController
     {
         $isSearchable = false;
 
-        foreach ($definition['fields'] as $field) {
-            if (isset($field['filter'])) {
-                $isSearchable = true;
-                break;
+        if (isset($definition['fields'])) {
+            foreach ($definition['fields'] as $field) {
+                if (isset($field['filter'])) {
+                    $isSearchable = true;
+                    break;
+                }
             }
         }
 
