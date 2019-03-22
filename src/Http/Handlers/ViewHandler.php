@@ -161,19 +161,22 @@ class ViewHandler
     {
         $params = (array) json_decode(request('paramsJson'));
         $result = [];
+        $fileDefinition = 'builder.tb-definitions.' . $params['definition'];
 
         foreach ($params['show'] as $field) {
             $arrayDefinitionFields[$field] =
-                config('builder.tb-definitions.'.$params['definition'].'.fields.'.$field);
+                config($fileDefinition.'.fields.'.$field);
         }
 
         if (request('id')) {
-            $modelThis = config('builder.tb-definitions.'.$params['definition'].'.options.model');
+            $modelThis = config($fileDefinition . '.options.model');
             $result = $modelThis::where($params['foreign_field'], request('id'));
 
             $result = isset($params['sortable'])
                     ? $result->orderBy($params['sortable'], 'asc')->orderBy('id', 'desc')
                     : $result->orderBy('id', 'desc');
+
+            $this->filterDefinition($fileDefinition, $result);
 
             $result = $result->get();
         }
@@ -189,6 +192,20 @@ class ViewHandler
                         ->render(),
             'count_records' => count($result),
         ];
+    }
+
+    private function filterDefinition($fileDefinition, $result)
+    {
+        $filters = config($fileDefinition . '.filters') ? config($fileDefinition . '.filters') : [];
+        if (is_callable($filters)) {
+            $filters($result);
+
+            return;
+        }
+
+        foreach ($filters as $name => $field) {
+            $result->where($name, $field['sign'], $field['value']);
+        }
     }
 
     /**
