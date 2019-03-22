@@ -59,7 +59,7 @@ class DefinitionHandler
     {
         $result = [];
 
-        if (!isset($this->def['fields'])) {
+        if (! isset($this->def['fields'])) {
             return $result;
         }
 
