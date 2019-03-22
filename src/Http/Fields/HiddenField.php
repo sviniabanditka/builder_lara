@@ -75,7 +75,7 @@ class HiddenField extends AbstractField
             return $this->getAttribute('value')();
         }
 
-       return $this->getAttribute('value');
+        return $this->getAttribute('value');
     }
 
     public function getAttribute($ident, $default = false)
@@ -94,7 +94,5 @@ class HiddenField extends AbstractField
      */
     public function getListValue($row)
     {
-        return;
     }
-
 }
