@@ -56,6 +56,8 @@ class QueryHandler
      */
     protected $extendsFields = [];
 
+    protected $extendsFieldsModel = [];
+
     /**
      * QueryHandler constructor.
      *
@@ -78,10 +80,10 @@ class QueryHandler
                 $table = $extend['table'];
                 $this->extendsTable[$table] = $table;
 
-                if (isset($extend['id'])) {
-                    $this->extendsTableId[$table] = $extend['id'];
-                } else {
-                    $this->extendsTableId[$table] = $this->dbName.'_id';
+                $this->extendsTableId[$table] = isset($extend['id']) ? $extend['id'] : $this->dbName . '_id';
+
+                if (isset($extend['polymorph'])) {
+                    $this->extendsFieldsModel[$table] = $extend['polymorph'];
                 }
             }
         }
@@ -144,7 +146,13 @@ class QueryHandler
                     continue;
                 }
 
-                $this->db->leftJoin($table, "{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+                $this->db->leftJoin($table, function($q) use ($table) {
+                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+
+                    if (isset($this->extendsFieldsModel[$table])) {
+                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', $this->model);
+                    }
+                 });
             }
         }
 
@@ -270,7 +278,13 @@ class QueryHandler
 
         if ($this->extendsTable) {
             foreach ($this->extendsTable as $table) {
-                $this->db->leftJoin($table, "{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+                $this->db->leftJoin($table, function($q) use ($table) {
+                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+
+                    if (isset($this->extendsFieldsModel[$table])) {
+                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', $this->model);
+                    }
+                });
             }
         }
 
@@ -480,11 +494,23 @@ class QueryHandler
             foreach ($this->extendsFields as $tableEx => $fields) {
                 $table = DB::table($tableEx);
 
-                $hasExistRecord = DB::table($tableEx)->where($this->extendsTableId[$tableEx], $id)->count();
+                $tableExField = $this->extendsTableId[$tableEx];
+
+                $hasExistRecord = DB::table($tableEx)
+                    ->where($tableExField, $id);
+
+                if (isset($this->extendsFieldsModel[$tableEx])) {
+                    $fields[$this->extendsFieldsModel[$tableEx]] = $this->model;
+                    $hasExistRecord = $hasExistRecord->where($this->extendsFieldsModel[$tableEx], $this->model);
+                }
+
+                $hasExistRecord = $hasExistRecord->first();
+
+                $fields[$tableExField] = $id;
+
                 if ($hasExistRecord) {
-                    $table->where($this->extendsTableId[$tableEx], $id)->update($fields);
+                    $table->where('id', $hasExistRecord->id)->update($fields);
                 } else {
-                    $fields[$this->extendsTableId[$tableEx]] = $id;
                     $table->insert($fields);
                 }
             }
@@ -761,6 +787,7 @@ class QueryHandler
 
                     if ($field->getAttribute('extends_table') && array_key_exists($fieldName, $values)) {
                         $this->extendsFields[$field->getAttribute('extends_table')][$fieldName] = $field->prepareQueryValue($values[$fieldName]);
+
                         unset($values[$fieldName]);
                         continue;
                     }
