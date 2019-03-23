@@ -161,7 +161,7 @@ class ViewHandler
     {
         $params = (array) json_decode(request('paramsJson'));
         $result = [];
-        $fileDefinition = 'builder.tb-definitions.' . $params['definition'];
+        $fileDefinition = 'builder.tb-definitions.'.$params['definition'];
 
         foreach ($params['show'] as $field) {
             $arrayDefinitionFields[$field] =
@@ -169,7 +169,7 @@ class ViewHandler
         }
 
         if (request('id')) {
-            $modelThis = config($fileDefinition . '.options.model');
+            $modelThis = config($fileDefinition.'.options.model');
             $result = $modelThis::where($params['foreign_field'], request('id'));
 
             $result = isset($params['sortable'])
@@ -196,7 +196,7 @@ class ViewHandler
 
     private function filterDefinition($fileDefinition, $result)
     {
-        $filters = config($fileDefinition . '.filters') ? config($fileDefinition . '.filters') : [];
+        $filters = config($fileDefinition.'.filters') ? config($fileDefinition.'.filters') : [];
         if (is_callable($filters)) {
             $filters($result);
 
