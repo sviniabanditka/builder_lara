@@ -80,7 +80,7 @@ class QueryHandler
                 $table = $extend['table'];
                 $this->extendsTable[$table] = $table;
 
-                $this->extendsTableId[$table] = isset($extend['id']) ? $extend['id'] : $this->dbName . '_id';
+                $this->extendsTableId[$table] = isset($extend['id']) ? $extend['id'] : $this->dbName.'_id';
 
                 if (isset($extend['polymorph'])) {
                     $this->extendsFieldsModel[$table] = $extend['polymorph'];
@@ -146,13 +146,13 @@ class QueryHandler
                     continue;
                 }
 
-                $this->db->leftJoin($table, function($q) use ($table) {
+                $this->db->leftJoin($table, function ($q) use ($table) {
                     $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
 
                     if (isset($this->extendsFieldsModel[$table])) {
                         $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', $this->model);
                     }
-                 });
+                });
             }
         }
 
@@ -278,7 +278,7 @@ class QueryHandler
 
         if ($this->extendsTable) {
             foreach ($this->extendsTable as $table) {
-                $this->db->leftJoin($table, function($q) use ($table) {
+                $this->db->leftJoin($table, function ($q) use ($table) {
                     $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
 
                     if (isset($this->extendsFieldsModel[$table])) {
