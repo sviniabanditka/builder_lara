@@ -1070,7 +1070,9 @@ var TableBuilder = {
                 if (response.status) {
                     var html = '<a href="' + response.link + '" target="_blank">Скачать</a>';
                     $(context).parents('.input-file').next().html(html);
-                    $(context).parents('.files_type_fields').find('input[type=text]').val(response.long_link);
+                    var input = $(context).parents('.files_type_fields').find('input[type=text]');
+                    input.val(response.long_link);
+                    input.trigger('change')
                 } else {
                     TableBuilder.showErrorNotification("Ошибка при загрузке файла");
                 }
@@ -1226,6 +1228,7 @@ var TableBuilder = {
             var file = $("#files_uploaded_table_" + name + " input:checked").val();
             var elementForUpdate = TableBuilder.thisFileElementInGroup.parent().find('input[type=text]');
             elementForUpdate.val(file);
+            elementForUpdate.trigger('change');
             elementForUpdate.parents('.input-file').next().html('<a href="' + file + '" target="_blank">Скачать</a> | <a class="delete" style="color:red;" onclick="$(this).parents(\'.files_type_fields\').find(\'input[type=text]\').val(\'\'); $(this).parent().hide()">Удалить</a>');
         }
 
