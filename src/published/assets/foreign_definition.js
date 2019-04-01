@@ -8,6 +8,7 @@ var ForeignDefinition  = {
         var definition = attributesJson.definition;
         var foreign_field = attributesJson.foreign_field;
 
+
         if (foreign_field_id == undefined) {
             var loader = content.parent().find('.loader_create_definition');
             loader.removeClass('hide').text('Сохранение данных..');
@@ -33,6 +34,7 @@ var ForeignDefinition  = {
                         TableBuilder.refreshMask();
                         TableBuilder.handleActionSelect();
                         loader.addClass('hide');
+
 
                         ForeignDefinition.sendRequestForShowDefinition(content, table, definition, idCreated, foreign_field, attributes);
                     },
@@ -205,6 +207,7 @@ var ForeignDefinition  = {
         $('.modal_form_' + table).css('top', $(window).scrollTop() + 50);
         $(".modal-dialog").draggable({ handle: ".modal-header" });
         TableBuilder.initFroalaEditor(table);
+        TableBuilder.handleActionSelect();
     },
 
     changePosition : function (context, attributesJson) {

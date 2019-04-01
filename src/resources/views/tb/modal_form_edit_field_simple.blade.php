@@ -33,7 +33,7 @@
         @else
             {!! $field->getEditInput($row) !!}
         @endif
-        
+
         @continue
     @endif
 
