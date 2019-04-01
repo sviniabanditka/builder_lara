@@ -27,6 +27,16 @@
         @continue
     @endif
 
+    @if ($options['type'] == 'hidden')
+        @if ($is_blank)
+            {!! $field->getEditInput() !!}
+        @else
+            {!! $field->getEditInput($row) !!}
+        @endif
+        
+        @continue
+    @endif
+
     <section class="{{$field->getAttribute('class_name') ? "section_field ".$field->getAttribute('class_name'): ""}}">
         @if ($is_blank)
             <label class="label" for="{{$ident}}">{{__cms($options['caption'])}}</label>
