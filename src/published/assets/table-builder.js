@@ -79,6 +79,7 @@ var TableBuilder = {
                 imageManagerDeleteURL: "/admin/delete_image?_token=" + csrfToken,
                 heightMin: 100,
                 heightMax: 500,
+                fileMaxSize: 100000000,
                 fileUploadURL: "/admin/upload_file?_token=" + csrfToken,
                 imageManagerLoadURL: "/admin/load_image?_token=" + csrfToken,
                 imageDeleteURL: "/admin/delete_image?_token=" + csrfToken,
