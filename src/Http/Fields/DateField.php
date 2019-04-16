@@ -45,7 +45,7 @@ class DateField extends AbstractField
             return '';
         }
 
-        $dateTimeArray = explode(" ", $this->getValue($row));
+        $dateTimeArray = explode(' ', $this->getValue($row));
 
         return $dateTimeArray[0] ?? $this->getValue($row);
     }
