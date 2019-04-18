@@ -42,7 +42,7 @@ class FindAndCheckUrlForTree
         $model = $this->model;
 
         $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug_'.$slug, function () use ($model, $slug) {
-            return $model::where('slug', 'like', $slug)->get();
+            return $model::where('slug', 'like', $slug)->active()->get();
         });
 
         foreach ($nodes as $node) {
