@@ -105,16 +105,6 @@ class Tree extends \Baum\Node
      */
     private $recursiveOnlyLastLevel;
 
-    /**
-     * @param $value
-     */
-    public function setSlugAttribute($value)
-    {
-        $slug = $this->id == 1 ? $value : JarboeBuilder::urlify($value);
-
-        $this->attributes['slug'] = $slug;
-    }
-
     // end setSlugAttribute
 
     public function checkUnicUrl()

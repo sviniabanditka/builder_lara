@@ -3,6 +3,7 @@
 namespace Vis\Builder;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class TreeCatalogController
 {
@@ -80,7 +81,7 @@ class TreeCatalogController
         $node->parent_id = request('node', 1);
         $node->title = request('title');
         $node->template = request('template') ?: '';
-        $node->slug = request('slug') ?: request('title');
+        $node->slug = Str::slug(request('title'));
 
         $node->save();
 
