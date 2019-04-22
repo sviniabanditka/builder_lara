@@ -4,7 +4,6 @@ namespace Vis\Builder;
 
 use Illuminate\Support\Facades\Cache;
 use Request;
-use Vis\Builder\Facades\Jarboe as JarboeBuilder;
 
 /**
  * Class Tree.
