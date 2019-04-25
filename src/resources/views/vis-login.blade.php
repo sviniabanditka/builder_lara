@@ -6,15 +6,7 @@
         <div id="content" class="container">
 
                 <div class="b-login col-xs-12 col-sm-12 col-md-5 col-lg-4 " style="float: right;">
-                    <div class="b-top">
-                         <div class="pull-left">
-                            <img style="height: 30px;" src="{{asset('packages/vis/builder/img/logo.png')}}">
-                         </div>
-                         <div class="pull-right" style="text-align: right;">
-                              <p>{{__cms('Служба поддержки')}}:</p>
-                              <p><a href="mailto:{{config('builder.login.email_support')}}">{{config('builder.login.email_support')}}</a></p>
-                         </div>
-                    </div>
+
                     <div class="b-bottom">
                        {{config('builder.login.bottom_block')}}
                     </div>
