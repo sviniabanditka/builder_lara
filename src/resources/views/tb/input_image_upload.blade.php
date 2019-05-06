@@ -8,7 +8,7 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> Выбрать из загруженных </span>
+                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'multi', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> {{__cms('Выбрать из загруженных')}} </span>
                 @endif
                 <span class="button">
                     <input type="file" multiple accept="image/*" class="image_{{$name}}"
@@ -55,7 +55,7 @@
             </div>
             <div class="input input-file">
                 @if ($chooseFromUploaded)
-                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> Выбрать из загруженных </span>
+                    <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$name}}', 'one_file', $(this), '{{$baseName}}', '{{request('id_tree')}}')"> {{__cms('Выбрать из загруженных')}}</span>
                 @endif
                 <span class="button">
                     <input type="file" accept="image/*" onchange="TableBuilder.uploadImage(this, '{{$name}}', '{{$baseName}}');">
@@ -81,7 +81,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close_window" onclick="TableBuilder.closeWindowWithPictures();"> &times; </span>
-                    <h4 class="modal-title" id="modal_form_label">Выберите изображения</h4>
+                    <h4 class="modal-title" id="modal_form_label">{{__cms('Выберите изображения')}}</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
@@ -90,8 +90,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
-                    <span class="btn btn-default"  onclick="TableBuilder.closeWindowWithPictures();"> Отмена </span>
+                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >{{__cms('Выбрать')}}</span>
+                    <span class="btn btn-default"  onclick="TableBuilder.closeWindowWithPictures();"> {{__cms('Отмена')}} </span>
                 </div>
             </div>
         </div>

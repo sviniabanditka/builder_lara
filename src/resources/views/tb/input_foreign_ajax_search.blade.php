@@ -1,7 +1,7 @@
 <label class="input">
     <input value="" type="text" name="{{ $name }}" class="form-control input-sm unselectable {{ $name }}_foreign">
 </label>
-<div style="padding-top: 4px"><a onclick="deleteForeing{{$name}}()">Удалить</a></div>
+<div style="padding-top: 4px"><a onclick="deleteForeing{{$name}}()">{{__cms('Удалить')}}</a></div>
 
 <script>
 

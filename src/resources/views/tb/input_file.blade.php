@@ -7,16 +7,16 @@
         <div class="input input-file">
             <span class="button">
                 <input type="file"  multiple onchange="TableBuilder.uploadFileMulti(this, '{{$name}}');" {{$accept ? "accept=$accept" : ""}}>
-                Загрузить
+                {{__cms('Загрузить')}}
             </span>
              <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'multi_file', $(this) )">
-                Выбрать из загруженных
+               {{__cms('Выбрать из загруженных')}}
              </span>
             <input type="hidden" name="{{$name}}" value='{{$value}}'>
             <input type="text"
                    id="{{ $name }}"
                    value=""
-                   placeholder="Выберите файлы для загрузки"
+                   placeholder="{{__cms('Выберите файлы для загрузки')}}"
                    readonly="readonly">
         </div>
 
@@ -32,8 +32,8 @@
                 @if(isset($source) && is_array($source))
                     @foreach($source as $file)
                         <li>
-                            {{basename($file)}} <a href="{{$file}}" path = "{{$file}}" target="_blank">Скачать</a>
-                            <a class="delete" onclick="TableBuilder.doDeleteFile(this)">Удалить</a>
+                            {{basename($file)}} <a href="{{$file}}" path = "{{$file}}" target="_blank">{{__cms('Скачать')}}</a>
+                            <a class="delete" onclick="TableBuilder.doDeleteFile(this)">{{__cms('Удалить')}}</a>
                         </li>
                     @endforeach
                 @endif
@@ -50,16 +50,16 @@
          <div class="input input-file">
              <span class="button">
                  <input type="file" onchange="TableBuilder.uploadFile(this, '{{$name}}');" {{$accept ? "accept=$accept" : ""}}>
-                 Загрузить
+                 {{__cms('Загрузить')}}
              </span>
               <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$name}}', 'one_file', $(this))">
-                Выбрать из загруженных
+                {{__cms('Выбрать из загруженных')}}
              </span>
              <input type="text"
                     id="{{ $name }}"
                     name="{{ $name }}"
                     value="{{ $value }}"
-                    placeholder="@if($value) {{$value}} @else Выберите файл для загрузки @endif"
+                    placeholder="@if($value) {{$value}} @else {{__cms('Выберите файл для загрузки')}}  @endif"
                     readonly="readonly">
          </div>
 
@@ -71,8 +71,8 @@
 
          <div class="tb-uploaded-file-container-{{$name}} tb-uploaded-file-container">
              @if ($value)
-             <a href="{{url($value)}}" target="_blank">Скачать</a> |
-             <a class="delete" style="color:red;" onclick="$(this).parents('.files_type_fields').find('input[type=text]').val(''); $(this).parent().hide()">Удалить</a>
+             <a href="{{url($value)}}" target="_blank">{{__cms('Скачать')}}</a> |
+             <a class="delete" style="color:red;" onclick="$(this).parents('.files_type_fields').find('input[type=text]').val(''); $(this).parent().hide()">{{__cms('Удалить')}}</a>
              @endif
          </div>
     @endif
@@ -84,17 +84,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close_window" onclick="$('.files_uploaded_table').hide()"> &times; </span>
-                    <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
+                    <h4 class="modal-title" id="modal_form_label">{{__cms('Выберите файлы')}}</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
                         <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th class="name">Имя</th>
-                            <th class="type">Тип</th>
-                            <th class="size">Размер</th>
-                            <th class="date">Дата</th>
+                            <th class="name">{{__cms('Имя')}}</th>
+                            <th class="type">{{__cms('Тип')}}</th>
+                            <th class="size">{{__cms('Размер')}}</th>
+                            <th class="date">{{__cms('Дата')}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -102,8 +102,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >Выбрать</span>
-                    <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> Отмена </span>
+                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$name}}', '{{$is_multiple ? 'multi' : 'once'}}')" >{{__cms('Выбрать')}}</span>
+                    <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> {{__cms('Отмена')}} </span>
                 </div>
             </div>
         </div>

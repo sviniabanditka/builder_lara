@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel">Обрезать изображение</h4>
+                <h4 class="modal-title" id="modalLabel">{{__cms('Обрезать изображение')}}</h4>
             </div>
             <div class="modal-body">
                 <div>
@@ -18,8 +18,8 @@
                             H: <span class="height_crop"></span>px
                         </td>
                         <td style="text-align: right">
-                            <button type="button" class="btn btn-default close_crop">Закрыть</button>
-                            <button type="button" class="btn btn-default download" onclick="Cropper.download()">Сохранить</button>
+                            <button type="button" class="btn btn-default close_crop">{{__cms('Закрыть')}}</button>
+                            <button type="button" class="btn btn-default download" onclick="Cropper.download()">{{__cms('Сохранить')}}</button>
                         </td>
                     </tr>
                 </table>

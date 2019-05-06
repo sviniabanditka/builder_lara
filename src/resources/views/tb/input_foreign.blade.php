@@ -43,7 +43,7 @@
 
 @if ($allow_foreign_add)
     <div class="{{ $name }}_add_new_foreign" style="display: none">
-        <input type="text" name="{{ $name }}_new_foreign" placeholder="Добавить новое значение" />
+        <input type="text" name="{{ $name }}_new_foreign" placeholder="{{__cms('Добавить новое значение')}}" />
     </div>
 @endif
 

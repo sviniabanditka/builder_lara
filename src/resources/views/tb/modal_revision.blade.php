@@ -15,11 +15,11 @@
                 <thead>
                     <tr>
                         <td>#</td>
-                        <td>Пользователь</td>
-                        <td>Поле</td>
-                        <td>Старое значение</td>
-                        <td>Новое значение</td>
-                        <td>Дата/Время</td>
+                        <td>{{__cms('Пользователь')}}</td>
+                        <td>{{__cms('Поле')}}</td>
+                        <td>{{__cms('Старое значение')}}</td>
+                        <td>{{__cms('Новое значение')}}</td>
+                        <td>{{__cms('Дата/Время')}}</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -32,11 +32,11 @@
                         <td><div class="value_old_new">{{{ $historyRecord->old_value}}}</div></td>
                         <td><div class="value_old_new">{{{ $historyRecord->new_value}}}</div></td>
                         <td>{{{ $historyRecord->created_at}}}</td>
-                        <td><a onclick="TableBuilder.getReturnHistory({{$historyRecord->id}});">Вернуть изменения</a></td>
+                        <td><a onclick="TableBuilder.getReturnHistory({{$historyRecord->id}});">{{__cms('Вернуть изменения')}}</a></td>
                        </tr>
                      @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 30px 0"><p>Изменений не было</p></td>
+                            <td colspan="6" style="text-align: center; padding: 30px 0"><p>{{__cms('Изменений не было')}}</p></td>
                         </tr>
                      @endforelse
                 </tbody>

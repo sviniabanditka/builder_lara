@@ -24,15 +24,15 @@
                 <div class="btn-group hidden-phone pull-right">
                     <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a onclick="ForeignDefinition.edit({{$data['id']}}, {{$idUpdate}}, '{{$attributes}}')"><i class="fa fa-pencil"></i> Редактировать</a></li>
-                        <li><a onclick="ForeignDefinition.delete({{$data['id']}}, {{$idUpdate}}, '{{$attributes}}')"><i class="fa red fa-times"></i> Удалить</a></li>
+                        <li><a onclick="ForeignDefinition.edit({{$data['id']}}, {{$idUpdate}}, '{{$attributes}}')"><i class="fa fa-pencil"></i> {{__cms('Редактировать')}}</a></li>
+                        <li><a onclick="ForeignDefinition.delete({{$data['id']}}, {{$idUpdate}}, '{{$attributes}}')"><i class="fa red fa-times"></i> {{__cms('Удалить')}}</a></li>
                     </ul>
                 </div>
 
             </td>
         </tr>
         @empty
-            <tr><td colspan="{{count ($arrayDefinitionFields) +1 }}"> Пока пусто </td></tr>
+            <tr><td colspan="{{count ($arrayDefinitionFields) +1 }}"> {{__cms('Пока пусто')}} </td></tr>
         @endforelse
     </tbody>
 </table>
