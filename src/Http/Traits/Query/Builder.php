@@ -71,7 +71,7 @@ class Builder extends \Illuminate\Database\Query\Builder
         // If the query is requested to be cached, we will cache it using a unique key
         // for this database connection and query statement, including the bindings
         // that are used on this query, providing great convenience when caching.
-        list($key, $minutes) = $this->getCacheInfo();
+        [$key, $minutes] = $this->getCacheInfo();
 
         $cache = $this->getCache();
 
@@ -97,7 +97,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function remember($minutes, $key = null)
     {
-        list($this->cacheMinutes, $this->cacheKey) = [$minutes, $key];
+        [$this->cacheMinutes, $this->cacheKey] = [$minutes, $key];
 
         return $this;
     }

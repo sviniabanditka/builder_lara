@@ -6,7 +6,7 @@ class Translate extends AbstractSubaction
 {
     public function fetch()
     {
-        list($from, $to) = $this->getAttribute('locales');
+        [$from, $to] = $this->getAttribute('locales');
         $caption = $this->getAttribute('caption');
 
         $data = compact('caption', 'to', 'from');
