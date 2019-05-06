@@ -40,7 +40,7 @@ class TBTreeController extends \Controller
                     'node' => $idNode,
                 ],
             ];
-            list($table, $form) = \Jarboe::table($options);
+            [$table, $form] = \Jarboe::table($options);
             $content = view('admin::tree.content', compact('current', 'table', 'form', 'template'));
         } else {
             $content = view('admin::tree.content', compact('current', 'template'));
