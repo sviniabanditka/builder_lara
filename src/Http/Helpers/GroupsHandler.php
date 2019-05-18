@@ -62,7 +62,7 @@ class GroupsHandler extends CustomHandler
 
                 $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
-                if (count($actions)) {
+                if (is_array($actions)) {
                     $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                     foreach ($actions as $slugAction => $action) {
                         if (isset($action['caption'])) {
@@ -72,7 +72,7 @@ class GroupsHandler extends CustomHandler
                 } else {
                     $actions = config('builder.'.$slug.'.actions');
 
-                    if (count($actions)) {
+                    if (is_array($actions)) {
                         $permissions[$permission['title']][$slug.'.view'] = 'Просмотр';
                         foreach ($actions as $slugAction => $action) {
                             if (isset($action['caption'])) {
@@ -93,7 +93,7 @@ class GroupsHandler extends CustomHandler
                             if (isset($subMenu['link']) && isset($subMenu['title'])) {
                                 $permissions[$permission['title']][$subMenu['title']][$slug.'.view'] = 'Просмотр';
 
-                                if (count($actions)) {
+                                if (is_array($actions)) {
                                     foreach ($actions as $slugAction => $action) {
                                         $permissions[$permission['title']][$subMenu['title']][$slug.'.'.$slugAction]
                                             = $action['caption'];
