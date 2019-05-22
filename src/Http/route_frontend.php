@@ -88,7 +88,7 @@ if ($arrSegments[0] != 'admin') {
                                                     App::abort(404);
                                                 }
 
-                                                [$controller, $method] = explode('@', $templates[$node->template]['action']);
+                                                list($controller, $method) = explode('@', $templates[$node->template]['action']);
 
                                                 $app = app();
                                                 $controller = $app->make('App\\Http\\Controllers\\'.$controller);
