@@ -435,6 +435,10 @@ class JarboeController
     {
         $className = 'Vis\\Builder\\Fields\\'.ucfirst(camel_case($info['type'])).'Field';
 
+        if (isset($info['handler'])) {
+            $className = $info['handler'];
+        }
+
         return new $className(
             $name,
             $info,
