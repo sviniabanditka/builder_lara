@@ -54,7 +54,9 @@ class ManyToManyField extends AbstractField
             ->where($this->getAttribute('mtm_key_field'), $id);
 
         if ($this->getAttribute('mtm_external_model')) {
-            $delete = $delete->where($this->getAttribute('mtm_external_model'), $this->definition['options']['model']);
+            $delete = $this->getAttribute('mtm_external_model_custom') ?
+                $delete->where($this->getAttribute('mtm_external_model'), $this->getAttribute('mtm_external_model_custom')) :
+                $delete->where($this->getAttribute('mtm_external_model'), $this->definition['options']['model']);
         }
 
         $delete->delete();
@@ -86,7 +88,10 @@ class ManyToManyField extends AbstractField
                 ];
 
                 if ($this->getAttribute('mtm_external_model')) {
-                    $data[$key][$this->getAttribute('mtm_external_model')] = $this->definition['options']['model'];
+                    $data[$key][$this->getAttribute('mtm_external_model')] =
+                        $this->getAttribute('mtm_external_model_custom') ?
+                            $this->getAttribute('mtm_external_model_custom') :
+                            $this->definition['options']['model'];
                 }
             }
         }
@@ -305,7 +310,11 @@ class ManyToManyField extends AbstractField
         $options->where($this->getAttribute('mtm_key_field'), $row['id']);
 
         if ($this->getAttribute('mtm_external_model')) {
-            $options->where($this->getAttribute('mtm_external_model'), $this->definition['options']['model']);
+            if ($this->getAttribute('mtm_external_model_custom')) {
+                $options->where($this->getAttribute('mtm_external_model'), $this->getAttribute('mtm_external_model_custom'));
+            } else {
+                $options->where($this->getAttribute('mtm_external_model'), $this->definition['options']['model']);
+            }
         }
 
         $externalOrder = $this->getAttribute('mtm_external_order');
