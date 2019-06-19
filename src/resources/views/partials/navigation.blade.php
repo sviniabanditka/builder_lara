@@ -65,7 +65,10 @@
                                                     <ul>
                                                         @foreach($sub_menu['submenu'] as $k_sub_menu2=>$sub_menu2)
                                                             @if(!isset($sub_menu2['check']) || $sub_menu2['check']())
-                                                                <li>
+                                                                <li
+                                                                    @if (isset($sub_menu2['badge']))
+                                                                        style="align-items: center;justify-content: space-between;display: flex;"
+                                                                    @endif>
                                                                     <a {!!isset($sub_menu2['link']) && !isset($sub_menu2['submenu']) ? "href='/admin".$sub_menu2['link']."'" : "" !!}>{{__cms($sub_menu2['title'])}}</a>
 
                                                                     @if (isset($sub_menu2['badge']))

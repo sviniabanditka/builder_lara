@@ -381,7 +381,7 @@ var TableBuilder = {
                     });
                 } else {
                     jQuery.smallBox({
-                        title : "Something went wrong, try again later",
+                        title : response.message != undefined ? response.message : "Something went wrong, try again later",
                         content : "",
                         color : "#C46A69",
                         iconSmall : "fa fa-times fa-2x fadeInRight animated",
