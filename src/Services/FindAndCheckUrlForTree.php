@@ -41,9 +41,13 @@ class FindAndCheckUrlForTree
         $tagsCache = config('builder.tree.cache.tags', ['tree']);
         $model = $this->model;
 
-        $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug_'.$slug, function () use ($model, $slug) {
-            return $model::where('slug', 'like', $slug)->active()->get();
-        });
+        if (request('show') == 1) {
+            $nodes = $model::where('slug', 'like', $slug)->get();
+        } else {
+            $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug_'.$slug, function () use ($model, $slug) {
+                return $model::where('slug', 'like', $slug)->active()->get();
+            });
+        }
 
         foreach ($nodes as $node) {
             if (trim($node->getUrl(), '/') == Request::url()) {
