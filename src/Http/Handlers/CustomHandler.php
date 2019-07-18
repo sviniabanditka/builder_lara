@@ -247,6 +247,5 @@ abstract class CustomHandler
 
     public function onShowHtml()
     {
-
     }
 }
