@@ -244,4 +244,9 @@ abstract class CustomHandler
     public function onDeleteButtonFetch($def)
     {
     }
+
+    public function onShowHtml()
+    {
+
+    }
 }
