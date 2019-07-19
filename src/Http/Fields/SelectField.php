@@ -123,5 +123,4 @@ class SelectField extends AbstractField
             return isset($colors[$this->getValue($row)]) ? $colors[$this->getValue($row)] : '';
         }
     }
-
 }
