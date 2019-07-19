@@ -56,7 +56,16 @@ abstract class AbstractField
 
     public function getAttribute($ident, $default = false)
     {
-        return isset($this->attributes[$ident]) ? $this->attributes[$ident] : $default;
+        if (isset($this->attributes[$ident])) {
+
+            if (is_callable($this->attributes[$ident])) {
+                return $this->attributes[$ident]();
+            }
+
+            return $this->attributes[$ident];
+        }
+
+        return $default;
     }
 
     public function getRequiredAttribute($ident)

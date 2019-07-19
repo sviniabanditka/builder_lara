@@ -116,7 +116,7 @@ class ViewHandler
                 $table->rows = $res;
             }
         }
-        
+
         if ($this->controller->hasCustomHandlerMethod('onShowHtml')) {
             $res = $this->controller->getCustomHandler()->onShowHtml();
 

@@ -1,5 +1,5 @@
 <select name="filter[{{ $name }}]" class="form-control input-small">
-    <option value="">Все</option>
+    <option value="">{{__cms('Все')}}</option>
 
     @if ($recursive)
         @foreach ($options as $value => $caption)

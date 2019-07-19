@@ -45,11 +45,13 @@ class SelectField extends AbstractField
 
         $definitionName = $this->getOption('def_name');
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
+
         $filter = Session::get($sessionPath, '');
 
         $table = view('admin::tb.filter_select');
         $table->filter = $filter;
         $table->name = $this->getFieldName();
+
         $table->options = $this->getAttribute('options');
 
         return $table->render();
@@ -76,12 +78,7 @@ class SelectField extends AbstractField
         $table = view('admin::tb.input_select');
         $table->selected = $this->getValue($row);
         $table->name = $this->getFieldName();
-        $options = $this->getAttribute('options');
-        if (is_callable($options)) {
-            $table->options = $options();
-        } else {
-            $table->options = $this->getAttribute('options');
-        }
+        $table->options = $this->getAttribute('options');
         $table->disabled = $this->getAttribute('disabled');
 
         $table->action = $this->getAttribute('action');
@@ -107,19 +104,9 @@ class SelectField extends AbstractField
         }
 
         $val = $this->getValue($row);
-        $optionsRes = $this->getAttribute('options');
+        $options = $this->getAttribute('options');
 
-        if (is_callable($optionsRes)) {
-            $options = $optionsRes();
-        } else {
-            $options = $optionsRes;
-        }
-
-        if (isset($options[$val])) {
-            return $options[$val];
-        } else {
-            return $val;
-        }
+        return isset($options[$val]) ? $options[$val] : $val;
     }
 
     // end getListValue
@@ -136,4 +123,5 @@ class SelectField extends AbstractField
             return isset($colors[$this->getValue($row)]) ? $colors[$this->getValue($row)] : '';
         }
     }
+
 }
