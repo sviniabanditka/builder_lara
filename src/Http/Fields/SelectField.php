@@ -52,7 +52,7 @@ class SelectField extends AbstractField
         $table->filter = $filter;
         $table->name = $this->getFieldName();
 
-        $table->options = $this->getAttribute('options');
+        $table->options = $this->getAttributeCallable('options');
 
         return $table->render();
     }
@@ -78,7 +78,7 @@ class SelectField extends AbstractField
         $table = view('admin::tb.input_select');
         $table->selected = $this->getValue($row);
         $table->name = $this->getFieldName();
-        $table->options = $this->getAttribute('options');
+        $table->options = $this->getAttributeCallable('options');
         $table->disabled = $this->getAttribute('disabled');
 
         $table->action = $this->getAttribute('action');
@@ -104,7 +104,7 @@ class SelectField extends AbstractField
         }
 
         $val = $this->getValue($row);
-        $options = $this->getAttribute('options');
+        $options = $this->getAttributeCallable('options');
 
         return isset($options[$val]) ? $options[$val] : $val;
     }
