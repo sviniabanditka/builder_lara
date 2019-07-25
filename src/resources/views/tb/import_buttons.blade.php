@@ -23,7 +23,13 @@
                                     @endif
                                     <div class="input input-file">
                                 <span class="button" style="top: 3px; right: 3px;">
-                                    <input type="file" name="file" onclick="this.value = null;" onchange="TableBuilder.doImport(this, '{{ $type }}', '{{$info['url_load'] ?? ''}}');">
+                                    <input type="file" name="file"
+                                           @if (isset($info['accept']))
+                                             accept="{{$info['accept']}}"
+                                           @endif
+                                           onclick="this.value = null;"
+                                           onchange="TableBuilder.doImport(this, '{{ $type }}', '{{$info['url_load'] ?? ''}}');"
+                                    >
                                     Выбрать
                                 </span>
                                         <input type="text" placeholder="{{ $info['caption'] }}" readonly="readonly">
