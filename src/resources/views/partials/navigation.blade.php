@@ -32,7 +32,7 @@
                                     <?php $badgeValue = $el['badge'](); ?>
 
                                     <span
-                                            class="badge bg-color-greenLight pull-right inbox-badge"
+                                            class="badge bg-color-greenLight inbox-badge"
                                             style="@if(!$badgeValue) display: none @endif"
                                     >
                                         {{is_numeric($badgeValue) ? $badgeValue : ''}}
@@ -53,7 +53,7 @@
                                                         <?php $badgeValue = $sub_menu['badge'](); ?>
 
                                                         <span
-                                                                class="badge bg-color-greenLight pull-right inbox-badge"
+                                                                class="badge bg-color-greenLight  inbox-badge"
                                                                 style="@if(!$badgeValue) display: none @endif"
                                                         >
                                                         {{is_numeric($badgeValue) ? $badgeValue : ''}}
@@ -74,7 +74,7 @@
                                                                     @if (isset($sub_menu2['badge']))
                                                                         <?php $countBadge = $sub_menu2['badge'](); ?>
                                                                         @if (is_numeric($countBadge))
-                                                                            <span class="badge bg-color-greenLight pull-right inbox-badge">{{$countBadge}}</span>
+                                                                            <span class="badge bg-color-greenLight inbox-badge">{{$countBadge}}</span>
                                                                         @endif
                                                                     @endif
                                                                 </li>
