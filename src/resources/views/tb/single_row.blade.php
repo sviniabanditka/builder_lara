@@ -14,20 +14,22 @@
         </td>
     @endif
 
-@foreach ($def['fields'] as $ident => $field)
-    <?php $field = $controller->getField($ident) ?>
-    @if (!$field->getAttribute('hide_list'))
-        <td  width="{{ $field->getAttribute('width') }}" class="{{ $field->getAttribute('class') }} unselectable">
-            @if ($field->getAttribute('fast-edit'))
-                {!! $field->getListValueFastEdit($row, $ident) !!}
-            @elseif($field->getAttribute('result_show'))
-                  {!! strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
-            @else
-                <span>{!! strip_tags($field->getListValue($row), "<a><span><img><br>") !!}</span>
-            @endif
-        </td>
-    @endif
-@endforeach
+    @foreach ($def['fields'] as $ident => $field)
+        <?php $field = $controller->getField($ident) ?>
+        @if (!$field->getAttribute('hide_list'))
+            <td  width="{{ $field->getAttribute('width') }}" class="{{ $field->getAttribute('class') }} unselectable">
+                @if ($field->getAttribute('fast-edit'))
+                    {!! $field->getListValueFastEdit($row, $ident) !!}
+                @elseif($field->getAttribute('result_show'))
+                    {!! strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
+                @elseif($field->getAttribute('no_strip_tags'))
+                    {!! $field->getListValue($row) !!}
+                @else
+                    <span>{!! strip_tags($field->getListValue($row), "<a><span><img><br>") !!}</span>
+                @endif
+            </td>
+        @endif
+    @endforeach
 
     {!! $controller->view->fetchActions($row) !!}
 </tr>
