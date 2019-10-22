@@ -62,6 +62,7 @@ class ManyToManyField extends AbstractField
         $delete->delete();
 
         $data = [];
+        $ids = [];
         if ($this->getAttribute('show_type') == 'extra') {
             foreach ($values as $info) {
                 $temp = [
@@ -86,6 +87,7 @@ class ManyToManyField extends AbstractField
                     $this->getAttribute('mtm_key_field')          => $id,
                     $this->getAttribute('mtm_external_key_field') => $externalID,
                 ];
+                $ids[] = $externalID;
 
                 if ($this->getAttribute('mtm_external_model')) {
                     $data[$key][$this->getAttribute('mtm_external_model')] =
@@ -95,7 +97,32 @@ class ManyToManyField extends AbstractField
                 }
             }
         }
-
+        if ($this->getAttribute('mtm_update_order_field') && !empty($ids)) {
+            $ids_ordered = implode(',', $ids);
+            $id_field = $this->getAttribute('mtm_external_foreign_key_field');
+            $entities_default = DB::table($this->getAttribute('mtm_external_table'))
+                ->select([$this->getAttribute('mtm_external_foreign_key_field'), $this->getAttribute('mtm_update_order_field')])
+                ->whereIn($this->getAttribute('mtm_external_foreign_key_field'), $ids)
+                ->orderBy($this->getAttribute('mtm_update_order_field'), 'ASC')
+                ->get();
+            $entities_changed = DB::table($this->getAttribute('mtm_external_table'))
+                ->select([$this->getAttribute('mtm_external_foreign_key_field'), $this->getAttribute('mtm_update_order_field')])
+                ->whereIn($this->getAttribute('mtm_external_foreign_key_field'), $ids)
+                ->orderByRaw(DB::raw("FIELD($id_field, $ids_ordered)"))
+                ->get();
+            if ($entities_changed && $entities_default && count($entities_changed) == count($entities_default)) {
+                $count = count($entities_changed);
+                $attr = $this->getAttribute('mtm_update_order_field');
+                for ($i = 0; $i < $count; $i++) {
+                    $entities_changed[$i][$attr] = $entities_default[$i][$attr];
+                }
+                foreach ($entities_changed as $key => $value) {
+                    DB::table($this->getAttribute('mtm_external_table'))
+                        ->where($this->getAttribute('mtm_external_foreign_key_field'), '=', $value[$this->getAttribute('mtm_external_foreign_key_field')])
+                        ->update([$attr => $value[$attr]]);
+                }
+            }
+        }
         if ($data) {
             DB::table($this->getAttribute('mtm_table'))->insert($data);
         }
