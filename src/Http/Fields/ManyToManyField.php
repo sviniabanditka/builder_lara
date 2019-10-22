@@ -100,25 +100,26 @@ class ManyToManyField extends AbstractField
         if ($this->getAttribute('mtm_update_order_field') && !empty($ids)) {
             $ids_ordered = implode(',', $ids);
             $id_field = $this->getAttribute('mtm_external_foreign_key_field');
-            $entities_default = DB::table($this->getAttribute('mtm_external_table'))
-                ->select([$this->getAttribute('mtm_external_foreign_key_field'), $this->getAttribute('mtm_update_order_field')])
-                ->whereIn($this->getAttribute('mtm_external_foreign_key_field'), $ids)
-                ->orderBy($this->getAttribute('mtm_update_order_field'), 'ASC')
+            $attr = $this->getAttribute('mtm_update_order_field');
+            $table = $this->getAttribute('mtm_external_table');
+            $entities_default = DB::table($table)
+                ->select([$id_field, $attr])
+                ->whereIn($id_field, $ids)
+                ->orderBy($attr, 'ASC')
                 ->get();
-            $entities_changed = DB::table($this->getAttribute('mtm_external_table'))
-                ->select([$this->getAttribute('mtm_external_foreign_key_field'), $this->getAttribute('mtm_update_order_field')])
-                ->whereIn($this->getAttribute('mtm_external_foreign_key_field'), $ids)
+            $entities_changed = DB::table($table)
+                ->select([$id_field, $attr])
+                ->whereIn($id_field, $ids)
                 ->orderByRaw(DB::raw("FIELD($id_field, $ids_ordered)"))
                 ->get();
             if ($entities_changed && $entities_default && count($entities_changed) == count($entities_default)) {
                 $count = count($entities_changed);
-                $attr = $this->getAttribute('mtm_update_order_field');
                 for ($i = 0; $i < $count; $i++) {
                     $entities_changed[$i][$attr] = $entities_default[$i][$attr];
                 }
                 foreach ($entities_changed as $key => $value) {
-                    DB::table($this->getAttribute('mtm_external_table'))
-                        ->where($this->getAttribute('mtm_external_foreign_key_field'), '=', $value[$this->getAttribute('mtm_external_foreign_key_field')])
+                    DB::table($table)
+                        ->where($id_field, '=', $value[$id_field])
                         ->update([$attr => $value[$attr]]);
                 }
             }
