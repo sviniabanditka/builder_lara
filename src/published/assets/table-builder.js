@@ -258,7 +258,9 @@ var TableBuilder = {
             {name: "value", value: value}
         ];
 
-        jQuery.post(TableBuilder.getActionUrl(), data);
+        jQuery.post(TableBuilder.getActionUrl(), data, function () {
+            setInterval('location.reload()', 2000);
+        });
     }, // end saveFastEdit
 
     activeToggle : function (rowId, rowIdent, isActive) {
@@ -1585,6 +1587,7 @@ var TableBuilder = {
             success: function (response) {
                 if (response.status) {
                     TableBuilder.showSuccessNotification(phrase['Порядок следования изменен']);
+                    setInterval('location.reload()', 2000);
                 } else {
                     if (response.message) {
                         TableBuilder.showErrorNotification(response.message);
