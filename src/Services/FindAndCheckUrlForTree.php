@@ -40,22 +40,17 @@ class FindAndCheckUrlForTree
     {
         $tagsCache = config('builder.tree.cache.tags', ['tree']);
         $model = $this->model;
-
         if (request('show') == 1) {
-            $nodes = $model::where('slug', 'like', $slug)->get();
+            $node = $model::where('slug', 'like', $slug)->orWhere('slug_en', 'like', $slug)->first();
         } else {
-            $nodes = Cache::tags($tagsCache)->rememberForever('tree_slug_'.$slug, function () use ($model, $slug) {
-                return $model::where('slug', 'like', $slug)->active()->get();
+            $node = Cache::tags($tagsCache)->rememberForever('tree_slug_'.$slug, function () use ($model, $slug) {
+                return $model::where('slug', 'like', $slug)->orWhere('slug_en', 'like', $slug)->active()->first();
             });
-        }
-
-        foreach ($nodes as $node) {
-            if (trim($node->getUrl(), '/') == Request::url()) {
-                return $node;
+            if (!$node || empty($node) || count($node) == 0) {
+                $node = $model::where('slug', 'like', $slug)->orWhere('slug_en', 'like', $slug)->active()->first();
             }
         }
-
-        return false;
+        return $node;
     }
 
     private function getControllerAndMethod($node)
